@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4318dc6fa67f3db7132b171a03620d5b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -111,6 +111,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -1315,7 +1318,12 @@ git commit -m "feat: auth module migration — core flows complete"</code></pre>
 <section id="the-failure-mode-decision-tree" class="level2" data-number="15.8">
 <h2 data-number="15.8" class="anchored" data-anchor-id="the-failure-mode-decision-tree"><span class="header-section-number">15.8</span> The Failure Mode Decision Tree</h2>
 <p>When something goes wrong, the first question is what kind of wrong:</p>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     START(["Something went wrong\nwith agent output"]) --&gt; Q1{Code syntactically\nwrong?}
 
     Q1 -- Yes --&gt; FIX1["Model capability issue\nStronger model, better examples,\nor do it manually"]
@@ -1338,7 +1346,13 @@ git commit -m "feat: auth module migration — core flows complete"</code></pre>
     style FIX3 fill:#f4a261,color:#000
     style FIX4 fill:#e9c46a,color:#000
     style FIX5 fill:#2d6a4f,color:#fff
-    style FIX2b fill:#6c757d,color:#fff</code></pre>
+    style FIX2b fill:#6c757d,color:#fff
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <hr>
 </section>
 <section id="security-practices-for-agent-generated-code" class="level2" data-number="15.9">

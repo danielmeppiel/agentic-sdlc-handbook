@@ -46,9 +46,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4318dc6fa67f3db7132b171a03620d5b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -76,6 +76,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -697,7 +700,12 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Months 4–6: Inflection.</strong> Context has accumulated to a critical mass. Developers have internalized which tasks agents handle well. The team has established review patterns for agent-generated code. Cycle time begins to drop on measurable tasks. The improvement is modest — 15–25% — but it is real and it compounds.</p>
 <p><strong>Months 6–12: Compounding returns.</strong> Each new context artifact makes agents more effective. New team members onboard faster because the codebase is better documented. Review quality improves because conventions are explicit. The investment in context engineering begins paying back. Organizations that reach this phase with leadership patience and sustained context investment intact report the strongest satisfaction and the most honest productivity numbers.</p>
 <p>The timeline varies by organization. Teams with well-documented codebases enter the valley shallower and exit it faster. Teams with heavy undocumented tribal knowledge spend longer in the valley — but the context engineering they do during that period has value independent of AI tools.</p>
-<pre class="mermaid"><code>---
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">---
 config:
     xyChart:
         titleFontSize: 16
@@ -706,7 +714,13 @@ xychart-beta
     title "Adoption J-Curve: Expect the Valley"
     x-axis "Months" ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
     y-axis "Net Productivity Impact" -30 --&gt; 60
-    line [0, -10, -25, -20, -5, 10, 20, 28, 34, 39, 44, 48, 52]</code></pre>
+    line [0, -10, -25, -20, -5, 10, 20, 28, 34, 39, 44, 48, 52]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <blockquote class="blockquote">
 <p><em>Months 1–3 are an investment valley. Inflection begins around month 4 as context accumulates. Teams that abandon during the valley never reach the compounding phase.</em></p>
 </blockquote>

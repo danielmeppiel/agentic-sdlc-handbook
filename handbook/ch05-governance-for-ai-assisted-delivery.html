@@ -46,9 +46,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4318dc6fa67f3db7132b171a03620d5b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -76,6 +76,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -583,7 +586,12 @@ ul.task-list li input[type="checkbox"] {
 <p>Most organizations operating at Phase 3 (agentic coding, as described in Chapter 2) will find themselves in the “None” or “Basic” column for at least four of these six areas. That is expected. The purpose of the checklist is not to achieve “Enterprise” everywhere — it is to ensure you are not at “None” in any area that carries material risk for your business.</p>
 <p><strong>A note on the Enterprise column.</strong> The rightmost column describes a target state. Some of its requirements — full provenance chains, real-time cost attribution per agent task, automated compliance dashboards — exceed what current-generation tooling delivers out of the box. Treat the Enterprise column as directional, not immediate. When your compliance team asks “when do we get there,” the honest answer is: some capabilities are available now with custom integration; others depend on tooling maturity that is 12–24 months out. Plan accordingly, and do not let the aspiration prevent progress on Basic.</p>
 <p><strong>Where to start.</strong> Audit trails and agent access controls are the two capabilities that unblock everything else. Without knowing what agents did and limiting what they can do, the other four capabilities have no foundation. If your assessment shows “None” in these areas, start here.</p>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     START["Assess 6&lt;br/&gt;governance capabilities"] --&gt; Q1{"Any capability&lt;br/&gt;at 'None'?"}
     Q1 --&gt;|Yes| FIX["Start here:&lt;br/&gt;Audit Trails +&lt;br/&gt;Access Controls"]
     Q1 --&gt;|No| Q2{"All at&lt;br/&gt;'Basic' or above?"}
@@ -595,7 +603,13 @@ ul.task-list li input[type="checkbox"] {
 
     style FIX fill:#e74c3c,color:#fff
     style EXPAND fill:#2ecc71,color:#fff
-    style MATURE fill:#3498db,color:#fff</code></pre>
+    style MATURE fill:#3498db,color:#fff
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <blockquote class="blockquote">
 <p><em>The governance floor: no capability at “None” before expanding agent adoption. Start with audit trails and access controls — they unblock everything else.</em></p>
 </blockquote>

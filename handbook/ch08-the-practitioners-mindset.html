@@ -46,9 +46,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4318dc6fa67f3db7132b171a03620d5b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -76,6 +76,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -534,7 +537,12 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="9.4" class="anchored" data-anchor-id="when-to-use-agents-and-when-to-code-manually"><span class="header-section-number">9.4</span> When to Use Agents and When to Code Manually</h2>
 <p>Agents are not universally better than manual coding. They are better at specific categories of work and worse at others. Knowing the boundary is a core practitioner skill.</p>
 <p>The decision is not intuitive at first, so here is the flowchart. When a task arrives, run it through these questions in order:</p>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     START([Task arrives]) --&gt; Q1{Can you specify it clearly\nin under 2 minutes?}
 
     Q1 -- Yes --&gt; Q2{Is the spec shorter\nthan the code?}
@@ -553,7 +561,13 @@ ul.task-list li input[type="checkbox"] {
     style SPLIT fill:#2d6a4f,color:#fff
     style MANUAL1 fill:#6c757d,color:#fff
     style MANUAL2 fill:#6c757d,color:#fff
-    style MANUAL3 fill:#6c757d,color:#fff</code></pre>
+    style MANUAL3 fill:#6c757d,color:#fff
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p>The two-minute test is the entry point. If you could explain the task to a new team member in two minutes and they could complete it with access to the right files and a style guide, an agent can do it. If explaining it would require a thirty-minute whiteboard session with a senior engineer, you’ve reached a “NO” — code it yourself, or at least isolate the judgment-heavy core for manual work.</p>
 <p>The sections below unpack each path.</p>
 <p><strong>Use agents when the task is well-specified, repetitive, or parallelizable.</strong> Migrating call sites across 40 files to a new API. Adding structured logging to 15 endpoints that follow the same pattern. Generating test scaffolding for a module with a clear interface. Writing documentation for functions with well-defined contracts. These tasks have a clear transformation rule, a bounded scope, and a predictable structure. Agents execute them faster and more consistently than a human, because the agent does not get bored, does not skip edge cases out of fatigue, and does not introduce inconsistencies because it forgot what it did three files ago.</p>

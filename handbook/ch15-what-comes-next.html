@@ -45,9 +45,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4318dc6fa67f3db7132b171a03620d5b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -75,6 +75,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -514,7 +517,12 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Full lifecycle agent participation becomes achievable.</strong> The eight-phase lifecycle from Chapter 3 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.</p>
 <p><strong>Context infrastructure becomes as foundational as CI/CD.</strong> Every serious engineering organization today has continuous integration and deployment. Context infrastructure — the primitives, instruction hierarchies, and knowledge bases that make agents effective — will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology “doesn’t work for us,” the same way organizations without CI concluded automated testing “doesn’t work at our scale.”</p>
 <p>Early implementations already exist. Open-source tools provide manifest-based dependency resolution and security scanning for agent primitives — the same architecture as npm or pip, applied to agent configuration rather than runtime code.</p>
-<pre class="mermaid"><code>gantt
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">gantt
     title Three-Horizon Timeline
     dateFormat YYYY
     axisFormat %Y
@@ -529,7 +537,13 @@ ul.task-list li input[type="checkbox"] {
 
     section Long-Term (3–5 years)
     Full lifecycle agent participation       :l1, 2028, 2030
-    Context infra as foundational as CI/CD   :l2, 2028, 2030</code></pre>
+    Context infra as foundational as CI/CD   :l2, 2028, 2030
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <hr>
 </section>
 <section id="what-will-not-change" class="level2" data-number="16.4">

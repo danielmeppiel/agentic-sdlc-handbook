@@ -46,9 +46,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-4318dc6fa67f3db7132b171a03620d5b.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-45e022cba52fe7b4d23294d20f1e179f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -76,6 +76,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -576,7 +579,12 @@ ul.task-list li input[type="checkbox"] {
 <p>In both cases, the constraints feel like restrictions until you see the properties they produce at scale. And in both cases, the constraints are independent of implementation — REST didn’t require Apache, and PROSE doesn’t require any particular IDE or AI provider.</p>
 <p>The constraints in this book are concrete enough that they can be — and have been — implemented as packageable, distributable artifacts with formal schemas.</p>
 <p>How the five constraints relate:</p>
-<pre class="mermaid"><code>flowchart LR
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
     subgraph " "
         direction TB
         EH["Explicit Hierarchy&lt;br/&gt;&lt;em&gt;Which rules apply&lt;/em&gt;"]
@@ -596,7 +604,13 @@ ul.task-list li input[type="checkbox"] {
     style PD fill:#4a9eff,color:#fff
     style RS fill:#4a9eff,color:#fff
     style OC fill:#4a9eff,color:#fff
-    style SB fill:#e74c3c,color:#fff</code></pre>
+    style SB fill:#e74c3c,color:#fff
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p>When these constraints are followed, systems exhibit reliability (consistent results from non-deterministic systems), scalability (same patterns work from scripts to large codebases), portability (works across any LLM-based agent platform), and transparency (agent behavior is inspectable and explainable).</p>
 <p>When they’re violated, the failures are equally predictable:</p>
 <table class="caption-top table">
