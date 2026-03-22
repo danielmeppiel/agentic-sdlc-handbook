@@ -63,6 +63,16 @@ format:
     mainfont: "DejaVu Serif"
     sansfont: "DejaVu Sans"
     monofont: "DejaVu Sans Mono"
+    code-block-bg: "#f8f8f8"
+    code-overflow: wrap
+    fig-width: 6.5
+    fig-height: 4
+    include-in-header:
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+        \usepackage{float}
+        \floatplacement{figure}{H}
   epub:
     toc: true
     number-sections: true
