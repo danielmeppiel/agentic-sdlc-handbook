@@ -1,3 +1,11 @@
 
 # APM dependencies
 apm_modules/
+
+# Quarto output
+_book/
+_freeze/
+.quarto/
+
+/.quarto/
+**/*.quarto_ipynb

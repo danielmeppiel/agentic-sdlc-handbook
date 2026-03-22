@@ -1,4 +1,6 @@
-# Chapter 2: The AI-Native Landscape
+---
+title: "The AI-Native Landscape"
+---
 
 Your developers are already using AI coding tools. Some of them expensed their own subscriptions. A few are running code through APIs you've never audited. The question isn't whether AI-assisted development is happening in your organization — it's whether you're driving it or reacting to it.
 

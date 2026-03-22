@@ -1,4 +1,6 @@
-# Chapter 8: The Practitioner's Mindset
+---
+title: "The Practitioner's Mindset"
+---
 
 Block 1 answered what to decide. Block 2 answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.
 

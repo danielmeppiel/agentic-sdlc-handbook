@@ -1,4 +1,6 @@
-# Chapter 5: Governance for AI-Assisted Delivery
+---
+title: "Governance for AI-Assisted Delivery"
+---
 
 An AI agent on your team just merged a pull request that touches your payment processing code. Who approved it? What data did the agent access during generation? Can your auditor trace the decision chain from business requirement to deployed change? If you cannot answer these questions today, your governance framework has a gap exactly where your AI investment is growing fastest.
 

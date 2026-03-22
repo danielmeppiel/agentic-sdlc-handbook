@@ -1,4 +1,6 @@
-# Chapter 11: Context Engineering
+---
+title: "Context Engineering"
+---
 
 You have a codebase with 200,000 lines of code, a style guide nobody reads, three authentication patterns (two deprecated), and a logging convention that exists in the heads of two senior engineers who joined in 2019. An AI agent sees none of this. It sees whatever fits in its context window. Context engineering is the discipline of deciding what that is.
 

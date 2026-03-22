@@ -1,4 +1,6 @@
-# Chapter 1: The Agentic SDLC Thesis
+---
+title: "The Agentic SDLC Thesis"
+---
 
 Every AI coding tool demos beautifully on a blank project. The question this book answers is why those same tools break on your actual codebase — and what to do about it.
 

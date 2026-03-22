@@ -1,0 +1,34 @@
+---
+title: "Preface"
+---
+
+# The Agentic SDLC Handbook {.unnumbered}
+
+A methodology for teams building software with AI agents — grounded in evidence, tested in production, independent of any single tool.
+
+## Who This Book Is For
+
+This book speaks to two audiences:
+
+**Engineering leaders** (CTO, VP Engineering, Director) who need to understand the strategic implications of AI-native development, make investment decisions, and transform their organizations. **Read Part II first.**
+
+**Practitioners** (developers, tech leads, architects) who need concrete techniques, patterns, and workflows for working effectively with AI coding agents. **Read Part III first.**
+
+Part I provides the foundational thesis that both audiences share. The closing chapter looks ahead.
+
+## How to Read This Book
+
+You don't need to read sequentially. Start with whichever part matches your role:
+
+- **Part I** (Chapter 1): The thesis — why the current approach fails and what replaces it
+- **Part II** (Chapters 2–7): The business case, reference architecture, governance, team structures, and transition planning
+- **Part III** (Chapters 8–14): The practitioner's mindset, instrumented codebase, PROSE specification, context engineering, multi-agent orchestration, execution meta-process, and anti-patterns
+- **Closing** (Chapter 15): What comes next
+
+## About the Author
+
+Daniel Meppiel works at Microsoft and created [APM](https://github.com/microsoft/apm) (Agent Package Manager), an open-source tool for managing AI agent configurations. This handbook was produced using the same methodology and tooling it describes.
+
+## License & Updates
+
+This book is free. Share it, link to it, learn from it. Updates are published continuously — check back or watch the [repository](https://github.com/danielmeppiel/apm-handbook) for changes.

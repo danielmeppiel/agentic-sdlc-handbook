@@ -1,4 +1,6 @@
-# Chapter 4: The Agentic SDLC Reference Architecture
+---
+title: "The Agentic SDLC Reference Architecture"
+---
 
 Most organizations planning AI adoption ask "which tool should we buy?" The better question is "which layers of our software lifecycle should agents touch first, and what infrastructure do they need?" This chapter provides the diagram that answers both — and explains why the context you accumulate along the way matters more than any tool you select.
 

@@ -1,4 +1,6 @@
-# Chapter 12: Multi-Agent Orchestration
+---
+title: "Multi-Agent Orchestration"
+---
 
 A single AI agent can modify a file. It can even modify several files in sequence, if the changes are simple enough and the context window holds. But the moment you need to change 40 files across 5 concerns — authentication, logging, type safety, migration, and cleanup — a single agent becomes the bottleneck. Not because it lacks intelligence. Because it lacks bandwidth.
 

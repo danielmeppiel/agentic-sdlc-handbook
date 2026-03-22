@@ -1,4 +1,6 @@
-# Chapter 6: Team Structures for AI-Augmented Delivery
+---
+title: "Team Structures for AI-Augmented Delivery"
+---
 
 The question every VP of Engineering asks privately: "If AI agents write most of the code, what happens to my team?" The honest answer is more nuanced — and more urgent — than either "nothing changes" or "everyone's replaced."
 

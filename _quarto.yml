@@ -1,0 +1,51 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "The Agentic SDLC Handbook"
+  subtitle: "A Practitioner's Guide to AI-Native Software Development"
+  author: "Daniel Meppiel"
+  date: today
+  date-format: "MMMM YYYY"
+  site-url: "https://danielmeppiel.github.io/apm-handbook/"
+  repo-url: "https://github.com/danielmeppiel/apm-handbook"
+  repo-actions: [issue]
+  sharing: [twitter, linkedin]
+  reader-mode: true
+
+  chapters:
+    - index.qmd
+    - part: "Part I: The Foundation"
+      chapters:
+        - handbook/ch01-the-agentic-sdlc-thesis.qmd
+    - part: "Part II: For Leaders"
+      chapters:
+        - handbook/ch02-the-ai-native-landscape.qmd
+        - handbook/ch03-the-business-case.qmd
+        - handbook/ch04-the-reference-architecture.qmd
+        - handbook/ch05-governance-for-ai-assisted-delivery.qmd
+        - handbook/ch06-team-structures.qmd
+        - handbook/ch07-planning-the-transition.qmd
+    - part: "Part III: For Practitioners"
+      chapters:
+        - handbook/ch08-the-practitioners-mindset.qmd
+        - handbook/ch09-the-instrumented-codebase.qmd
+        - handbook/ch10-the-prose-specification.qmd
+        - handbook/ch11-context-engineering.qmd
+        - handbook/ch12-multi-agent-orchestration.qmd
+        - handbook/ch13-the-execution-meta-process.qmd
+        - handbook/ch14-anti-patterns-and-failure-modes.qmd
+    - part: "Closing"
+      chapters:
+        - handbook/ch15-what-comes-next.qmd
+
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    number-sections: true
+    code-copy: true
+    search: true

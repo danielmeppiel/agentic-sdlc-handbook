@@ -1,4 +1,6 @@
-# Chapter 10: The PROSE Specification
+---
+title: "The PROSE Specification"
+---
 
 Chapter 1 introduced five architectural constraints for human-AI collaboration and gave each a name. This chapter gives each a specification — what it means, how to implement it, what violation looks like, and what breaks when two constraints interact and one is missing.
 

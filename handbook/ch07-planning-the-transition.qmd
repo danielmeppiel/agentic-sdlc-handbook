@@ -1,4 +1,6 @@
-# Chapter 7: Planning the Transition
+---
+title: "Planning the Transition"
+---
 
 Your pilot went well. Three developers spent two weeks using agentic coding tools on a greenfield microservice. They reported a "huge" productivity boost. Leadership saw the demo and approved a wider rollout.
 

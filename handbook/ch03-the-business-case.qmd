@@ -1,4 +1,6 @@
-# Chapter 3: The Business Case
+---
+title: "The Business Case"
+---
 
 "Our AI coding tools delivered a 10× productivity improvement." No, they didn't. If your vendor is quoting that number — or your team is reporting it — someone is measuring the wrong thing. This chapter gives you the honest math.
 

@@ -1,4 +1,6 @@
-# Chapter 15: What Comes Next
+---
+title: "What Comes Next"
+---
 
 Everything in this book will be partially obsolete within eighteen months. The models will be better, the tools will be different, and capabilities we marked "directional" will be shipping. That is not a flaw in the book. It is the central argument. The methodology survives tool change. The primitives survive model change. The discipline survives everything.
 
