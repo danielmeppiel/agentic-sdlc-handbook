@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>8&nbsp; Planning the Transition – The Agentic SDLC Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../handbook/ch08-the-practitioners-mindset.html" rel="next">
+<link href="../handbook/ch06-team-structures.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html">Part II: For Leaders</a></li><li class="breadcrumb-item"><a href="../handbook/ch07-planning-the-transition.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">The Agentic SDLC Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: The Foundation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: For Leaders</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: For Practitioners</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch09-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch10-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch11-context-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch12-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch13-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Closing</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch15-what-comes-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#this-chapter-is-the-bridge-between-the-strategic-foundations-of-chapters-2-through-6-and-the-implementation-disciplines-of-block-2.-it-answers-the-operational-question-given-everything-you-now-understand-about-the-landscape-the-architecture-the-context-requirements-the-organizational-implications-and-the-governance-needs-how-do-you-actually-roll-this-out" id="toc-this-chapter-is-the-bridge-between-the-strategic-foundations-of-chapters-2-through-6-and-the-implementation-disciplines-of-block-2.-it-answers-the-operational-question-given-everything-you-now-understand-about-the-landscape-the-architecture-the-context-requirements-the-organizational-implications-and-the-governance-needs-how-do-you-actually-roll-this-out" class="nav-link active" data-scroll-target="#this-chapter-is-the-bridge-between-the-strategic-foundations-of-chapters-2-through-6-and-the-implementation-disciplines-of-block-2.-it-answers-the-operational-question-given-everything-you-now-understand-about-the-landscape-the-architecture-the-context-requirements-the-organizational-implications-and-the-governance-needs-how-do-you-actually-roll-this-out"><span class="header-section-number">8.1</span> This chapter is the bridge between the strategic foundations of Chapters 2 through 6 and the implementation disciplines of Block 2. It answers the operational question: given everything you now understand about the landscape, the architecture, the context requirements, the organizational implications, and the governance needs — how do you actually roll this out?</a></li>
+  <li><a href="#the-productivity-paradox" id="toc-the-productivity-paradox" class="nav-link" data-scroll-target="#the-productivity-paradox"><span class="header-section-number">8.2</span> The Productivity Paradox</a></li>
+  <li><a href="#team-readiness-assessment" id="toc-team-readiness-assessment" class="nav-link" data-scroll-target="#team-readiness-assessment"><span class="header-section-number">8.3</span> Team Readiness Assessment</a>
+  <ul class="collapse">
+  <li><a href="#readiness-matrix" id="toc-readiness-matrix" class="nav-link" data-scroll-target="#readiness-matrix"><span class="header-section-number">8.3.1</span> Readiness Matrix</a></li>
+  </ul></li>
+  <li><a href="#phased-adoption" id="toc-phased-adoption" class="nav-link" data-scroll-target="#phased-adoption"><span class="header-section-number">8.4</span> Phased Adoption</a>
+  <ul class="collapse">
+  <li><a href="#phase-1-pilot-15-months" id="toc-phase-1-pilot-15-months" class="nav-link" data-scroll-target="#phase-1-pilot-15-months"><span class="header-section-number">8.4.1</span> Phase 1: Pilot (1–5 months)</a></li>
+  <li><a href="#phase-2-expand-39-months-from-project-start" id="toc-phase-2-expand-39-months-from-project-start" class="nav-link" data-scroll-target="#phase-2-expand-39-months-from-project-start"><span class="header-section-number">8.4.2</span> Phase 2: Expand (3–9 months from project start)</a></li>
+  <li><a href="#phase-3-scale-624-months-from-project-start" id="toc-phase-3-scale-624-months-from-project-start" class="nav-link" data-scroll-target="#phase-3-scale-624-months-from-project-start"><span class="header-section-number">8.4.3</span> Phase 3: Scale (6–24 months from project start)</a></li>
+  </ul></li>
+  <li><a href="#skill-development-paths" id="toc-skill-development-paths" class="nav-link" data-scroll-target="#skill-development-paths"><span class="header-section-number">8.5</span> Skill Development Paths</a></li>
+  <li><a href="#metrics-that-matter" id="toc-metrics-that-matter" class="nav-link" data-scroll-target="#metrics-that-matter"><span class="header-section-number">8.6</span> Metrics That Matter</a>
+  <ul class="collapse">
+  <li><a href="#instrumenting-the-generation-to-review-ratio" id="toc-instrumenting-the-generation-to-review-ratio" class="nav-link" data-scroll-target="#instrumenting-the-generation-to-review-ratio"><span class="header-section-number">8.6.1</span> Instrumenting the Generation-to-Review Ratio</a></li>
+  </ul></li>
+  <li><a href="#common-transition-pitfalls" id="toc-common-transition-pitfalls" class="nav-link" data-scroll-target="#common-transition-pitfalls"><span class="header-section-number">8.7</span> Common Transition Pitfalls</a></li>
+  <li><a href="#transition-planning-template" id="toc-transition-planning-template" class="nav-link" data-scroll-target="#transition-planning-template"><span class="header-section-number">8.8</span> Transition Planning Template</a>
+  <ul class="collapse">
+  <li><a href="#pre-transition-weeks-1-4" id="toc-pre-transition-weeks-1-4" class="nav-link" data-scroll-target="#pre-transition-weeks-1-4"><span class="header-section-number">8.8.1</span> Pre-Transition (Weeks 1-4)</a></li>
+  <li><a href="#phase-1-pilot-15-months-depending-on-org-size-and-documentation-maturity" id="toc-phase-1-pilot-15-months-depending-on-org-size-and-documentation-maturity" class="nav-link" data-scroll-target="#phase-1-pilot-15-months-depending-on-org-size-and-documentation-maturity"><span class="header-section-number">8.8.2</span> Phase 1 — Pilot (1–5 months, depending on org size and documentation maturity)</a></li>
+  <li><a href="#phase-2-expand-39-months-from-start-depending-on-org-size" id="toc-phase-2-expand-39-months-from-start-depending-on-org-size" class="nav-link" data-scroll-target="#phase-2-expand-39-months-from-start-depending-on-org-size"><span class="header-section-number">8.8.3</span> Phase 2 — Expand (3–9 months from start, depending on org size)</a></li>
+  <li><a href="#phase-3-scale-624-months-from-start-depending-on-org-size" id="toc-phase-3-scale-624-months-from-start-depending-on-org-size" class="nav-link" data-scroll-target="#phase-3-scale-624-months-from-start-depending-on-org-size"><span class="header-section-number">8.8.4</span> Phase 3 — Scale (6–24 months from start, depending on org size)</a></li>
+  <li><a href="#ongoing" id="toc-ongoing" class="nav-link" data-scroll-target="#ongoing"><span class="header-section-number">8.8.5</span> Ongoing</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html">Part II: For Leaders</a></li><li class="breadcrumb-item"><a href="../handbook/ch07-planning-the-transition.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Your pilot went well. Three developers spent two weeks using agentic coding tools on a greenfield microservice. They reported a “huge” productivity boost. Leadership saw the demo and approved a wider rollout.</p>
+<p>Six months later, half the engineering organization has licenses. Adoption is uneven. Two teams swear by it. Three teams tried it and reverted to their previous workflow. One team is producing code faster but spending more time in review because no one trusts the output. Your per-seat costs are climbing. Your productivity metrics are ambiguous. And the executive who approved the budget is asking for evidence that the investment is working.</p>
+<p>This is the most common adoption trajectory for agentic development tools. Not failure — something worse. Inconclusive results that neither justify expanding the investment nor provide grounds for canceling it.</p>
+<p>The problem is not the tools. The problem is that most organizations skip from “successful pilot” to “organization-wide rollout” without building the infrastructure that makes agentic development reliable at scale — the context engineering, the governance, the skill development, the measurement systems. The pilot succeeds <em>because</em> it’s small: limited codebase, enthusiastic participants, greenfield scope. The rollout fails because none of those conditions hold for the rest of the organization.</p>
+<section id="this-chapter-is-the-bridge-between-the-strategic-foundations-of-chapters-2-through-6-and-the-implementation-disciplines-of-block-2.-it-answers-the-operational-question-given-everything-you-now-understand-about-the-landscape-the-architecture-the-context-requirements-the-organizational-implications-and-the-governance-needs-how-do-you-actually-roll-this-out" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="this-chapter-is-the-bridge-between-the-strategic-foundations-of-chapters-2-through-6-and-the-implementation-disciplines-of-block-2.-it-answers-the-operational-question-given-everything-you-now-understand-about-the-landscape-the-architecture-the-context-requirements-the-organizational-implications-and-the-governance-needs-how-do-you-actually-roll-this-out"><span class="header-section-number">8.1</span> This chapter is the bridge between the strategic foundations of Chapters 2 through 6 and the implementation disciplines of Block 2. It answers the operational question: given everything you now understand about the landscape, the architecture, the context requirements, the organizational implications, and the governance needs — how do you actually roll this out?</h2>
+</section>
+<section id="the-productivity-paradox" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="the-productivity-paradox"><span class="header-section-number">8.2</span> The Productivity Paradox</h2>
+<p>Before planning a transition, you need to understand why the most common measure of success — productivity — is the most dangerous one to use.</p>
+<p>The productivity paradox (Chapter 3) means traditional metrics mislead. Lines of code, PR volume, and per-task cycle time all inflate the apparent value of agentic tools while hiding the real costs — rework, review burden, and maintenance debt. The metrics below are designed to avoid that trap.</p>
+<p>Do not plan your transition around a productivity number. Plan it around capability maturity — your organization’s ability to use these tools reliably and at scale.</p>
+<hr>
+</section>
+<section id="team-readiness-assessment" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="team-readiness-assessment"><span class="header-section-number">8.3</span> Team Readiness Assessment</h2>
+<p>Not every team is equally ready for agentic development, and not every team should start at the same time. A readiness assessment prevents the common mistake of rolling out uniformly across an organization where conditions vary dramatically.</p>
+<p>Four dimensions determine readiness. Assess each on a three-point scale: not ready, partially ready, ready.</p>
+<p><strong>Codebase readiness.</strong> How much of the team’s working knowledge is explicit versus implicit? If architectural decisions live in people’s heads, if coding conventions are enforced through review comments rather than documentation, if the build system requires tribal knowledge to operate — the codebase is not ready for agents. Agents work with explicit context. Chapters 4 and 8 cover what “explicit” means in practice.</p>
+<p>Assessment questions: Is there a written architecture document a new hire could use? Are coding standards documented or only enforced in review? Can someone unfamiliar with the project run the build and tests from documentation alone?</p>
+<p><strong>Process readiness.</strong> Does the team have structured workflows that can accommodate AI-generated code? This means code review processes that handle higher volume, CI/CD pipelines that catch the kinds of defects agents introduce (pattern violations, not just compilation errors), and branching strategies that isolate agent-generated changes until they pass review. Chapter 5 covers governance in detail.</p>
+<p>Assessment questions: Does the team have automated quality gates beyond compilation? Is code review structured or ad hoc? How long does a typical PR take from submission to merge?</p>
+<p><strong>Skill readiness.</strong> Does the team include developers who can evaluate agent output critically? This is not about AI expertise — it is about engineering judgment. A senior developer who understands the codebase can evaluate whether agent-generated code fits the architecture and handles edge cases. A team of junior developers without senior oversight will accept plausible-looking output that violates invariants they don’t yet understand. Chapter 6 addressed this compositional dynamic.</p>
+<p>Assessment questions: What is the ratio of senior to junior developers? Can reviewers articulate <em>why</em> code is wrong, not just that it looks wrong? Has the team onboarded a new hire using written documentation in the past year?</p>
+<p><strong>Cultural readiness.</strong> Does the team view AI tools as assistants or replacements? Teams that feel threatened will resist in ways that no mandate can overcome — subtle non-adoption, blame-shifting when things go wrong, refusal to invest in context engineering because “the tools should just work.” Teams that view AI as an amplifier adopt faster and more sustainably.</p>
+<p>Assessment questions: How did the team respond to the last significant tooling change? Do developers experiment voluntarily, or only when mandated? Is there psychological safety around admitting that a tool-assisted approach failed?</p>
+<p>The assessment is not a gate — it is a sequencing tool. Teams scoring “ready” across all four dimensions are your pilot candidates. Teams “partially ready” in one or two dimensions need targeted investment before they join. Teams “not ready” in codebase or skill readiness need the most preparation and should start last.</p>
+<section id="readiness-matrix" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="readiness-matrix"><span class="header-section-number">8.3.1</span> Readiness Matrix</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Not Ready</th>
+<th>Partially Ready</th>
+<th>Ready</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Codebase</td>
+<td>Conventions are oral tradition; no architecture docs</td>
+<td>Some documentation exists but is incomplete or stale</td>
+<td>Architecture, conventions, and patterns are documented and current</td>
+</tr>
+<tr class="even">
+<td>Process</td>
+<td>Ad hoc review; manual testing only</td>
+<td>Structured review exists; CI covers basics</td>
+<td>Automated quality gates, structured review, fast PR cycles</td>
+</tr>
+<tr class="odd">
+<td>Skill</td>
+<td>Mostly junior team; limited review depth</td>
+<td>Mixed seniority; reviewers can catch obvious issues</td>
+<td>Strong senior presence; reviewers can evaluate architectural fit</td>
+</tr>
+<tr class="even">
+<td>Cultural</td>
+<td>Resistance to tooling change; blame culture</td>
+<td>Cautious but open; some voluntary experimentation</td>
+<td>Active experimentation; healthy relationship with tooling change</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+</section>
+<section id="phased-adoption" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="phased-adoption"><span class="header-section-number">8.4</span> Phased Adoption</h2>
+<p>The transition from pilot to full adoption follows three phases. Each phase has entry criteria, activities, expected duration, exit signals, and rollback criteria. Moving to the next phase before the exit signals are present is the single most common adoption mistake. Ignoring rollback signals is the second.</p>
+<p><strong>A note on timelines.</strong> The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.</p>
+<pre class="mermaid"><code>flowchart TB
+    PRE["&lt;b&gt;Pre-Transition&lt;/b&gt;&lt;br/&gt;Readiness assessments&lt;br/&gt;Baseline metrics&lt;br/&gt;&lt;em&gt;Weeks 1–4&lt;/em&gt;"]
+
+    P1["&lt;b&gt;Phase 1: Pilot&lt;/b&gt;&lt;br/&gt;1–2 teams, controlled scope&lt;br/&gt;Build minimum context layer&lt;br/&gt;&lt;em&gt;1–5 months&lt;/em&gt;"]
+
+    G1{"Exit signals met?&lt;br/&gt;Context layer works&lt;br/&gt;Review workflow trusted&lt;br/&gt;4+ weeks of metrics"}
+
+    P2["&lt;b&gt;Phase 2: Expand&lt;/b&gt;&lt;br/&gt;3–5 additional teams&lt;br/&gt;Shared context assets&lt;br/&gt;Governance at scale&lt;br/&gt;&lt;em&gt;3–9 months from start&lt;/em&gt;"]
+
+    G2{"Exit signals met?&lt;br/&gt;Teams self-sufficient&lt;br/&gt;Shared assets owned&lt;br/&gt;Metrics show trend"}
+
+    P3["&lt;b&gt;Phase 3: Scale&lt;/b&gt;&lt;br/&gt;Remaining teams&lt;br/&gt;Self-service onboarding&lt;br/&gt;Continuous practice&lt;br/&gt;&lt;em&gt;6–24 months from start&lt;/em&gt;"]
+
+    RB1["🔴 Rollback&lt;br/&gt;Rejection rate &gt; 60%&lt;br/&gt;Intervention not declining&lt;br/&gt;Satisfaction drops"]
+
+    RB2["🔴 Rollback&lt;br/&gt;Coach dependency &gt; 4 wks&lt;br/&gt;Metrics diverge from pilot&lt;br/&gt;Coach burnout"]
+
+    PRE --&gt; P1
+    P1 --&gt; G1
+    G1 --&gt;|"Yes"| P2
+    G1 --&gt;|"No"| RB1
+    RB1 --&gt;|"fix &amp; retry"| P1
+    P2 --&gt; G2
+    G2 --&gt;|"Yes"| P3
+    G2 --&gt;|"No"| RB2
+    RB2 --&gt;|"shrink &amp; reinforce"| P2
+
+    style PRE fill:#95a5a6,color:#fff
+    style P1 fill:#3498db,color:#fff
+    style P2 fill:#e67e22,color:#fff
+    style P3 fill:#2ecc71,color:#fff
+    style G1 fill:#fff,stroke:#333
+    style G2 fill:#fff,stroke:#333
+    style RB1 fill:#e74c3c,color:#fff
+    style RB2 fill:#e74c3c,color:#fff</code></pre>
+<blockquote class="blockquote">
+<p><em>Each phase has explicit exit signals and rollback criteria. Moving forward without meeting exit signals is the single most common adoption mistake.</em></p>
+</blockquote>
+<section id="phase-1-pilot-15-months" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="phase-1-pilot-15-months"><span class="header-section-number">8.4.1</span> Phase 1: Pilot (1–5 months)</h3>
+<p><em>Typical duration: 1–3 months for orgs under 200 engineers; 3–5 months for 200–1,000; 4–6 months for 1,000+.</em></p>
+<p><strong>Scale factor: documentation maturity.</strong> The single biggest driver of Phase 1 duration is how much working knowledge is already explicit. Building even a minimal context layer — project-level instructions, core conventions, architecture boundaries — is a 4–6 week effort for a team starting from zero documentation. That work happens <em>inside</em> Phase 1, not before it. If your readiness assessment flagged codebase readiness as “not ready” or “partially ready,” plan for the longer end of the range.</p>
+<p><strong>Objective.</strong> Validate that agentic development produces reliable results on your codebase, with your team, under your governance model.</p>
+<p><strong>Scope.</strong> One or two teams. Select teams that scored “ready” in the readiness assessment. Limit scope to well-defined work — a new feature, a contained refactor, a test suite expansion — not a sprawling cross-cutting change. The goal is controlled conditions, not maximum impact.</p>
+<p><strong>Activities.</strong> - Establish baseline measurements before the pilot begins. You cannot measure improvement without a starting point. Capture current cycle time, review rejection rate, defect rate, and developer satisfaction on the selected workstreams. - Build the minimum viable context layer: project-level instructions, core coding conventions, architecture boundaries. Block 2 (Chapters 8–9) provides the methodology. For the pilot, you need enough context to prevent the most common agent failures, not a comprehensive instrumentation layer. - Run the pilot with close observation. The goal is to learn, not to prove a point. Document what agents get right, what they get wrong, and what they can’t do. Track human intervention points — every moment a developer had to correct, override, or redo agent output.</p>
+<p><strong>Exit signals.</strong> Move to Phase 2 when: (1) the pilot team has a documented context layer that improves agent output quality, (2) the team has a review workflow for agent-generated code that they trust, (3) you have baseline and pilot metrics for at least four weeks, and (4) the pilot team can articulate what worked and what other teams would need.</p>
+<p><strong>Rollback criteria.</strong> Pause or restructure Phase 1 if any of the following hold after six weeks of active piloting: - <strong>Review rejection rate exceeds 60%.</strong> Agents are producing output the team cannot trust. This is almost always a context quality problem. Pause generation work, invest in the context layer, and restart the pilot clock. - <strong>Human intervention rate is not declining week over week.</strong> The first two weeks will be rough. By week four, intervention should be trending down. A flat or rising line means the team is fighting the tool, not learning from it. Diagnose whether the problem is context, skill, or tool fit before continuing. - <strong>Developer satisfaction drops below pre-pilot baseline.</strong> If the people using the tools are less productive or less satisfied than before, the pilot is not validating — it is eroding trust. Stop, debrief, and determine whether the issue is remediable or fundamental.</p>
+<p>The rollback process: revert affected teams to their pre-pilot workflow. Preserve all context assets and metrics — they are not wasted, they are diagnostic. Conduct a structured retrospective focused on <em>why</em> the signals triggered, not <em>who</em> is responsible. A failed pilot that produces clear lessons is more valuable than a limping pilot that produces ambiguous data.</p>
+<p><strong>Common failure.</strong> Declaring the pilot a success based on enthusiasm rather than evidence. “The team loves it” is a data point, not a conclusion. The exit signals are structural, not emotional.</p>
+</section>
+<section id="phase-2-expand-39-months-from-project-start" class="level3" data-number="8.4.2">
+<h3 data-number="8.4.2" class="anchored" data-anchor-id="phase-2-expand-39-months-from-project-start"><span class="header-section-number">8.4.2</span> Phase 2: Expand (3–9 months from project start)</h3>
+<p><em>Typical duration of Phase 2 itself: 2–4 months for orgs under 200; 3–6 months for 200–1,000; 4–8 months for 1,000+.</em></p>
+<p><strong>Scale factor: coaching capacity.</strong> The pilot-members-as-coaches model works at this scale — but it has a capacity cost. You are pulling senior engineers off delivery to teach. For organizations expanding to more than five teams, budget for dedicated enablement: a platform engineer, a developer experience lead, or a rotating coaching role. The coaching model breaks at roughly a 1:3 ratio (one coach to three expanding teams). Plan accordingly.</p>
+<p><strong>Objective.</strong> Extend adoption to additional teams while building the organizational infrastructure — shared context assets, governance processes, skill development — that the pilot didn’t require at small scale.</p>
+<p><strong>Scope.</strong> Three to five additional teams, selected based on readiness. Include at least one team that scored “partially ready” in one dimension — this tests whether your support infrastructure works for teams that need preparation, not just well-positioned ones.</p>
+<p><strong>Activities.</strong> - Pilot team members become internal coaches. Each expanding team should have access to someone who went through the pilot — the tacit knowledge from Phase 1 is the most valuable asset for Phase 2. - Build shared context assets. The pilot team’s context layer was project-specific. Now you need organizational primitives: shared coding standards, common architectural patterns, cross-project conventions. This is the context moat from Chapter 4 — the compounding asset that makes every subsequent adoption cheaper. - Establish governance processes for agent-generated code at organizational scale. The pilot used whatever review process the team already had. At this scale, you need explicit policies: what requires human review, what can be auto-merged with sufficient test coverage, how agent-generated changes are attributed. Chapter 5 provides the framework. - Begin tracking organizational metrics, not just team metrics. The metrics section below specifies what to measure.</p>
+<p><strong>Exit signals.</strong> Move to Phase 3 when: (1) expanding teams are productive with agentic tools without daily support from pilot members, (2) shared context assets exist and have a responsible owner, (3) governance processes are documented and followed without enforcement, and (4) organizational metrics show a trend you can explain.</p>
+<p><strong>Rollback criteria.</strong> Scale back Phase 2 if: - <strong>More than half the expanding teams require daily coach intervention after four weeks.</strong> The support infrastructure is not scaling. Either the shared context assets are insufficient, the governance processes are unclear, or the team selection was premature. Pause expansion, reinforce the infrastructure, and resume with fewer teams. - <strong>Organizational metrics diverge sharply from pilot metrics.</strong> If the pilot showed a 3:1 generation-to-review ratio and expanding teams are at 1:1 or worse, the pilot conditions are not transferable. Investigate whether the gap is codebase-specific (different teams, different context needs) or structural (the pilot was a hero team on a friendly codebase). - <strong>Coach burnout.</strong> If pilot team members are spending more than 30% of their time coaching and their own delivery is suffering, you have a capacity problem, not an adoption problem. Either hire dedicated enablement or slow the expansion rate.</p>
+<p>The rollback process: teams that are not self-sufficient revert to their pre-adoption workflow. Teams that are functioning well continue. Coaching resources concentrate on fewer teams. The goal is to shrink to a sustainable expansion rate, not to abandon the transition.</p>
+<p><strong>Common failure.</strong> Expanding too fast. The instinct after a successful pilot is to “accelerate the rollout.” Every team added without readiness or support becomes a negative data point — and negative data points spread faster than positive ones. A team that has a bad experience with agentic tools will resist for months. Three to five teams in Phase 2 is a deliberate constraint.</p>
+</section>
+<section id="phase-3-scale-624-months-from-project-start" class="level3" data-number="8.4.3">
+<h3 data-number="8.4.3" class="anchored" data-anchor-id="phase-3-scale-624-months-from-project-start"><span class="header-section-number">8.4.3</span> Phase 3: Scale (6–24 months from project start)</h3>
+<p><em>Typical duration: 3–6 months for orgs under 200; 6–12 months for 200–1,000; 12–24 months for 1,000+.</em></p>
+<p><strong>Scale factor: organizational breadth.</strong> Phase 3 includes teams that initially scored “not ready” — teams with legacy codebases, thin documentation, and mixed enthusiasm. These teams require more preparation, more coaching, and longer ramp-up. For an organization of 400+ engineers, expect Phase 3 to take at least 12 months. For 1,000+, plan for 18–24 months. Compressing this timeline produces shallow adoption that looks like compliance and functions like resistance.</p>
+<p><strong>Objective.</strong> Make agentic development the default working mode for the engineering organization.</p>
+<p><strong>Scope.</strong> Remaining teams, including those initially scoring “not ready” that have since received preparation.</p>
+<p><strong>Activities.</strong> - Onboarding becomes self-service. Documentation, shared context assets, and governance processes should be mature enough that a new team can adopt from written resources alone. If this isn’t true, you are not ready for Phase 3. - Transition from peer coaching to a dedicated enablement function. The coaching model from Phase 2 does not survive Phase 3 at scale. Assign permanent ownership — a developer experience team, a platform engineering function, or at minimum a named individual — responsible for context asset quality, onboarding materials, and tooling support. - Context engineering becomes a continuous practice, not a one-time setup. Teams contribute back to shared assets. Stale context is pruned. New patterns are documented as they emerge. Chapter 13 covers this at team scale. - Metrics mature from “is this working?” to “where do we invest next?” — reducing intervention rates, improving context quality, expanding the range of tasks agents handle reliably. - Evaluate advanced workflows: multi-agent orchestration, cross-repository operations, CI/CD integration with agent-generated changes. These require organizational maturity and should not be attempted before Phase 3.</p>
+<p><strong>Rollback criteria.</strong> Phase 3 rollback is not all-or-nothing. It is selective: - <strong>Individual teams that show sustained negative trends</strong> — rising intervention rates, declining satisfaction, increasing rework — after eight weeks of active adoption should pause and receive targeted support. Do not force adoption on a team producing worse outcomes with the tools than without them. - <strong>If organizational-level metrics plateau or decline for a full quarter,</strong> halt further expansion and conduct a structural review. The most common cause is context asset decay — the shared assets that worked for early adopters become stale as more teams rely on them. The fix is investment in maintenance, not more rollout. - <strong>Kill criteria for the program.</strong> If, after a full Phase 1 and Phase 2 cycle, fewer than 40% of participating teams show measurable improvement on quality or efficiency metrics, the transition is not producing organizational value. This does not mean the tools are useless — it may mean your codebase, your team composition, or your domain is not yet a good fit. Document what you learned, preserve what worked at the team level, and revisit when conditions change. A transition plan without a kill switch is an escalation of commitment.</p>
+<p><strong>Exit signals.</strong> Phase 3 does not have an endpoint — it is the steady state. The signal is not that everyone is using the tools. It is that the tools produce measurable value, the organization can sustain and improve that value, and the transition is no longer a “project” but an ongoing capability.</p>
+<hr>
+</section>
+</section>
+<section id="skill-development-paths" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="skill-development-paths"><span class="header-section-number">8.5</span> Skill Development Paths</h2>
+<p>Different roles need different skills. A one-size-fits-all training program wastes time for everyone.</p>
+<p><strong>Senior engineers and tech leads</strong> need context engineering skills: how to build instruction hierarchies, how to design agent primitives, how to evaluate agent output against architectural requirements. They also need to understand the failure modes from Chapter 14 — not because they’ll hit every one, but because recognizing a failure mode early prevents hours of debugging. This is the highest-priority training investment.</p>
+<p><strong>Mid-level developers</strong> need effective delegation skills: how to scope tasks for agents, how to provide sufficient context for a specific interaction, how to iterate when agent output is wrong rather than starting over. They also need calibrated trust — understanding when agent output is likely reliable and when it requires careful verification. The meta-process in Chapter 10 provides the methodology.</p>
+<p><strong>Junior developers</strong> need review skills first and generation skills second. The most dangerous scenario is a junior developer who accepts agent output they cannot evaluate. Before juniors use agentic tools for generation, they should be able to review agent-generated code at the same standard they review human code. Pairing juniors with seniors during initial agent-assisted work is not optional — it is a safety measure.</p>
+<p><strong>Engineering managers</strong> need measurement and coaching skills: how to evaluate whether their team’s adoption is productive, how to identify when developers are struggling, and how to create an environment where admitting “the agent’s approach didn’t work” is acceptable. The cultural readiness dimension is primarily their responsibility.</p>
+<p><strong>Architects and staff engineers</strong> need to understand how agentic development changes system design. When agents participate in implementation, the value of explicit interfaces, clear module boundaries, and documented architectural decisions increases. Implicit architecture — the kind that lives in the heads of the people who built it — becomes a liability. Their path focuses on making architecture agent-legible, which also makes it more maintainable by humans.</p>
+<hr>
+</section>
+<section id="metrics-that-matter" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="metrics-that-matter"><span class="header-section-number">8.6</span> Metrics That Matter</h2>
+<p>Measure what predicts long-term value, not what flatters short-term adoption.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Metric</th>
+<th>What It Tells You</th>
+<th>What It Doesn’t</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Quality</td>
+<td>Review rejection rate for agent-generated PRs</td>
+<td>Whether agents are producing code your team trusts</td>
+<td>Whether the accepted code has latent defects</td>
+</tr>
+<tr class="even">
+<td>Quality</td>
+<td>Human intervention rate per task</td>
+<td>How often agents need correction mid-task</td>
+<td>Why they need correction (context gap? tool limitation?)</td>
+</tr>
+<tr class="odd">
+<td>Efficiency</td>
+<td>Time-to-confident-merge</td>
+<td>End-to-end time from task start to merged, reviewed code</td>
+<td>Whether faster merges translate to faster feature delivery</td>
+</tr>
+<tr class="even">
+<td>Efficiency</td>
+<td>Rework rate on agent-generated code (30-day)</td>
+<td>Whether agent output survives contact with production</td>
+<td>What the rework costs (trivial fixes vs.&nbsp;architectural changes)</td>
+</tr>
+<tr class="odd">
+<td>Adoption</td>
+<td>Context asset coverage</td>
+<td>What percentage of your codebase has structured context</td>
+<td>Whether that context is good (coverage without quality is noise)</td>
+</tr>
+<tr class="even">
+<td>Adoption</td>
+<td>Active usage rate vs.&nbsp;license count</td>
+<td>Whether people who have the tools are using them</td>
+<td>Whether they’re using them well</td>
+</tr>
+<tr class="odd">
+<td>DORA</td>
+<td>Deployment frequency, lead time, change failure rate, MTTR</td>
+<td>Baseline delivery performance and trends</td>
+<td>Causation — many factors affect DORA metrics simultaneously</td>
+</tr>
+</tbody>
+</table>
+<p>Start with the DORA metrics as your shared language. They are well-understood, widely adopted, and provide a baseline that predates your agentic adoption. Then add the agent-specific metrics — intervention rate, rejection rate, rework rate — as leading indicators of whether the tools are producing genuine value or shifting effort between phases.</p>
+<p>The single most important metric is one that most organizations do not track: the ratio of time spent <em>generating</em> code with agents to time spent <em>reviewing and correcting</em> agent-generated code. If that ratio is improving — less time reviewing per unit of generation — the tools are working. If it is flat or worsening, you have a context quality problem, a skill problem, or both.</p>
+<section id="instrumenting-the-generation-to-review-ratio" class="level3" data-number="8.6.1">
+<h3 data-number="8.6.1" class="anchored" data-anchor-id="instrumenting-the-generation-to-review-ratio"><span class="header-section-number">8.6.1</span> Instrumenting the Generation-to-Review Ratio</h3>
+<p>A metric you cannot measure is a vanity metric in disguise. Here is how to actually capture the generation-to-review ratio, from least to most investment.</p>
+<p><strong>Level 1: PR metadata (low effort, moderate accuracy).</strong> Most teams can start here. Tag agent-generated PRs with a label — <code>agent-generated</code>, <code>ai-assisted</code>, or whatever your tooling supports. Many AI coding tools already add metadata to commits or PR descriptions. Measure two timestamps per PR: creation time (proxy for generation end) and final approval time (proxy for review end). The ratio is aggregate review time divided by aggregate generation time across tagged PRs. This is noisy — PRs vary in size, review includes non-agent concerns — but it produces a directional trend. Tools: GitHub labels + a weekly query against your PR analytics.</p>
+<p><strong>Level 2: Annotation tags in workflow (medium effort, good accuracy).</strong> Developers annotate their task tracking with structured tags: <code>[gen-start]</code>, <code>[gen-end]</code>, <code>[review-start]</code>, <code>[review-end]</code>. This can be as lightweight as a comment in the task tracker or a structured field in your project management tool. The annotations capture the actual time developers spend in each mode, not proxy timestamps. The overhead is roughly 30 seconds per task. Accuracy improves significantly because you are measuring developer time, not PR lifecycle time. Tools: task tracker custom fields, or a shared spreadsheet during the pilot phase.</p>
+<p><strong>Level 3: Git hooks and editor telemetry (higher effort, high accuracy).</strong> For organizations that want precision, instrument the development environment directly. A pre-commit hook can detect agent-generated code (by presence of agent metadata, co-author trailers, or configurable markers) and log generation events. Editor extensions can track time spent in “generation mode” versus “review mode” based on active tool state. This data feeds a dashboard that computes the ratio automatically. This level of instrumentation is Phase 3 investment — do not attempt it in the pilot. Tools: custom git hooks, editor extension APIs, a lightweight telemetry pipeline.</p>
+<p><strong>What healthy looks like.</strong> Early in adoption, expect a generation-to-review ratio around 1:1 — for every hour of agent-assisted generation, roughly an hour of review and correction. As context quality improves and teams calibrate their delegation patterns, healthy teams reach 3:1 or better. Below 1.5:1 after four weeks of active use indicates a context quality problem — the agents are producing output that costs almost as much to verify as it saves in creation. Above 5:1 warrants scrutiny in the other direction — verify that review rigor has not declined along with review time.</p>
+<hr>
+</section>
+</section>
+<section id="common-transition-pitfalls" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="common-transition-pitfalls"><span class="header-section-number">8.7</span> Common Transition Pitfalls</h2>
+<p>Six patterns that derail transitions. Each is predictable and preventable.</p>
+<p><strong>1. The premature rollout.</strong> Scaling before the pilot has produced structural lessons — a working context layer, a validated review process, metrics that show a trend. Every week saved by accelerating the rollout costs a month of remediation when unprepared teams have bad experiences. <strong>2. The mandate without infrastructure.</strong> Leadership announces all teams will use agentic tools by Q3. No investment in context engineering. No training. No governance updates. Developers receive a tool and a deadline. Adoption is shallow and resentful.</p>
+<p><strong>3. The wrong metric.</strong> Measuring lines of code, PR volume, or tool usage frequency instead of quality and effectiveness metrics. Teams optimize for whatever is measured, and optimizing for volume with generative AI tools produces more code, not better software.</p>
+<p><strong>4. The hero pilot.</strong> The pilot team includes your three best developers and a greenfield project. The pilot succeeds brilliantly. Nothing learned transfers to a team of mixed seniority working on a legacy codebase. Select pilot teams that are representative, not exceptional.</p>
+<p><strong>5. The missing middle.</strong> Investing in executive strategy and practitioner tools but not in organizational connective tissue: shared context assets, coaching capacity, governance processes. The gap between “leadership approves” and “developers succeed” is filled by middle management, team leads, and staff engineers. If they are not equipped, the transition stalls.</p>
+<p><strong>6. The permanence assumption.</strong> Treating agentic development as a one-time transformation rather than an ongoing practice. Context goes stale. Tools evolve. Team composition changes. The transition is not a project with a completion date — it is the beginning of a continuous capability that requires continuous investment.</p>
+<hr>
+</section>
+<section id="transition-planning-template" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="transition-planning-template"><span class="header-section-number">8.8</span> Transition Planning Template</h2>
+<p>Use this template to plan your organization’s transition. It is a starting point, not a specification. Adapt it to your context.</p>
+<section id="pre-transition-weeks-1-4" class="level3" data-number="8.8.1">
+<h3 data-number="8.8.1" class="anchored" data-anchor-id="pre-transition-weeks-1-4"><span class="header-section-number">8.8.1</span> Pre-Transition (Weeks 1-4)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Conduct readiness assessments for all candidate teams</label></li>
+<li><label><input type="checkbox">Establish baseline metrics (DORA + quality) for pilot candidates</label></li>
+<li><label><input type="checkbox">Identify pilot team(s): one to two teams scoring “ready” across all dimensions</label></li>
+<li><label><input type="checkbox">Define pilot scope: specific workstreams with clear boundaries</label></li>
+<li><label><input type="checkbox">Assign executive sponsor and transition lead</label></li>
+<li><label><input type="checkbox">Determine tool selection based on the evaluation framework from Chapter 2</label></li>
+<li><label><input type="checkbox">Review governance requirements from Chapter 5; identify minimum viable policies</label></li>
+</ul>
+</section>
+<section id="phase-1-pilot-15-months-depending-on-org-size-and-documentation-maturity" class="level3" data-number="8.8.2">
+<h3 data-number="8.8.2" class="anchored" data-anchor-id="phase-1-pilot-15-months-depending-on-org-size-and-documentation-maturity"><span class="header-section-number">8.8.2</span> Phase 1 — Pilot (1–5 months, depending on org size and documentation maturity)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Build minimum viable context layer for pilot team’s codebase (Chapters 8–9)</label></li>
+<li><label><input type="checkbox">Train pilot team on context engineering basics and agent interaction patterns</label></li>
+<li><label><input type="checkbox">Begin pilot with structured observation: log intervention points, failure modes, and successes</label></li>
+<li><label><input type="checkbox">Conduct weekly retrospectives focused on what agents get right and wrong</label></li>
+<li><label><input type="checkbox">Collect pilot metrics for at least four consecutive weeks</label></li>
+<li><label><input type="checkbox">Monitor rollback signals at week six: rejection rate, intervention trend, developer satisfaction</label></li>
+<li><label><input type="checkbox">Document lessons learned: what other teams need to know before starting</label></li>
+<li><label><input type="checkbox">Evaluate Phase 1 exit signals before proceeding</label></li>
+</ul>
+</section>
+<section id="phase-2-expand-39-months-from-start-depending-on-org-size" class="level3" data-number="8.8.3">
+<h3 data-number="8.8.3" class="anchored" data-anchor-id="phase-2-expand-39-months-from-start-depending-on-org-size"><span class="header-section-number">8.8.3</span> Phase 2 — Expand (3–9 months from start, depending on org size)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Select three to five expansion teams based on readiness</label></li>
+<li><label><input type="checkbox">Assign pilot team members as coaches (budget for dedicated enablement if expanding beyond five teams)</label></li>
+<li><label><input type="checkbox">Build shared context assets: organizational standards, architectural patterns, cross-project conventions</label></li>
+<li><label><input type="checkbox">Establish governance processes for agent-generated code</label></li>
+<li><label><input type="checkbox">Begin role-specific skill development</label></li>
+<li><label><input type="checkbox">Track organizational metrics</label></li>
+<li><label><input type="checkbox">Monitor rollback signals: coach dependency, metric divergence, capacity strain</label></li>
+<li><label><input type="checkbox">Conduct monthly cross-team retrospectives</label></li>
+<li><label><input type="checkbox">Evaluate Phase 2 exit signals before proceeding</label></li>
+</ul>
+</section>
+<section id="phase-3-scale-624-months-from-start-depending-on-org-size" class="level3" data-number="8.8.4">
+<h3 data-number="8.8.4" class="anchored" data-anchor-id="phase-3-scale-624-months-from-start-depending-on-org-size"><span class="header-section-number">8.8.4</span> Phase 3 — Scale (6–24 months from start, depending on org size)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Extend to remaining teams with self-service onboarding</label></li>
+<li><label><input type="checkbox">Transition from peer coaching to dedicated enablement function</label></li>
+<li><label><input type="checkbox">Establish continuous context maintenance (ownership, review, pruning)</label></li>
+<li><label><input type="checkbox">Mature metrics from adoption tracking to effectiveness optimization</label></li>
+<li><label><input type="checkbox">Evaluate advanced workflows: multi-agent orchestration, CI/CD integration</label></li>
+<li><label><input type="checkbox">Assign permanent ownership of context assets and governance</label></li>
+<li><label><input type="checkbox">Monitor per-team rollback signals; pause individual teams showing sustained negative trends</label></li>
+<li><label><input type="checkbox">Report organizational impact using metrics framework</label></li>
+</ul>
+</section>
+<section id="ongoing" class="level3" data-number="8.8.5">
+<h3 data-number="8.8.5" class="anchored" data-anchor-id="ongoing"><span class="header-section-number">8.8.5</span> Ongoing</h3>
+<ul class="task-list">
+<li><label><input type="checkbox">Review context asset quality quarterly</label></li>
+<li><label><input type="checkbox">Update skill development as tools and practices evolve</label></li>
+<li><label><input type="checkbox">Reassess governance policies as agent capabilities expand</label></li>
+<li><label><input type="checkbox">Track the generation-to-review time ratio as the primary health indicator</label></li>
+</ul>
+<hr>
+<p>This chapter closes Block 1. If you also write code — or need to understand what your practitioners will be doing — Block 2 begins with Chapter 8, where context engineering moves from strategy to implementation. The frameworks here are the “what” and “when.” Block 2 is the “how.”</p>
+<p>You now have the strategic picture: the market context that makes this transition urgent (Chapter 2), the business case that justifies the investment (Chapter 3), the reference architecture that organizes the capability (Chapter 4), the governance structures that make it trustworthy (Chapter 5), the team structures that sustain the organizational change (Chapter 6), and the transition plan that sequences the rollout (this chapter).</p>
+<p>The investment is real. The timeline is months, not weeks. The value compounds — but only if the foundation is structural, not aspirational.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../handbook/ch06-team-structures.html" class="pagination-link" aria-label="Team Structures for AI-Augmented Delivery">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../handbook/ch08-the-practitioners-mindset.html" class="pagination-link" aria-label="The Practitioner's Mindset">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

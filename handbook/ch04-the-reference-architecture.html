@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>5&nbsp; The Agentic SDLC Reference Architecture – The Agentic SDLC Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../handbook/ch05-governance-for-ai-assisted-delivery.html" rel="next">
+<link href="../handbook/ch03-the-business-case.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html">Part II: For Leaders</a></li><li class="breadcrumb-item"><a href="../handbook/ch04-the-reference-architecture.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">The Agentic SDLC Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: The Foundation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: For Leaders</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: For Practitioners</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch09-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch10-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch11-context-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch12-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch13-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Closing</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch15-what-comes-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-three-layers" id="toc-the-three-layers" class="nav-link active" data-scroll-target="#the-three-layers"><span class="header-section-number">5.1</span> The Three Layers</a></li>
+  <li><a href="#mapping-the-layers-across-the-lifecycle" id="toc-mapping-the-layers-across-the-lifecycle" class="nav-link" data-scroll-target="#mapping-the-layers-across-the-lifecycle"><span class="header-section-number">5.2</span> Mapping the Layers Across the Lifecycle</a>
+  <ul class="collapse">
+  <li><a href="#three-tier-honesty" id="toc-three-tier-honesty" class="nav-link" data-scroll-target="#three-tier-honesty"><span class="header-section-number">5.2.1</span> Three-Tier Honesty</a></li>
+  </ul></li>
+  <li><a href="#what-changes-about-roles" id="toc-what-changes-about-roles" class="nav-link" data-scroll-target="#what-changes-about-roles"><span class="header-section-number">5.3</span> What Changes About Roles</a></li>
+  <li><a href="#the-context-moat" id="toc-the-context-moat" class="nav-link" data-scroll-target="#the-context-moat"><span class="header-section-number">5.4</span> The Context Moat</a>
+  <ul class="collapse">
+  <li><a href="#the-compounding-mechanism" id="toc-the-compounding-mechanism" class="nav-link" data-scroll-target="#the-compounding-mechanism"><span class="header-section-number">5.4.1</span> The Compounding Mechanism</a></li>
+  <li><a href="#technical-debt-gets-a-new-cost" id="toc-technical-debt-gets-a-new-cost" class="nav-link" data-scroll-target="#technical-debt-gets-a-new-cost"><span class="header-section-number">5.4.2</span> Technical Debt Gets a New Cost</a></li>
+  </ul></li>
+  <li><a href="#the-architecture-decision-matrix" id="toc-the-architecture-decision-matrix" class="nav-link" data-scroll-target="#the-architecture-decision-matrix"><span class="header-section-number">5.5</span> The Architecture Decision Matrix</a></li>
+  <li><a href="#build-buy-or-compose" id="toc-build-buy-or-compose" class="nav-link" data-scroll-target="#build-buy-or-compose"><span class="header-section-number">5.6</span> Build, Buy, or Compose</a></li>
+  <li><a href="#start-anywhere-expand-deliberately" id="toc-start-anywhere-expand-deliberately" class="nav-link" data-scroll-target="#start-anywhere-expand-deliberately"><span class="header-section-number">5.7</span> Start Anywhere, Expand Deliberately</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html">Part II: For Leaders</a></li><li class="breadcrumb-item"><a href="../handbook/ch04-the-reference-architecture.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Most organizations planning AI adoption ask “which tool should we buy?” The better question is “which layers of our software lifecycle should agents touch first, and what infrastructure do they need?” This chapter provides the diagram that answers both — and explains why the context you accumulate along the way matters more than any tool you select.</p>
+<hr>
+<section id="the-three-layers" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="the-three-layers"><span class="header-section-number">5.1</span> The Three Layers</h2>
+<p>At every phase of the software development lifecycle, work happens across three distinct layers. Understanding them is the difference between a coherent AI strategy and a collection of disconnected tool purchases.</p>
+<p><strong>The Human Layer</strong> is where judgment, accountability, and strategic decisions live. Humans set objectives, make architectural choices, define quality standards, and bear responsibility for what ships. No current AI system replaces these functions. The question is not whether humans remain in the loop — they do — but which decisions require human judgment and which are better delegated.</p>
+<p><strong>The Agent Layer</strong> is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy — from passive suggestion to autonomous task execution — but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.</p>
+<p><strong>The Platform Layer</strong> is the infrastructure that enables both humans and agents: source control, CI/CD pipelines, identity and access management, observability, artifact registries, and the APIs that connect them. This layer is often invisible in AI adoption conversations, which is precisely why adoption stalls. An agent that can generate code but cannot run tests, read build output, or access your dependency graph is an agent working blind.</p>
+<p>The layers are not independent. They form a stack where each depends on the one below it:</p>
+<pre class="mermaid"><code>flowchart TB
+    subgraph HUMAN ["🧑 HUMAN LAYER"]
+        direction LR
+        HR["Roles: Product, Architecture,&lt;br/&gt;Engineering, QA, Operations"]
+        HF["Functions: Decisions, Governance,&lt;br/&gt;Accountability, Strategy"]
+    end
+
+    subgraph AGENT ["🤖 AGENT LAYER"]
+        direction LR
+        AC["Capabilities: Generate, Analyze,&lt;br/&gt;Test, Review, Transform"]
+        AB["Boundaries: Scoped authority,&lt;br/&gt;context-dependent, auditable"]
+    end
+
+    subgraph PLATFORM ["⚙️ PLATFORM LAYER"]
+        direction LR
+        PI["Infrastructure: SCM, CI/CD,&lt;br/&gt;Auth, Observability, Registries"]
+        PN["Integrations: APIs, Webhooks,&lt;br/&gt;Context Sources, Artifact Stores"]
+    end
+
+    HUMAN -- "sets constraints,&lt;br/&gt;delegates tasks" --&gt; AGENT
+    AGENT -- "escalations,&lt;br/&gt;approvals, results" --&gt; HUMAN
+    AGENT -- "invokes tools,&lt;br/&gt;reads context" --&gt; PLATFORM
+    PLATFORM -- "build results,&lt;br/&gt;test output, telemetry" --&gt; AGENT
+
+    style HUMAN fill:#3498db,color:#fff
+    style AGENT fill:#e67e22,color:#fff
+    style PLATFORM fill:#2ecc71,color:#fff</code></pre>
+<p>This structure is not a proposal. It is a description of what already exists in any organization using AI coding tools — whether they’ve designed it deliberately or not. The agent in your developer’s editor is already operating across these three layers. The question is whether the boundaries, the context flow, and the governance are intentional.</p>
+<hr>
+</section>
+<section id="mapping-the-layers-across-the-lifecycle" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="mapping-the-layers-across-the-lifecycle"><span class="header-section-number">5.2</span> Mapping the Layers Across the Lifecycle</h2>
+<p>The three layers apply at every phase of software delivery. The table below maps what each layer does in each phase — and, critically, which capabilities are available today versus emerging or directional.</p>
+<p>Maturity tiers: <strong>Now</strong> = available across two or more vendors. <strong>Emerging</strong> = available in one or two tools, or in limited preview. <strong>Directional</strong> = announced, demonstrated, or on public roadmaps but not production-ready.</p>
+<pre><code>              INTENT                    BUILD                           OPERATE
+        +-----------+---------+  +------+-------+-------+--------+  +---------+---------+
+        | Ideate    | Plan    |  | Code | Build | Test  | Review |  | Release | Operate |
++-------+-----------+---------+--+------+-------+-------+--------+--+---------+---------+
+|       | Set       | Make    |  |Review| Own   | Define| Final  |  | Go/no-  | Own     |
+|HUMAN  | objectives| arch    |  |agent | build | test  | code   |  | go      | incident|
+|       | and scope | choices |  |output| config| policy| sign-  |  | decision| response|
+|       |           |         |  |      |       |       | off    |  |         |         |
++-------+-----------+---------+--+------+-------+-------+--------+--+---------+---------+
+|       | Research  | Draft   |  |Multi-| Diag- | Gen.  | Auto-  |  | Draft   | Corre-  |
+|AGENT  | prior art,| ADRs,   |  |file  | nose  | tests,| mated  |  | change- | late    |
+|       | surface   | decomp. |  |code  | build | cover | review,|  | logs,   | alerts, |
+|       | conflicts | tasks   |  |gen.  | fails | gaps  | catch  |  | flag    | suggest |
+|       |           |         |  |      |       |       | defects|  | breaks  | actions |
++-------+-----------+---------+--+------+-------+-------+--------+--+---------+---------+
+|       | Knowledge | Issue   |  |IDE,  | CI/CD | Test  | Pull   |  | Deploy  | Monitor,|
+|PLAT-  | bases,    | trackers|  |SCM,  | pipe- | frame-| request| | pipe-   | alert,  |
+|FORM   | collab    | project | |context| lines,| works,| APIs,  |  | lines,  | log     |
+|       | tools     | mgmt.   |  |APIs  | deps  | infra | policy |  | gates   | systems |
++-------+-----------+---------+--+------+-------+-------+--------+--+---------+---------+
+
+MATURITY   Emerging    Emerging    Now    Now   Emerging  Now      Emerging   Directional</code></pre>
+<p>Executives do not need to think in eight phases. They need three buckets that map to planning cadences, budget lines, and organizational accountability:</p>
+<p><strong>Intent</strong> (Ideate + Plan) answers “what are we building and why?” Agent assistance here is mostly emerging. Research agents that surface prior art, planning agents that draft architecture decision records and decompose epics into tasks — these exist in early forms, but no tool reliably automates the judgment calls that make planning valuable.</p>
+<p><strong>Build</strong> (Code + Build + Test + Review) answers “how do we turn intent into verified software?” This is where agent capabilities are most mature. Code generation, build diagnostics, test generation, and automated code review all have production-ready implementations across multiple vendors. This is also where most organizations start, and where the Vibe Coding Cliff from Chapter 1 hits hardest if context is not structured.</p>
+<p><strong>Operate</strong> (Release + Operate) answers “how do we get software to users and keep it running?” Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions — these capabilities exist in isolated tools but not yet in integrated workflows.</p>
+<p>The practical implication: most organizations in mid-2025 have invested in the Build bucket, have minimal coverage in Intent, and almost none in Operate. This is not a failure. It reflects where the technology is mature. But it means the next high-value investments are in Plan, Test, and Review — where the work is expensive, the feedback loops are slow, and structured context makes the difference between useful automation and expensive noise.</p>
+<section id="three-tier-honesty" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="three-tier-honesty"><span class="header-section-number">5.2.1</span> Three-Tier Honesty</h3>
+<p>Vendor presentations tend to show the full architecture as if it were all available today. It is not. Presenting the vision as current reality is what vendor whitepapers do. This book tags every capability honestly.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>Agent capability</th>
+<th>Maturity</th>
+<th>Justification</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Ideate</strong></td>
+<td>Research synthesis, prior-art surfacing</td>
+<td>Emerging</td>
+<td>Available in conversational tools; no reliable autonomous implementation</td>
+</tr>
+<tr class="even">
+<td><strong>Plan</strong></td>
+<td>ADR drafting, task decomposition, estimation</td>
+<td>Emerging</td>
+<td>Early implementations exist (GitHub Copilot, Claude); accuracy varies significantly</td>
+</tr>
+<tr class="odd">
+<td><strong>Code</strong></td>
+<td>Multi-file generation, refactoring, boilerplate</td>
+<td>Now</td>
+<td>Production-ready across GitHub Copilot, Cursor, Claude Code, Windsurf, others</td>
+</tr>
+<tr class="even">
+<td><strong>Build</strong></td>
+<td>Build failure diagnosis, dependency resolution</td>
+<td>Now</td>
+<td>CI integration available in multiple tools; quality depends on structured error output</td>
+</tr>
+<tr class="odd">
+<td><strong>Test</strong></td>
+<td>Test generation, coverage gap analysis</td>
+<td>Emerging</td>
+<td>Generation works; strategic test design still requires human judgment</td>
+</tr>
+<tr class="even">
+<td><strong>Review</strong></td>
+<td>Automated code review, defect detection</td>
+<td>Now</td>
+<td>Shipping in GitHub Copilot, Amazon Q; effectiveness depends on documented standards</td>
+</tr>
+<tr class="odd">
+<td><strong>Release</strong></td>
+<td>Changelog drafting, breaking-change detection</td>
+<td>Emerging</td>
+<td>Partial implementations in CI tools; end-to-end release automation is not production-ready</td>
+</tr>
+<tr class="even">
+<td><strong>Operate</strong></td>
+<td>Alert correlation, incident timeline drafting</td>
+<td>Directional</td>
+<td>Research demos and early integrations; no vendor ships reliable autonomous incident response</td>
+</tr>
+</tbody>
+</table>
+<p>The pattern is clear. Build-phase capabilities are mature. Intent-phase and Operate-phase capabilities are early. If a vendor tells you they have end-to-end lifecycle automation today, ask which cells in this table they would tag as Now, and how they define the term. The honest answer will tell you more about the vendor than any feature demo.</p>
+<hr>
+</section>
+</section>
+<section id="what-changes-about-roles" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="what-changes-about-roles"><span class="header-section-number">5.3</span> What Changes About Roles</h2>
+<p>The three-layer model clarifies what happens to human roles when agents enter the lifecycle. The answer is not that roles disappear. The answer is that the <em>proportion</em> of activities within each role shifts.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Human role</th>
+<th>What stays human</th>
+<th>What agents handle</th>
+<th>What shifts</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Product Manager</td>
+<td>Strategic prioritization, stakeholder alignment, go/no-go decisions</td>
+<td>Research synthesis, competitive analysis, requirement drafting from rough notes</td>
+<td>More time on judgment, less on information gathering</td>
+</tr>
+<tr class="even">
+<td>Architect</td>
+<td>System design decisions, technology selection, cross-team coordination</td>
+<td>ADR drafting, dependency analysis, pattern detection across codebases</td>
+<td>More time on review, less on documentation</td>
+</tr>
+<tr class="odd">
+<td>Developer</td>
+<td>Code review, architectural compliance, complex problem-solving</td>
+<td>Routine implementation, boilerplate, test generation, refactoring</td>
+<td>More time specifying intent, less time typing code</td>
+</tr>
+<tr class="even">
+<td>QA Engineer</td>
+<td>Test strategy, edge case identification, exploratory testing</td>
+<td>Test generation, coverage analysis, regression detection</td>
+<td>More time on test design, less on test writing</td>
+</tr>
+<tr class="odd">
+<td>SRE / Ops</td>
+<td>Incident ownership, capacity planning, reliability decisions</td>
+<td>Alert correlation, runbook execution, incident timeline drafting</td>
+<td>More time on system understanding, less on routine response</td>
+</tr>
+</tbody>
+</table>
+<p>The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the structural properties of language models described in Chapter 1 — they process and generate; they do not decide or bear responsibility.</p>
+<p>Chapter 6 covers the organizational design implications in detail: team structures, the junior pipeline, and new hiring profiles. Here, the point is architectural: the Human Layer does not shrink. It concentrates on the activities that require human judgment, and those activities become more visible and more important.</p>
+<hr>
+</section>
+<section id="the-context-moat" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="the-context-moat"><span class="header-section-number">5.4</span> The Context Moat</h2>
+<p>Your competitors have access to the same AI models you do. They can license the same coding tools. What they cannot replicate is your organization’s accumulated engineering knowledge — if you have made it machine-readable. If you have not, your AI tools are working with the same generic training data as everyone else’s. This is the context moat.</p>
+<p><strong>Why context beats models.</strong> Model quality commoditizes. In 2022, one model family dominated code generation. By mid-2025, at least five model families compete credibly. Pricing falls as competition increases. The model powering your agent is a procurement decision, not a strategic advantage. Context is the opposite: it is proprietary, it accumulates over time, and it directly determines the quality of every agent interaction.</p>
+<p>Consider two teams of similar size, working on codebases of similar complexity, using identical AI tools on the same underlying model. Team A has documented its coding conventions, API patterns, error-handling standards, and module boundaries in structured instruction files that agents load automatically. Team B has not — its conventions exist in senior engineers’ heads and scattered code comments.</p>
+<p>Team A’s agents generate code that passes linting on the first attempt, follows the internal API surface, and produces pull requests that reviewers approve with minor comments. Team B’s agents generate plausible code that calls deprecated APIs, invents its own error patterns, and produces pull requests that require substantial rework. The rework cost compounds across every developer, every day. Over six months, Team A’s context investment has paid for itself many times over, while Team B is still debating whether AI tools are “worth it.”</p>
+<p>The difference is not the tool. It is the context.</p>
+<p>Context operates across three domains, each with different characteristics:</p>
+<pre><code>+--------------------------------------------------------------------+
+|                        WORK CONTEXT                                |
+|  Decisions, requirements, meeting outcomes, strategic priorities    |
+|  Examples: ADRs, sprint plans, product briefs, stakeholder notes   |
+|  Source: Collaboration tools, wikis, project management systems    |
++--------------------------------------------------------------------+
+|                        DATA CONTEXT                                |
+|  Business intelligence, domain models, analytics, ontologies       |
+|  Examples: Data dictionaries, domain glossaries, schema docs       |
+|  Source: BI platforms, data catalogs, knowledge graphs             |
++--------------------------------------------------------------------+
+|                        CODE CONTEXT                                |
+|  Architecture, conventions, dependency graphs, API surfaces        |
+|  Examples: Coding standards, instruction files, module boundaries  |
+|  Source: Repositories, CI/CD systems, artifact registries          |
++--------------------------------------------------------------------+</code></pre>
+<p><strong>Work context</strong> captures <em>why</em> decisions were made and <em>what</em> the organization intends. Most of this knowledge exists today in meeting notes, Slack threads, and individual memory. Making it machine-readable — through structured ADRs, specification templates, and decision logs — is a documentation investment with a new payoff: agents that understand the reasoning behind the code, not just the code itself.</p>
+<p><strong>Data context</strong> captures the domain the software operates in. A financial services team whose agents can reference the company’s data dictionary and regulatory terminology will produce more accurate code than one whose agents work from generic training data alone. This context is often the hardest to structure because it lives in specialized systems outside the engineering toolchain.</p>
+<p><strong>Code context</strong> captures how the codebase works and what conventions it follows. This is the most immediately actionable domain, because it maps directly to the instruction files, custom rules, and agent configurations that current AI coding tools support. Documenting your API conventions, error-handling patterns, module boundaries, and architectural invariants — and structuring them so agents can consume them — is the highest-ROI starting investment for any team.</p>
+<section id="the-compounding-mechanism" class="level3" data-number="5.4.1">
+<h3 data-number="5.4.1" class="anchored" data-anchor-id="the-compounding-mechanism"><span class="header-section-number">5.4.1</span> The Compounding Mechanism</h3>
+<p>Structured context is not a one-time cost. It compounds.</p>
+<p>When an agent produces a code review using your team’s documented quality standards, that review generates structured feedback. When a developer resolves the feedback and updates a convention document, the convention becomes richer. When the next agent interaction loads that richer convention, the output improves. Each cycle reinforces the next:</p>
+<pre><code>Structured context  ---&gt;  Better agent output  ---&gt;  Richer artifacts
+       ^                                                     |
+       |                                                     |
+       +-----------------------------------------------------+
+                    (feedback loop)</code></pre>
+<p>This flywheel means the gap between organizations that invest in context early and those that defer widens over time. It is not a linear gap. An organization that starts structuring context in 2025 does not just have two years’ head start over one that starts in 2027 — it has two years of compounding context that the late starter must build from scratch while the early adopter’s agents are already leveraging it.</p>
+<p><strong>Evidence: the 70-file PR.</strong> This book’s primary case study — a pull request touching 70 files, passing 2,874 tests, completed in roughly 90 minutes with three human interventions — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: documented coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global project rules down to directory-specific overrides. None of these artifacts existed at the start. Each was created when an agent interaction failed due to a context gap — a convention violation caught in review, a deprecated API called because no instruction excluded it, a test pattern that didn’t match the project’s framework. By the time the 70-file PR was attempted, the agent was operating with rich, structured context that had been refined through dozens of feedback cycles. Without that accumulated context, the same task on the same model would have produced 70 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1’s Vibe Coding Cliff. The delta between “70 files of rework” and “70 files merged in 90 minutes” <em>is</em> the context moat, demonstrated.</p>
+</section>
+<section id="technical-debt-gets-a-new-cost" class="level3" data-number="5.4.2">
+<h3 data-number="5.4.2" class="anchored" data-anchor-id="technical-debt-gets-a-new-cost"><span class="header-section-number">5.4.2</span> Technical Debt Gets a New Cost</h3>
+<p>AI changes the ROI calculus for documentation debt, convention debt, and knowledge-base debt. Consider a concrete example: documenting your API conventions takes two days of engineering time. Without that documentation, agents hallucinate your internal patterns. Every pull request review catches three to five convention violations that require rework. With documentation, the agent generates convention-compliant code from the first attempt. The payback period is two weeks.</p>
+<p>This recalculation applies across the codebase. Undocumented module boundaries, implicit architectural decisions, tribal knowledge stored only in senior engineers’ heads — all of these were always technical debt. AI makes the cost of that debt visible on every agent interaction, because the agent fails precisely where the documentation fails.</p>
+<p>The implication for leaders: re-prioritize your backlog. Items that were perpetually deferred — “document the authentication flow,” “write down the module ownership model,” “formalize the error-handling conventions” — now have a concrete, measurable payoff that they did not have before AI tools existed. Chapter 11 provides the methodology for auditing and structuring this context systematically.</p>
+<hr>
+</section>
+</section>
+<section id="the-architecture-decision-matrix" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="the-architecture-decision-matrix"><span class="header-section-number">5.5</span> The Architecture Decision Matrix</h2>
+<p>The reference architecture is an adoption map, not a prerequisite checklist. Any phase can run as a single agent-assisted loop — or expand into governed, multi-agent workflows as maturity grows. The question for leaders is where to start and how to expand.</p>
+<p>The matrix below maps adoption decisions across two dimensions: the lifecycle phase and the investment required. Use it to scope your first pilot and plan the expansion path.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>Start here if…</th>
+<th>First investment</th>
+<th>Maturity prerequisite</th>
+<th>Expected timeline</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Code</strong></td>
+<td>Your developers already use AI tools</td>
+<td>Custom instructions encoding your conventions</td>
+<td>Linter, test suite, CI pipeline</td>
+<td>2-4 weeks</td>
+</tr>
+<tr class="even">
+<td><strong>Review</strong></td>
+<td>PR review is a bottleneck</td>
+<td>Agent-assisted review with human sign-off</td>
+<td>Documented quality standards, clear review criteria</td>
+<td>4-8 weeks</td>
+</tr>
+<tr class="odd">
+<td><strong>Test</strong></td>
+<td>Test coverage is low or tests are brittle</td>
+<td>Agent-generated tests with human-defined strategy</td>
+<td>Test framework, coverage tooling, defined test policy</td>
+<td>4-8 weeks</td>
+</tr>
+<tr class="even">
+<td><strong>Plan</strong></td>
+<td>Planning is slow and produces inconsistent artifacts</td>
+<td>ADR templates, specification structures for agent drafting</td>
+<td>Issue tracker, documented architecture decisions</td>
+<td>8-12 weeks</td>
+</tr>
+<tr class="odd">
+<td><strong>Build</strong></td>
+<td>CI failures consume significant developer time</td>
+<td>Agent-assisted build diagnostics and fix suggestions</td>
+<td>CI/CD pipeline with structured error output</td>
+<td>4-8 weeks</td>
+</tr>
+<tr class="even">
+<td><strong>Release</strong></td>
+<td>Release process is manual and error-prone</td>
+<td>Agent-drafted changelogs and breaking-change detection</td>
+<td>Semantic versioning, structured commit history</td>
+<td>8-12 weeks</td>
+</tr>
+<tr class="odd">
+<td><strong>Ideate</strong></td>
+<td>Research and discovery are ad hoc</td>
+<td>Agent-assisted research synthesis and prior-art surfacing</td>
+<td>Knowledge base, searchable decision history</td>
+<td>12-18 weeks</td>
+</tr>
+<tr class="even">
+<td><strong>Operate</strong></td>
+<td>Incident response is slow to diagnose</td>
+<td>Agent-assisted alert correlation and timeline drafting</td>
+<td>Observability stack, structured runbooks</td>
+<td>12-18 weeks</td>
+</tr>
+</tbody>
+</table>
+<p>Three observations from the matrix:</p>
+<p><strong>Start where the tooling is mature and the payoff is immediate.</strong> Code, Review, and Test have production-ready agent capabilities across multiple vendors. They are also the phases where structured context produces the most measurable improvement. Most organizations should start here.</p>
+<p><strong>Invest in context before investing in agents.</strong> Every row in the matrix lists a maturity prerequisite — and most of those prerequisites are documentation, structure, and tooling that should exist regardless of AI adoption. If your conventions are not documented, your tests are not reliable, and your CI pipeline does not produce structured output, no agent tool will compensate. Fix the foundation first.</p>
+<p><strong>Expand based on evidence, not ambition.</strong> Move to the next phase when the current one is producing measurable results — faster reviews, fewer convention violations, higher test coverage. Do not expand because a vendor demo looked impressive. Chapter 8 provides the metrics that distinguish real improvement from optimistic interpretation.</p>
+<hr>
+</section>
+<section id="build-buy-or-compose" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="build-buy-or-compose"><span class="header-section-number">5.6</span> Build, Buy, or Compose</h2>
+<p>For each context domain, leaders face a decision: build internal tooling, buy from a platform vendor, or compose solutions from multiple sources.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Context domain</th>
+<th>Build</th>
+<th>Buy</th>
+<th>Compose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Work context</strong></td>
+<td>Internal knowledge base, custom ADR tooling</td>
+<td>Platform-integrated wikis (Notion, Confluence, GitHub Wikis)</td>
+<td>API connectors bridging collaboration tools to agent context</td>
+</tr>
+<tr class="even">
+<td><strong>Data context</strong></td>
+<td>Custom domain model documentation, internal ontologies</td>
+<td>Data catalog platforms (Collibra, Alation, dbt)</td>
+<td>Federation layers that expose data definitions to coding agents</td>
+</tr>
+<tr class="odd">
+<td><strong>Code context</strong></td>
+<td>Instruction files, custom rules, agent configurations</td>
+<td>IDE-integrated context from platform vendors</td>
+<td>Open-source primitive packages, shared community configurations</td>
+</tr>
+</tbody>
+</table>
+<p>The pattern: work and data context often require building or composing because they are organization-specific. Code context is the most composable because the formats are increasingly standardized — custom instructions in GitHub Copilot, rule files in Cursor, <code>CLAUDE.md</code> in Claude Code — and community-shared configurations can provide a starting point that teams customize.</p>
+<p>No single vendor covers all three context domains comprehensively today. This is a structural observation, not a criticism — the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.</p>
+<hr>
+</section>
+<section id="start-anywhere-expand-deliberately" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="start-anywhere-expand-deliberately"><span class="header-section-number">5.7</span> Start Anywhere, Expand Deliberately</h2>
+<p>The architecture presented in this chapter is designed to be adopted incrementally. There is no prerequisite checklist that must be completed before you begin. The most common — and most effective — starting point:</p>
+<p><strong>Month 1.</strong> Pick one team, one phase (usually Code), and one investment (custom instructions encoding your top five conventions). Measure agent output quality before and after. <em>Gate to expand:</em> agent-generated code passes linting on first attempt ≥70% of the time, and the team has documented at least five conventions in machine-readable form.</p>
+<p><strong>Month 3.</strong> Extend to Review. Add agent-assisted code review with human sign-off on every PR. Measure review turnaround time and defect escape rate. <em>Gate to expand:</em> agent-assisted PRs achieve a review rejection rate no worse than the team’s human-only baseline, and median review turnaround time has decreased by ≥15%.</p>
+<p><strong>Month 6.</strong> Add Test. Use agents to generate test cases for new features, with human-defined test strategy. Measure coverage change and test maintenance cost. <em>Gate to expand:</em> test coverage has increased by ≥10 percentage points on agent-covered modules, and agent-generated tests require human rework less than 30% of the time.</p>
+<p><strong>Month 12.</strong> Evaluate Plan and Build phases. By this point, your team has accumulated six months of structured context, and your agents are materially more effective than they were on day one — the compounding flywheel at work. <em>Gate to expand:</em> the team’s human intervention rate on agent tasks has declined by ≥20% from the Month 3 baseline, and at least two context feedback cycles have produced measurable improvement in agent output quality.</p>
+<p><strong>Month 18.</strong> Assess readiness for Operate phase automation. This requires the most mature infrastructure and the strongest governance — Chapter 5 covers the governance requirements in detail. <em>Gate:</em> the team has structured runbooks for ≥80% of common incident types, and agent-assisted alert correlation achieves ≥90% accuracy in retrospective testing against the past quarter’s incidents.</p>
+<p>This is a planning horizon, not a schedule. Some organizations will move faster; some will spend longer at each stage. The sequence matters more than the timeline: start where the tooling is mature and the context is structured, expand where the evidence supports it, and invest in context continuously.</p>
+<p>The canonical diagram at the top of this chapter — Human Layer, Agent Layer, Platform Layer, mapped across eight phases — is your board-level summary. Print it. Put it on a slide. Use it to answer “where are we and where are we going?” in a single visual. Then use the decision matrix to answer “what do we do next?”</p>
+<hr>
+<p>The reference architecture gives you a shared vocabulary for planning. The context moat gives you a reason to start now rather than wait. But architecture without governance is a blueprint without building codes. Chapter 5 addresses the hardest question in AI-assisted delivery: who is accountable when agents are participants in your software lifecycle, and how do you build the trust frameworks that make autonomous work auditable and safe?</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../handbook/ch03-the-business-case.html" class="pagination-link" aria-label="The Business Case">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Business Case</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="pagination-link" aria-label="Governance for AI-Assisted Delivery">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

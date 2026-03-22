@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>12&nbsp; Context Engineering – The Agentic SDLC Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../handbook/ch12-multi-agent-orchestration.html" rel="next">
+<link href="../handbook/ch10-the-prose-specification.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch11-context-engineering.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">The Agentic SDLC Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: The Foundation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: For Leaders</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: For Practitioners</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch09-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch10-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch11-context-engineering.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch12-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch13-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Closing</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch15-what-comes-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-context-budget" id="toc-the-context-budget" class="nav-link active" data-scroll-target="#the-context-budget"><span class="header-section-number">12.1</span> The Context Budget</a></li>
+  <li><a href="#the-instruction-hierarchy" id="toc-the-instruction-hierarchy" class="nav-link" data-scroll-target="#the-instruction-hierarchy"><span class="header-section-number">12.2</span> The Instruction Hierarchy</a>
+  <ul class="collapse">
+  <li><a href="#global-scope-project-wide-principles" id="toc-global-scope-project-wide-principles" class="nav-link" data-scroll-target="#global-scope-project-wide-principles"><span class="header-section-number">12.2.1</span> Global scope: project-wide principles</a></li>
+  <li><a href="#directory-scope-domain-specific-rules" id="toc-directory-scope-domain-specific-rules" class="nav-link" data-scroll-target="#directory-scope-domain-specific-rules"><span class="header-section-number">12.2.2</span> Directory scope: domain-specific rules</a></li>
+  <li><a href="#file-scope-surgical-constraints" id="toc-file-scope-surgical-constraints" class="nav-link" data-scroll-target="#file-scope-surgical-constraints"><span class="header-section-number">12.2.3</span> File scope: surgical constraints</a></li>
+  <li><a href="#how-the-hierarchy-composes" id="toc-how-the-hierarchy-composes" class="nav-link" data-scroll-target="#how-the-hierarchy-composes"><span class="header-section-number">12.2.4</span> How the hierarchy composes</a></li>
+  </ul></li>
+  <li><a href="#agent-configuration" id="toc-agent-configuration" class="nav-link" data-scroll-target="#agent-configuration"><span class="header-section-number">12.3</span> Agent Configuration</a></li>
+  <li><a href="#skill-design" id="toc-skill-design" class="nav-link" data-scroll-target="#skill-design"><span class="header-section-number">12.4</span> Skill Design</a></li>
+  <li><a href="#memory-and-retrieval" id="toc-memory-and-retrieval" class="nav-link" data-scroll-target="#memory-and-retrieval"><span class="header-section-number">12.5</span> Memory and Retrieval</a></li>
+  <li><a href="#the-context-audit" id="toc-the-context-audit" class="nav-link" data-scroll-target="#the-context-audit"><span class="header-section-number">12.6</span> The Context Audit</a></li>
+  <li><a href="#before-and-after" id="toc-before-and-after" class="nav-link" data-scroll-target="#before-and-after"><span class="header-section-number">12.7</span> Before and After</a></li>
+  <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes"><span class="header-section-number">12.8</span> Common Mistakes</a></li>
+  <li><a href="#the-minimal-viable-context" id="toc-the-minimal-viable-context" class="nav-link" data-scroll-target="#the-minimal-viable-context"><span class="header-section-number">12.9</span> The Minimal Viable Context</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch11-context-engineering.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>You have a codebase with 200,000 lines of code, a style guide nobody reads, three authentication patterns (two deprecated), and a logging convention that exists in the heads of two senior engineers who joined in 2019. An AI agent sees none of this. It sees whatever fits in its context window. Context engineering is the discipline of deciding what that is.</p>
+<hr>
+<section id="the-context-budget" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="the-context-budget"><span class="header-section-number">12.1</span> The Context Budget</h2>
+<p>Every AI interaction operates within a fixed capacity. A context window is not a bucket you fill — it is a budget you allocate. Like any budget, the question is not “how much can I spend?” but “what do I spend it on?”</p>
+<p>A typical agent session divides its context roughly as follows:</p>
+<pre class="mermaid"><code>pie title Context Window Budget (128K tokens)
+    "System prompt (~8K)" : 6
+    "Instructions &amp; rules (~20K)" : 16
+    "Code context (~60K)" : 47
+    "Conversation history (~30K)" : 23
+    "Working memory (~10K)" : 8</code></pre>
+<p>You control two of these segments directly: instructions and code context. You influence a third — conversation history — through session discipline. The system prompt and working memory are largely fixed by the tool. This means your leverage is concentrated: what instructions load, which code is visible, and how long the session runs before you reset.</p>
+<p>The budget model produces a simple decision rule. Before adding anything to an agent’s context, ask: does this earn its space? Every instruction that loads is a line of code that doesn’t. Every file that’s visible is one that could have been more relevant. Context is not free, and attention within the window is not uniform — information at the beginning and end gets more weight; content in the middle degrades. This is not a theoretical concern. It is why a 40-line instruction file outperforms a 400-line one that covers the same material with less focus.</p>
+<p>Make this concrete. On a 128K-token window — common for models like Claude Sonnet or GPT-4 — the budget translates to real numbers:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Segment</th>
+<th>%</th>
+<th>≈ Tokens</th>
+<th>What fills it</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>System prompt</td>
+<td>~6%</td>
+<td>~8K</td>
+<td>Model behavior, safety, base tool definitions</td>
+</tr>
+<tr class="even">
+<td>Instructions &amp; rules</td>
+<td>~16%</td>
+<td>~20K</td>
+<td>Your scoped instruction files, agent config</td>
+</tr>
+<tr class="odd">
+<td>Code context</td>
+<td>~47%</td>
+<td>~60K</td>
+<td>Source files, type definitions, dependencies</td>
+</tr>
+<tr class="even">
+<td>Conversation history</td>
+<td>~23%</td>
+<td>~30K</td>
+<td>Prior turns, tool output, agent reasoning</td>
+</tr>
+<tr class="odd">
+<td>Working memory</td>
+<td>~8%</td>
+<td>~10K</td>
+<td>The agent’s space to think and produce output</td>
+</tr>
+</tbody>
+</table>
+<p>Those 20K instruction tokens are roughly 800 lines of markdown. If your global instructions alone consume 400 of those lines, you’ve spent half your instruction budget before a single scoped rule loads. And the 60K for code context sounds generous until you realize a single mid-sized module — types, implementation, tests — can easily consume 15K tokens. At scale, every line of instruction competes directly with a line of source code the agent could have seen instead.</p>
+<p>Two practical implications follow. First, shorter sessions produce better results than longer ones, because conversation history consumes progressively more of the budget. When a session has been running for 30 turns, the instructions you set at the beginning are competing with pages of accumulated dialogue. Second, loading instructions that aren’t relevant to the current task is not neutral — it actively degrades performance on the task that matters.</p>
+</section>
+<section id="the-instruction-hierarchy" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="the-instruction-hierarchy"><span class="header-section-number">12.2</span> The Instruction Hierarchy</h2>
+<p>The most consequential context engineering decision is how you structure your instructions. The naive approach is a single document — one large file containing every convention, pattern, and constraint your team follows. This is the “flat instructions” anti-pattern, and it fails for the same reason a single 800-page employee handbook fails: nobody reads the chapter on database conventions when they’re fixing a CSS bug, and neither does an agent. Worse, the agent can’t skip sections — it loads everything, diluting its attention on what matters.</p>
+<p>The solution is a hierarchy: instructions that increase in specificity as scope narrows, from project-wide to directory-level to file-level. Each layer loads only when relevant.</p>
+<section id="global-scope-project-wide-principles" class="level3" data-number="12.2.1">
+<h3 data-number="12.2.1" class="anchored" data-anchor-id="global-scope-project-wide-principles"><span class="header-section-number">12.2.1</span> Global scope: project-wide principles</h3>
+<p>The top layer defines principles that apply everywhere. These are your team’s non-negotiable constraints — the things that are true regardless of which file an agent is editing.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Project Principles</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Error Handling</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All public API functions return Result types, never throw exceptions</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Log errors at the boundary where they're caught, not where they originate</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Security</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>No credentials in source code. Use environment variables or secret managers.</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All user input is validated at the API boundary before reaching business logic.</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Every public function has at least one test. No exceptions.</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tests use the factory pattern for test data. No inline object construction.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Global instructions should be short. If your project-wide principles exceed 50 lines, you are almost certainly including domain-specific guidance that belongs in a narrower scope.</p>
+</section>
+<section id="directory-scope-domain-specific-rules" class="level3" data-number="12.2.2">
+<h3 data-number="12.2.2" class="anchored" data-anchor-id="directory-scope-domain-specific-rules"><span class="header-section-number">12.2.2</span> Directory scope: domain-specific rules</h3>
+<p>The middle layer targets specific areas of the codebase. When an agent edits a file in <code>src/auth/</code>, it loads the auth-specific instructions. When it edits <code>src/frontend/</code>, it loads frontend rules. Neither set pollutes the other.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Authentication Module Rules</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>applyTo: "src/auth/**"</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Token Management</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All token operations go through AuthResolver. Never access tokens directly.</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Token refresh uses exponential backoff with a maximum of 3 retries.</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>EMU (Enterprise Managed User) tokens use the standard <span class="in">`ghu_`</span> prefix.</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Patterns</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use the CredentialChain pattern for multi-source credential resolution.</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Order: environment variable → credential file → interactive prompt.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The <code>applyTo</code> pattern is the mechanism. When the agent’s task involves files matching that glob, the instructions load. When it doesn’t, they stay out of the context window. This is progressive disclosure at the instruction level — context arrives just-in-time, not just-in-case.</p>
+</section>
+<section id="file-scope-surgical-constraints" class="level3" data-number="12.2.3">
+<h3 data-number="12.2.3" class="anchored" data-anchor-id="file-scope-surgical-constraints"><span class="header-section-number">12.2.3</span> File scope: surgical constraints</h3>
+<p>The narrowest layer targets specific files or file types. This is where you encode the knowledge that would otherwise require reading a file’s git history to understand.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Integration Architecture</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>applyTo: "src/integration/**"</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Required structure</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>Every integrator MUST extend BaseIntegrator and return IntegrationResult.</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Base-class methods — use, don't reimplement</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Operation          <span class="pp">|</span> Use                          <span class="pp">|</span> Never                    <span class="pp">|</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------------------|------------------------------|--------------------------|</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Collision detection<span class="pp">|</span> self.check_collision()       <span class="pp">|</span> Custom existence checks  <span class="pp">|</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> File discovery     <span class="pp">|</span> self.find_files_by_glob()    <span class="pp">|</span> Ad-hoc os.walk           <span class="pp">|</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Path validation    <span class="pp">|</span> BaseIntegrator.validate_path()<span class="pp">|</span> Inline "../" checks      <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This is the knowledge that a new human engineer would learn in their second week, after a senior teammate says “we don’t do it that way here.” The agent never has a second week. It needs this on day one, every time.</p>
+</section>
+<section id="how-the-hierarchy-composes" class="level3" data-number="12.2.4">
+<h3 data-number="12.2.4" class="anchored" data-anchor-id="how-the-hierarchy-composes"><span class="header-section-number">12.2.4</span> How the hierarchy composes</h3>
+<p>When an agent edits <code>src/auth/token_resolver.py</code>, the effective context is:</p>
+<ol type="1">
+<li>Global principles (error handling, security, testing)</li>
+<li>Auth module rules (token management, credential chain)</li>
+<li>Any file-specific constraints matching <code>src/auth/token_*.py</code></li>
+</ol>
+<p>When the same agent later edits <code>src/frontend/dashboard.tsx</code>, the auth rules unload and frontend rules load. The global principles persist. This is the Explicit Hierarchy constraint in action: specificity increases as scope narrows, and irrelevant context is automatically excluded.</p>
+<p>The practical benefit is measurable. A project with 300 lines of instructions split across 8 scoped files will produce more consistent agent output than a project with 100 lines in a single global file. The split version loads 30-50 relevant lines per task; the monolithic version loads all 100 regardless of relevance.</p>
+</section>
+</section>
+<section id="agent-configuration" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="agent-configuration"><span class="header-section-number">12.3</span> Agent Configuration</h2>
+<p>Instructions tell agents what rules to follow. Agent configurations tell them who to be. The distinction matters because different tasks require different expertise, judgment, and constraints.</p>
+<p>An agent configuration defines four things:</p>
+<ol type="1">
+<li><strong>Role and expertise.</strong> What domain knowledge the agent brings to every task. An architecture agent knows about module boundaries and dependency management. A security agent knows about injection vectors and credential handling.</li>
+<li><strong>Model selection.</strong> Which language model runs the agent. Complex architectural decisions may warrant a more capable (and more expensive) model. Routine formatting tasks don’t.</li>
+<li><strong>Behavioral constraints.</strong> What the agent prioritizes when making trade-offs. An agent configured with “KISS — simplest correct solution” makes different choices than one configured with “optimize for performance.”</li>
+<li><strong>Anti-patterns.</strong> What the agent should never do. This is often more valuable than positive instructions, because it prevents the specific mistakes your team has seen before.</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/agents/python-architect.agent.md</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> python-architect</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  Expert on Python design patterns, modularization, and scalable</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  architecture. Activate when creating new modules, refactoring</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  class hierarchies, or making cross-cutting architectural decisions.</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model</span><span class="kw">:</span><span class="at"> claude-sonnet-4.5</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Python Architect</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="at">You are an expert Python architect specializing in CLI tool design.</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">## Design Philosophy</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Speed and simplicity over complexity</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Solid foundation that can be iterated on</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Pay only for what you touch — operations proportional to affected files</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="co">## Patterns You Enforce</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> BaseIntegrator for all file-level integrators</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> CommandLogger for all CLI output</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> AuthResolver for all credential access</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="co">## You Never</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Add a new base class when an existing one can be extended</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Instantiate AuthResolver per-request (it's a singleton)</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Import from integration/ in the CLI layer (use the public API)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The “You Never” section is where institutional memory becomes operational. Every item in that list represents a mistake that happened at least once — possibly caught in code review, possibly caught in production. Encoding it in the agent configuration means it doesn’t happen again, regardless of which human or AI writes the next change.</p>
+<p>For a typical project, three to five agent configurations cover most tasks: an architect (structure and patterns), a domain expert (your core business logic), a documentation writer, and optionally a security reviewer and a test specialist. Start with fewer. Add agents when you observe the same correction being made repeatedly — that’s the signal that a new specialization has earned its place.</p>
+</section>
+<section id="skill-design" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="skill-design"><span class="header-section-number">12.4</span> Skill Design</h2>
+<p>Skills occupy the space between instructions and agents. An instruction says “follow this rule.” An agent says “be this expert.” A skill says “when you encounter this situation, here’s the complete playbook.”</p>
+<p>A skill is a reusable knowledge package that activates based on code patterns. When an agent touches logging code, the logging skill fires. When it touches authentication flows, the auth skill fires. The agent doesn’t choose to activate a skill — the tooling detects the match and loads it.</p>
+<p>The design test for a skill is: does this knowledge apply across multiple files, require more than a few rules to express, and get triggered by a detectable pattern? If all three are true, it’s a skill. If the knowledge applies to one file, it’s an instruction. If it’s a general approach rather than pattern-specific guidance, it belongs in an agent configuration.</p>
+<p>A well-designed skill has three sections:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># CLI Logging UX Skill</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## When This Activates</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>Code touches console helpers, DiagnosticCollector,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>STATUS_SYMBOLS, or any user-facing terminal output.</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Decision Framework</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The "So What?" Test — every warning must answer:</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>   what should the user do about this?</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>The Traffic Light Rule:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>   | Color  | Helper           | Meaning            |</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>   |--------|------------------|--------------------|</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>   | Green  | _rich_success()  | Completed          |</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>   | Yellow | _rich_warning()  | User action needed |</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>   | Red    | _rich_error()    | Cannot continue    |</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>   | Blue   | _rich_info()     | Status update      |</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The Newspaper Test — can the user scan output like headlines?</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Anti-Patterns</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never use bare print() or click.echo() without styling</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never emit a warning without an actionable suggestion</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never mix Rich and colorama in the same output path</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The decision framework is what distinguishes a skill from a list of rules. Rules tell you what to do. A decision framework tells you how to think about the problem, which means it generalizes to situations the author didn’t anticipate.</p>
+<p>Skills vs.&nbsp;one-off instructions: if you find yourself writing the same instructional content in three different instruction files, extract it into a skill. The instruction files then reference the skill by name rather than duplicating the content. This mirrors the same DRY principle you apply to code — and for the same reason. When the logging convention changes, you update one skill file instead of hunting through every instruction that mentions logging.</p>
+</section>
+<section id="memory-and-retrieval" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="memory-and-retrieval"><span class="header-section-number">12.5</span> Memory and Retrieval</h2>
+<p>Agents are stateless. Every session starts with an empty context window, and every session’s accumulated knowledge vanishes when it ends. This is a fundamental constraint, not a bug to work around.</p>
+<p>Three strategies address it.</p>
+<p><strong>Session context.</strong> Within a single session, the agent accumulates information through conversation turns. Tool outputs, file reads, and your corrections all become part of the working context. This is the most natural form of memory, and the most fragile — it degrades as the session grows, and it disappears when the session ends. Session discipline means recognizing when the accumulated context has grown large enough to dilute the instructions. At that point, start a fresh session. Carry forward the relevant findings; leave the exploration history behind.</p>
+<p><strong>When to reset.</strong> Session resets are cheap; accumulated drift is expensive. Three concrete triggers:</p>
+<ol type="1">
+<li><strong>Stale references.</strong> The agent references a file it read or modified more than 3-4 turns ago. Its mental model of that file is now competing with everything that’s happened since — and losing.</li>
+<li><strong>Error spirals.</strong> You’ve pasted more than two error messages in the same session. Each paste adds context that pulls the agent toward debugging the symptom rather than rethinking the approach. A fresh session with the error described in one sentence often solves in one turn what three debugging turns couldn’t.</li>
+<li><strong>Conversation length.</strong> The session exceeds roughly 30-40 turns. At that point, your original instructions are buried under pages of dialogue, and the agent’s effective context has drifted far from where it started.</li>
+</ol>
+<p>When you reset, carry forward a one-paragraph summary of what was decided and what remains, not the full conversation. Fresh context beats accumulated drift.</p>
+<p><strong>Persistent instructions.</strong> The instruction hierarchy described above is a form of persistent memory. It survives across sessions because it lives in files, not in conversation history. When you correct an agent’s mistake and then update the instruction file that led to the mistake, you’ve converted session knowledge into persistent knowledge. This is the feedback loop: observe failure, diagnose root cause, fix the primitive, verify on the next task. Over time, this accumulation is what makes your codebase increasingly AI-ready.</p>
+<p><strong>External knowledge retrieval.</strong> For codebases too large to fit relevant context in the window, retrieval mechanisms — code search, semantic index, documentation search — bring specific information into context on demand. The agent requests what it needs rather than having everything preloaded. This is progressive disclosure at the knowledge level. The practical implementation varies by tool: some offer built-in retrieval, others use tool calls to search, and some require you to structure your codebase so that relevant information is co-located with the files that need it. The principle is consistent: give the agent a way to pull specific knowledge rather than pushing everything.</p>
+<p>Co-location deserves specific attention. If your authentication logic is in <code>src/auth/</code> and your authentication documentation is in <code>docs/auth-guide.md</code>, an agent working on auth code may never see the documentation unless explicitly pointed to it. If instead the module-level README or instruction file references the key decisions — or better, if the decisions are encoded as scoped instructions — the knowledge is available where it’s needed. Structure your repository so that the knowledge an agent needs is either scoped to the directory it’s working in or discoverable through the instruction hierarchy. This is an architectural choice, not a tooling choice.</p>
+<p>The decision of what to externalize vs.&nbsp;what to keep in instructions follows a simple rule: if the knowledge is needed on every task in a given scope, it goes in instructions (it’s always loaded). If the knowledge is needed occasionally, it goes in retrievable storage (it’s loaded on demand). If the knowledge is needed once, it lives in the session prompt.</p>
+</section>
+<section id="the-context-audit" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="the-context-audit"><span class="header-section-number">12.6</span> The Context Audit</h2>
+<p>Run the instrumentation audit from Chapter 9 if you haven’t already. Its five steps — list conventions, classify where they live, rank by failure cost, map to primitive types, and write a starter set — identify the raw material. This section focuses on what to do with that material once you have it: how to allocate your context budget, where each piece belongs in the hierarchy, and how to structure retrieval for knowledge that doesn’t fit in always-loaded instructions.</p>
+<p>The audit reveals three categories of knowledge: conventions already visible in code (partially available to agents), conventions written in documentation (available only if explicitly loaded), and conventions that exist only in your team’s memory (completely invisible). The last category — your context debt — is where context engineering begins. Each item in that category needs a home: a scope in the hierarchy, a loading strategy (always-on instruction vs.&nbsp;on-demand retrieval), and a format that agents can act on.</p>
+</section>
+<section id="before-and-after" class="level2" data-number="12.7">
+<h2 data-number="12.7" class="anchored" data-anchor-id="before-and-after"><span class="header-section-number">12.7</span> Before and After</h2>
+<p>Consider a concrete task: “Add rate limiting to the <code>/api/users</code> endpoint.”</p>
+<p><strong>Without structured context</strong>, the agent sees the endpoint file and whatever the tool’s default context provides. It produces:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask_limiter <span class="im">import</span> Limiter</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>limiter <span class="op">=</span> Limiter(app, key_func<span class="op">=</span>get_remote_address)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/api/users'</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">@limiter.limit</span>(<span class="st">"100/hour"</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_users():</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>This looks reasonable. It also violates three conventions that exist only in the team’s heads: the project uses a custom rate limiter that integrates with the metrics pipeline, rate limit configuration lives in the environment (not hardcoded), and all middleware decorators are applied in <code>middleware.py</code>, not inline on routes.</p>
+<p><strong>With structured context</strong>, the agent loads three scoped instruction files. Here’s what they actually contain:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Global: middleware-registration.instructions.md</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>applyTo: "**"</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Middleware Registration</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ALL middleware decorators are registered in <span class="in">`middleware.py`</span>, never inline on routes.</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Route files define endpoint logic only. Side effects (auth, rate limiting,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  caching) are composed externally.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Directory: src/api/.instructions.md</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>applyTo: "src/api/**"</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rate Limiting</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use <span class="in">`app.rate_limiter.RateLimiter`</span>, not flask-limiter or third-party libraries.</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  Our implementation integrates with the Prometheus metrics pipeline.</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rate limit values come from environment variables (<span class="in">`API_RATE_LIMIT_{RESOURCE}`</span>),</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  never hardcoded. Defaults are defined in <span class="in">`config/defaults.yaml`</span>.</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rate limiter instances are created via <span class="in">`RateLimiter.from_env()`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Skill: api-middleware.skill.md</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## When This Activates</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>Adding or modifying middleware for any endpoint in <span class="in">`src/api/`</span>.</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Registration Pattern</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Define the middleware instance in <span class="in">`middleware.py`</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Call <span class="in">`.register(route, methods=)`</span> to bind it</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Never import middleware classes in route files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>These three files total 25 lines. The agent loads them, and produces:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># middleware.py</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> app.rate_limiter <span class="im">import</span> RateLimiter</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>rate_limiter <span class="op">=</span> RateLimiter.from_env(<span class="st">"API_RATE_LIMIT_USERS"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>rate_limiter.register(<span class="st">"/api/users"</span>, methods<span class="op">=</span>[<span class="st">"GET"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No changes to the route file — middleware is external</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Same model. Same task. Different output. The difference is entirely in what the agent knew before it started.</p>
+<p>This pattern repeats across every category of work. Adding a new API endpoint without context produces generic boilerplate; with context, it follows the project’s existing patterns for validation, error response format, and middleware registration. Writing a test without context produces isolated assertions; with context, it uses the project’s test factories, follows the naming convention, and respects the fixture hierarchy. Modifying a configuration file without context produces plausible syntax; with context, it respects the deployment pipeline’s expectations about which values come from environment variables vs.&nbsp;which are hardcoded.</p>
+<p>The critical point is that none of these failures are model failures. The model is capable of doing the right thing in every case. It does the wrong thing because it lacks the information. Context engineering closes that gap.</p>
+</section>
+<section id="common-mistakes" class="level2" data-number="12.8">
+<h2 data-number="12.8" class="anchored" data-anchor-id="common-mistakes"><span class="header-section-number">12.8</span> Common Mistakes</h2>
+<p><strong>Over-stuffing context.</strong> The instinct to provide more information is strong and almost always counterproductive. A 400-line instruction file doesn’t give the agent “more to work with.” It gives it more to get distracted by. Instructions should be the minimum sufficient guidance for their scope. If you can’t remember what’s in your instruction file without re-reading it, the agent is having the same problem.</p>
+<p><strong>Flat instructions without scoping.</strong> A single global instruction file that covers everything — API conventions, frontend patterns, database rules, deployment procedures — forces every agent session to load every rule. The backend agent spends context budget on frontend rules. The documentation agent loads database conventions. Scope your instructions. If an instruction doesn’t apply to the current task, it shouldn’t be in the context window.</p>
+<p><strong>Duplicating knowledge across files.</strong> When the same convention appears in three different instruction files, you’ve created a maintenance problem. When the convention changes, you update one file and forget the others. The agent gets contradictory guidance and produces inconsistent output. Extract shared knowledge into skills. Reference, don’t repeat.</p>
+<p><strong>Mixing concerns in a single primitive.</strong> An instruction file that covers both “how to write error messages” and “how to structure database migrations” is serving two unrelated domains. When either domain changes, you risk destabilizing the other. One concern per primitive. This mirrors the single-responsibility principle in code, and for the same reasons.</p>
+<p><strong>Ignoring the feedback loop.</strong> Writing instruction files once and never updating them is like writing tests once and never running them. The value of context engineering compounds through iteration: agent makes a mistake, you trace it to a context gap, you fix the primitive, the mistake doesn’t recur. Teams that skip this loop find their context artifacts drift from reality within weeks.</p>
+<p><strong>Treating context engineering as a one-time setup.</strong> It is not. It is a continuous discipline, like testing or code review. Your codebase evolves. Your conventions evolve. Your context artifacts must evolve with them. Budget time for primitive maintenance the way you budget time for dependency updates — small, regular investments that prevent large, painful corrections.</p>
+<hr>
+</section>
+<section id="the-minimal-viable-context" class="level2" data-number="12.9">
+<h2 data-number="12.9" class="anchored" data-anchor-id="the-minimal-viable-context"><span class="header-section-number">12.9</span> The Minimal Viable Context</h2>
+<p>If the audit feels like a large undertaking, start smaller. The minimum viable context for any project is three files:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 30%">
+<col style="width: 43%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>File</th>
+<th>Scope</th>
+<th>Contains</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Global instructions</td>
+<td>Project-wide</td>
+<td>5-10 non-negotiable principles (error handling, security, testing)</td>
+</tr>
+<tr class="even">
+<td>One domain instruction</td>
+<td>Your most-edited module</td>
+<td>The patterns and constraints specific to where agents will work most</td>
+</tr>
+<tr class="odd">
+<td>One agent configuration</td>
+<td>Your most common task type</td>
+<td>The expertise and behavioral constraints for the work agents do daily</td>
+</tr>
+</tbody>
+</table>
+<p>Write these three files. Use the agent on a real task. Observe what goes wrong. Fix the primitives. Repeat. In two weeks you’ll have a context architecture that’s shaped by actual failure modes rather than theoretical completeness — and that architecture will be more effective than any comprehensive upfront design.</p>
+<p>Context engineering is not about making agents smarter. It is about making the information available to agents accurate, relevant, and proportional to the task. The model doesn’t change. The context does. And that is where the leverage is.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../handbook/ch10-the-prose-specification.html" class="pagination-link" aria-label="The PROSE Specification">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../handbook/ch12-multi-agent-orchestration.html" class="pagination-link" aria-label="Multi-Agent Orchestration">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

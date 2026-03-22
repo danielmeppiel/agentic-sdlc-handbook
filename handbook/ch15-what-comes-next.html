@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>16&nbsp; What Comes Next – The Agentic SDLC Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../handbook/ch14-anti-patterns-and-failure-modes.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch15-what-comes-next.html">Closing</a></li><li class="breadcrumb-item"><a href="../handbook/ch15-what-comes-next.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">The Agentic SDLC Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: The Foundation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: For Leaders</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: For Practitioners</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch09-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch10-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch11-context-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch12-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch13-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Closing</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch15-what-comes-next.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#near-term-what-changes-in-the-next-twelve-months" id="toc-near-term-what-changes-in-the-next-twelve-months" class="nav-link active" data-scroll-target="#near-term-what-changes-in-the-next-twelve-months"><span class="header-section-number">16.1</span> Near-Term: What Changes in the Next Twelve Months</a></li>
+  <li><a href="#medium-term-what-shifts-over-one-to-three-years" id="toc-medium-term-what-shifts-over-one-to-three-years" class="nav-link" data-scroll-target="#medium-term-what-shifts-over-one-to-three-years"><span class="header-section-number">16.2</span> Medium-Term: What Shifts Over One to Three Years</a></li>
+  <li><a href="#long-term-possibilities-over-three-to-five-years" id="toc-long-term-possibilities-over-three-to-five-years" class="nav-link" data-scroll-target="#long-term-possibilities-over-three-to-five-years"><span class="header-section-number">16.3</span> Long-Term: Possibilities Over Three to Five Years</a></li>
+  <li><a href="#what-will-not-change" id="toc-what-will-not-change" class="nav-link" data-scroll-target="#what-will-not-change"><span class="header-section-number">16.4</span> What Will Not Change</a></li>
+  <li><a href="#three-tier-honesty-applied-to-this-chapters-own-claims" id="toc-three-tier-honesty-applied-to-this-chapters-own-claims" class="nav-link" data-scroll-target="#three-tier-honesty-applied-to-this-chapters-own-claims"><span class="header-section-number">16.5</span> Three-Tier Honesty Applied to This Chapter’s Own Claims</a></li>
+  <li><a href="#what-the-author-probably-got-wrong" id="toc-what-the-author-probably-got-wrong" class="nav-link" data-scroll-target="#what-the-author-probably-got-wrong"><span class="header-section-number">16.6</span> What the Author Probably Got Wrong</a></li>
+  <li><a href="#your-first-week-what-to-do-starting-monday" id="toc-your-first-week-what-to-do-starting-monday" class="nav-link" data-scroll-target="#your-first-week-what-to-do-starting-monday"><span class="header-section-number">16.7</span> Your First Week: What to Do Starting Monday</a>
+  <ul class="collapse">
+  <li><a href="#day-1-audit-one-module" id="toc-day-1-audit-one-module" class="nav-link" data-scroll-target="#day-1-audit-one-module"><span class="header-section-number">16.7.1</span> Day 1: Audit One Module</a></li>
+  <li><a href="#day-2-write-your-first-three-primitives" id="toc-day-2-write-your-first-three-primitives" class="nav-link" data-scroll-target="#day-2-write-your-first-three-primitives"><span class="header-section-number">16.7.2</span> Day 2: Write Your First Three Primitives</a></li>
+  <li><a href="#day-3-test-against-a-real-task" id="toc-day-3-test-against-a-real-task" class="nav-link" data-scroll-target="#day-3-test-against-a-real-task"><span class="header-section-number">16.7.3</span> Day 3: Test Against a Real Task</a></li>
+  <li><a href="#day-4-measure-and-adjust" id="toc-day-4-measure-and-adjust" class="nav-link" data-scroll-target="#day-4-measure-and-adjust"><span class="header-section-number">16.7.4</span> Day 4: Measure and Adjust</a></li>
+  <li><a href="#day-5-share-and-plan" id="toc-day-5-share-and-plan" class="nav-link" data-scroll-target="#day-5-share-and-plan"><span class="header-section-number">16.7.5</span> Day 5: Share and Plan</a></li>
+  <li><a href="#for-leaders-additionally" id="toc-for-leaders-additionally" class="nav-link" data-scroll-target="#for-leaders-additionally"><span class="header-section-number">16.7.6</span> For Leaders, Additionally</a></li>
+  </ul></li>
+  <li><a href="#the-closing-argument" id="toc-the-closing-argument" class="nav-link" data-scroll-target="#the-closing-argument"><span class="header-section-number">16.8</span> The Closing Argument</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch15-what-comes-next.html">Closing</a></li><li class="breadcrumb-item"><a href="../handbook/ch15-what-comes-next.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Everything in this book will be partially obsolete within eighteen months. The models will be better, the tools will be different, and capabilities we marked “directional” will be shipping. That is not a flaw in the book. It is the central argument. The methodology survives tool change. The primitives survive model change. The discipline survives everything.</p>
+<p>This chapter applies the three-tier honesty framework — available now, emerging, directional — to the trajectory of the field itself. Where the evidence is strong, the predictions are specific. Where it is not, they are marked accordingly. And where the author is guessing, that is said plainly.</p>
+<hr>
+<section id="near-term-what-changes-in-the-next-twelve-months" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="near-term-what-changes-in-the-next-twelve-months"><span class="header-section-number">16.1</span> Near-Term: What Changes in the Next Twelve Months</h2>
+<p><strong>Agent tool use becomes standard, not experimental.</strong> The shift from text generation to agents that execute — file operations, terminal commands, API calls, test runs — is underway but uneven. Within a year, tool-using agents will be the default interaction mode. This makes Safety Boundaries more critical, not less. A model that generates bad code wastes review time. A model that executes bad commands corrupts state. Guardrails that felt conservative in a text-generation world become essential in a tool-execution world.</p>
+<p><strong>Multi-agent orchestration moves from research to practice.</strong> Teams today primarily use single-agent interactions. Multi-agent patterns — planning agents dispatching specialists, review agents evaluating output, agents collaborating through shared artifacts — exist in research and early tooling. Within a year, they will ship in mainstream platforms. The orchestration disciplines in Chapters 10–12 — task decomposition, wave-based execution, escalation protocols — become operational necessities rather than advanced practices.</p>
+<hr>
+</section>
+<section id="medium-term-what-shifts-over-one-to-three-years" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="medium-term-what-shifts-over-one-to-three-years"><span class="header-section-number">16.2</span> Medium-Term: What Shifts Over One to Three Years</h2>
+<p><strong>Agent governance becomes a first-class engineering discipline.</strong> Today, governance of agent output is handled through existing processes — pull requests, CI, manual approval. This works at current volumes. As output scales and multi-agent orchestration becomes common, dedicated governance infrastructure will emerge: audit trails for agent decisions, policy engines that enforce constraints at execution time rather than review time, cost controls that manage token spend across teams. The governance frameworks in Chapter 6 anticipate this, but the tooling barely exists. Within three years, agent governance platforms will be a category — the way CI/CD became a category a decade ago.</p>
+<p><strong>The boundary between “writing code” and “describing intent” blurs.</strong> As models improve at understanding architectural context and as context infrastructure matures, the human role shifts further toward specification and validation. The planning phase — defining what the system should do, what constraints it must respect, what trade-offs to accept — becomes proportionally more of the work. The execution phase becomes proportionally more automated. This does not eliminate engineering skill. It shifts where that skill applies: from implementation patterns to system design, constraint definition, and output evaluation. The practitioners who thrive will be the ones who treat specification as an engineering discipline, not a hand-wave before the “real work.”</p>
+<hr>
+</section>
+<section id="long-term-possibilities-over-three-to-five-years" class="level2" data-number="16.3">
+<h2 data-number="16.3" class="anchored" data-anchor-id="long-term-possibilities-over-three-to-five-years"><span class="header-section-number">16.3</span> Long-Term: Possibilities Over Three to Five Years</h2>
+<p>These predictions are directional. The author believes they describe where the field is heading. They are opinions, not forecasts.</p>
+<p><strong>Full lifecycle agent participation becomes achievable.</strong> The eight-phase lifecycle from Chapter 3 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.</p>
+<p><strong>Context infrastructure becomes as foundational as CI/CD.</strong> Every serious engineering organization today has continuous integration and deployment. Context infrastructure — the primitives, instruction hierarchies, and knowledge bases that make agents effective — will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology “doesn’t work for us,” the same way organizations without CI concluded automated testing “doesn’t work at our scale.”</p>
+<p>Early implementations already exist. Open-source tools provide manifest-based dependency resolution and security scanning for agent primitives — the same architecture as npm or pip, applied to agent configuration rather than runtime code.</p>
+<pre class="mermaid"><code>gantt
+    title Three-Horizon Timeline
+    dateFormat YYYY
+    axisFormat %Y
+
+    section Near-Term (0–12 months)
+    Tool-using agents become standard       :active, n1, 2025, 2026
+    Multi-agent orchestration ships          :active, n2, 2025, 2026
+
+    section Medium-Term (1–3 years)
+    Agent governance as a discipline         :m1, 2026, 2028
+    Specification replaces implementation    :m2, 2026, 2028
+
+    section Long-Term (3–5 years)
+    Full lifecycle agent participation       :l1, 2028, 2030
+    Context infra as foundational as CI/CD   :l2, 2028, 2030</code></pre>
+<hr>
+</section>
+<section id="what-will-not-change" class="level2" data-number="16.4">
+<h2 data-number="16.4" class="anchored" data-anchor-id="what-will-not-change"><span class="header-section-number">16.4</span> What Will Not Change</h2>
+<p>These are the things the author is most confident about, precisely because they are structural rather than technological.</p>
+<p><strong>Context will remain finite and fragile.</strong> Regardless of model capability, there will always be a limit to how much information an agent can effectively consider — whether a hard context window or a soft attention degradation curve. The constraint that context must be structured, scoped, and curated is a property of the problem, not the current technology.</p>
+<p><strong>Output will remain probabilistic.</strong> Models will get better. They will not become deterministic. The same input will still produce different outputs. Reliability will still need to be architected through constraints, validation, and structured workflows — not assumed from model quality.</p>
+<p><strong>Explicit knowledge will remain more valuable than implicit knowledge.</strong> Agents will get better at inferring context from code and history. They will not read the minds of the team. Conventions and decisions that exist only in human memory will remain invisible. Organizations that externalize their knowledge will outperform those that don’t.</p>
+<p><strong>Human judgment will remain the bottleneck and the differentiator.</strong> The scarce resource is not token generation. It is the ability to define what should be built, evaluate whether it was built correctly, and decide what to do when it wasn’t. Agents accelerate execution. They do not accelerate judgment.</p>
+<p><strong>Composition will remain necessary.</strong> No single agent will hold an entire large system in focus. Complex changes will still require decomposition into focused tasks, coordination across specialists, and structured integration of results. The tools for composition will improve; the need for it will not diminish.</p>
+<p>These five properties are why the architectural constraints from Chapter 1 are durable. Progressive Disclosure addresses finite context. Safety Boundaries address probabilistic output. Explicit Hierarchy addresses the need for externalized knowledge. Reduced Scope addresses the limits of agent judgment. Orchestrated Composition addresses the complexity that emerges when multiple agents interact — a property that becomes more critical as agent capabilities increase, not less. The constraints were not designed for today’s models. They were designed for the structural properties of human-AI collaboration.</p>
+<hr>
+</section>
+<section id="three-tier-honesty-applied-to-this-chapters-own-claims" class="level2" data-number="16.5">
+<h2 data-number="16.5" class="anchored" data-anchor-id="three-tier-honesty-applied-to-this-chapters-own-claims"><span class="header-section-number">16.5</span> Three-Tier Honesty Applied to This Chapter’s Own Claims</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Claim</th>
+<th>Tier</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Tool-using agents become the default interaction mode</td>
+<td>Available now</td>
+<td>High — shipping in multiple platforms</td>
+</tr>
+<tr class="even">
+<td>Multi-agent orchestration enters mainstream tooling</td>
+<td>Available now</td>
+<td>High — already in early production</td>
+</tr>
+<tr class="odd">
+<td>Agent governance becomes a distinct discipline</td>
+<td>Emerging</td>
+<td>Medium — need is clear, tooling is not</td>
+</tr>
+<tr class="even">
+<td>Specification replaces implementation as the core skill</td>
+<td>Emerging</td>
+<td>Medium — direction clear, timeline uncertain</td>
+</tr>
+<tr class="odd">
+<td>Full lifecycle agent coverage becomes operational</td>
+<td>Directional</td>
+<td>Low-to-medium — plausible, not inevitable</td>
+</tr>
+<tr class="even">
+<td>Context infrastructure becomes as foundational as CI/CD</td>
+<td>Directional</td>
+<td>Medium — trajectory clear, timeline 5+ years</td>
+</tr>
+<tr class="odd">
+<td>The five structural constraints hold</td>
+<td>Structural</td>
+<td>High — properties of the problem</td>
+</tr>
+</tbody>
+</table>
+<p>The reader should calibrate accordingly. Invest confidently in the “available now” tier. Prepare for the “emerging” tier. Be aware of the “directional” tier without betting the organization on specific timelines.</p>
+<hr>
+</section>
+<section id="what-the-author-probably-got-wrong" class="level2" data-number="16.6">
+<h2 data-number="16.6" class="anchored" data-anchor-id="what-the-author-probably-got-wrong"><span class="header-section-number">16.6</span> What the Author Probably Got Wrong</h2>
+<p>Intellectual honesty requires identifying where this book’s assumptions are most likely to age poorly.</p>
+<p><strong>The pace of capability improvement may outrun governance.</strong> This book assumes organizations will have time to build governance infrastructure before agent capabilities demand it. If capabilities improve faster than organizational maturity — the historical pattern for every technology shift — many organizations will face a period where agents can do more than the organization is prepared to govern.</p>
+<p><strong>The emphasis on human-in-the-loop may prove too conservative.</strong> For high-stakes production code, human review will hold. For internal tooling, prototyping, and throwaway infrastructure, fully autonomous workflows may become practical sooner than this book suggests. The “always review” stance is safer but may leave real efficiency on the table in contexts where the cost of failure is low.</p>
+<p><strong>The multi-agent orchestration model may evolve past human orchestrators.</strong> The patterns in this book assume a human planner dispatching specialist agents. Future orchestration may involve agents that plan their own decomposition, negotiate resources, and maintain persistent state across sessions. The compositional principles will likely still apply, but the human-as-orchestrator model this book centers may be a transitional pattern, not an enduring one.</p>
+<p><strong>The documentation burden may not pay for itself.</strong> This book asks teams to externalize knowledge that was previously implicit. That is real work with real ongoing maintenance cost. If the productivity gains from agentic development are modest — 15–20% rather than the 2–3x some claim — then the time spent creating and maintaining context infrastructure could consume most of the gains. The break-even calculation is less obviously favorable than the book implies, and the author has not seen enough longitudinal data to be certain it tips the right way.</p>
+<p><strong>And the uncomfortable one: the author may be overestimating the durability of human judgment as the differentiator.</strong> This book argues that human judgment is the bottleneck agents cannot replace — and builds its entire methodology around that assumption. But there is a motivated reasoning risk in any book that argues humans are indispensable, written by a human who wants that to be true. If models develop genuine architectural reasoning — not pattern matching on training data, but the ability to evaluate trade-offs, anticipate failure modes, and make design decisions that hold up under pressure — then the “human judgment” moat this book describes is not structural. It is temporal. The author believes it is structural. The author also acknowledges that this belief is load-bearing for the entire framework, which means it is exactly the kind of assumption that deserves the most scrutiny and the least certainty.</p>
+<hr>
+</section>
+<section id="your-first-week-what-to-do-starting-monday" class="level2" data-number="16.7">
+<h2 data-number="16.7" class="anchored" data-anchor-id="your-first-week-what-to-do-starting-monday"><span class="header-section-number">16.7</span> Your First Week: What to Do Starting Monday</h2>
+<p>For leaders who read Block 1 and practitioners who read Block 2, here is the concrete version. Not principles. Actions.</p>
+<section id="day-1-audit-one-module" class="level3" data-number="16.7.1">
+<h3 data-number="16.7.1" class="anchored" data-anchor-id="day-1-audit-one-module"><span class="header-section-number">16.7.1</span> Day 1: Audit One Module</h3>
+<p>Pick the module your team changes most frequently. Not the biggest module — the most-changed one. Run the methodology from Chapter 9: identify implicit knowledge, undocumented conventions, architectural decisions that exist only in your team’s memory. Write down what you find. You are not fixing anything today. You are measuring the gap between what an agent can see and what your team knows.</p>
+<p><strong>Deliverable:</strong> A list of 5–10 implicit conventions that an agent would violate on its first task in this module.</p>
+</section>
+<section id="day-2-write-your-first-three-primitives" class="level3" data-number="16.7.2">
+<h3 data-number="16.7.2" class="anchored" data-anchor-id="day-2-write-your-first-three-primitives"><span class="header-section-number">16.7.2</span> Day 2: Write Your First Three Primitives</h3>
+<p>Take the top three conventions from yesterday’s audit. Write each as an instruction primitive — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 9, under the constraints from Chapter 10: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.</p>
+<p><strong>Deliverable:</strong> Three instruction files, committed to your repository.</p>
+</section>
+<section id="day-3-test-against-a-real-task" class="level3" data-number="16.7.3">
+<h3 data-number="16.7.3" class="anchored" data-anchor-id="day-3-test-against-a-real-task"><span class="header-section-number">16.7.3</span> Day 3: Test Against a Real Task</h3>
+<p>Pick a task from your current sprint — something an agent would plausibly handle. Run it twice: once without your new primitives, once with them. Compare the output. Did the primitives prevent the mistakes you predicted? Did they cause new problems? Record the before-and-after. This is your first data point, not your conclusion.</p>
+<p><strong>Deliverable:</strong> A before-and-after comparison with specific examples of what changed.</p>
+</section>
+<section id="day-4-measure-and-adjust" class="level3" data-number="16.7.4">
+<h3 data-number="16.7.4" class="anchored" data-anchor-id="day-4-measure-and-adjust"><span class="header-section-number">16.7.4</span> Day 4: Measure and Adjust</h3>
+<p>Review yesterday’s comparison honestly. Which primitives made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn’t land. This is the calibration loop from Chapter 11 — primitives are not documentation, they are engineering artifacts that need testing and iteration like any other code.</p>
+<p><strong>Deliverable:</strong> Revised primitives based on observed agent behavior.</p>
+</section>
+<section id="day-5-share-and-plan" class="level3" data-number="16.7.5">
+<h3 data-number="16.7.5" class="anchored" data-anchor-id="day-5-share-and-plan"><span class="header-section-number">16.7.5</span> Day 5: Share and Plan</h3>
+<p>Show your team the before-and-after. Not a presentation — a 15-minute demo at standup. Show the worst agent output without primitives and the improved output with them. Then plan: which modules get instrumented next? Who owns which instruction files? How do you keep them current as the code evolves?</p>
+<p><strong>Deliverable:</strong> A team agreement on next steps and ownership.</p>
+</section>
+<section id="for-leaders-additionally" class="level3" data-number="16.7.6">
+<h3 data-number="16.7.6" class="anchored" data-anchor-id="for-leaders-additionally"><span class="header-section-number">16.7.6</span> For Leaders, Additionally</h3>
+<p>If you lead the organization rather than the team, Day 1 is different. Start with the readiness assessment from Chapter 7. Identify one team with the right combination of codebase maturity, process discipline, and cultural openness. Fund a structured pilot — not “give everyone licenses and see what happens,” but the phased adoption from the transition plan. Protect the investment in context infrastructure. It has the highest long-term return and the lowest short-term visibility, which means it is the one most likely to be cut.</p>
+<hr>
+</section>
+</section>
+<section id="the-closing-argument" class="level2" data-number="16.8">
+<h2 data-number="16.8" class="anchored" data-anchor-id="the-closing-argument"><span class="header-section-number">16.8</span> The Closing Argument</h2>
+<p>Accept that you are early. The field is moving faster than any book can capture. The specific tools will change. The formats will evolve. The capabilities will exceed what is described here.</p>
+<p>Use the principles, not the specifics. Structure your context, scope your tasks, compose simple primitives, enforce safety boundaries, and organize your knowledge hierarchically. These disciplines work regardless of which model runs underneath or which tool wraps around it.</p>
+<p>REST did not make HTTP better. It gave engineers constraints to reason about distributed systems. Twenty-five years later, the constraints still hold, even though every specific technology from that era has been replaced. The aspiration for the architectural constraints in this book is the same: durable reasoning tools for a field that will not stop changing.</p>
+<p>The methodology is the floor, not the ceiling. Build on it.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="pagination-link" aria-label="Anti-Patterns and Failure Modes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>

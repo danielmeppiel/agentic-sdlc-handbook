@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; Multi-Agent Orchestration – The Agentic SDLC Handbook</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../handbook/ch13-the-execution-meta-process.html" rel="next">
+<link href="../handbook/ch11-context-engineering.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-f418161beb48e0141c760e455f12af2c.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-c5491cb7295b3d79f070a3ccf938a403.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-367522ac618891c39d4b2ae87ea7600e.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch12-multi-agent-orchestration.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">The Agentic SDLC Handbook</a> 
+        <div class="sidebar-tools-main tools-wide">
+    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
+              <i class="bi bi-twitter pe-1"></i>
+            Twitter
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://www.linkedin.com/sharing/share-offsite/?url=|url|">
+              <i class="bi bi-linkedin pe-1"></i>
+            LinkedIn
+            </a>
+          </li>
+      </ul>
+    </div>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+  <a href="" class="quarto-reader-toggle quarto-navigation-tool px-1" onclick="window.quartoToggleReader(); return false;" title="Toggle reader mode">
+  <div class="quarto-reader-toggle-btn">
+  <i class="bi"></i>
+  </div>
+</a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: The Foundation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: For Leaders</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: For Practitioners</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch09-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch10-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch11-context-engineering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch12-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch13-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Closing</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch15-what-comes-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#when-one-agent-is-enough" id="toc-when-one-agent-is-enough" class="nav-link active" data-scroll-target="#when-one-agent-is-enough"><span class="header-section-number">13.1</span> When One Agent Is Enough</a></li>
+  <li><a href="#agent-specialization-patterns" id="toc-agent-specialization-patterns" class="nav-link" data-scroll-target="#agent-specialization-patterns"><span class="header-section-number">13.2</span> Agent Specialization Patterns</a>
+  <ul class="collapse">
+  <li><a href="#pattern-1-writer-reviewer-tester" id="toc-pattern-1-writer-reviewer-tester" class="nav-link" data-scroll-target="#pattern-1-writer-reviewer-tester"><span class="header-section-number">13.2.1</span> Pattern 1: Writer / Reviewer / Tester</a></li>
+  <li><a href="#pattern-2-domain-teams" id="toc-pattern-2-domain-teams" class="nav-link" data-scroll-target="#pattern-2-domain-teams"><span class="header-section-number">13.2.2</span> Pattern 2: Domain Teams</a></li>
+  <li><a href="#pattern-3-audit-execute-validate" id="toc-pattern-3-audit-execute-validate" class="nav-link" data-scroll-target="#pattern-3-audit-execute-validate"><span class="header-section-number">13.2.3</span> Pattern 3: Audit / Execute / Validate</a></li>
+  </ul></li>
+  <li><a href="#parallelization-strategies" id="toc-parallelization-strategies" class="nav-link" data-scroll-target="#parallelization-strategies"><span class="header-section-number">13.3</span> Parallelization Strategies</a>
+  <ul class="collapse">
+  <li><a href="#the-one-file-one-agent-rule" id="toc-the-one-file-one-agent-rule" class="nav-link" data-scroll-target="#the-one-file-one-agent-rule"><span class="header-section-number">13.3.1</span> The One-File-One-Agent Rule</a></li>
+  <li><a href="#wave-based-parallelism" id="toc-wave-based-parallelism" class="nav-link" data-scroll-target="#wave-based-parallelism"><span class="header-section-number">13.3.2</span> Wave-Based Parallelism</a></li>
+  <li><a href="#pipeline-parallelism" id="toc-pipeline-parallelism" class="nav-link" data-scroll-target="#pipeline-parallelism"><span class="header-section-number">13.3.3</span> Pipeline Parallelism</a></li>
+  </ul></li>
+  <li><a href="#conflict-resolution" id="toc-conflict-resolution" class="nav-link" data-scroll-target="#conflict-resolution"><span class="header-section-number">13.4</span> Conflict Resolution</a>
+  <ul class="collapse">
+  <li><a href="#file-conflicts" id="toc-file-conflicts" class="nav-link" data-scroll-target="#file-conflicts"><span class="header-section-number">13.4.1</span> File Conflicts</a></li>
+  <li><a href="#semantic-conflicts" id="toc-semantic-conflicts" class="nav-link" data-scroll-target="#semantic-conflicts"><span class="header-section-number">13.4.2</span> Semantic Conflicts</a></li>
+  <li><a href="#design-conflicts" id="toc-design-conflicts" class="nav-link" data-scroll-target="#design-conflicts"><span class="header-section-number">13.4.3</span> Design Conflicts</a></li>
+  </ul></li>
+  <li><a href="#the-human-as-orchestrator" id="toc-the-human-as-orchestrator" class="nav-link" data-scroll-target="#the-human-as-orchestrator"><span class="header-section-number">13.5</span> The Human as Orchestrator</a>
+  <ul class="collapse">
+  <li><a href="#what-the-orchestrator-decides" id="toc-what-the-orchestrator-decides" class="nav-link" data-scroll-target="#what-the-orchestrator-decides"><span class="header-section-number">13.5.1</span> What the Orchestrator Decides</a></li>
+  <li><a href="#the-escalation-protocol" id="toc-the-escalation-protocol" class="nav-link" data-scroll-target="#the-escalation-protocol"><span class="header-section-number">13.5.2</span> The Escalation Protocol</a></li>
+  </ul></li>
+  <li><a href="#the-coordination-tax-honest-numbers" id="toc-the-coordination-tax-honest-numbers" class="nav-link" data-scroll-target="#the-coordination-tax-honest-numbers"><span class="header-section-number">13.6</span> The Coordination Tax: Honest Numbers</a>
+  <ul class="collapse">
+  <li><a href="#the-sweet-spot" id="toc-the-sweet-spot" class="nav-link" data-scroll-target="#the-sweet-spot"><span class="header-section-number">13.6.1</span> The Sweet Spot</a></li>
+  </ul></li>
+  <li><a href="#session-management" id="toc-session-management" class="nav-link" data-scroll-target="#session-management"><span class="header-section-number">13.7</span> Session Management</a>
+  <ul class="collapse">
+  <li><a href="#session-isolation" id="toc-session-isolation" class="nav-link" data-scroll-target="#session-isolation"><span class="header-section-number">13.7.1</span> Session Isolation</a></li>
+  <li><a href="#session-lifetime" id="toc-session-lifetime" class="nav-link" data-scroll-target="#session-lifetime"><span class="header-section-number">13.7.2</span> Session Lifetime</a></li>
+  <li><a href="#cross-session-coordination" id="toc-cross-session-coordination" class="nav-link" data-scroll-target="#cross-session-coordination"><span class="header-section-number">13.7.3</span> Cross-Session Coordination</a></li>
+  </ul></li>
+  <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together"><span class="header-section-number">13.8</span> Putting It Together</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch12-multi-agent-orchestration.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>A single AI agent can modify a file. It can even modify several files in sequence, if the changes are simple enough and the context window holds. But the moment you need to change 40 files across 5 concerns — authentication, logging, type safety, migration, and cleanup — a single agent becomes the bottleneck. Not because it lacks intelligence. Because it lacks bandwidth.</p>
+<p>Context windows are finite. A single agent handling a cross-cutting change must hold the entire scope in focus simultaneously: every file, every convention, every dependency between the changes. By the twentieth file, the instructions from the first file are competing for attention with accumulated conversation history. Quality degrades not because the model is worse, but because the context is overloaded.</p>
+<p>Multi-agent orchestration solves this by decomposing work across specialized agents that each operate within manageable context budgets. But coordination is not free. Agents that work in parallel can conflict. Agents with different specializations can produce inconsistent output. Agents that don’t know about each other’s changes can break each other’s work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.</p>
+<p>This chapter covers when to use multiple agents, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human’s role is in all of it.</p>
+<hr>
+<section id="when-one-agent-is-enough" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="when-one-agent-is-enough"><span class="header-section-number">13.1</span> When One Agent Is Enough</h2>
+<p>Not every task requires multiple agents. The overhead of orchestration — partitioning work, managing sessions, resolving conflicts, validating independently — is real. If the task fits comfortably in a single agent’s context, the single agent is the better choice.</p>
+<p>A single agent is sufficient when:</p>
+<ul>
+<li><strong>Scope is narrow.</strong> The change touches fewer than 10 files in a single module.</li>
+<li><strong>Concern is singular.</strong> One type of change — fix logging, update types, add tests — not three interleaved concerns.</li>
+<li><strong>Dependencies are linear.</strong> Each file change follows naturally from the previous one, with no need for parallel work.</li>
+<li><strong>Context budget is adequate.</strong> The agent can hold all relevant source files, instructions, and conversation history without exceeding roughly 60% of its window capacity, leaving room for reasoning.</li>
+</ul>
+<p>A single agent breaks down when:</p>
+<ul>
+<li><strong>Multiple concerns intersect.</strong> The change requires architectural knowledge and domain expertise and security awareness. One agent cannot hold all three specialization contexts simultaneously without dilution.</li>
+<li><strong>File count exceeds context capacity.</strong> More than 15-20 files means the agent cannot see all the code it needs to modify.</li>
+<li><strong>Parallelism would reduce wall-clock time significantly.</strong> Five independent file groups that could be modified simultaneously instead take five times as long sequentially.</li>
+</ul>
+<p>The decision matrix:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Single agent</th>
+<th>Multiple agents</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Files changed</td>
+<td>&lt; 10</td>
+<td>&gt; 15</td>
+</tr>
+<tr class="even">
+<td>Concerns</td>
+<td>1</td>
+<td>2+</td>
+</tr>
+<tr class="odd">
+<td>File dependencies</td>
+<td>Linear</td>
+<td>Graph (can parallelize)</td>
+</tr>
+<tr class="even">
+<td>Required expertise</td>
+<td>One domain</td>
+<td>Multiple domains</td>
+</tr>
+<tr class="odd">
+<td>Time pressure</td>
+<td>Low</td>
+<td>Moderate to high</td>
+</tr>
+<tr class="even">
+<td>Risk of context overload</td>
+<td>Low</td>
+<td>High</td>
+</tr>
+</tbody>
+</table>
+<p>The boundary between 10 and 15 files is not arbitrary. It reflects the practical limit where a single agent’s conversation history — accumulated tool calls, file reads, edit confirmations, test output — begins consuming enough context to crowd out the instructions and source code that the agent needs to do its work well. Your mileage will vary by model, task complexity, and instruction file size.</p>
+<p>When the decision is marginal, err toward a single agent. Coordination costs are real. Multi-agent orchestration is a tool for tasks that exceed single-agent capacity, not a default mode of operation.</p>
+<hr>
+</section>
+<section id="agent-specialization-patterns" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="agent-specialization-patterns"><span class="header-section-number">13.2</span> Agent Specialization Patterns</h2>
+<p>The key insight behind multi-agent orchestration is that specialization produces better results than generalization — for the same reason that a team of specialists outperforms a team of generalists on complex projects. A security expert and a logging expert, each working within their domain, produce more reliable output than a single agent told to “handle security and logging.”</p>
+<p>Specialization works because it reduces the context each agent needs to carry. An architecture agent loaded with type definitions, module boundaries, and structural patterns does not also need logging conventions, output formatting rules, and symbol dictionaries. The context it receives is concentrated, not diluted.</p>
+<p>Three specialization patterns recur across most multi-agent workflows.</p>
+<section id="pattern-1-writer-reviewer-tester" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="pattern-1-writer-reviewer-tester"><span class="header-section-number">13.2.1</span> Pattern 1: Writer / Reviewer / Tester</h3>
+<p>The most common pattern separates code production from code validation. One agent writes the code. A second agent reviews it. A third writes or updates tests.</p>
+<pre><code>Writer agent ──→ Code changes
+                     │
+                     ▼
+Reviewer agent ──→ Findings (bugs, logic errors, security)
+                     │
+                     ▼
+Tester agent ──→ Test updates + verification</code></pre>
+<p>This pattern maps directly to the human workflow of author, reviewer, and QA — and for the same reason. The writer optimizes for correctness and completeness. The reviewer optimizes for catching what the writer missed. The tester optimizes for verifiable behavior. These are different cognitive tasks that benefit from different contexts.</p>
+<p>In practice, the reviewer agent receives the diff plus the original source, not the writer’s full conversation history. This is deliberate. The reviewer should evaluate the output on its own merits, not be anchored by the writer’s reasoning. If the writer had a good reason for a decision but the code doesn’t reflect it, that is a signal, not an excuse.</p>
+</section>
+<section id="pattern-2-domain-teams" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="pattern-2-domain-teams"><span class="header-section-number">13.2.2</span> Pattern 2: Domain Teams</h3>
+<p>For cross-cutting changes, organize agents by area of expertise rather than by workflow stage. Each team owns a concern and is responsible for all files related to that concern.</p>
+<pre><code>┌─────────────────────────┐  ┌─────────────────────────┐
+│   ARCHITECTURE TEAM     │  │   DOMAIN EXPERT TEAM    │
+│                         │  │                         │
+│   Loaded context:       │  │   Loaded context:       │
+│   - Type definitions    │  │   - Output conventions  │
+│   - Module boundaries   │  │   - Symbol dictionaries │
+│   - Pattern catalog     │  │   - UX guidelines       │
+│   - Dependency graph    │  │   - Migration patterns  │
+│                         │  │                         │
+│   Owns:                 │  │   Owns:                 │
+│   - Type safety fixes   │  │   - Verbose coverage    │
+│   - Dead code removal   │  │   - Logger migration    │
+│   - API consolidation   │  │   - Formatting cleanup  │
+└─────────────────────────┘  └─────────────────────────┘</code></pre>
+<p>In the reference case study (PR #394, detailed in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 70-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other’s context, and both produced output consistent with their specialization.</p>
+<p>This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.</p>
+<section id="concrete-dispatch-what-it-actually-looks-like" class="level4" data-number="13.2.2.1">
+<h4 data-number="13.2.2.1" class="anchored" data-anchor-id="concrete-dispatch-what-it-actually-looks-like"><span class="header-section-number">13.2.2.1</span> Concrete Dispatch: What It Actually Looks Like</h4>
+<p>The Domain Teams pattern describes structure. Here is what a dispatch actually looks like in practice — the instruction files, the prompt, and the file list. This example uses a terminal-based agent, but the pattern applies regardless of tool.</p>
+<p>Before dispatching, the orchestrator prepares three things: the instruction files the agent will load, the file list it owns exclusively, and the task prompt.</p>
+<p><strong>Instruction files loaded into context:</strong></p>
+<pre><code>.ai/instructions.md              # Project-wide conventions (always loaded)
+.ai/integrations/logging.md      # Logging-specific patterns and examples</code></pre>
+<p><strong>The dispatch prompt:</strong></p>
+<pre><code>Migrate the following files from print-based output to the structured
+logger established in Wave 0. Use the LoggerFactory pattern from
+src/core/logger.py (committed and tested).
+
+Files assigned to you (exclusive ownership this wave):
+  - src/commands/install.py
+  - src/commands/resolve.py
+  - src/commands/validate.py
+
+Constraints:
+  - Do NOT modify any file not in this list.
+  - Do NOT change function signatures or public APIs.
+  - Preserve all existing behavior — update log output only.
+  - Use _rich_info() for informational messages, _rich_warning()
+    for warnings. See .ai/integrations/logging.md for examples.
+
+When complete, run: pytest tests/commands/ -x
+Fix any failures before reporting done.</code></pre>
+<p><strong>What makes this dispatch effective:</strong></p>
+<ul>
+<li><strong>Exclusive file list.</strong> The agent knows exactly which files it owns. No ambiguity, no overlap with other agents in this wave.</li>
+<li><strong>Committed reference.</strong> “Established in Wave 0” means the agent reads the actual committed code, not a description of what it should look like.</li>
+<li><strong>Scoped instructions.</strong> Two instruction files, not twelve. The agent carries logging conventions and project conventions. It does not carry type system rules, security policies, or deployment procedures irrelevant to this task.</li>
+<li><strong>Built-in validation.</strong> The prompt ends with a test command. The agent self-validates before reporting completion (L1 self-heal).</li>
+<li><strong>Explicit constraints.</strong> “Do NOT modify any file not in this list” is the one-file-one-agent rule, stated in the agent’s own terms.</li>
+</ul>
+<p>The orchestrator dispatches this prompt in a fresh session, monitors for completion or escalation, and moves to the next dispatch. Total orchestrator time per dispatch: roughly 2-3 minutes to prepare the prompt and file list, plus monitoring time shared across all active agents in the wave.</p>
+</section>
+</section>
+<section id="pattern-3-audit-execute-validate" class="level3" data-number="13.2.3">
+<h3 data-number="13.2.3" class="anchored" data-anchor-id="pattern-3-audit-execute-validate"><span class="header-section-number">13.2.3</span> Pattern 3: Audit / Execute / Validate</h3>
+<p>For exploratory work where the scope is not fully known in advance, separate the agents that discover what needs to change from the agents that make the changes.</p>
+<pre><code>Audit agents (read-only)
+  │
+  │  Findings: files, severity, recommendations
+  ▼
+Planning (human decision)
+  │
+  │  Scoped tasks with file assignments
+  ▼
+Execution agents (read-write)
+  │
+  │  Code changes
+  ▼
+Validation agents (read-only)
+  │
+  │  Review findings, test results
+  ▼
+Ship</code></pre>
+<p>The critical property of this pattern is the separation between read-only and read-write operations. Audit agents explore the codebase without modifying it. This means you can dispatch multiple audit agents simultaneously with no risk of interference. They can examine the same files, look at overlapping concerns, and produce independent assessments.</p>
+<p>The human decision between audit and execution is the highest-leverage point in the entire process. You review the findings, decide which ones to act on, define the scope, and only then allow write operations. This separation is what makes multi-agent orchestration safe, not just fast.</p>
+<hr>
+</section>
+</section>
+<section id="parallelization-strategies" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="parallelization-strategies"><span class="header-section-number">13.3</span> Parallelization Strategies</h2>
+<p>Running agents in parallel reduces wall-clock time. It also introduces the possibility of conflict. The strategies below manage the trade-off.</p>
+<section id="the-one-file-one-agent-rule" class="level3" data-number="13.3.1">
+<h3 data-number="13.3.1" class="anchored" data-anchor-id="the-one-file-one-agent-rule"><span class="header-section-number">13.3.1</span> The One-File-One-Agent Rule</h3>
+<p>The most important parallelization rule is the simplest: within a single execution batch, no two agents may modify the same file.</p>
+<p>Most agent tooling edits files using string matching — the agent specifies an exact block of text to find and replace. If Agent A modifies <code>install.py</code> and then Agent B tries to edit the same file, the text Agent B expects to find has already changed. The edit fails silently or produces corrupted output.</p>
+<p>This is not a theoretical risk. It is the most common failure mode in parallel agent execution.</p>
+<pre><code>SAFE: Each agent owns distinct files
+  Agent A ──→ resolver.py, dependency_graph.py
+  Agent B ──→ install.py
+  Agent C ──→ cli.py, commands/init.py
+
+UNSAFE: Two agents edit the same file
+  Agent A ──→ install.py (lines 100-200)
+  Agent B ──→ install.py (lines 400-500)
+  ← CONFLICT: Agent B's line references are invalid after Agent A's edits</code></pre>
+<p>Enforcing this rule requires partitioning the file set before dispatch. If two concerns both need to modify the same file, those modifications go to a single agent that handles both, or they go to separate sequential waves.</p>
+</section>
+<section id="wave-based-parallelism" class="level3" data-number="13.3.2">
+<h3 data-number="13.3.2" class="anchored" data-anchor-id="wave-based-parallelism"><span class="header-section-number">13.3.2</span> Wave-Based Parallelism</h3>
+<p>The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.</p>
+<pre><code>Wave 0: FOUNDATION          ←  No dependencies, fully parallel
+  Agent A: type definitions
+  Agent B: utility module
+  Agent C: configuration
+       │
+       ▼  (all complete, tests pass)
+Wave 1: CORE CHANGES        ←  Depends on Wave 0
+  Agent D: module migration (uses new types from Wave 0)
+  Agent E: API consolidation (uses new utilities from Wave 0)
+  Agent F: auth refactor
+       │
+       ▼  (all complete, tests pass)
+Wave 2: INTEGRATION         ←  Depends on Wave 1
+  Agent G: wiring + imports
+  Agent H: test updates</code></pre>
+<p>The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0’s output being committed and tested. Within a wave, agents are independent — they share no files and make no assumptions about each other’s progress.</p>
+<p>Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.</p>
+<p>In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.</p>
+<pre class="mermaid"><code>gantt
+    title Wave Execution Timeline
+    dateFormat X
+    axisFormat %s
+
+    section Wave 0 — Foundation
+    Agent A (types)        :a, 0, 5
+    Agent B (utilities)    :b, 0, 4
+    Agent C (config)       :c, 0, 3
+    Test + commit          :crit, t0, 5, 7
+
+    section Wave 1 — Core
+    Agent D (migration)    :d, 7, 12
+    Agent E (API)          :e, 7, 11
+    Agent F (auth)         :f, 7, 13
+    Test + commit          :crit, t1, 13, 15
+
+    section Wave 2 — Integration
+    Agent G (wiring)       :g, 15, 19
+    Agent H (tests)        :h, 15, 18
+    Test + commit          :crit, t2, 19, 21</code></pre>
+</section>
+<section id="pipeline-parallelism" class="level3" data-number="13.3.3">
+<h3 data-number="13.3.3" class="anchored" data-anchor-id="pipeline-parallelism"><span class="header-section-number">13.3.3</span> Pipeline Parallelism</h3>
+<p>Some operations can run in parallel across workflow stages rather than across files. While execution agents work on Wave 1, review agents can start reviewing Wave 0’s output. While human review happens on one wave, test agents can run extended validation on a previous wave.</p>
+<pre><code>Time ──→
+
+Wave 0 agents:   [████████]
+Wave 0 review:              [████]
+Wave 0 tests:               [██████████]
+Wave 1 agents:                    [████████████]
+Wave 1 review:                                   [████]</code></pre>
+<p>This works when the review and test operations are read-only and the execution operations have no backward dependencies on review findings. If a review agent finds a problem in Wave 0, the fix goes into a later wave — it does not interrupt Wave 1, which was planned against the committed Wave 0 output.</p>
+<hr>
+</section>
+</section>
+<section id="conflict-resolution" class="level2" data-number="13.4">
+<h2 data-number="13.4" class="anchored" data-anchor-id="conflict-resolution"><span class="header-section-number">13.4</span> Conflict Resolution</h2>
+<p>Despite careful partitioning, conflicts arise. They fall into three categories, each with a different resolution strategy.</p>
+<section id="file-conflicts" class="level3" data-number="13.4.1">
+<h3 data-number="13.4.1" class="anchored" data-anchor-id="file-conflicts"><span class="header-section-number">13.4.1</span> File Conflicts</h3>
+<p>Two agents need to modify the same file in the same wave. This is a planning error, not a runtime error.</p>
+<p><strong>Resolution.</strong> Merge the two tasks into a single agent’s scope, or move one task to a later wave. If the modifications are to genuinely independent sections of a large file, a single agent can handle both sets of changes in one pass — it carries the context for both and applies edits sequentially.</p>
+<p>Files that attract changes from multiple concerns are a signal. If <code>install.py</code> needs auth changes, logging changes, and type safety changes, that file is a coordination bottleneck. In the plan, assign it to a single agent per wave, even if that agent handles multiple concerns for that file.</p>
+</section>
+<section id="semantic-conflicts" class="level3" data-number="13.4.2">
+<h3 data-number="13.4.2" class="anchored" data-anchor-id="semantic-conflicts"><span class="header-section-number">13.4.2</span> Semantic Conflicts</h3>
+<p>Two agents produce output that is independently correct but mutually inconsistent. Agent A introduces a new error-handling pattern. Agent B, working on a different file, follows the old pattern because its instructions referenced the pre-change codebase.</p>
+<p><strong>Resolution.</strong> Foundation-before-migration wave ordering. Changes that establish new patterns — type definitions, utility functions, shared conventions — go in early waves. Changes that consume those patterns go in later waves. Agent B’s instructions reference the committed output of Wave 0, not the original codebase.</p>
+<p>This is why the wave model requires testing and committing after each wave. The committed state after Wave 0 is the ground truth for Wave 1 agents. If you skip the commit, Wave 1 agents work against stale context and semantic conflicts multiply.</p>
+<section id="semantic-conflict-recovery-a-walkthrough" class="level4" data-number="13.4.2.1">
+<h4 data-number="13.4.2.1" class="anchored" data-anchor-id="semantic-conflict-recovery-a-walkthrough"><span class="header-section-number">13.4.2.1</span> Semantic Conflict Recovery: A Walkthrough</h4>
+<p>Prevention is the ideal. But when a semantic conflict slips through wave ordering, you need a recovery procedure, not a principle. The PR #394 execution hit exactly this case. Here is what happened.</p>
+<p>Wave 0 established a new <code>OperationError</code> type in the resolver module — a structured error with fields for error code, operation name, and a recoverable flag. This replaced the previous pattern of raising bare <code>ValueError</code> with message strings. The architecture agent committed the new type, updated the resolver, and all Wave 0 tests passed.</p>
+<p>Wave 1 dispatched a domain agent to migrate logging in three command modules. The agent’s instructions referenced the committed Wave 0 codebase, but the dispatch prompt focused on logging patterns, not error handling. The domain agent correctly migrated all logging calls — and, in the process, added new error paths that used the old <code>ValueError</code> pattern. It had no reason to do otherwise. Its context included the logging migration guide, not the error-handling changes from Wave 0.</p>
+<p><strong>Detection.</strong> Wave 1’s unit tests passed. The individual files were correct in isolation. But the integration test suite — run at the wave checkpoint — caught mixed error types. Callers updated in Wave 0 now expected <code>OperationError</code>. The new error paths added in Wave 1 raised <code>ValueError</code>. Three integration tests failed with unhandled exception types.</p>
+<p><strong>Diagnosis.</strong> The orchestrator reviewed the failures and identified the root cause in under two minutes: the Wave 1 dispatch prompt loaded the logging context but not the error-handling context. The agent had no visibility into the pattern change.</p>
+<p><strong>Recovery.</strong> The fix was not to revert Wave 1. The logging migration was correct. Instead, the orchestrator dispatched Wave 2b — two targeted agents:</p>
+<ol type="1">
+<li>Agent 2b-A received the three command modules plus <code>OperationError</code>’s type definition. Its single task: replace every <code>ValueError</code> raise in the migrated files with the equivalent <code>OperationError</code>. Six files in context. Completed in 3 minutes.</li>
+<li>Agent 2b-B updated the corresponding test files to assert on <code>OperationError</code> fields instead of exception message strings.</li>
+</ol>
+<p>Wave 2b committed, all tests passed, and execution continued to Wave 3.</p>
+<p><strong>The lesson.</strong> Wave ordering prevents most semantic conflicts. When one slips through, the recovery follows a pattern: identify which context was missing from the dispatch, create a targeted recovery wave that carries the missing context, and fix forward rather than reverting. The recovery wave is small — scoped to exactly the files affected by the missing context — and fast, because the agents start with clean sessions and concentrated context.</p>
+<p>The mistake to avoid: redispatching the entire original wave. The logging migration was 90% correct. A full redo wastes the work and risks introducing new issues. Surgical recovery waves are the right response to surgical failures.</p>
+</section>
+</section>
+<section id="design-conflicts" class="level3" data-number="13.4.3">
+<h3 data-number="13.4.3" class="anchored" data-anchor-id="design-conflicts"><span class="header-section-number">13.4.3</span> Design Conflicts</h3>
+<p>Two agents, each following their specialization’s best practices, produce output that reflects genuinely different design philosophies. The architecture agent consolidates error handling into a central module. The domain agent keeps error handling local to each command because the domain’s UX conventions require command-specific error messages.</p>
+<p><strong>Resolution.</strong> This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan’s priority-ordered principles resolve most of them mechanically — if UX is prioritized above structural purity, the domain agent’s approach wins. When the principles don’t resolve the conflict, the human decides and documents the rationale.</p>
+<p>The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed across 15 agent dispatches — a scope decision during planning, an agent recovery during Wave 2, and test triage after Wave 2b (see Chapter 13 for details). None were design conflicts between agents; all were judgment calls that the plan could not automate. A rate of roughly 15–20% human intervention is typical for well-planned multi-agent work. If you are intervening on more than 30%, the plan’s principles are insufficiently specific. If you are intervening on less than 5%, you are either lucky or not checking carefully enough.</p>
+<hr>
+</section>
+</section>
+<section id="the-human-as-orchestrator" class="level2" data-number="13.5">
+<h2 data-number="13.5" class="anchored" data-anchor-id="the-human-as-orchestrator"><span class="header-section-number">13.5</span> The Human as Orchestrator</h2>
+<p>In a multi-agent workflow, the human role shifts from producer to orchestrator. You do not write the code. You do not review every line. You make the decisions that agents cannot make for themselves: scope, priority, trade-offs, and when to stop.</p>
+<p>This is not a passive role. It is a different kind of active.</p>
+<section id="what-the-orchestrator-decides" class="level3" data-number="13.5.1">
+<h3 data-number="13.5.1" class="anchored" data-anchor-id="what-the-orchestrator-decides"><span class="header-section-number">13.5.1</span> What the Orchestrator Decides</h3>
+<p><strong>Before execution.</strong> The orchestrator defines the plan: which concerns to address, which to defer, how to partition the work across agents and waves, and what principles govern trade-offs. This is the highest-leverage activity in the entire process. A well-structured plan with mediocre agents produces better results than a vague plan with excellent agents.</p>
+<p><strong>During execution.</strong> The orchestrator monitors progress and handles escalations. Most waves complete without intervention. When an agent gets stuck, the orchestrator diagnoses whether it is a prompt problem (refine the instructions and retry), a scope problem (split the task), or a tooling problem (work around the limitation). When agents produce conflicting output, the orchestrator resolves the conflict using the plan’s principles or makes an explicit design decision.</p>
+<p><strong>After execution.</strong> The orchestrator spot-checks critical changes, verifies test results, and decides whether the output meets the acceptance criteria. The level of detail in the review is proportional to the risk, not the volume. A 2,000-line diff where 1,800 lines are mechanical migration does not require reading all 2,000 lines. It requires verifying that the migration pattern is correct, that the 200 non-mechanical lines are sound, and that the test suite covers the behavior.</p>
+</section>
+<section id="the-escalation-protocol" class="level3" data-number="13.5.2">
+<h3 data-number="13.5.2" class="anchored" data-anchor-id="the-escalation-protocol"><span class="header-section-number">13.5.2</span> The Escalation Protocol</h3>
+<p>Not every problem requires human attention. A well-designed orchestration system handles most failures automatically. The four-level escalation protocol:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Level</th>
+<th>Trigger</th>
+<th>Response</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>L1: Self-heal</td>
+<td>Agent hits a test failure it can debug</td>
+<td>Agent fixes and continues</td>
+<td>Type error in generated code</td>
+</tr>
+<tr class="even">
+<td>L2: Retry</td>
+<td>Agent produces incomplete output</td>
+<td>Re-dispatch with refined prompt</td>
+<td>Agent missed 3 of 12 files in scope</td>
+</tr>
+<tr class="odd">
+<td>L3: Human decides</td>
+<td>Trade-off between competing principles</td>
+<td>Human makes design call</td>
+<td>UX convention vs.&nbsp;architectural purity</td>
+</tr>
+<tr class="even">
+<td>L4: Scope change</td>
+<td>Finding requires work outside the current plan</td>
+<td>Human creates follow-up task</td>
+<td>Discovery of a pre-existing bug unrelated to the change</td>
+</tr>
+</tbody>
+</table>
+<p>The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.</p>
+<p>In the reference case study (Chapter 13), the distribution across 15 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions out of fifteen dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.</p>
+<hr>
+</section>
+</section>
+<section id="the-coordination-tax-honest-numbers" class="level2" data-number="13.6">
+<h2 data-number="13.6" class="anchored" data-anchor-id="the-coordination-tax-honest-numbers"><span class="header-section-number">13.6</span> The Coordination Tax: Honest Numbers</h2>
+<p>Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the reference case study detailed in Chapter 13.</p>
+<p>The human time in a well-planned multi-agent execution breaks down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). In the PR #394 case, total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.</p>
+<p>The same 70-file change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts on changes of this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.</p>
+<p>The multi-agent approach did not save total elapsed time on this change. It traded human planning time for agent quality. The 45 minutes the orchestrator spent coordinating replaced the 30-45 minutes they would have spent debugging context-degraded output — with better results.</p>
+<section id="the-sweet-spot" class="level3" data-number="13.6.1">
+<h3 data-number="13.6.1" class="anchored" data-anchor-id="the-sweet-spot"><span class="header-section-number">13.6.1</span> The Sweet Spot</h3>
+<p>Multi-agent orchestration pays for itself when:</p>
+<ul>
+<li><strong>File count exceeds 20 across 2+ concerns.</strong> Below this threshold, planning overhead exceeds the parallelism benefit. One agent with good instructions handles 15 files in a single concern faster than two agents with coordination overhead.</li>
+<li><strong>Concerns partition cleanly.</strong> If most files need changes from multiple concerns, you spend more time managing file ownership conflicts than you save through parallelism.</li>
+<li><strong>Context degradation is the real bottleneck.</strong> For changes that require deep architectural understanding — not mechanical find-and-replace — the quality benefit of focused context outweighs the coordination cost.</li>
+<li><strong>You will do this more than once.</strong> The first multi-agent orchestration on a codebase takes longest because you are building instruction files, learning partition boundaries, and developing intuition for wave sizing. The second takes half the planning time. By the third, the dispatch prompts are templates.</li>
+</ul>
+<p>The overhead for a well-planned multi-agent execution is roughly 40-60% of total human time spent on coordination rather than direct value work. For a poorly planned execution — vague dispatch prompts, unclear file ownership, missing instruction files — the overhead can exceed 80%, at which point a single agent with good context would have been faster.</p>
+<p>This is not a tool for every change. It is a tool for changes that exceed what a single agent can hold in focus. Know the threshold for your codebase, and do not orchestrate for the sake of orchestrating.</p>
+<hr>
+</section>
+</section>
+<section id="session-management" class="level2" data-number="13.7">
+<h2 data-number="13.7" class="anchored" data-anchor-id="session-management"><span class="header-section-number">13.7</span> Session Management</h2>
+<p>Every agent dispatch creates a session — a context window with its own conversation history, loaded instructions, and accumulated state. Managing these sessions is a practical concern that directly affects output quality.</p>
+<section id="session-isolation" class="level3" data-number="13.7.1">
+<h3 data-number="13.7.1" class="anchored" data-anchor-id="session-isolation"><span class="header-section-number">13.7.1</span> Session Isolation</h3>
+<p>Each agent session is independent. Agent A cannot see Agent B’s conversation history, edits, or reasoning. This is a feature, not a limitation. Session isolation ensures that one agent’s context degradation does not propagate to others. If Agent A’s session becomes cluttered after a complex debugging sequence, Agent B starts fresh with a clean context.</p>
+<p>The implication: information flows between agents through committed artifacts, not through shared sessions. When Agent B needs to build on Agent A’s work, it reads the committed files — the same files that passed tests and were validated at the wave checkpoint. It does not read Agent A’s internal reasoning or discarded alternatives.</p>
+<pre><code>Session A              Session B              Session C
+┌────────────┐        ┌────────────┐        ┌────────────┐
+│ Instructions│        │ Instructions│        │ Instructions│
+│ Source files│        │ Source files│        │ Source files│
+│ Conversation│        │ Conversation│        │ Conversation│
+│ (isolated)  │        │ (isolated)  │        │ (isolated)  │
+└──────┬─────┘        └──────┬─────┘        └──────┬─────┘
+       │                     │                     │
+       ▼                     ▼                     ▼
+  ┌─────────────────────────────────────────────────┐
+  │              Shared filesystem                   │
+  │   (committed files = ground truth between waves) │
+  └─────────────────────────────────────────────────┘</code></pre>
+</section>
+<section id="session-lifetime" class="level3" data-number="13.7.2">
+<h3 data-number="13.7.2" class="anchored" data-anchor-id="session-lifetime"><span class="header-section-number">13.7.2</span> Session Lifetime</h3>
+<p>Shorter sessions produce better output. A session that has been running for 40 turns carries 40 turns of conversation history, which consumes context that could hold source code or instructions. The marginal value of each additional turn decreases as history accumulates.</p>
+<p>Three guidelines for session lifetime:</p>
+<ol type="1">
+<li><p><strong>One task per session.</strong> An agent dispatched to “migrate logging in <code>resolver.py</code> and update tests in <code>test_resolver.py</code>” is one task. Reusing that session for a second, unrelated task inherits the first task’s conversation history — dead weight for the second task.</p></li>
+<li><p><strong>Reset on failure.</strong> If an agent gets stuck — looping on the same error, producing the same incorrect output — terminate the session and dispatch a fresh one with refined instructions. The fresh session starts without the accumulated confusion of the failed attempt.</p></li>
+<li><p><strong>State through files, not memory.</strong> Any information that needs to survive across sessions must be written to the filesystem: committed code, plan documents, checkpoint records. Session-internal state (the agent’s reasoning, intermediate attempts, debugging output) is ephemeral and should be treated as such.</p></li>
+</ol>
+</section>
+<section id="cross-session-coordination" class="level3" data-number="13.7.3">
+<h3 data-number="13.7.3" class="anchored" data-anchor-id="cross-session-coordination"><span class="header-section-number">13.7.3</span> Cross-Session Coordination</h3>
+<p>The orchestration layer — whether a human with multiple terminal windows or an automated harness — maintains the coordination state that individual agent sessions cannot.</p>
+<p>This state includes:</p>
+<ul>
+<li><strong>Task status.</strong> Which tasks are pending, in progress, complete, or blocked.</li>
+<li><strong>File ownership.</strong> Which agent is currently modifying which files — the enforcement mechanism for the one-file-one-agent rule.</li>
+<li><strong>Wave progress.</strong> Which waves have been completed and tested, which is currently executing.</li>
+<li><strong>Escalation log.</strong> What has been escalated, what decision was made, and why.</li>
+</ul>
+<p>The agent sessions are stateless workers. The coordination layer is the stateful manager. Keeping this separation clean is what makes multi-agent orchestration predictable. When the coordination state is mixed into agent sessions — when an agent is asked to “track which files you’ve changed and tell the next agent” — the result is fragile and error-prone.</p>
+<hr>
+</section>
+</section>
+<section id="putting-it-together" class="level2" data-number="13.8">
+<h2 data-number="13.8" class="anchored" data-anchor-id="putting-it-together"><span class="header-section-number">13.8</span> Putting It Together</h2>
+<p>The patterns described in this chapter compose into a workflow:</p>
+<pre><code>1. ASSESS scope and decide single-agent vs. multi-agent
+       │
+       ▼
+2. SPECIALIZE: choose a team pattern
+   (writer/reviewer/tester, domain teams, or audit/execute/validate)
+       │
+       ▼
+3. PARTITION files across agents (one file, one agent per wave)
+       │
+       ▼
+4. ORDER into waves by dependency
+       │
+       ▼
+5. DISPATCH each wave in parallel
+       │
+       ▼
+6. VALIDATE: test, commit, checkpoint
+       │
+       ├─ pass ──→ next wave (go to 5)
+       │
+       └─ fail ──→ DIAGNOSE
+                      │
+                      ├─ L1/L2: retry with refined prompt
+                      └─ L3/L4: human decides, adapt plan</code></pre>
+<p>This is not a rigid process. A small change might skip straight from step 1 to dispatching a single agent. A large change might iterate through steps 5-6 four or five times. The structure is a decision framework, not a ceremony.</p>
+<p>What matters is the discipline behind it: agents are specialized so their context is concentrated, files are partitioned so agents don’t conflict, waves are ordered so dependencies are satisfied, and the human makes the decisions that require judgment rather than the decisions that require typing.</p>
+<p>The next chapter puts this framework into practice. It walks through the full five-phase meta-process — Audit, Plan, Wave, Validate, Ship — with exact numbers from a 70-file execution that used every pattern described here.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../handbook/ch11-context-engineering.html" class="pagination-link" aria-label="Context Engineering">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../handbook/ch13-the-execution-meta-process.html" class="pagination-link" aria-label="The Execution Meta-Process">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
