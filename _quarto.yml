@@ -13,6 +13,7 @@ book:
   repo-actions: [issue]
   sharing: [twitter, linkedin]
   reader-mode: true
+  downloads: [pdf, epub]
 
   chapters:
     - index.qmd
