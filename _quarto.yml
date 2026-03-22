@@ -50,11 +50,19 @@ format:
     code-copy: true
     search: true
   pdf:
-    documentclass: scrbook
+    documentclass: scrreprt
     papersize: a4
     toc: true
     number-sections: true
     colorlinks: true
+    geometry:
+      - top=30mm
+      - left=25mm
+      - right=25mm
+      - bottom=30mm
+    mainfont: "DejaVu Serif"
+    sansfont: "DejaVu Sans"
+    monofont: "DejaVu Sans Mono"
   epub:
     toc: true
     number-sections: true

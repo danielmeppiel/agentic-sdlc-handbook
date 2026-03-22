@@ -18,7 +18,7 @@ At every phase of the software development lifecycle, work happens across three 
 
 The layers are not independent. They form a stack where each depends on the one below it:
 
-```mermaid
+```{mermaid}
 flowchart TB
     subgraph HUMAN ["🧑 HUMAN LAYER"]
         direction LR

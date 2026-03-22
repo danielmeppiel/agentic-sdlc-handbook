@@ -80,7 +80,7 @@ Agents are not universally better than manual coding. They are better at specifi
 
 The decision is not intuitive at first, so here is the flowchart. When a task arrives, run it through these questions in order:
 
-```mermaid
+```{mermaid}
 flowchart TD
     START([Task arrives]) --> Q1{Can you specify it clearly\nin under 2 minutes?}
 

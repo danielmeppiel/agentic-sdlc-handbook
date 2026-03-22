@@ -227,7 +227,7 @@ Wave sizing matters. A wave with 2-3 agents completes in the time it takes the s
 
 In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.
 
-```mermaid
+```{mermaid}
 gantt
     title Wave Execution Timeline
     dateFormat X

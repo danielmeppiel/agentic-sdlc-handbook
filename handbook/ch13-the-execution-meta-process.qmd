@@ -14,7 +14,7 @@ The methodology is a five-phase meta-process. It works regardless of which AI co
 
 Every large change follows these phases, in order:
 
-```mermaid
+```{mermaid}
 flowchart LR
     AUDIT["AUDIT\n(understand)"] --> PLAN["PLAN\n(scope, waves,\nteams)"]
     PLAN --> WAVE["WAVE [0..N]\n(parallel agents)"]

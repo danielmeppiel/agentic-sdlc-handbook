@@ -9,3 +9,4 @@ _freeze/
 
 /.quarto/
 **/*.quarto_ipynb
+*_files/

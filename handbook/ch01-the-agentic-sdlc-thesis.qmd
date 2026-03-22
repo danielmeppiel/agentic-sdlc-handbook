@@ -78,7 +78,7 @@ The constraints in this book are concrete enough that they can be — and have b
 
 How the five constraints relate:
 
-```mermaid
+```{mermaid}
 flowchart LR
     subgraph " "
         direction TB

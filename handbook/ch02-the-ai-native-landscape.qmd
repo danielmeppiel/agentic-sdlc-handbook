@@ -38,7 +38,7 @@ The market's evolution follows a clear progression, and understanding where you 
 
 **Phase 4: Orchestrated SDLC (emerging).** The leading edge of the market, where agents participate beyond the code editor — in issue triage, code review, testing, release management, and operations. GitHub's Coding Agent assigns issues to an AI that works in a cloud environment, submits pull requests, and responds to review feedback. Anthropic's Claude Code can read issues and produce PRs autonomously. Several startups — Devin, Factory, Codegen — are building similar workflows. No organization has fully automated an end-to-end SDLC with agents, but the components exist for the first multi-phase automations. This is where governance becomes non-optional.
 
-```mermaid
+```{mermaid}
 flowchart LR
     P1["<b>Phase 1</b><br/>Code Completion<br/><em>2021–2023</em><br/>Passive suggestion"]
     P2["<b>Phase 2</b><br/>Conversational<br/><em>2023–2024</em><br/>Active Q&A"]

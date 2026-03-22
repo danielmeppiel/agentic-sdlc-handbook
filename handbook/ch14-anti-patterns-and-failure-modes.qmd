@@ -403,7 +403,7 @@ Total recovery cost: three focused dispatches instead of an open-ended retry loo
 
 When something goes wrong, the first question is what kind of wrong:
 
-```mermaid
+```{mermaid}
 flowchart TD
     START(["Something went wrong\nwith agent output"]) --> Q1{Code syntactically\nwrong?}
 

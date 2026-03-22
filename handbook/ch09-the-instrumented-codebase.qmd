@@ -24,7 +24,7 @@ The term "primitive" is deliberate. These artifacts are the atomic units of agen
 
 Six categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all six on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.
 
-```mermaid
+```{mermaid}
 block-beta
     columns 3
     A["Instructions\n.instructions.md\n─\nScoped conventions\nper file/directory"]:1

@@ -64,7 +64,7 @@ The transition from pilot to full adoption follows three phases. Each phase has 
 
 **A note on timelines.** The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.
 
-```mermaid
+```{mermaid}
 flowchart TB
     PRE["<b>Pre-Transition</b><br/>Readiness assessments<br/>Baseline metrics<br/><em>Weeks 1–4</em>"]
 
