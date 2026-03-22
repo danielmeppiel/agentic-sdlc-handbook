@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "The Agentic SDLC Handbook",
     "section": "",
-    "text": "Who This Book Is For\nA methodology for teams building software with AI agents — grounded in evidence, tested in production, independent of any single tool.\nThis book speaks to two audiences:\nEngineering leaders (CTO, VP Engineering, Director) who need to understand the strategic implications of AI-native development, make investment decisions, and transform their organizations. Read Part II first.\nPractitioners (developers, tech leads, architects) who need concrete techniques, patterns, and workflows for working effectively with AI coding agents. Read Part III first.\nPart I provides the foundational thesis that both audiences share. The closing chapter looks ahead.",
+    "text": "Who This Book Is For\nThis book speaks to two audiences:\nEngineering leaders (CTO, VP Engineering, Director) who need to understand the strategic implications of AI-native development, make investment decisions, and transform their organizations. Read Part II first.\nPractitioners (developers, tech leads, architects) who need concrete techniques, patterns, and workflows for working effectively with AI coding agents. Read Part III first.\nPart I provides the foundational thesis that both audiences share. The closing chapter looks ahead.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
     ]
