@@ -4,10 +4,8 @@ title-block-style: none
 number-sections: false
 ---
 
-A methodology for teams building software with AI agents — grounded in evidence, tested in production, independent of any single tool.
-
 ::: {.callout-note appearance="minimal" icon=false}
-**Free to read online. Free to download.**
+**Free to read online. Free to download.** Grounded in evidence, tested in production, independent of any single tool.
 
 [Download PDF](The-Agentic-SDLC-Handbook.pdf){.btn .btn-primary .btn-lg role="button" style="margin-right: 10px;"}
 [Download EPUB](The-Agentic-SDLC-Handbook.epub){.btn .btn-outline-primary .btn-lg role="button"}
