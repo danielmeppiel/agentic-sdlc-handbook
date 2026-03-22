@@ -269,9 +269,51 @@ Specification files matter because they make the "Reduced Scope" constraint oper
 
 ---
 
+## Tool Support and Portability
+
+The six primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.
+
+| Primitive | GitHub Copilot (VS Code) | Cursor | Claude Code | Windsurf |
+|-----------|--------------------------|--------|-------------|----------|
+| **Instructions** | `.instructions.md` with `applyTo` frontmatter; `copilot-instructions.md` global | `.cursor/rules/*.mdc` with glob frontmatter | `CLAUDE.md` per directory | `.windsurfrules`; cascade rules |
+| **Agents** | `.chatmode.md` with model + tools | — | — | — |
+| **Skills** | `SKILL.md` directories with examples | — (embed in rules) | — (embed in `CLAUDE.md`) | — (embed in rules) |
+| **Prompts** | `.prompt.md` with execution mode | — | — | Flows (different model) |
+| **Memory** | `.memory.md` referenced in context | In rules or notepads | In `CLAUDE.md` sections | In rules |
+| **Orchestration** | `.spec.md` loaded as context | Loaded as context | Loaded as context | Loaded as context |
+
+"—" means the tool has no native format for that primitive type. The knowledge is still usable — you embed it in whatever instruction format the tool does support — but automatic activation and scoping are lost.
+
+Three observations.
+
+**Instructions are the universal primitive.** Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ — `applyTo` frontmatter, glob-based rule files, per-directory placement — but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.
+
+**Agent configurations are the least portable.** Chat modes, model selection, and tool boundaries are defined differently in every tool and don't transfer. The knowledge inside them — domain expertise, named patterns, anti-patterns — is just markdown and moves freely. The activation mechanism does not.
+
+**Most tools natively support two of six.** Instructions (in some form) and memory (via root-level markdown). The remaining four — skills, prompts, orchestration specs, agent configurations — have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.
+
+### What happens when you switch tools
+
+If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your primitives in two tiers:
+
+**Portable tier** (works everywhere with minor adaptation):
+- Instruction content — the rules themselves, as markdown prose
+- Memory files — decisions, deprecations, historical context
+- Orchestration specs — requirements, contracts, validation criteria
+- Skill knowledge — decision frameworks, anti-patterns, examples
+
+**Tool-specific tier** (requires per-tool configuration):
+- Instruction scoping — how rules get matched to files (`applyTo` vs. glob frontmatter vs. directory placement)
+- Agent configurations — model selection, tool boundaries, persona activation
+- Prompt execution — how workflows are triggered and parameterized
+
+The portable tier is the knowledge — 80% of the value. The tool-specific tier is the wiring that connects knowledge to a particular editor. When you switch tools, you rewrite the wiring. That's a few hours of adaptation, not a rewrite of what your team knows.
+
+---
+
 ## Directory Structure
 
-The six primitive types organize into a predictable directory structure. This isn't the only valid layout, but it reflects the conventions that have emerged across projects that use these primitives in production.
+The six primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions — the most complete native implementation of all six primitive types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.
 
 ```
 project/
@@ -409,6 +451,9 @@ Consider a mid-size backend service — 80,000 lines of Python, a REST API, a me
 
 ```
 project/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── README.md
 ├── src/
 │   ├── api/
@@ -449,8 +494,10 @@ project/
 │   ├── skills/
 │   │   └── api-middleware/
 │   │       └── SKILL.md
-│   └── prompts/
-│       └── new-endpoint.prompt.md
+│   ├── prompts/
+│   │   └── new-endpoint.prompt.md
+│   └── workflows/
+│       └── ci.yml
 ├── .memory.md
 ├── AGENTS.md
 ├── README.md

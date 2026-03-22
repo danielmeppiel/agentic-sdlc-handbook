@@ -35,6 +35,8 @@ Each phase has a specific purpose, a specific human decision, and a specific out
 
 **Key rule.** Audits are read-only. The agents explore the codebase. They do not modify it. This separation is important: it means you can dispatch audit agents freely, without worrying about partial changes or file conflicts.
 
+**Enabling capabilities.** Background agents with parallel dispatch and session isolation. Each audit agent runs in its own context window with read-only access to the codebase, so findings are independent and agents cannot interfere with each other.
+
 **Output.** A set of prioritized findings with citations. This becomes the input to planning.
 
 ### Phase 2: Plan
@@ -80,6 +82,8 @@ Constraints
 
 **Key rule.** No implementation starts until you approve the plan. This is the single most important gate.
 
+**Enabling capabilities.** Background exploration agents to validate planning assumptions — mapping dependency graphs, tracing call chains, verifying that the wave structure accounts for shared files. The planning itself is human judgment; the agents accelerate the information gathering that informs it.
+
 **Output.** An approved plan with scope, teams, waves, principles, and constraints.
 
 ### Phase 3: Wave Execution
@@ -94,6 +98,8 @@ The wave structure produces a clean commit history — one commit per wave — a
 
 **Key rule.** Every wave ends with green tests and a commit. No exceptions.
 
+**Enabling capabilities.** Parallel agent dispatch with session isolation — each agent works in a clean context window, receiving only the instructions and code relevant to its task. The orchestrating session coordinates dispatch, collects results, and triggers the test runner between waves. Integration with the project's existing test suite (or CI pipeline) provides the gate.
+
 **Output.** A commit per wave, with all tests passing.
 
 ### Phase 4: Validate
@@ -103,6 +109,8 @@ The wave structure produces a clean commit history — one commit per wave — a
 **How it works.** The full test suite runs — unit tests, acceptance tests, and optionally integration or end-to-end tests. You spot-check critical changes: the files with the most complex modifications, the boundary conditions you specified in the plan, the areas where agents were most likely to make subtle errors.
 
 **The human decision.** You decide whether the changes are ready to ship.
+
+**Enabling capabilities.** The project's CI pipeline or test runner — the same infrastructure your team already uses. No special tooling is needed for validation beyond what exists for normal development. The value comes from the process (test after every wave, spot-check critical files), not from additional tools.
 
 **Output.** A validated changeset.
 
@@ -191,6 +199,8 @@ The meta-process is abstract until you see it execute. This section walks throug
 
 That last number deserves honesty: "zero regressions" means "zero regressions detected by the test suite." The test suite had 2,874 tests, which is substantial coverage, but it is not proof of correctness — it is proof that no tested behavior changed. The distinction matters. The confidence you can place in the process is bounded by the quality of your tests.
 
+**A note on timing.** The 90-minute figure reflects an experienced practitioner working on a codebase with mature primitives — battle-tested instruction files, established agent personas, and a team whose conventions were already externalized into the codebase instrumentation described in Chapter 9. Your first time through this process will take roughly 3×. The audit phase is slower because you're simultaneously learning what your codebase looks like through an agent's eyes. The planning phase is slower because you haven't yet developed intuition for wave decomposition. And you'll hit more ADAPT loops because your primitives haven't been refined by prior failures. Budget for it. The first run is an investment in the infrastructure that makes every subsequent run faster. By the third or fourth execution, the times above become realistic.
+
 ### Timeline
 
 **Audit (3 minutes).** Two explore agents dispatched in parallel: an architecture expert and a logging/UX expert. Each analyzed the codebase through its own lens and produced severity-ranked findings with file-and-line citations. The architecture audit identified resolver duplication, type safety gaps, and dead code. The logging audit identified verbose coverage gaps, inconsistent symbol usage, and CommandLogger migration opportunities.
@@ -209,15 +219,15 @@ That last number deserves honesty: "zero regressions" means "zero regressions de
 
 ### The Three Human Interventions
 
-Across 90 minutes and 15 agent dispatches, the human intervened exactly three times. Each intervention illustrates a different category of human judgment that the process cannot automate.
+Across 90 minutes and 15 agent dispatches, the human intervened exactly three times. Each intervention illustrates a different category of human judgment that the process cannot automate — and each maps directly to one of the three practitioner roles introduced in Chapter 8.
 
-**Intervention 1: Scope decision (during planning).** The audit produced findings at four severity levels. The human decided to include all findings in scope — none deferred. This was a judgment call. A more conservative approach would have limited scope to CRITICAL and HIGH findings. The decision to include everything was based on the assessment that the changes were low-risk individually and that deferring MODERATE findings would create follow-up work that cost more than addressing them now. An agent cannot make this decision because it requires understanding the team's priorities, the release timeline, and the cost of context-switching back to this area later.
+**Intervention 1: Scope decision — the Architect role (during planning).** The audit produced findings at four severity levels. The human decided to include all findings in scope — none deferred. This was a judgment call. A more conservative approach would have limited scope to CRITICAL and HIGH findings. The decision to include everything was based on the assessment that the changes were low-risk individually and that deferring MODERATE findings would create follow-up work that cost more than addressing them now. This is the Architect role in action: decomposing work, defining scope, sequencing dependencies. An agent cannot make this decision because it requires understanding the team's priorities, the release timeline, and the cost of context-switching back to this area later.
 
-**Intervention 2: Agent recovery (during Wave 2).** An agent stopped making progress. The human diagnosed the situation — inspected which edits had been applied and which remained — and decided to split the remaining work across two replacement agents rather than retrying the original. This required judgment about the failure mode (was it a transient error or a fundamental context problem?) and the recovery strategy (retry vs. split vs. manual completion). The decision to split was based on the assessment that the file was too large for a single agent session to handle reliably.
+**Intervention 2: Agent recovery — the Escalation Handler role (during Wave 2).** An agent stopped making progress. The human diagnosed the situation — inspected which edits had been applied and which remained — and decided to split the remaining work across two replacement agents rather than retrying the original. This required judgment about the failure mode (was it a transient error or a fundamental context problem?) and the recovery strategy (retry vs. split vs. manual completion). This is the Escalation Handler role: resolving ambiguity that the specification didn't cover, making real-time recovery decisions, and updating the plan when the unexpected happens. The decision to split was based on the assessment that the file was too large for a single agent session to handle reliably.
 
-**Intervention 3: Test triage (during Wave 2b).** After the replacement agents completed their work, one test failed. The human examined the failure, determined it was caused by an ordering issue in the migration (a function call was migrated but its setup code wasn't), and directed an agent to fix the specific issue. This required reading the test failure output, understanding what the test was asserting, and tracing the cause to a specific incomplete migration — a diagnostic chain that current agents can perform in some cases but not reliably when the failure spans multiple files and waves.
+**Intervention 3: Test triage — the Reviewer role (during Wave 2b).** After the replacement agents completed their work, one test failed. The human examined the failure, determined it was caused by an ordering issue in the migration (a function call was migrated but its setup code wasn't), and directed an agent to fix the specific issue. This is the Reviewer role: evaluating agent output against intended behavior, catching failures that require understanding beyond the immediate code, and ensuring the result fits with the rest of the system. The diagnostic chain — reading the test failure, understanding the assertion, tracing the cause to a specific incomplete migration — is one that current agents can perform in some cases but not reliably when the failure spans multiple files and waves.
 
-Three interventions in 90 minutes. The rest was autonomous execution within the plan. The interventions were not random — they fell at predictable escalation points: a scope decision, a recovery decision, and a diagnostic decision. These are the categories of human judgment that the meta-process is designed to surface, not eliminate.
+Three interventions in 90 minutes. The rest was autonomous execution within the plan. The interventions were not random — they fell at predictable points that correspond to the three roles from Chapter 8: Architect (scope and decomposition decisions), Escalation Handler (recovery when agents hit limits), and Reviewer (validating output and diagnosing failures). These are the categories of human judgment that the meta-process is designed to surface, not eliminate. Understanding which role you are in at each intervention point — and why it matters — is what Chapter 8 prepares you for.
 
 ---
 

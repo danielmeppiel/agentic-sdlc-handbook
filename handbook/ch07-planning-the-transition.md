@@ -66,9 +66,15 @@ The assessment is not a gate — it is a sequencing tool. Teams scoring "ready" 
 
 ## Phased Adoption
 
-The transition from pilot to full adoption follows three phases. Each phase has entry criteria, activities, expected duration, and exit signals. Moving to the next phase before the exit signals are present is the single most common adoption mistake.
+The transition from pilot to full adoption follows three phases. Each phase has entry criteria, activities, expected duration, exit signals, and rollback criteria. Moving to the next phase before the exit signals are present is the single most common adoption mistake. Ignoring rollback signals is the second.
 
-### Phase 1: Pilot (Months 1-3)
+**A note on timelines.** The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.
+
+### Phase 1: Pilot (1–5 months)
+
+*Typical duration: 1–3 months for orgs under 200 engineers; 3–5 months for 200–1,000; 4–6 months for 1,000+.*
+
+**Scale factor: documentation maturity.** The single biggest driver of Phase 1 duration is how much working knowledge is already explicit. Building even a minimal context layer — project-level instructions, core conventions, architecture boundaries — is a 4–6 week effort for a team starting from zero documentation. That work happens *inside* Phase 1, not before it. If your readiness assessment flagged codebase readiness as "not ready" or "partially ready," plan for the longer end of the range.
 
 **Objective.** Validate that agentic development produces reliable results on your codebase, with your team, under your governance model.
 
@@ -76,14 +82,25 @@ The transition from pilot to full adoption follows three phases. Each phase has 
 
 **Activities.**
 - Establish baseline measurements before the pilot begins. You cannot measure improvement without a starting point. Capture current cycle time, review rejection rate, defect rate, and developer satisfaction on the selected workstreams.
-- Build the minimum viable context layer: project-level instructions, core coding conventions, architecture boundaries. Block 2 (Chapters 8-9) provides the methodology. For the pilot, you need enough context to prevent the most common agent failures, not a comprehensive instrumentation layer.
+- Build the minimum viable context layer: project-level instructions, core coding conventions, architecture boundaries. Block 2 (Chapters 8–9) provides the methodology. For the pilot, you need enough context to prevent the most common agent failures, not a comprehensive instrumentation layer.
 - Run the pilot with close observation. The goal is to learn, not to prove a point. Document what agents get right, what they get wrong, and what they can't do. Track human intervention points — every moment a developer had to correct, override, or redo agent output.
 
 **Exit signals.** Move to Phase 2 when: (1) the pilot team has a documented context layer that improves agent output quality, (2) the team has a review workflow for agent-generated code that they trust, (3) you have baseline and pilot metrics for at least four weeks, and (4) the pilot team can articulate what worked and what other teams would need.
 
+**Rollback criteria.** Pause or restructure Phase 1 if any of the following hold after six weeks of active piloting:
+- **Review rejection rate exceeds 60%.** Agents are producing output the team cannot trust. This is almost always a context quality problem. Pause generation work, invest in the context layer, and restart the pilot clock.
+- **Human intervention rate is not declining week over week.** The first two weeks will be rough. By week four, intervention should be trending down. A flat or rising line means the team is fighting the tool, not learning from it. Diagnose whether the problem is context, skill, or tool fit before continuing.
+- **Developer satisfaction drops below pre-pilot baseline.** If the people using the tools are less productive or less satisfied than before, the pilot is not validating — it is eroding trust. Stop, debrief, and determine whether the issue is remediable or fundamental.
+
+The rollback process: revert affected teams to their pre-pilot workflow. Preserve all context assets and metrics — they are not wasted, they are diagnostic. Conduct a structured retrospective focused on *why* the signals triggered, not *who* is responsible. A failed pilot that produces clear lessons is more valuable than a limping pilot that produces ambiguous data.
+
 **Common failure.** Declaring the pilot a success based on enthusiasm rather than evidence. "The team loves it" is a data point, not a conclusion. The exit signals are structural, not emotional.
 
-### Phase 2: Expand (Months 3-6)
+### Phase 2: Expand (3–9 months from project start)
+
+*Typical duration of Phase 2 itself: 2–4 months for orgs under 200; 3–6 months for 200–1,000; 4–8 months for 1,000+.*
+
+**Scale factor: coaching capacity.** The pilot-members-as-coaches model works at this scale — but it has a capacity cost. You are pulling senior engineers off delivery to teach. For organizations expanding to more than five teams, budget for dedicated enablement: a platform engineer, a developer experience lead, or a rotating coaching role. The coaching model breaks at roughly a 1:3 ratio (one coach to three expanding teams). Plan accordingly.
 
 **Objective.** Extend adoption to additional teams while building the organizational infrastructure — shared context assets, governance processes, skill development — that the pilot didn't require at small scale.
 
@@ -97,9 +114,20 @@ The transition from pilot to full adoption follows three phases. Each phase has 
 
 **Exit signals.** Move to Phase 3 when: (1) expanding teams are productive with agentic tools without daily support from pilot members, (2) shared context assets exist and have a responsible owner, (3) governance processes are documented and followed without enforcement, and (4) organizational metrics show a trend you can explain.
 
+**Rollback criteria.** Scale back Phase 2 if:
+- **More than half the expanding teams require daily coach intervention after four weeks.** The support infrastructure is not scaling. Either the shared context assets are insufficient, the governance processes are unclear, or the team selection was premature. Pause expansion, reinforce the infrastructure, and resume with fewer teams.
+- **Organizational metrics diverge sharply from pilot metrics.** If the pilot showed a 3:1 generation-to-review ratio and expanding teams are at 1:1 or worse, the pilot conditions are not transferable. Investigate whether the gap is codebase-specific (different teams, different context needs) or structural (the pilot was a hero team on a friendly codebase).
+- **Coach burnout.** If pilot team members are spending more than 30% of their time coaching and their own delivery is suffering, you have a capacity problem, not an adoption problem. Either hire dedicated enablement or slow the expansion rate.
+
+The rollback process: teams that are not self-sufficient revert to their pre-adoption workflow. Teams that are functioning well continue. Coaching resources concentrate on fewer teams. The goal is to shrink to a sustainable expansion rate, not to abandon the transition.
+
 **Common failure.** Expanding too fast. The instinct after a successful pilot is to "accelerate the rollout." Every team added without readiness or support becomes a negative data point — and negative data points spread faster than positive ones. A team that has a bad experience with agentic tools will resist for months. Three to five teams in Phase 2 is a deliberate constraint.
 
-### Phase 3: Scale (Months 6-12)
+### Phase 3: Scale (6–24 months from project start)
+
+*Typical duration: 3–6 months for orgs under 200; 6–12 months for 200–1,000; 12–24 months for 1,000+.*
+
+**Scale factor: organizational breadth.** Phase 3 includes teams that initially scored "not ready" — teams with legacy codebases, thin documentation, and mixed enthusiasm. These teams require more preparation, more coaching, and longer ramp-up. For an organization of 400+ engineers, expect Phase 3 to take at least 12 months. For 1,000+, plan for 18–24 months. Compressing this timeline produces shallow adoption that looks like compliance and functions like resistance.
 
 **Objective.** Make agentic development the default working mode for the engineering organization.
 
@@ -107,9 +135,15 @@ The transition from pilot to full adoption follows three phases. Each phase has 
 
 **Activities.**
 - Onboarding becomes self-service. Documentation, shared context assets, and governance processes should be mature enough that a new team can adopt from written resources alone. If this isn't true, you are not ready for Phase 3.
+- Transition from peer coaching to a dedicated enablement function. The coaching model from Phase 2 does not survive Phase 3 at scale. Assign permanent ownership — a developer experience team, a platform engineering function, or at minimum a named individual — responsible for context asset quality, onboarding materials, and tooling support.
 - Context engineering becomes a continuous practice, not a one-time setup. Teams contribute back to shared assets. Stale context is pruned. New patterns are documented as they emerge. Chapter 13 covers this at team scale.
 - Metrics mature from "is this working?" to "where do we invest next?" — reducing intervention rates, improving context quality, expanding the range of tasks agents handle reliably.
 - Evaluate advanced workflows: multi-agent orchestration, cross-repository operations, CI/CD integration with agent-generated changes. These require organizational maturity and should not be attempted before Phase 3.
+
+**Rollback criteria.** Phase 3 rollback is not all-or-nothing. It is selective:
+- **Individual teams that show sustained negative trends** — rising intervention rates, declining satisfaction, increasing rework — after eight weeks of active adoption should pause and receive targeted support. Do not force adoption on a team producing worse outcomes with the tools than without them.
+- **If organizational-level metrics plateau or decline for a full quarter,** halt further expansion and conduct a structural review. The most common cause is context asset decay — the shared assets that worked for early adopters become stale as more teams rely on them. The fix is investment in maintenance, not more rollout.
+- **Kill criteria for the program.** If, after a full Phase 1 and Phase 2 cycle, fewer than 40% of participating teams show measurable improvement on quality or efficiency metrics, the transition is not producing organizational value. This does not mean the tools are useless — it may mean your codebase, your team composition, or your domain is not yet a good fit. Document what you learned, preserve what worked at the team level, and revisit when conditions change. A transition plan without a kill switch is an escalation of commitment.
 
 **Exit signals.** Phase 3 does not have an endpoint — it is the steady state. The signal is not that everyone is using the tools. It is that the tools produce measurable value, the organization can sustain and improve that value, and the transition is no longer a "project" but an ongoing capability.
 
@@ -147,7 +181,19 @@ Measure what predicts long-term value, not what flatters short-term adoption.
 
 Start with the DORA metrics as your shared language. They are well-understood, widely adopted, and provide a baseline that predates your agentic adoption. Then add the agent-specific metrics — intervention rate, rejection rate, rework rate — as leading indicators of whether the tools are producing genuine value or shifting effort between phases.
 
-The single most important metric is one that most organizations do not track: the ratio of time spent *generating* code with agents to time spent *reviewing and correcting* agent-generated code. If that ratio is declining — more time generating, less time reviewing — the tools are working. If it is flat or worsening, you have a context quality problem, a skill problem, or both.
+The single most important metric is one that most organizations do not track: the ratio of time spent *generating* code with agents to time spent *reviewing and correcting* agent-generated code. If that ratio is improving — less time reviewing per unit of generation — the tools are working. If it is flat or worsening, you have a context quality problem, a skill problem, or both.
+
+### Instrumenting the Generation-to-Review Ratio
+
+A metric you cannot measure is a vanity metric in disguise. Here is how to actually capture the generation-to-review ratio, from least to most investment.
+
+**Level 1: PR metadata (low effort, moderate accuracy).** Most teams can start here. Tag agent-generated PRs with a label — `agent-generated`, `ai-assisted`, or whatever your tooling supports. Many AI coding tools already add metadata to commits or PR descriptions. Measure two timestamps per PR: creation time (proxy for generation end) and final approval time (proxy for review end). The ratio is aggregate review time divided by aggregate generation time across tagged PRs. This is noisy — PRs vary in size, review includes non-agent concerns — but it produces a directional trend. Tools: GitHub labels + a weekly query against your PR analytics.
+
+**Level 2: Annotation tags in workflow (medium effort, good accuracy).** Developers annotate their task tracking with structured tags: `[gen-start]`, `[gen-end]`, `[review-start]`, `[review-end]`. This can be as lightweight as a comment in the task tracker or a structured field in your project management tool. The annotations capture the actual time developers spend in each mode, not proxy timestamps. The overhead is roughly 30 seconds per task. Accuracy improves significantly because you are measuring developer time, not PR lifecycle time. Tools: task tracker custom fields, or a shared spreadsheet during the pilot phase.
+
+**Level 3: Git hooks and editor telemetry (higher effort, high accuracy).** For organizations that want precision, instrument the development environment directly. A pre-commit hook can detect agent-generated code (by presence of agent metadata, co-author trailers, or configurable markers) and log generation events. Editor extensions can track time spent in "generation mode" versus "review mode" based on active tool state. This data feeds a dashboard that computes the ratio automatically. This level of instrumentation is Phase 3 investment — do not attempt it in the pilot. Tools: custom git hooks, editor extension APIs, a lightweight telemetry pipeline.
+
+**What healthy looks like.** Early in adoption, expect a generation-to-review ratio around 1:1 — for every hour of agent-assisted generation, roughly an hour of review and correction. As context quality improves and teams calibrate their delegation patterns, healthy teams reach 3:1 or better. Below 1.5:1 after four weeks of active use indicates a context quality problem — the agents are producing output that costs almost as much to verify as it saves in creation. Above 5:1 warrants scrutiny in the other direction — verify that review rigor has not declined along with review time.
 
 ---
 
@@ -182,34 +228,38 @@ Use this template to plan your organization's transition. It is a starting point
 - [ ] Determine tool selection based on the evaluation framework from Chapter 2
 - [ ] Review governance requirements from Chapter 6; identify minimum viable policies
 
-### Phase 1 — Pilot (Months 1-3)
+### Phase 1 — Pilot (1–5 months, depending on org size and documentation maturity)
 
-- [ ] Build minimum viable context layer for pilot team's codebase (Chapters 8-9)
+- [ ] Build minimum viable context layer for pilot team's codebase (Chapters 8–9)
 - [ ] Train pilot team on context engineering basics and agent interaction patterns
 - [ ] Begin pilot with structured observation: log intervention points, failure modes, and successes
 - [ ] Conduct weekly retrospectives focused on what agents get right and wrong
 - [ ] Collect pilot metrics for at least four consecutive weeks
+- [ ] Monitor rollback signals at week six: rejection rate, intervention trend, developer satisfaction
 - [ ] Document lessons learned: what other teams need to know before starting
 - [ ] Evaluate Phase 1 exit signals before proceeding
 
-### Phase 2 — Expand (Months 3-6)
+### Phase 2 — Expand (3–9 months from start, depending on org size)
 
 - [ ] Select three to five expansion teams based on readiness
-- [ ] Assign pilot team members as coaches
+- [ ] Assign pilot team members as coaches (budget for dedicated enablement if expanding beyond five teams)
 - [ ] Build shared context assets: organizational standards, architectural patterns, cross-project conventions
 - [ ] Establish governance processes for agent-generated code
 - [ ] Begin role-specific skill development
 - [ ] Track organizational metrics
+- [ ] Monitor rollback signals: coach dependency, metric divergence, capacity strain
 - [ ] Conduct monthly cross-team retrospectives
 - [ ] Evaluate Phase 2 exit signals before proceeding
 
-### Phase 3 — Scale (Months 6-12)
+### Phase 3 — Scale (6–24 months from start, depending on org size)
 
 - [ ] Extend to remaining teams with self-service onboarding
+- [ ] Transition from peer coaching to dedicated enablement function
 - [ ] Establish continuous context maintenance (ownership, review, pruning)
 - [ ] Mature metrics from adoption tracking to effectiveness optimization
 - [ ] Evaluate advanced workflows: multi-agent orchestration, CI/CD integration
 - [ ] Assign permanent ownership of context assets and governance
+- [ ] Monitor per-team rollback signals; pause individual teams showing sustained negative trends
 - [ ] Report organizational impact using metrics framework
 
 ### Ongoing

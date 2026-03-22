@@ -68,11 +68,55 @@ Your job as escalation handler is to be available for these moments and to resol
 
 The ratio between these roles shifts as you gain experience. Early on, you spend most of your time reviewing — checking agent output carefully, catching failures, building intuition for what agents get wrong. As you develop better specifications and better instincts for decomposition, the review burden decreases and the architect role dominates. The escalation handler role remains roughly constant — some decisions always require a human.
 
+**These three roles are not theoretical categories.** Chapter 13 traces a real pull request — PR #394, 70 files changed, 90 minutes, 3 human interventions — and each intervention maps directly to one of these roles. The first intervention was a scope decision during planning: the practitioner assessed audit findings and decided to include all severity levels rather than deferring moderate issues. That was the Architect. The second was an agent recovery: an agent stalled mid-migration, and the practitioner diagnosed the failure mode, decided to split the remaining work across two replacement agents, and re-dispatched. That was the Escalation Handler. The third was test triage: a test failed after wave completion, and the practitioner traced the cause to an ordering issue in the migration and directed a targeted fix. That was the Reviewer. Three interventions, three roles, no overlap. The framework is not a taxonomy for its own sake — it describes the actual pattern of human judgment in agentic execution.
+
 ---
 
 ## When to Use Agents and When to Code Manually
 
 Agents are not universally better than manual coding. They are better at specific categories of work and worse at others. Knowing the boundary is a core practitioner skill.
+
+The decision is not intuitive at first, so here is the flowchart. When a task arrives, run it through these questions in order:
+
+```
+                        ┌─────────────────────┐
+                        │    Task arrives      │
+                        └─────────┬───────────┘
+                                  │
+                                  ▼
+                   ┌──────────────────────────────┐
+                   │ Can you specify it clearly    │
+                   │ in under 2 minutes?           │
+                   └──────┬───────────────┬────────┘
+                          │               │
+                         YES              NO
+                          │               │
+                          ▼               ▼
+              ┌────────────────────┐   ┌──────────────────────┐
+              │ Is the spec shorter│   │ Can you split it into │
+              │ than the code?     │   │ agent + manual parts? │
+              └───┬────────────┬───┘   └───┬──────────────┬───┘
+                  │            │            │              │
+                 YES           NO          YES             NO
+                  │            │            │              │
+                  ▼            │            ▼              ▼
+         ┌──────────────┐     │   ┌─────────────────┐  ┌────────────┐
+         │ Is the scope  │     │   │ SPLIT: bounded  │  │CODE IT     │
+         │ bounded?      │     │   │ parts → agent,  │  │YOURSELF    │
+         └──┬────────┬───┘     │   │ judgment parts  │  └────────────┘
+            │        │         │   │ → you           │
+           YES       NO        │   └─────────────────┘
+            │        │         │
+            ▼        ▼         ▼
+  ┌──────────────┐  ┌─────────────────┐
+  │ DELEGATE     │  │ CODE IT         │
+  │ to agent     │  │ YOURSELF        │
+  └──────────────┘  └─────────────────┘
+```
+
+The two-minute test is the entry point. If you could explain the task to a new team member in two minutes and they could complete it with access to the right files and a style guide, an agent can do it. If explaining it would require a thirty-minute whiteboard session with a senior engineer, you've reached a "NO" — code it yourself, or at least isolate the judgment-heavy core for manual work.
+
+The sections below unpack each path.
 
 **Use agents when the task is well-specified, repetitive, or parallelizable.** Migrating call sites across 40 files to a new API. Adding structured logging to 15 endpoints that follow the same pattern. Generating test scaffolding for a module with a clear interface. Writing documentation for functions with well-defined contracts. These tasks have a clear transformation rule, a bounded scope, and a predictable structure. Agents execute them faster and more consistently than a human, because the agent does not get bored, does not skip edge cases out of fatigue, and does not introduce inconsistencies because it forgot what it did three files ago.
 
@@ -86,8 +130,6 @@ Agents are not universally better than manual coding. They are better at specifi
 
 **Code manually when the task is a one-off that you will never repeat.** Agents pay off when the specification can be reused or when the task has enough volume to amortize the setup cost. A one-time, five-line fix in a file you already have open is faster to type than to specify. Not every task needs to be delegated to justify the investment in agentic tooling.
 
-A useful heuristic: if you could explain the task to a new team member in two minutes and they could complete it with access to the right files and a style guide, an agent can do it. If explaining the task would require a thirty-minute whiteboard session with a senior engineer, code it yourself — or at least code the hardest part yourself and delegate the mechanical pieces to agents.
-
 The boundary is not fixed. As your specifications improve — as you build up a library of reusable constraints, documented conventions, and tested decomposition patterns — tasks that were previously manual become delegable. The investment in context engineering shifts the boundary over time. But the boundary always exists. Pretending it doesn't is how teams end up with agents producing plausible garbage at scale.
 
 ---
@@ -96,21 +138,41 @@ The boundary is not fixed. As your specifications improve — as you build up a 
 
 There is a failure mode on the opposite end of the spectrum from "AI is just autocomplete." It is the belief that agents should do everything, that the measure of sophistication is the percentage of code produced by AI, that manually writing code is a sign of inefficiency.
 
-This belief produces three specific pathologies.
+This belief produces two specific pathologies.
 
 **Skill atrophy.** If you stop writing code, you stop developing the judgment needed to review code. Code review is not a static skill — it depends on your ongoing familiarity with the patterns, idioms, and failure modes of the language and framework you work in. A reviewer who hasn't written production code in six months catches fewer bugs, not more. The agent handles execution; you handle judgment. Judgment atrophies without practice.
 
 You can mitigate this deliberately. Reserve certain categories of work for manual implementation — the complex, the novel, the architecturally significant. Not because agents can't attempt them, but because doing them yourself maintains the judgment you need to review everything else.
 
-**Context erosion.** When agents produce most of the code in a module, the humans on the team understand that module less deeply. They can read it, but they didn't reason through the trade-offs that shaped it. When a bug surfaces six months later, or when a new requirement demands a structural change, the team lacks the deep understanding that comes from having built the thing. They dispatch an agent to fix it, the agent lacks the context the team lacks, and the cycle compounds.
-
-This is not hypothetical. It is the knowledge atrophy problem that Chapter 6 addresses from a governance perspective. The practitioner mitigation is the same: maintain authorship of the code that matters most. Use agents for the volume work. Write the critical paths yourself. Know the difference.
-
-**Specification debt.** Over-reliance on agents creates a hidden dependency: the team becomes dependent on specifications that may be incomplete, stale, or subtly wrong. When those specifications work, the output is good. When they drift — because the codebase evolved, because a convention changed, because a dependency updated its API — the agent produces output that was correct last month and is wrong today. Unlike code, specifications rarely have tests. The failure is silent until someone reviews the output carefully enough to notice.
-
 **The "almost done" trap.** An agent produces output that is 90% correct. You spend twenty minutes fixing the remaining 10%. The agent produces the next batch — 90% correct. You spend another twenty minutes. By the end of the day, you have spent more time fixing agent output than you would have spent writing the code from scratch, and you have produced code that is a patchwork of agent generation and manual fixes, with no single coherent author. The code works, but it is harder to maintain because no one — human or machine — thought through the whole thing.
 
 The trap is invisible because each individual fix feels small. You invested time dispatching the agent, and sunk-cost bias keeps you patching instead of starting over. The discipline is to recognize the pattern early: if you are making non-trivial corrections to more than 20–30% of an agent's output on a given task, the specification was wrong or the task was wrong for an agent. Stop fixing. Either improve the specification and re-dispatch, or do the task yourself.
+
+---
+
+## First Day: A Task from Start to Finish
+
+The preceding sections describe the mindset in the abstract. This section walks through it concretely. You are a senior engineer. It is Monday morning. The ticket says: *Add rate limiting to the `/api/projects` endpoint — 100 requests per minute per API key, return 429 with a `Retry-After` header when exceeded.*
+
+Here is how the mindset plays out.
+
+**0:00 — Architect.** You do not open the endpoint file and start coding, and you do not immediately dispatch an agent. You think about decomposition. The task has three parts: (1) a rate-limiting middleware or decorator, (2) wiring it to the endpoint, and (3) tests. You know from experience that your codebase already has a Redis-backed session store and an existing middleware pattern in `middleware/auth.py`. You check the flowchart: the middleware is a new component with a clear contract — agent-delegable. The wiring is three lines in a file you know well — faster to type yourself. The tests follow your existing test patterns — agent-delegable.
+
+You write a brief specification for the middleware: "Create a rate-limiting decorator in `middleware/rate_limit.py`. Use the existing Redis connection from `config.redis_client`. Key format: `rate:{api_key}:{endpoint}`. Limit: configurable, default 100/minute. Return 429 with `Retry-After` header showing seconds until reset. Follow the decorator pattern in `middleware/auth.py` — same signature, same error-response format. Do not modify any existing files."
+
+**0:04 — Dispatch and switch.** You send the middleware task to an agent and, while it works, you write the wiring yourself — three lines in the endpoint file importing the new decorator and applying it. You also draft the test specification: "Write tests for the rate-limit decorator in `tests/test_rate_limit.py`. Test: under-limit requests pass through, at-limit request is rejected with 429, `Retry-After` header is present and correct, different API keys have independent limits. Use the test patterns in `tests/test_auth_middleware.py` — same fixtures, same assertion style. Mock `config.redis_client` using the existing `mock_redis` fixture."
+
+**0:08 — Reviewer.** The middleware agent returns code. You review it. The decorator signature matches `auth.py` — good. It uses `config.redis_client` — good. But you notice it catches `redis.ConnectionError` and silently allows the request through. Your team's policy is that infrastructure failures should return 503, not fail open. The agent could not have known this — the policy is not written anywhere. You note this: a constraint you missed.
+
+You have two choices. The fix is a two-line change — swap the fallback from pass-through to 503. You make the edit yourself rather than re-dispatching; the specification-to-code ratio would be absurd for a two-line fix. But you also write the policy down: you add a line to the middleware instruction file stating that infrastructure errors must return 503, never fail open. The next agent, on the next task, will know.
+
+**0:12 — Dispatch tests.** You send the test specification to an agent. While it works, you review the middleware one more time. The Redis key format is correct. The TTL logic is correct. The `Retry-After` calculation rounds up, which is fine.
+
+**0:16 — Escalation handler.** The test agent returns. Four tests, all structured correctly, but one test — the `Retry-After` header assertion — hardcodes a sleep-based timing check. You know this will be flaky in CI. This is a judgment call the agent could not make: it does not know your CI environment has variable latency. You rewrite the assertion to freeze time with `unittest.mock.patch` instead of sleeping. This is escalation handling — the agent surfaced a decision that required your knowledge of the deployment context.
+
+**0:20 — Validate.** You run the full test suite. Green. You open the PR. Total time: 20 minutes. You wrote roughly 10 lines of code yourself (the wiring, the 503 fix, the flaky-test rewrite). The agents wrote roughly 120 lines (the middleware, the tests). More importantly, you improved two pieces of infrastructure: the middleware instruction file now includes the fail-closed policy, and the test instruction file now warns against sleep-based assertions. The next task in this area will go faster.
+
+Four role transitions in twenty minutes. None of them required conscious effort once you internalized the pattern — they are the natural rhythm of working with agents on a real codebase.
 
 ---
 
