@@ -2,9 +2,10 @@
 name: handbook-panel
 description: >-
   Activate when working on the Agentic SDLC Handbook. This skill
-  orchestrates an expert panel of 8 agents for iterative review,
-  drafting, and quality assurance of handbook content. Use it for
-  any handbook chapter creation, review, or structural decision.
+  orchestrates an expert panel of 10 agents for iterative review,
+  drafting, visual design, fact-checking, and quality assurance of
+  handbook content. Use it for any handbook chapter creation, review,
+  illustration, or structural decision.
 ---
 
 # Handbook Panel — Expert Review Orchestration
@@ -21,6 +22,8 @@ description: >-
 | [CTO Proxy](../../agents/cto-proxy.agent.md) | Skeptical CTO Reader | Block 1 review — "so what?", "prove it", executive attention test |
 | [Dev Lead Proxy](../../agents/dev-lead-proxy.agent.md) | Impatient Practitioner | Block 2 review — "can I use this Monday?", actionability test |
 | [Thought Leadership](../../agents/thought-leadership.agent.md) | Personal Brand Strategist | Voice authenticity, credibility markers, positioning review |
+| [Illustrator](../../agents/illustrator.agent.md) | Visual Strategist | Diagram specification, visual audit, information design, Mermaid/ASCII specs |
+| [Fact & Ref Checker](../../agents/fact-ref-checker.agent.md) | Claims Auditor | Unverified claim detection, statistic validation, consistency audit |
 
 ## Panel workflow
 
@@ -36,37 +39,53 @@ description: >-
 4. Chief Editor ensures voice consistency and cuts bloat
 5. Surface to author for approval
 
+### For visual audit
+1. Illustrator scans each chapter for complexity signals and visual opportunities
+2. Produces Mermaid/ASCII specs for each recommended visual
+3. Flags existing visuals that fail the "faster than prose" test
+4. Chief Editor reviews visual density and cross-chapter consistency
+5. Surface visual specs to author for approval
+
+### For fact-checking
+1. Fact & Ref Checker audits each chapter for unverified claims
+2. Classifies claims as Verified / Qualified / Unverified
+3. Runs cross-chapter consistency audit (numbers, frameworks, case study details)
+4. Produces structured report with recommendations
+5. Surface flagged claims to author for resolution
+
 ### For integration review
 1. Chief Editor reads full manuscript for arc and flow
 2. Thought Leadership Advisor checks author positioning
 3. Both audience proxies do final "would I read this?" check
-4. Surface revision list to author for approval
+4. Illustrator does cross-manuscript visual consistency check
+5. Fact & Ref Checker does final cross-chapter consistency audit
+6. Surface revision list to author for approval
 
 ## Handbook structure
 
 ```
-Block 0: The Shift (shared foundation)
+Block 0: Foundation
   Ch 1: The Agentic SDLC Thesis
-  Ch 2: The Landscape
 
 Block 1: For Leaders
-  Ch 3: Why This Changes Everything
-  Ch 4: The Context Moat
-  Ch 5: Org Design for Agentic Teams
-  Ch 6: Governance & Trust
-  Ch 7: ROI & Adoption Playbook
+  Ch 2: The AI-Native Landscape
+  Ch 3: The Business Case
+  Ch 4: The Agentic SDLC Reference Architecture
+  Ch 5: Governance for AI-Assisted Delivery
+  Ch 6: Team Structures for AI-Augmented Delivery
+  Ch 7: Planning the Transition
 
 Block 2: For Practitioners
-  Ch 8: The Practice — Context Engineering
-  Ch 9: Agent Primitives
-  Ch 10: Execution — The Meta-Process
-  Ch 11: Delegation & Orchestration
-  Ch 12: Tooling & Distribution
-  Ch 13: Team Scale
-  Ch 14: Anti-Patterns & Failure Modes
+  Ch 8: The Practitioner's Mindset
+  Ch 9: The Instrumented Codebase
+  Ch 10: The PROSE Specification
+  Ch 11: Context Engineering
+  Ch 12: Multi-Agent Orchestration
+  Ch 13: The Execution Meta-Process
+  Ch 14: Anti-Patterns and Failure Modes
 
-Block 3: What's Next (shared closing)
-  Ch 15: The Road Ahead
+Closing
+  Ch 15: What Comes Next
 ```
 
 ## Quality gates
@@ -75,4 +94,6 @@ Every chapter must pass:
 - [ ] Chief Editor: voice consistency, no bloat
 - [ ] Audience proxy: engagement and actionability
 - [ ] Market Analyst: claim validity (for any competitive/vendor content)
+- [ ] Illustrator: visual audit — appropriate diagrams where they accelerate comprehension
+- [ ] Fact & Ref Checker: all claims verified, qualified, or flagged
 - [ ] Author approval
