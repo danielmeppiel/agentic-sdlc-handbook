@@ -8,29 +8,17 @@ This chapter applies the three-tier honesty framework — available now, emergin
 
 ## Near-Term: What Changes in the Next Twelve Months
 
-These predictions are grounded in capabilities that exist today in limited form and are expanding rapidly. They fall in the "available now, becoming widespread" tier.
+**Agent tool use becomes standard, not experimental.** The shift from text generation to agents that execute — file operations, terminal commands, API calls, test runs — is underway but uneven. Within a year, tool-using agents will be the default interaction mode. This makes Safety Boundaries more critical, not less. A model that generates bad code wastes review time. A model that executes bad commands corrupts state. Guardrails that felt conservative in a text-generation world become essential in a tool-execution world.
 
-**Context windows grow; context engineering becomes more important, not less.** Models with million-token context windows are already available. Within a year, most commercial models will support them. The intuitive expectation is that larger windows reduce the need for structured context — just load everything. The opposite will happen. Larger windows mean more content competing for attention. Without structure, the attention dilution problem gets worse. Teams that invested in progressive disclosure, scoped primitives, and explicit hierarchies will use large windows effectively. Teams that dump entire codebases into context will get confidently wrong output, faster. The constraint holds: context is finite and fragile, regardless of the number.
-
-**Agent tool use becomes standard, not experimental.** Today, most AI coding tools operate primarily through text generation — producing code that developers copy, review, and integrate. The shift to agents that invoke tools directly (file operations, terminal commands, API calls, test execution) is underway but unevenly deployed. Within a year, tool-using agents will be the default mode of interaction across major platforms. This makes Safety Boundaries more critical, not less. A model that generates bad code wastes review time. A model that executes bad commands wastes infrastructure, corrupts state, or creates security exposure. Guardrails that felt conservative in a text-generation world become essential in a tool-execution world.
-
-**Multi-agent orchestration moves from research to practice.** Teams today primarily use single-agent interactions — one developer, one agent session, one task. Multi-agent patterns (planning agents dispatching to specialist agents, review agents evaluating output from coding agents, agents collaborating through shared artifacts) exist in research and early tooling. Within a year, these patterns will be available in mainstream platforms. The orchestration disciplines in Chapters 10 and 11 — task decomposition, checkpoint validation, escalation protocols — will become operational necessities rather than advanced practices.
-
-**Organizational adoption accelerates unevenly.** The teams that built context infrastructure during the "early adopter" phase will compound their advantage. Teams starting fresh will face a steeper onboarding curve — not because the tools are harder, but because the gap between structured and unstructured adoption will be more visible. The context moat described in Chapter 4 begins to show measurable competitive effects.
+**Multi-agent orchestration moves from research to practice.** Teams today primarily use single-agent interactions. Multi-agent patterns — planning agents dispatching specialists, review agents evaluating output, agents collaborating through shared artifacts — exist in research and early tooling. Within a year, they will ship in mainstream platforms. The orchestration disciplines in Chapters 10–12 — task decomposition, wave-based execution, escalation protocols — become operational necessities rather than advanced practices.
 
 ---
 
 ## Medium-Term: What Shifts Over One to Three Years
 
-These predictions extrapolate from current trajectories. They fall in the "emerging" tier — the direction is clear, but the specific form is uncertain.
+**Agent governance becomes a first-class engineering discipline.** Today, governance of agent output is handled through existing processes — pull requests, CI, manual approval. This works at current volumes. As output scales and multi-agent orchestration becomes common, dedicated governance infrastructure will emerge: audit trails for agent decisions, policy engines that enforce constraints at execution time rather than review time, cost controls that manage token spend across teams. The governance frameworks in Chapter 6 anticipate this, but the tooling barely exists. Within three years, agent governance platforms will be a category — the way CI/CD became a category a decade ago.
 
-**Standards converge around tool integration and agent communication.** The current landscape is fragmented: every platform defines its own formats for instructions, tool interfaces, and agent configuration. Protocol-level standards for tool integration are already forming. Agent-to-agent communication standards are emerging. Within three years, the integration layer will consolidate around a small number of protocols — analogous to how REST, HTTP, and JSON became the lingua franca for web APIs. Instruction formats will remain diverse (each platform will keep its native syntax), but the semantic concepts — scoped context, progressive disclosure, safety boundaries — will map across platforms more cleanly than they do today. Teams that built primitives around principles rather than specific file formats will port their work with modest effort. Teams that coupled tightly to one platform's syntax will face migration costs.
-
-**Agent governance becomes a first-class engineering discipline.** Today, governance of agent-generated code is handled through existing review processes — pull requests, CI checks, manual approval. This works at current volumes. As agent output volume increases and multi-agent orchestration becomes common, dedicated governance infrastructure will emerge: audit trails for agent decisions, policy engines that enforce constraints at execution time rather than review time, cost controls that manage token spend across teams and projects. The governance frameworks in Chapter 6 anticipate this, but the tooling to implement them barely exists today. Within three years, agent governance platforms will be a category — analogous to how CI/CD became a category a decade ago.
-
-**The boundary between "writing code" and "describing intent" continues to blur.** Today, the agentic workflow involves a human decomposing tasks, providing context, and reviewing output. Each of these steps requires engineering judgment. As models improve at understanding architectural context and as context infrastructure matures, the human's role shifts further toward specification and validation. The planning phase — defining what the system should do, what constraints it must respect, what trade-offs to accept — becomes proportionally more of the work. The execution phase — translating that specification into code — becomes proportionally more automated. This does not eliminate the need for engineering skill. It shifts where that skill is applied: from syntax and implementation patterns to system design, constraint definition, and output evaluation.
-
-**The junior developer pipeline problem intensifies, then resolves.** As discussed in Chapter 5, the most immediate organizational risk is the compression of the learning path for junior engineers. If agents handle the implementation tasks that traditionally built foundational skills, how do juniors develop judgment? This problem will get worse before it gets better. Within three years, the resolution will emerge: deliberately structured learning paths that use agent-assisted development as a teaching tool rather than a replacement, mentorship models that pair junior developers with senior engineers on agent-supervised tasks, and organizational recognition that developing engineering judgment requires a different kind of practice than it used to.
+**The boundary between "writing code" and "describing intent" blurs.** As models improve at understanding architectural context and as context infrastructure matures, the human role shifts further toward specification and validation. The planning phase — defining what the system should do, what constraints it must respect, what trade-offs to accept — becomes proportionally more of the work. The execution phase becomes proportionally more automated. This does not eliminate engineering skill. It shifts where that skill applies: from implementation patterns to system design, constraint definition, and output evaluation. The practitioners who thrive will be the ones who treat specification as an engineering discipline, not a hand-wave before the "real work."
 
 ---
 
@@ -38,11 +26,9 @@ These predictions extrapolate from current trajectories. They fall in the "emerg
 
 These predictions are directional. The author believes they describe where the field is heading. They are opinions, not forecasts.
 
-**Full lifecycle coverage becomes achievable.** The eight-phase lifecycle model from Chapter 3 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust agent support exists primarily in the code and review phases, with emerging capabilities in test and deploy. Within five years, credible agent participation across all eight phases is plausible — not as fully autonomous agents replacing humans at each phase, but as capable participants that handle routine work under human direction. The "any stage can run as a single agent loop — or expand into governed phases" vision becomes operational reality for mature organizations.
+**Full lifecycle agent participation becomes achievable.** The eight-phase lifecycle from Chapter 3 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.
 
-**The distinction between "AI-assisted" and "AI-native" development becomes meaningful.** Today, most organizations use AI tools within their existing workflows — essentially adding an AI layer to a human process. AI-native development means designing the workflow around the assumption that agents are participants: context infrastructure as a first-class engineering artifact, governance built for agent output volume, team structures that account for human-agent collaboration. Within five years, the performance gap between AI-assisted (bolt-on) and AI-native (designed-in) approaches will be large enough that it drives organizational restructuring — much as the gap between waterfall-with-tools and genuinely agile organizations drove restructuring in the previous decade.
-
-**Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and continuous deployment. It is infrastructure, not a competitive advantage. Context infrastructure — the primitives, the instruction hierarchies, the knowledge bases that make agents effective — will follow the same trajectory. Early movers treat it as a competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," much as organizations without CI concluded that automated testing "doesn't work at our scale."
+**Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and deployment. Context infrastructure — the primitives, instruction hierarchies, and knowledge bases that make agents effective — will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," the same way organizations without CI concluded automated testing "doesn't work at our scale."
 
 ---
 
@@ -50,63 +36,95 @@ These predictions are directional. The author believes they describe where the f
 
 These are the things the author is most confident about, precisely because they are structural rather than technological.
 
-**Context will remain finite and fragile.** Regardless of model capability, there will always be a limit to how much information an agent can effectively consider — whether that limit is a hard context window or a soft attention degradation curve. The constraint that context must be structured, scoped, and curated to be useful is a property of the problem, not the current state of the technology.
+**Context will remain finite and fragile.** Regardless of model capability, there will always be a limit to how much information an agent can effectively consider — whether a hard context window or a soft attention degradation curve. The constraint that context must be structured, scoped, and curated is a property of the problem, not the current technology.
 
-**Output will remain probabilistic.** Models will get better at producing correct output. They will not become deterministic. The same input will still produce different outputs across invocations. Reliability will still need to be architected through constraints, validation, and structured workflows — not assumed from model quality. Any workflow that depends on an agent producing exactly the same output twice is a workflow that will eventually break.
+**Output will remain probabilistic.** Models will get better. They will not become deterministic. The same input will still produce different outputs. Reliability will still need to be architected through constraints, validation, and structured workflows — not assumed from model quality.
 
-**Explicit knowledge will remain more valuable than implicit knowledge.** Agents will get better at inferring context from code structure, commit history, and documentation. They will not become capable of reading the minds of the team that wrote the code. Conventions, architectural decisions, and domain constraints that exist only in human memory will remain invisible to agents. Organizations that externalize their knowledge will outperform organizations that don't, regardless of how sophisticated the models become.
+**Explicit knowledge will remain more valuable than implicit knowledge.** Agents will get better at inferring context from code and history. They will not read the minds of the team. Conventions and decisions that exist only in human memory will remain invisible. Organizations that externalize their knowledge will outperform those that don't.
 
-**Human judgment will remain the bottleneck and the differentiator.** The scarce resource in an agentic workflow is not token generation. It is the ability to define what should be built, evaluate whether it was built correctly, and decide what to do when it wasn't. Agents accelerate execution. They do not accelerate judgment. The organizations that develop engineering judgment at scale — through hiring, mentorship, structured learning, and organizational design — will be the ones that extract the most value from agent capabilities.
+**Human judgment will remain the bottleneck and the differentiator.** The scarce resource is not token generation. It is the ability to define what should be built, evaluate whether it was built correctly, and decide what to do when it wasn't. Agents accelerate execution. They do not accelerate judgment.
 
-These four properties are why the architectural constraints defined in Chapter 1 are durable. Progressive Disclosure addresses finite context. Safety Boundaries address probabilistic output. Explicit Hierarchy addresses the need for externalized knowledge. Reduced Scope addresses the limits of agent judgment. The constraints were not designed for today's models. They were designed for the structural properties of human-AI collaboration.
+These four properties are why the architectural constraints from Chapter 1 are durable. Progressive Disclosure addresses finite context. Safety Boundaries address probabilistic output. Explicit Hierarchy addresses the need for externalized knowledge. Reduced Scope addresses the limits of agent judgment. The constraints were not designed for today's models. They were designed for the structural properties of human-AI collaboration.
 
 ---
 
 ## Three-Tier Honesty Applied to This Chapter's Own Claims
 
-In the spirit of the framework this book applies to everything else:
-
 | Claim | Tier | Confidence |
 |---|---|---|
-| Larger context windows increase the need for structured context | Available now | High — already observable |
 | Tool-using agents become the default interaction mode | Available now | High — shipping in multiple platforms |
-| Standards converge around tool integration protocols | Emerging | Medium — direction clear, timeline uncertain |
-| Agent governance becomes a distinct engineering discipline | Emerging | Medium — the need is clear, the tooling is not |
+| Multi-agent orchestration enters mainstream tooling | Available now | High — already in early production |
+| Agent governance becomes a distinct discipline | Emerging | Medium — need is clear, tooling is not |
+| Specification replaces implementation as the core skill | Emerging | Medium — direction clear, timeline uncertain |
 | Full lifecycle agent coverage becomes operational | Directional | Low-to-medium — plausible, not inevitable |
-| Context infrastructure becomes as foundational as CI/CD | Directional | Medium — trajectory is clear, timeline is 5+ years |
-| The four structural constraints hold | Structural | High — these are properties of the problem, not the technology |
+| Context infrastructure becomes as foundational as CI/CD | Directional | Medium — trajectory clear, timeline 5+ years |
+| The four structural constraints hold | Structural | High — properties of the problem |
 
-The reader should calibrate their planning accordingly. Invest confidently in the "available now" tier. Prepare for the "emerging" tier. Be aware of the "directional" tier without betting the organization on specific timelines.
+The reader should calibrate accordingly. Invest confidently in the "available now" tier. Prepare for the "emerging" tier. Be aware of the "directional" tier without betting the organization on specific timelines.
 
 ---
 
 ## What the Author Probably Got Wrong
 
-Intellectual honesty requires identifying the places where this book's assumptions are most likely to age poorly.
+Intellectual honesty requires identifying where this book's assumptions are most likely to age poorly.
 
-**The pace of capability improvement may outrun the governance frameworks.** This book assumes organizations will have time to build governance infrastructure before agent capabilities demand it. If model capabilities improve faster than organizational maturity — which is the historical pattern for every previous technology shift — many organizations will face a period where agents can do more than the organization is prepared to govern. The governance chapter provides a framework, but the framework assumes a measured rollout. Reality may be less measured.
+**The pace of capability improvement may outrun governance.** This book assumes organizations will have time to build governance infrastructure before agent capabilities demand it. If capabilities improve faster than organizational maturity — the historical pattern for every technology shift — many organizations will face a period where agents can do more than the organization is prepared to govern.
 
-**The emphasis on human-in-the-loop may prove too conservative for some domains.** This book consistently advocates for human review of agent output. For high-stakes production code, that recommendation will hold. For lower-stakes domains — internal tooling, prototyping, throwaway infrastructure — fully autonomous agent workflows may become practical sooner than this book suggests. The "always review" stance is safer than "review sometimes," but it may leave efficiency on the table in contexts where the cost of failure is low.
+**The emphasis on human-in-the-loop may prove too conservative.** For high-stakes production code, human review will hold. For internal tooling, prototyping, and throwaway infrastructure, fully autonomous workflows may become practical sooner than this book suggests. The "always review" stance is safer but may leave real efficiency on the table in contexts where the cost of failure is low.
 
-**The multi-agent orchestration model may evolve in directions not anticipated here.** The orchestration patterns in this book — human planner dispatching to specialist agents — reflect the current state of practice. Future orchestration may involve agents that plan their own task decomposition, negotiate resource allocation with other agents, or maintain persistent state across sessions. The compositional principles will likely still apply, but the specific patterns may look different.
+**The multi-agent orchestration model may evolve past human orchestrators.** The patterns in this book assume a human planner dispatching specialist agents. Future orchestration may involve agents that plan their own decomposition, negotiate resources, and maintain persistent state across sessions. The compositional principles will likely still apply, but the human-as-orchestrator model this book centers may be a transitional pattern, not an enduring one.
 
-**The organizational predictions may underestimate resistance.** The chapters on team structure and transition planning assume that organizations will adapt their structures to take advantage of agentic capabilities. History suggests that organizational inertia is the strongest force in technology adoption. The tools may be ready before the organizations are — and the gap between technically possible and organizationally achievable may persist longer than the technology trajectory implies.
+**The documentation burden may not pay for itself.** This book asks teams to externalize knowledge that was previously implicit. That is real work with real ongoing maintenance cost. If the productivity gains from agentic development are modest — 15–20% rather than the 2–3x some claim — then the time spent creating and maintaining context infrastructure could consume most of the gains. The break-even calculation is less obviously favorable than the book implies, and the author has not seen enough longitudinal data to be certain it tips the right way.
+
+**And the uncomfortable one: the author may be overestimating the durability of human judgment as the differentiator.** This book argues that human judgment is the bottleneck agents cannot replace — and builds its entire methodology around that assumption. But there is a motivated reasoning risk in any book that argues humans are indispensable, written by a human who wants that to be true. If models develop genuine architectural reasoning — not pattern matching on training data, but the ability to evaluate trade-offs, anticipate failure modes, and make design decisions that hold up under pressure — then the "human judgment" moat this book describes is not structural. It is temporal. The author believes it is structural. The author also acknowledges that this belief is load-bearing for the entire framework, which means it is exactly the kind of assumption that deserves the most scrutiny and the least certainty.
 
 ---
 
-## What to Do Monday Morning
+## Your First Week: What to Do Starting Monday
 
-For leaders who read Block 1:
+For leaders who read Block 1 and practitioners who read Block 2, here is the concrete version. Not principles. Actions.
 
-Start with the readiness assessment from Chapter 7. Identify one team with the right combination of codebase maturity, process discipline, and cultural openness. Fund a structured pilot — not "give everyone licenses and see what happens," but the phased adoption described in the transition plan. Measure what matters: quality metrics, review efficiency, context infrastructure maturity. Build governance before you need it. The investment in context infrastructure is the one with the highest long-term return and the lowest short-term visibility, which means it is the one most likely to be cut. Protect it.
+### Day 1: Audit One Module
 
-For practitioners who read Block 2:
+Pick the module your team changes most frequently. Not the biggest module — the most-changed one. Run the methodology from Chapter 9: identify implicit knowledge, undocumented conventions, architectural decisions that exist only in your team's memory. Write down what you find. You are not fixing anything today. You are measuring the gap between what an agent can see and what your team knows.
 
-Pick one codebase you work in regularly. Audit it using the methodology from Chapter 9 — identify the implicit knowledge, the undocumented conventions, the architectural decisions that exist only in your team's memory. Write three primitives: one organizational standard, one architectural constraint, one domain-specific rule. Test them against real tasks. Measure the before-and-after quality. Iterate. The entire discipline starts with making implicit knowledge explicit. Everything else follows.
+**Deliverable:** A list of 5–10 implicit conventions that an agent would violate on its first task in this module.
 
-For both:
+### Day 2: Write Your First Three Primitives
 
-Accept that you are early. The field is moving faster than any book can capture. The specific tools and platforms will change. The formats will evolve. The capabilities will exceed what this book describes. Use the principles, not the specifics. The constraints were designed to be durable: structure your context, scope your tasks, compose simple primitives, enforce safety boundaries, and organize your knowledge hierarchically. These disciplines work regardless of which model runs underneath or which tool wraps around it.
+Take the top three conventions from yesterday's audit. Write each as an instruction primitive — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 10: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
+
+**Deliverable:** Three instruction files, committed to your repository.
+
+### Day 3: Test Against a Real Task
+
+Pick a task from your current sprint — something an agent would plausibly handle. Run it twice: once without your new primitives, once with them. Compare the output. Did the primitives prevent the mistakes you predicted? Did they cause new problems? Record the before-and-after. This is your first data point, not your conclusion.
+
+**Deliverable:** A before-and-after comparison with specific examples of what changed.
+
+### Day 4: Measure and Adjust
+
+Review yesterday's comparison honestly. Which primitives made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn't land. This is the calibration loop from Chapter 11 — primitives are not documentation, they are engineering artifacts that need testing and iteration like any other code.
+
+**Deliverable:** Revised primitives based on observed agent behavior.
+
+### Day 5: Share and Plan
+
+Show your team the before-and-after. Not a presentation — a 15-minute demo at standup. Show the worst agent output without primitives and the improved output with them. Then plan: which modules get instrumented next? Who owns which instruction files? How do you keep them current as the code evolves?
+
+**Deliverable:** A team agreement on next steps and ownership.
+
+### For Leaders, Additionally
+
+If you lead the organization rather than the team, Day 1 is different. Start with the readiness assessment from Chapter 7. Identify one team with the right combination of codebase maturity, process discipline, and cultural openness. Fund a structured pilot — not "give everyone licenses and see what happens," but the phased adoption from the transition plan. Protect the investment in context infrastructure. It has the highest long-term return and the lowest short-term visibility, which means it is the one most likely to be cut.
+
+---
+
+## The Closing Argument
+
+Accept that you are early. The field is moving faster than any book can capture. The specific tools will change. The formats will evolve. The capabilities will exceed what is described here.
+
+Use the principles, not the specifics. Structure your context, scope your tasks, compose simple primitives, enforce safety boundaries, and organize your knowledge hierarchically. These disciplines work regardless of which model runs underneath or which tool wraps around it.
 
 REST did not make HTTP better. It gave engineers constraints to reason about distributed systems. Twenty-five years later, the constraints still hold, even though every specific technology from that era has been replaced. The aspiration for the architectural constraints in this book is the same: durable reasoning tools for a field that will not stop changing.
 

@@ -177,6 +177,8 @@ Structured context  --->  Better agent output  --->  Richer artifacts
 
 This flywheel means the gap between organizations that invest in context early and those that defer widens over time. It is not a linear gap. An organization that starts structuring context in 2025 does not just have two years' head start over one that starts in 2027 — it has two years of compounding context that the late starter must build from scratch while the early adopter's agents are already leveraging it.
 
+**Evidence: the 70-file PR.** This book's primary case study — a pull request touching 70 files, passing 2,874 tests, completed in roughly 90 minutes with three human interventions — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: documented coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global project rules down to directory-specific overrides. None of these artifacts existed at the start. Each was created when an agent interaction failed due to a context gap — a convention violation caught in review, a deprecated API called because no instruction excluded it, a test pattern that didn't match the project's framework. By the time the 70-file PR was attempted, the agent was operating with rich, structured context that had been refined through dozens of feedback cycles. Without that accumulated context, the same task on the same model would have produced 70 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1's Vibe Coding Cliff. The delta between "70 files of rework" and "70 files merged in 90 minutes" *is* the context moat, demonstrated.
+
 ### Technical Debt Gets a New Cost
 
 AI changes the ROI calculus for documentation debt, convention debt, and knowledge-base debt. Consider a concrete example: documenting your API conventions takes two days of engineering time. Without that documentation, agents hallucinate your internal patterns. Every pull request review catches three to five convention violations that require rework. With documentation, the agent generates convention-compliant code from the first attempt. The payback period is two weeks.
@@ -234,15 +236,15 @@ No single vendor covers all three context domains comprehensively today. This is
 
 The architecture presented in this chapter is designed to be adopted incrementally. There is no prerequisite checklist that must be completed before you begin. The most common — and most effective — starting point:
 
-**Month 1.** Pick one team, one phase (usually Code), and one investment (custom instructions encoding your top five conventions). Measure agent output quality before and after.
+**Month 1.** Pick one team, one phase (usually Code), and one investment (custom instructions encoding your top five conventions). Measure agent output quality before and after. *Gate to expand:* agent-generated code passes linting on first attempt ≥70% of the time, and the team has documented at least five conventions in machine-readable form.
 
-**Month 3.** Extend to Review. Add agent-assisted code review with human sign-off on every PR. Measure review turnaround time and defect escape rate.
+**Month 3.** Extend to Review. Add agent-assisted code review with human sign-off on every PR. Measure review turnaround time and defect escape rate. *Gate to expand:* agent-assisted PRs achieve a review rejection rate no worse than the team's human-only baseline, and median review turnaround time has decreased by ≥15%.
 
-**Month 6.** Add Test. Use agents to generate test cases for new features, with human-defined test strategy. Measure coverage change and test maintenance cost.
+**Month 6.** Add Test. Use agents to generate test cases for new features, with human-defined test strategy. Measure coverage change and test maintenance cost. *Gate to expand:* test coverage has increased by ≥10 percentage points on agent-covered modules, and agent-generated tests require human rework less than 30% of the time.
 
-**Month 12.** Evaluate Plan and Build phases. By this point, your team has accumulated six months of structured context, and your agents are materially more effective than they were on day one — the compounding flywheel at work.
+**Month 12.** Evaluate Plan and Build phases. By this point, your team has accumulated six months of structured context, and your agents are materially more effective than they were on day one — the compounding flywheel at work. *Gate to expand:* the team's human intervention rate on agent tasks has declined by ≥20% from the Month 3 baseline, and at least two context feedback cycles have produced measurable improvement in agent output quality.
 
-**Month 18.** Assess readiness for Operate phase automation. This requires the most mature infrastructure and the strongest governance — Chapter 5 covers the governance requirements in detail.
+**Month 18.** Assess readiness for Operate phase automation. This requires the most mature infrastructure and the strongest governance — Chapter 5 covers the governance requirements in detail. *Gate:* the team has structured runbooks for ≥80% of common incident types, and agent-assisted alert correlation achieves ≥90% accuracy in retrospective testing against the past quarter's incidents.
 
 This is a planning horizon, not a schedule. Some organizations will move faster; some will spend longer at each stage. The sequence matters more than the timeline: start where the tooling is mature and the context is structured, expand where the evidence supports it, and invest in context continuously.
 

@@ -155,9 +155,10 @@ Annual developer cost (fully loaded)         = $___________
 × Team size                                  = $___________
 = Total annual developer investment (A)
 
-Cycle time improvement (%) × 0.30            = Effective time savings (%)
-  (0.30 reflects coding as ~30% of dev time)
-Effective time savings (%) × A               = Annual value of time savings (B)
+Cycle time improvement (%)                   = ___%
+  (Use the blended scenario values from the table above.
+   See clarification below the formula.)
+Cycle time improvement (%) × A               = Annual value of time savings (B)
 
 Defect reduction value:
   Current defect remediation cost per year    = $___________
@@ -173,9 +174,53 @@ Total year-1 cost (from TCO table)           = $___________
 Break-even: Year-1 cost ÷ Monthly value run-rate (at steady state, months 6+)
 ```
 
+Two cautions, and a clarification on the multiplier.
+
+**On the cycle time multiplier.** The value drivers section above reports 30–50% cycle time reduction on *individual agent-suitable tasks* — measured across the full PR lifecycle (issue opened to code merged), not just the coding phase. The scenario table's lower percentages (10–50%) are the *team-wide blended average*: they already account for the fact that not all tasks are agent-suitable and that adoption depth varies by scenario. Use the scenario values directly. Applying a separate coding-phase multiplier on top would double-count the discount.
+
 Two cautions. First, the "time savings" line is not headcount reduction. Developers whose routine implementation time decreases do not become surplus — they shift attention to higher-value work: architecture, code review, complex problem-solving. The value manifests as increased throughput and quality, not reduced payroll. If your business case depends on reducing headcount, you will either be disappointed or you will lose the engineers whose judgment makes the tools effective.
 
 Second, knowledge retention savings are real but slow. Don't lean on them for a first-year business case. They are the compounding return that justifies sustained investment — the reason year 2 looks dramatically better than year 1.
+
+### Worked example: a 50-person team
+
+The formula above is a template. Here is what it looks like with numbers.
+
+**Assumptions** (moderate scenario):
+- 50 engineers, fully loaded cost $200,000/year each
+- Cycle time improvement: 25% (midpoint of moderate range)
+- Current defect remediation: $500,000/year (rework, incident response, post-deploy fixes)
+- Expected defect reduction: 20%
+- Current onboarding cost: $15,000 per new hire; 10 hires/year; 30% reduction expected
+
+```
+Total annual developer investment (A)        = 50 × $200,000 = $10,000,000
+
+Cycle time improvement: 25%
+25% × $10,000,000                            = $2,500,000 (B)
+
+Defect reduction value:
+  $500,000 × 20%                             = $100,000 (C)
+
+Knowledge retention value:
+  $15,000 × 10 hires × 30%                  = $45,000 (D)
+
+Total annual value (B + C + D)               = $2,645,000
+
+Total year-1 cost (from TCO table, scaled)   ≈ $350,000–$1,150,000
+  (TCO table shows $77K–$229K for 10 engineers. Scale ×5 for 50,
+   with some economies on governance and training.)
+
+Annual value exceeds year-1 cost by 2.3–7.6×.
+But value does not accrue evenly — months 1–4 are ramp-up
+(see The Adoption Timeline above).
+Accounting for the ramp, expect break-even at month 6–10
+from project start, depending on cost position and adoption speed.
+```
+
+The time-savings value (B) dominates. This is typical — cycle time improvement is the largest and most defensible value driver. Note that the $2.5M does not mean the organization saves $2.5M in cash. It means the team delivers the equivalent of $2.5M more throughput at the same headcount. The value manifests as faster delivery, not smaller payroll.
+
+At the conservative scenario (12% cycle time improvement, same cost assumptions), the break-even pushes to month 10–14. At the aggressive scenario (40%), it pulls in to month 4–6. If your numbers only work at the aggressive end, reread the earlier warning: you have a gamble, not a business case.
 
 ### Step 5: Define success criteria that aren't vanity metrics
 
@@ -190,6 +235,20 @@ Commit to specific, measurable outcomes before you start. Report against them ho
 | Human intervention rate | N/A | Establish baseline | –20% from baseline | Agent session logs |
 
 The human intervention rate — how often a developer must correct, override, or restart an agent — is the metric that best predicts long-term value. It directly reflects context quality. A declining intervention rate means your context engineering is working. A flat or rising one means the tools are generating work, not saving it.
+
+---
+
+## The Cost of Doing Nothing
+
+Every business case has an implicit comparison: the investment versus the status quo. Most business cases for agentic development model the investment side. Few price the alternative.
+
+**The context gap compounds in reverse.** The same flywheel that rewards early context investment penalizes delay. While your team debates whether AI tools are worth it, competitors who started six months earlier have accumulated six months of machine-readable conventions, structured architecture decisions, and documented patterns. Their agents improve with every sprint. Yours, when you eventually adopt, start from zero. The gap is not six months of calendar time — it is six months of compounding context quality that you must build from scratch while the early adopter's agents are already leveraging it.
+
+**Hiring gets harder.** By 2026, experienced engineers will expect agentic tooling the way they currently expect CI/CD pipelines and code review workflows. Organizations without it will face the same hiring friction that organizations without modern development practices faced five years earlier — it becomes a signal that the engineering culture is behind. The cost is not the tools. It is the senior engineers who choose a different offer because your team's workflow looks outdated.
+
+**Knowledge walks out the door.** Without structured context, your engineering knowledge lives in people's heads. Every senior engineer who leaves takes architectural understanding, unwritten conventions, and system knowledge with them. This was always a risk. Agentic development makes it visible: the cost of undocumented knowledge is now measurable in rework hours on every agent interaction, every day. The "wait and see" strategy is not zero-cost. It is the cost of your current knowledge attrition rate, compounded by the opportunity cost of agent-assisted improvements you are not capturing.
+
+A rough estimate: for a 50-person team, a 12-month delay in structured adoption represents $1.5–2.5M in forgone throughput improvement (using the moderate scenario from the worked example above) plus the unquantified but real costs of competitive position and hiring friction. "Wait and see" is itself a decision with a price. Your board will ask "what if we wait a year?" This section is the answer.
 
 ---
 

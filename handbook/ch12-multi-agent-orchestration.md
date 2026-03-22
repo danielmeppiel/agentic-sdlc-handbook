@@ -95,6 +95,52 @@ In the PR #394 execution, this two-team structure — architecture team led by a
 
 This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.
 
+#### Concrete Dispatch: What It Actually Looks Like
+
+The Domain Teams pattern describes structure. Here is what a dispatch actually looks like in practice — the instruction files, the prompt, and the file list. This example uses a terminal-based agent, but the pattern applies regardless of tool.
+
+Before dispatching, the orchestrator prepares three things: the instruction files the agent will load, the file list it owns exclusively, and the task prompt.
+
+**Instruction files loaded into context:**
+
+```
+.ai/instructions.md              # Project-wide conventions (always loaded)
+.ai/integrations/logging.md      # Logging-specific patterns and examples
+```
+
+**The dispatch prompt:**
+
+```
+Migrate the following files from print-based output to the structured
+logger established in Wave 0. Use the LoggerFactory pattern from
+src/core/logger.py (committed and tested).
+
+Files assigned to you (exclusive ownership this wave):
+  - src/commands/install.py
+  - src/commands/resolve.py
+  - src/commands/validate.py
+
+Constraints:
+  - Do NOT modify any file not in this list.
+  - Do NOT change function signatures or public APIs.
+  - Preserve all existing behavior — update log output only.
+  - Use _rich_info() for informational messages, _rich_warning()
+    for warnings. See .ai/integrations/logging.md for examples.
+
+When complete, run: pytest tests/commands/ -x
+Fix any failures before reporting done.
+```
+
+**What makes this dispatch effective:**
+
+- **Exclusive file list.** The agent knows exactly which files it owns. No ambiguity, no overlap with other agents in this wave.
+- **Committed reference.** "Established in Wave 0" means the agent reads the actual committed code, not a description of what it should look like.
+- **Scoped instructions.** Two instruction files, not twelve. The agent carries logging conventions and project conventions. It does not carry type system rules, security policies, or deployment procedures irrelevant to this task.
+- **Built-in validation.** The prompt ends with a test command. The agent self-validates before reporting completion (L1 self-heal).
+- **Explicit constraints.** "Do NOT modify any file not in this list" is the one-file-one-agent rule, stated in the agent's own terms.
+
+The orchestrator dispatches this prompt in a fresh session, monitors for completion or escalation, and moves to the next dispatch. Total orchestrator time per dispatch: roughly 2-3 minutes to prepare the prompt and file list, plus monitoring time shared across all active agents in the wave.
+
 ### Pattern 3: Audit / Execute / Validate
 
 For exploratory work where the scope is not fully known in advance, separate the agents that discover what needs to change from the agents that make the changes.
@@ -226,6 +272,29 @@ Two agents produce output that is independently correct but mutually inconsisten
 
 This is why the wave model requires testing and committing after each wave. The committed state after Wave 0 is the ground truth for Wave 1 agents. If you skip the commit, Wave 1 agents work against stale context and semantic conflicts multiply.
 
+#### Semantic Conflict Recovery: A Walkthrough
+
+Prevention is the ideal. But when a semantic conflict slips through wave ordering, you need a recovery procedure, not a principle. The PR #394 execution hit exactly this case. Here is what happened.
+
+Wave 0 established a new `OperationError` type in the resolver module — a structured error with fields for error code, operation name, and a recoverable flag. This replaced the previous pattern of raising bare `ValueError` with message strings. The architecture agent committed the new type, updated the resolver, and all Wave 0 tests passed.
+
+Wave 1 dispatched a domain agent to migrate logging in three command modules. The agent's instructions referenced the committed Wave 0 codebase, but the dispatch prompt focused on logging patterns, not error handling. The domain agent correctly migrated all logging calls — and, in the process, added new error paths that used the old `ValueError` pattern. It had no reason to do otherwise. Its context included the logging migration guide, not the error-handling changes from Wave 0.
+
+**Detection.** Wave 1's unit tests passed. The individual files were correct in isolation. But the integration test suite — run at the wave checkpoint — caught mixed error types. Callers updated in Wave 0 now expected `OperationError`. The new error paths added in Wave 1 raised `ValueError`. Three integration tests failed with unhandled exception types.
+
+**Diagnosis.** The orchestrator reviewed the failures and identified the root cause in under two minutes: the Wave 1 dispatch prompt loaded the logging context but not the error-handling context. The agent had no visibility into the pattern change.
+
+**Recovery.** The fix was not to revert Wave 1. The logging migration was correct. Instead, the orchestrator dispatched Wave 2b — two targeted agents:
+
+1. Agent 2b-A received the three command modules plus `OperationError`'s type definition. Its single task: replace every `ValueError` raise in the migrated files with the equivalent `OperationError`. Six files in context. Completed in 3 minutes.
+2. Agent 2b-B updated the corresponding test files to assert on `OperationError` fields instead of exception message strings.
+
+Wave 2b committed, all tests passed, and execution continued to Wave 3.
+
+**The lesson.** Wave ordering prevents most semantic conflicts. When one slips through, the recovery follows a pattern: identify which context was missing from the dispatch, create a targeted recovery wave that carries the missing context, and fix forward rather than reverting. The recovery wave is small — scoped to exactly the files affected by the missing context — and fast, because the agents start with clean sessions and concentrated context.
+
+The mistake to avoid: redispatching the entire original wave. The logging migration was 90% correct. A full redo wastes the work and risks introducing new issues. Surgical recovery waves are the right response to surgical failures.
+
 ### Design Conflicts
 
 Two agents, each following their specialization's best practices, produce output that reflects genuinely different design philosophies. The architecture agent consolidates error handling into a central module. The domain agent keeps error handling local to each command because the domain's UX conventions require command-specific error messages.
@@ -271,6 +340,43 @@ In the PR #394 execution, the distribution was:
 - L4 (scope change): 1 discovery deferred to a follow-up issue
 
 This ratio — roughly 80% autonomous, 13% automated retry, 7% human decision — is characteristic of a well-planned execution. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
+
+---
+
+## The Coordination Tax: Honest Numbers
+
+Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting from PR #394.
+
+### Time Breakdown
+
+| Activity | Time | Notes |
+|---|---|---|
+| Planning and partitioning | ~15 min | Reading codebase, defining waves, writing dispatch prompts |
+| Monitoring execution | ~10 min | Watching 4 waves, spot-checking output between waves |
+| Handling interventions | ~12 min | 2 retries (~3 min each), 2 design decisions (~3 min each) |
+| Post-execution review | ~8 min | Reviewing critical changes, verifying test coverage |
+| **Total human time** | **~45 min** | |
+
+Agent execution (wall-clock): ~24 minutes across 4 waves. Total elapsed time: ~90 minutes, because human work overlaps with agent execution.
+
+### Comparison with Single-Agent
+
+The same 70-file change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts on changes of this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.
+
+The multi-agent approach did not save total elapsed time on this change. It traded human planning time for agent quality. The 45 minutes the orchestrator spent coordinating replaced the 30-45 minutes they would have spent debugging context-degraded output — with better results.
+
+### The Sweet Spot
+
+Multi-agent orchestration pays for itself when:
+
+- **File count exceeds 20 across 2+ concerns.** Below this threshold, planning overhead exceeds the parallelism benefit. One agent with good instructions handles 15 files in a single concern faster than two agents with coordination overhead.
+- **Concerns partition cleanly.** If most files need changes from multiple concerns, you spend more time managing file ownership conflicts than you save through parallelism.
+- **Context degradation is the real bottleneck.** For changes that require deep architectural understanding — not mechanical find-and-replace — the quality benefit of focused context outweighs the coordination cost.
+- **You will do this more than once.** The first multi-agent orchestration on a codebase takes longest because you are building instruction files, learning partition boundaries, and developing intuition for wave sizing. The second takes half the planning time. By the third, the dispatch prompts are templates.
+
+The overhead for a well-planned multi-agent execution is roughly 40-60% of total human time spent on coordination rather than direct value work. For a poorly planned execution — vague dispatch prompts, unclear file ownership, missing instruction files — the overhead can exceed 80%, at which point a single agent with good context would have been faster.
+
+This is not a tool for every change. It is a tool for changes that exceed what a single agent can hold in focus. Know the threshold for your codebase, and do not orchestrate for the sake of orchestrating.
 
 ---
 

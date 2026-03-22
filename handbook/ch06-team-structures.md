@@ -121,7 +121,9 @@ Team Topologies, the framework by Matthew Skelton and Manuel Pais, provides a us
 
 ## The Junior Pipeline
 
-If agents handle the tasks that traditionally built junior engineering skills, how do juniors develop? Three models work. Most organizations will use a combination.
+If agents handle the tasks that traditionally built junior engineering skills, how do juniors develop? Three models show promise. Most organizations will use a combination.
+
+**An honest disclaimer.** The models below are informed hypotheses, not proven patterns. No organization has run any of these for a full cycle — 12+ months — with measured outcomes on engineer competency development. They draw on early signals from teams that have adopted agentic workflows, on apprenticeship research from adjacent fields, and on structured reasoning about which skill-building mechanisms transfer to an agent-augmented environment. We present them as the best available thinking, not as validated playbooks. If your organization pilots one of these models, measure the outcomes and share them — the field needs evidence more than it needs opinions. This section will be updated as that evidence accumulates.
 
 **Model A: Review-intensive apprenticeship.** Juniors spend 60–70% of their first year reviewing agent-generated code under senior supervision. They learn by evaluating output — building pattern recognition, understanding failure modes, and developing architectural awareness. They write code for tasks specifically selected to build skills review alone cannot develop. *Risk:* Can feel passive; requires disciplined senior oversight and deliberate hands-on coding assignments.
 
@@ -129,7 +131,7 @@ If agents handle the tasks that traditionally built junior engineering skills, h
 
 **Model C: Specification-first roles.** Juniors focus upstream: writing specifications, defining acceptance criteria, decomposing requirements into agent-friendly tasks. This develops specification and design skills that are increasingly valuable and produces real team output immediately. Code review and debugging responsibilities increase over time. *Risk:* Delays hands-on coding experience; some skills require building things, not just specifying them.
 
-No model is sufficient alone. Model A builds judgment. Model B builds critical evaluation. Model C builds specification discipline. A structured first year combines all three, with the proportions shifting as the junior's capability grows.
+No model is sufficient alone. Model A builds judgment. Model B builds critical evaluation. Model C builds specification discipline. A structured first year combines all three, with the proportions shifting as the junior's capability grows. Whether this combination actually produces engineers as capable as those trained through traditional paths is an open question. The honest answer is: we don't know yet. Plan for these models, measure rigorously, and adjust.
 
 ---
 
@@ -185,6 +187,18 @@ Two caveats.
 **These are directional, not prescriptive.** Your ratios depend on codebase complexity, agent maturity, and domain risk. A team working on a payments system with strict regulatory requirements will need a higher senior ratio than a team building internal tooling.
 
 **Smaller does not mean fewer total engineers.** Agent-augmented teams produce more per person, but the economic argument is not "we need fewer engineers." It is "we need the same or fewer engineers to do more, with a different mix of skills." The staffing question is about composition and capability, not reduction.
+
+### Getting from Here to There
+
+The table above describes a destination. Getting there from a typical 1:2 or 1:3 senior-to-junior ratio requires a transition plan, not a Monday morning reorg. Three paths, each with trade-offs:
+
+**Path A: Hire senior, hold junior headcount.** As the team grows or backfills attrition, bias new hires toward senior profiles with architecture and review skills. Over 12–18 months, the ratio shifts naturally. *Trade-off:* senior engineers are expensive and scarce. This path is slow but low-disruption. Best for teams with low attrition and stable headcount.
+
+**Path B: Accelerate high-potential juniors.** Identify juniors with strong systems thinking and learning velocity. Give them structured context engineering responsibilities, senior-supervised review rotations, and explicit mentorship. Reclassify them as they demonstrate the judgment the new model requires — based on demonstrated capability, not tenure. *Trade-off:* requires real mentorship investment from seniors (10–15% of their time), and not every junior will make the transition. Best for teams with strong juniors and engaged senior mentors.
+
+**Path C: Attrit and rebalance.** Do not backfill junior departures one-for-one. When a junior leaves, evaluate whether the role should be refilled at the same level or converted to a senior hire. Over 12–24 months, natural attrition rebalances the ratio. *Trade-off:* depends on attrition rates you cannot control. If attrition is low, the rebalance stalls. Best combined with Path A or B.
+
+Most organizations will combine all three. The key is to be deliberate: track your ratio quarterly, make hiring decisions that move toward the target, and communicate openly with your team about where the roles are heading and what development paths are available. The worst outcome is an accidental rebalance where juniors leave because they see no growth path and seniors burn out because they are covering the gap.
 
 ---
 
