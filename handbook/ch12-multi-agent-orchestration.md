@@ -1,0 +1,365 @@
+# Chapter 12: Multi-Agent Orchestration
+
+A single AI agent can modify a file. It can even modify several files in sequence, if the changes are simple enough and the context window holds. But the moment you need to change 40 files across 5 concerns — authentication, logging, type safety, migration, and cleanup — a single agent becomes the bottleneck. Not because it lacks intelligence. Because it lacks bandwidth.
+
+Context windows are finite. A single agent handling a cross-cutting change must hold the entire scope in focus simultaneously: every file, every convention, every dependency between the changes. By the twentieth file, the instructions from the first file are competing for attention with accumulated conversation history. Quality degrades not because the model is worse, but because the context is overloaded.
+
+Multi-agent orchestration solves this by decomposing work across specialized agents that each operate within manageable context budgets. But coordination is not free. Agents that work in parallel can conflict. Agents with different specializations can produce inconsistent output. Agents that don't know about each other's changes can break each other's work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.
+
+This chapter covers when to use multiple agents, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human's role is in all of it.
+
+---
+
+## When One Agent Is Enough
+
+Not every task requires multiple agents. The overhead of orchestration — partitioning work, managing sessions, resolving conflicts, validating independently — is real. If the task fits comfortably in a single agent's context, the single agent is the better choice.
+
+A single agent is sufficient when:
+
+- **Scope is narrow.** The change touches fewer than 10 files in a single module.
+- **Concern is singular.** One type of change — fix logging, update types, add tests — not three interleaved concerns.
+- **Dependencies are linear.** Each file change follows naturally from the previous one, with no need for parallel work.
+- **Context budget is adequate.** The agent can hold all relevant source files, instructions, and conversation history without exceeding roughly 60% of its window capacity, leaving room for reasoning.
+
+A single agent breaks down when:
+
+- **Multiple concerns intersect.** The change requires architectural knowledge and domain expertise and security awareness. One agent cannot hold all three specialization contexts simultaneously without dilution.
+- **File count exceeds context capacity.** More than 15-20 files means the agent cannot see all the code it needs to modify.
+- **Parallelism would reduce wall-clock time significantly.** Five independent file groups that could be modified simultaneously instead take five times as long sequentially.
+
+The decision matrix:
+
+| Dimension | Single agent | Multiple agents |
+|---|---|---|
+| Files changed | < 10 | > 15 |
+| Concerns | 1 | 2+ |
+| File dependencies | Linear | Graph (can parallelize) |
+| Required expertise | One domain | Multiple domains |
+| Time pressure | Low | Moderate to high |
+| Risk of context overload | Low | High |
+
+The boundary between 10 and 15 files is not arbitrary. It reflects the practical limit where a single agent's conversation history — accumulated tool calls, file reads, edit confirmations, test output — begins consuming enough context to crowd out the instructions and source code that the agent needs to do its work well. Your mileage will vary by model, task complexity, and instruction file size.
+
+When the decision is marginal, err toward a single agent. Coordination costs are real. Multi-agent orchestration is a tool for tasks that exceed single-agent capacity, not a default mode of operation.
+
+---
+
+## Agent Specialization Patterns
+
+The key insight behind multi-agent orchestration is that specialization produces better results than generalization — for the same reason that a team of specialists outperforms a team of generalists on complex projects. A security expert and a logging expert, each working within their domain, produce more reliable output than a single agent told to "handle security and logging."
+
+Specialization works because it reduces the context each agent needs to carry. An architecture agent loaded with type definitions, module boundaries, and structural patterns does not also need logging conventions, output formatting rules, and symbol dictionaries. The context it receives is concentrated, not diluted.
+
+Three specialization patterns recur across most multi-agent workflows.
+
+### Pattern 1: Writer / Reviewer / Tester
+
+The most common pattern separates code production from code validation. One agent writes the code. A second agent reviews it. A third writes or updates tests.
+
+```
+Writer agent ──→ Code changes
+                     │
+                     ▼
+Reviewer agent ──→ Findings (bugs, logic errors, security)
+                     │
+                     ▼
+Tester agent ──→ Test updates + verification
+```
+
+This pattern maps directly to the human workflow of author, reviewer, and QA — and for the same reason. The writer optimizes for correctness and completeness. The reviewer optimizes for catching what the writer missed. The tester optimizes for verifiable behavior. These are different cognitive tasks that benefit from different contexts.
+
+In practice, the reviewer agent receives the diff plus the original source, not the writer's full conversation history. This is deliberate. The reviewer should evaluate the output on its own merits, not be anchored by the writer's reasoning. If the writer had a good reason for a decision but the code doesn't reflect it, that is a signal, not an excuse.
+
+### Pattern 2: Domain Teams
+
+For cross-cutting changes, organize agents by area of expertise rather than by workflow stage. Each team owns a concern and is responsible for all files related to that concern.
+
+```
+┌─────────────────────────┐  ┌─────────────────────────┐
+│   ARCHITECTURE TEAM     │  │   DOMAIN EXPERT TEAM    │
+│                         │  │                         │
+│   Loaded context:       │  │   Loaded context:       │
+│   - Type definitions    │  │   - Output conventions  │
+│   - Module boundaries   │  │   - Symbol dictionaries │
+│   - Pattern catalog     │  │   - UX guidelines       │
+│   - Dependency graph    │  │   - Migration patterns  │
+│                         │  │                         │
+│   Owns:                 │  │   Owns:                 │
+│   - Type safety fixes   │  │   - Verbose coverage    │
+│   - Dead code removal   │  │   - Logger migration    │
+│   - API consolidation   │  │   - Formatting cleanup  │
+└─────────────────────────┘  └─────────────────────────┘
+```
+
+In the PR #394 execution, this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 70-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
+
+This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.
+
+### Pattern 3: Audit / Execute / Validate
+
+For exploratory work where the scope is not fully known in advance, separate the agents that discover what needs to change from the agents that make the changes.
+
+```
+Audit agents (read-only)
+  │
+  │  Findings: files, severity, recommendations
+  ▼
+Planning (human decision)
+  │
+  │  Scoped tasks with file assignments
+  ▼
+Execution agents (read-write)
+  │
+  │  Code changes
+  ▼
+Validation agents (read-only)
+  │
+  │  Review findings, test results
+  ▼
+Ship
+```
+
+The critical property of this pattern is the separation between read-only and read-write operations. Audit agents explore the codebase without modifying it. This means you can dispatch multiple audit agents simultaneously with no risk of interference. They can examine the same files, look at overlapping concerns, and produce independent assessments.
+
+The human decision between audit and execution is the highest-leverage point in the entire process. You review the findings, decide which ones to act on, define the scope, and only then allow write operations. This separation is what makes multi-agent orchestration safe, not just fast.
+
+---
+
+## Parallelization Strategies
+
+Running agents in parallel reduces wall-clock time. It also introduces the possibility of conflict. The strategies below manage the trade-off.
+
+### The One-File-One-Agent Rule
+
+The most important parallelization rule is the simplest: within a single execution batch, no two agents may modify the same file.
+
+Most agent tooling edits files using string matching — the agent specifies an exact block of text to find and replace. If Agent A modifies `install.py` and then Agent B tries to edit the same file, the text Agent B expects to find has already changed. The edit fails silently or produces corrupted output.
+
+This is not a theoretical risk. It is the most common failure mode in parallel agent execution.
+
+```
+SAFE: Each agent owns distinct files
+  Agent A ──→ resolver.py, dependency_graph.py
+  Agent B ──→ install.py
+  Agent C ──→ cli.py, commands/init.py
+
+UNSAFE: Two agents edit the same file
+  Agent A ──→ install.py (lines 100-200)
+  Agent B ──→ install.py (lines 400-500)
+  ← CONFLICT: Agent B's line references are invalid after Agent A's edits
+```
+
+Enforcing this rule requires partitioning the file set before dispatch. If two concerns both need to modify the same file, those modifications go to a single agent that handles both, or they go to separate sequential waves.
+
+### Wave-Based Parallelism
+
+The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.
+
+```
+Wave 0: FOUNDATION          ←  No dependencies, fully parallel
+  Agent A: type definitions
+  Agent B: utility module
+  Agent C: configuration
+       │
+       ▼  (all complete, tests pass)
+Wave 1: CORE CHANGES        ←  Depends on Wave 0
+  Agent D: module migration (uses new types from Wave 0)
+  Agent E: API consolidation (uses new utilities from Wave 0)
+  Agent F: auth refactor
+       │
+       ▼  (all complete, tests pass)
+Wave 2: INTEGRATION         ←  Depends on Wave 1
+  Agent G: wiring + imports
+  Agent H: test updates
+```
+
+The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0's output being committed and tested. Within a wave, agents are independent — they share no files and make no assumptions about each other's progress.
+
+Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.
+
+The PR #394 execution used four waves plus a recovery wave:
+
+| Wave | Agents | Duration | What ran in parallel |
+|---|---|---|---|
+| 0 | 2 | ~5 min | Resolver refactor + install foundation |
+| 1+2 | 5 | ~8 min | Verbose coverage (3) + logger migration (2) |
+| 2b | 2 | ~7 min | Recovery for stuck agent + remaining migration |
+| 3 | 1 | ~4 min | Unicode cleanup (sequential, final polish) |
+
+Total parallel agent-minutes: roughly 45. Total wall-clock time for execution: roughly 24 minutes. The parallelism saved approximately 21 minutes compared to sequential execution — meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.
+
+### Pipeline Parallelism
+
+Some operations can run in parallel across workflow stages rather than across files. While execution agents work on Wave 1, review agents can start reviewing Wave 0's output. While human review happens on one wave, test agents can run extended validation on a previous wave.
+
+```
+Time ──→
+
+Wave 0 agents:   [████████]
+Wave 0 review:              [████]
+Wave 0 tests:               [██████████]
+Wave 1 agents:                    [████████████]
+Wave 1 review:                                   [████]
+```
+
+This works when the review and test operations are read-only and the execution operations have no backward dependencies on review findings. If a review agent finds a problem in Wave 0, the fix goes into a later wave — it does not interrupt Wave 1, which was planned against the committed Wave 0 output.
+
+---
+
+## Conflict Resolution
+
+Despite careful partitioning, conflicts arise. They fall into three categories, each with a different resolution strategy.
+
+### File Conflicts
+
+Two agents need to modify the same file in the same wave. This is a planning error, not a runtime error.
+
+**Resolution.** Merge the two tasks into a single agent's scope, or move one task to a later wave. If the modifications are to genuinely independent sections of a large file, a single agent can handle both sets of changes in one pass — it carries the context for both and applies edits sequentially.
+
+Files that attract changes from multiple concerns are a signal. If `install.py` needs auth changes, logging changes, and type safety changes, that file is a coordination bottleneck. In the plan, assign it to a single agent per wave, even if that agent handles multiple concerns for that file.
+
+### Semantic Conflicts
+
+Two agents produce output that is independently correct but mutually inconsistent. Agent A introduces a new error-handling pattern. Agent B, working on a different file, follows the old pattern because its instructions referenced the pre-change codebase.
+
+**Resolution.** Foundation-before-migration wave ordering. Changes that establish new patterns — type definitions, utility functions, shared conventions — go in early waves. Changes that consume those patterns go in later waves. Agent B's instructions reference the committed output of Wave 0, not the original codebase.
+
+This is why the wave model requires testing and committing after each wave. The committed state after Wave 0 is the ground truth for Wave 1 agents. If you skip the commit, Wave 1 agents work against stale context and semantic conflicts multiply.
+
+### Design Conflicts
+
+Two agents, each following their specialization's best practices, produce output that reflects genuinely different design philosophies. The architecture agent consolidates error handling into a central module. The domain agent keeps error handling local to each command because the domain's UX conventions require command-specific error messages.
+
+**Resolution.** This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan's priority-ordered principles resolve most of them mechanically — if UX is prioritized above structural purity, the domain agent's approach wins. When the principles don't resolve the conflict, the human decides and documents the rationale.
+
+The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed across 15 agent dispatches. Two of those were design conflicts that the priority ordering did not fully resolve. A rate of roughly 15-20% human intervention on design decisions is typical for well-planned multi-agent work. If you are intervening on more than 30%, the plan's principles are insufficiently specific. If you are intervening on less than 5%, you are either lucky or not checking carefully enough.
+
+---
+
+## The Human as Orchestrator
+
+In a multi-agent workflow, the human role shifts from producer to orchestrator. You do not write the code. You do not review every line. You make the decisions that agents cannot make for themselves: scope, priority, trade-offs, and when to stop.
+
+This is not a passive role. It is a different kind of active.
+
+### What the Orchestrator Decides
+
+**Before execution.** The orchestrator defines the plan: which concerns to address, which to defer, how to partition the work across agents and waves, and what principles govern trade-offs. This is the highest-leverage activity in the entire process. A well-structured plan with mediocre agents produces better results than a vague plan with excellent agents.
+
+**During execution.** The orchestrator monitors progress and handles escalations. Most waves complete without intervention. When an agent gets stuck, the orchestrator diagnoses whether it is a prompt problem (refine the instructions and retry), a scope problem (split the task), or a tooling problem (work around the limitation). When agents produce conflicting output, the orchestrator resolves the conflict using the plan's principles or makes an explicit design decision.
+
+**After execution.** The orchestrator spot-checks critical changes, verifies test results, and decides whether the output meets the acceptance criteria. The level of detail in the review is proportional to the risk, not the volume. A 2,000-line diff where 1,800 lines are mechanical migration does not require reading all 2,000 lines. It requires verifying that the migration pattern is correct, that the 200 non-mechanical lines are sound, and that the test suite covers the behavior.
+
+### The Escalation Protocol
+
+Not every problem requires human attention. A well-designed orchestration system handles most failures automatically. The four-level escalation protocol:
+
+| Level | Trigger | Response | Example |
+|---|---|---|---|
+| L1: Self-heal | Agent hits a test failure it can debug | Agent fixes and continues | Type error in generated code |
+| L2: Retry | Agent produces incomplete output | Re-dispatch with refined prompt | Agent missed 3 of 12 files in scope |
+| L3: Human decides | Trade-off between competing principles | Human makes design call | UX convention vs. architectural purity |
+| L4: Scope change | Finding requires work outside the current plan | Human creates follow-up task | Discovery of a pre-existing bug unrelated to the change |
+
+The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.
+
+In the PR #394 execution, the distribution was:
+
+- L1 (self-heal): 10 of 15 dispatches completed without any intervention
+- L2 (retry): 2 dispatches required re-dispatch with refined instructions
+- L3 (human decides): 2 design trade-offs escalated to the operator
+- L4 (scope change): 1 discovery deferred to a follow-up issue
+
+This ratio — roughly 80% autonomous, 13% automated retry, 7% human decision — is characteristic of a well-planned execution. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
+
+---
+
+## Session Management
+
+Every agent dispatch creates a session — a context window with its own conversation history, loaded instructions, and accumulated state. Managing these sessions is a practical concern that directly affects output quality.
+
+### Session Isolation
+
+Each agent session is independent. Agent A cannot see Agent B's conversation history, edits, or reasoning. This is a feature, not a limitation. Session isolation ensures that one agent's context degradation does not propagate to others. If Agent A's session becomes cluttered after a complex debugging sequence, Agent B starts fresh with a clean context.
+
+The implication: information flows between agents through committed artifacts, not through shared sessions. When Agent B needs to build on Agent A's work, it reads the committed files — the same files that passed tests and were validated at the wave checkpoint. It does not read Agent A's internal reasoning or discarded alternatives.
+
+```
+Session A              Session B              Session C
+┌────────────┐        ┌────────────┐        ┌────────────┐
+│ Instructions│        │ Instructions│        │ Instructions│
+│ Source files│        │ Source files│        │ Source files│
+│ Conversation│        │ Conversation│        │ Conversation│
+│ (isolated)  │        │ (isolated)  │        │ (isolated)  │
+└──────┬─────┘        └──────┬─────┘        └──────┬─────┘
+       │                     │                     │
+       ▼                     ▼                     ▼
+  ┌─────────────────────────────────────────────────┐
+  │              Shared filesystem                   │
+  │   (committed files = ground truth between waves) │
+  └─────────────────────────────────────────────────┘
+```
+
+### Session Lifetime
+
+Shorter sessions produce better output. A session that has been running for 40 turns carries 40 turns of conversation history, which consumes context that could hold source code or instructions. The marginal value of each additional turn decreases as history accumulates.
+
+Three guidelines for session lifetime:
+
+1. **One task per session.** An agent dispatched to "migrate logging in `resolver.py` and update tests in `test_resolver.py`" is one task. Reusing that session for a second, unrelated task inherits the first task's conversation history — dead weight for the second task.
+
+2. **Reset on failure.** If an agent gets stuck — looping on the same error, producing the same incorrect output — terminate the session and dispatch a fresh one with refined instructions. The fresh session starts without the accumulated confusion of the failed attempt.
+
+3. **State through files, not memory.** Any information that needs to survive across sessions must be written to the filesystem: committed code, plan documents, checkpoint records. Session-internal state (the agent's reasoning, intermediate attempts, debugging output) is ephemeral and should be treated as such.
+
+### Cross-Session Coordination
+
+The orchestration layer — whether a human with multiple terminal windows or an automated harness — maintains the coordination state that individual agent sessions cannot.
+
+This state includes:
+
+- **Task status.** Which tasks are pending, in progress, complete, or blocked.
+- **File ownership.** Which agent is currently modifying which files — the enforcement mechanism for the one-file-one-agent rule.
+- **Wave progress.** Which waves have been completed and tested, which is currently executing.
+- **Escalation log.** What has been escalated, what decision was made, and why.
+
+The agent sessions are stateless workers. The coordination layer is the stateful manager. Keeping this separation clean is what makes multi-agent orchestration predictable. When the coordination state is mixed into agent sessions — when an agent is asked to "track which files you've changed and tell the next agent" — the result is fragile and error-prone.
+
+---
+
+## Putting It Together
+
+The patterns described in this chapter compose into a workflow:
+
+```
+1. ASSESS scope and decide single-agent vs. multi-agent
+       │
+       ▼
+2. SPECIALIZE: choose a team pattern
+   (writer/reviewer/tester, domain teams, or audit/execute/validate)
+       │
+       ▼
+3. PARTITION files across agents (one file, one agent per wave)
+       │
+       ▼
+4. ORDER into waves by dependency
+       │
+       ▼
+5. DISPATCH each wave in parallel
+       │
+       ▼
+6. VALIDATE: test, commit, checkpoint
+       │
+       ├─ pass ──→ next wave (go to 5)
+       │
+       └─ fail ──→ DIAGNOSE
+                      │
+                      ├─ L1/L2: retry with refined prompt
+                      └─ L3/L4: human decides, adapt plan
+```
+
+This is not a rigid process. A small change might skip straight from step 1 to dispatching a single agent. A large change might iterate through steps 5-6 four or five times. The structure is a decision framework, not a ceremony.
+
+What matters is the discipline behind it: agents are specialized so their context is concentrated, files are partitioned so agents don't conflict, waves are ordered so dependencies are satisfied, and the human makes the decisions that require judgment rather than the decisions that require typing.
+
+The next chapter puts this framework into practice. It walks through the full five-phase meta-process — Audit, Plan, Wave, Validate, Ship — with exact numbers from a 70-file execution that used every pattern described here.

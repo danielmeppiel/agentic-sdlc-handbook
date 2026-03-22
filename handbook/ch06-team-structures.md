@@ -1,0 +1,222 @@
+# Chapter 6: Team Structures for AI-Augmented Delivery
+
+The question every VP of Engineering asks privately: "If AI agents write most of the code, what happens to my team?" The honest answer is more nuanced — and more urgent — than either "nothing changes" or "everyone's replaced."
+
+Agentic development does not eliminate engineering roles. It restructures how teams coordinate, what skills matter, and where humans add irreplaceable value. Organizations that design for this shift deliberately will outperform those that let it happen accidentally. This chapter provides the structural framework for that deliberate design.
+
+---
+
+## What Shifts, What Stays
+
+Before redrawing org charts, understand what actually changes about daily engineering work. Agent adoption shifts the *proportion* of time spent on different activities. It does not change which activities require human judgment.
+
+The most useful way to see this is through time allocation. The table below draws on industry data from the 2024 Stack Overflow Developer Survey, GitHub's Octoverse report, and published results from early enterprise adopters. It represents typical patterns, not universal truths — your distribution will vary by team maturity, codebase complexity, and adoption depth.
+
+| Activity | Pre-Agentic | With Agentic Tools | Direction |
+|---|---|---|---|
+| Writing new code | 30–35% | 10–15% | Sharply down — agents handle first-draft generation |
+| Reading and understanding code | 20–25% | 15–20% | Slightly down — agents assist navigation and explanation |
+| Code review | 10–15% | 20–25% | Up — reviewing agent output is qualitatively harder |
+| Specification and design | 10–15% | 20–25% | Up — better specs produce better agent output |
+| Debugging and incident response | 15–20% | 10–15% | Slightly down, but the bugs that remain are subtler |
+| Context engineering | 0% | 10–15% | New — building and maintaining the context layer |
+| Meetings and coordination | 10–15% | 10–15% | Roughly unchanged |
+
+Three patterns matter.
+
+**Code production shrinks as a share of engineering work.** Agentic tools accelerate the part that was already a minority of an engineer's time. This is why "10x faster coding" does not translate to "10x faster delivery." The bottleneck moves to review, specification, and design.
+
+**Review becomes harder, not easier.** Agent-generated code is the output of a statistical process — syntactically correct, test-passing, and potentially hiding subtle misunderstandings of intent. Chapter 5 covered the governance structures around this; the team implication is that review skill becomes a core competency, not a chore to minimize.
+
+**Context engineering appears as a new activity category.** Someone has to build and maintain the instructions, conventions, and agent configurations that determine whether agents produce useful output or confident nonsense. Chapter 4 established why context is the moat; this chapter addresses who builds it.
+
+---
+
+## The 10x Team, Not the 10x Developer
+
+The "10x developer" myth has persisted for decades. Agentic development makes it obsolete — not because individual skill stops mattering, but because the leverage point shifts from individual output to team capability.
+
+An engineer working alone with an AI agent can produce code faster. But output quality depends on the context the agent received, which depends on the team's documentation discipline, which depends on the organization's investment in context engineering. A brilliant developer with poor team context will get worse results than a competent developer with excellent team context. The multiplier is in the system, not the individual.
+
+The teams that extract the most value from agentic tools share four properties:
+
+- **Explicit knowledge.** Conventions documented, not tribal. Architecture decisions recorded, not remembered. The context layer from Chapter 4 — built and maintained as an organizational asset.
+- **Strong review culture.** Reviewing agent output is a skill. Teams where review is valued, structured, and staffed appropriately catch defects that individual developers miss. Teams where review is a speed bump produce fragile systems.
+- **Clear specification habits.** The quality of agent output is directly proportional to the quality of the specification it receives. Teams that invest in writing clear, scoped specifications get better results from agents than teams that write vague tickets and expect agents to fill in the gaps.
+- **Feedback loops.** Teams that capture what went wrong — which agent outputs required rework, which context gaps caused failures — and feed corrections back into their context layer improve continuously. Teams that treat each agent interaction as independent repeat the same failures.
+
+The practical implication for leaders: invest in team capability, not individual heroics. A team of solid engineers with a well-maintained context layer will outperform a team of exceptional engineers working in a knowledge vacuum.
+
+---
+
+## How Roles Evolve
+
+Agentic development does not create a clean break between "before" and "after" roles. It shifts the emphasis within existing roles. Understanding these shifts is the foundation for staffing decisions.
+
+### Senior Engineers: From Implementers to Context Architects
+
+The senior engineer's value was always more about judgment than typing speed. Agentic tools make this explicit. A senior engineer in an agentic team spends less time writing code and more time on:
+
+- **Architecture and design.** Defining the boundaries, patterns, and constraints that agents must respect. This was always part of the senior role; it becomes a larger share.
+- **Context engineering.** Translating architectural knowledge into explicit artifacts — instructions, conventions, agent configurations — that encode the team's judgment for agent consumption. This is the new craft skill for senior engineers.
+- **Review and escalation.** Evaluating agent output against architectural intent, catching subtle violations that pass automated checks, and handling the cases agents cannot. The cases that reach a senior engineer are harder, not fewer.
+- **Mentoring.** Teaching junior engineers how to evaluate agent output, how to write effective specifications, and how to build engineering judgment that agents cannot replace.
+
+The shift is from "the person who writes the hardest code" to "the person who shapes the system that writes the code." Senior engineers who resist this shift — who insist on writing everything themselves — become a bottleneck. Those who embrace it become force multipliers.
+
+### Junior Engineers: From Code Writers to AI-Augmented Contributors
+
+This is the most sensitive role shift, and the one leaders must manage most carefully. If agents handle the tasks that junior engineers used to learn on — simple bug fixes, small features, boilerplate implementation — the learning pathway narrows. But the solution is not to ban agents from junior workflows. It is to redesign how juniors develop skills.
+
+A junior engineer in an agentic team should be:
+
+- **Reviewing agent output, not just writing code.** Review develops the same judgment that writing code does — arguably faster, because the reviewer sees more patterns in less time. Structured review assignments, where a junior reviews agent output under senior supervision, are the most efficient skill-building tool available.
+- **Writing specifications for agent tasks.** This forces the junior to think through the problem before any code exists — a discipline that many senior engineers wish they had learned earlier.
+- **Diagnosing agent failures.** When agent output is wrong, understanding *why* it is wrong builds deeper understanding than writing correct code from scratch. "The agent violated the repository pattern because it doesn't understand our dependency injection setup" teaches architecture.
+- **Building and maintaining context artifacts.** Contributing to the documentation, conventions, and instructions that agents consume. This requires understanding the codebase at a level that builds genuine expertise.
+
+The junior pipeline problem is real, but it has solutions. Section 6.6 below provides specific models. The worst response is to pretend the problem does not exist.
+
+### Tech Leads: From Task Assigners to Orchestrators
+
+The tech lead role shifts from assigning tasks to people toward orchestrating work across humans and agents. This includes deciding which tasks are appropriate for agent execution, which require human implementation, and which need a hybrid approach. The judgment required is substantial: a task that looks simple may touch code paths that agents consistently mishandle, and a task that looks complex may decompose into agent-friendly subtasks.
+
+Tech leads also become the primary feedback loop owners — tracking which context gaps cause repeated agent failures and prioritizing context improvements.
+
+---
+
+## New Roles
+
+Two roles emerge that did not exist before agentic development. Neither requires hiring new people in most cases — they are specializations that existing team members grow into.
+
+**Context engineer.** The person responsible for building, maintaining, and optimizing the context layer that shapes agent behavior. In small teams, this is a hat worn by a senior engineer. In larger organizations, it becomes a dedicated role, often within a platform or developer experience team. The context engineer's output is not code — it is the knowledge infrastructure that makes agent-produced code reliable. The role requires deep codebase knowledge, strong technical writing skills, and a systematic approach to testing whether context changes improve agent output.
+
+**Agent operations specialist.** In organizations using orchestrated SDLC workflows — where agents participate in issue triage, code review, testing, or deployment — someone needs to monitor agent behavior, tune configurations, and manage cost and rate limits. This role overlaps with platform engineering and SRE. It is emerging, not established, and most organizations will not need it until they reach Phase 4 maturity as described in Chapter 2.
+
+Neither role should be created by fiat. Both emerge from demonstrated need. If your context layer is small and stable, you do not need a dedicated context engineer. If you are not running autonomous agent workflows, you do not need an agent operations specialist. Create the role when the work exists, not when the job title sounds innovative.
+
+---
+
+## Team Topologies That Work — and Don't
+
+Team Topologies, the framework by Matthew Skelton and Manuel Pais, provides a useful lens for how agentic development changes team structures.
+
+### What Works
+
+**Stream-aligned teams with embedded context engineering.** The most effective pattern is the simplest: existing product teams that add context engineering to their responsibilities. The team that owns the code also owns the context layer for that code. This preserves domain knowledge proximity — the people who understand the system best are the ones encoding that understanding for agents. Context engineering is a team responsibility, not a separate function.
+
+**A platform team that provides shared context infrastructure.** Organization-wide conventions, common patterns, and cross-cutting context assets — authentication patterns, logging standards, API design guidelines — are better maintained centrally than duplicated across teams. A platform team (or a developer experience team, depending on your vocabulary) owns these shared primitives. Stream-aligned teams consume them and add domain-specific context on top. This mirrors the Explicit Hierarchy constraint from Chapter 1: global rules flow down, domain specifics are local.
+
+**Enabling teams for adoption support.** During the transition period — which is what Chapter 7 plans in detail — a small enabling team that coaches other teams through adoption, maintains best practices documentation, and provides hands-on support is the most effective accelerant. This team has a finite lifespan. Once adoption is mature, its responsibilities fold into the platform team or dissolve.
+
+### What Doesn't Work
+
+**A centralized "AI team" that handles all agent interactions.** A specialized group becomes the bottleneck for all agent work. The result is a coordination tax that eliminates the speed advantage, and a knowledge gap because the AI team doesn't understand each product domain deeply enough to write good context.
+
+**Splitting "human code" and "agent code" into separate workflows.** Some organizations try to create parallel tracks — human engineers handle "important" code, agents handle "routine" code. This fails because the boundary between important and routine is not stable, because agent code still requires human review and integration, and because it creates a two-class system that undermines team cohesion. All code is the team's code, regardless of who or what produced it.
+
+**Replacing team roles with agents.** Reducing headcount on the assumption that agents will cover the gap. Teams that lose senior engineers because "the AI can do that now" lose the judgment required to evaluate agent output and maintain architectural coherence. The result is a team that produces more code and less working software.
+
+---
+
+## The Junior Pipeline
+
+If agents handle the tasks that traditionally built junior engineering skills, how do juniors develop? Three models work. Most organizations will use a combination.
+
+**Model A: Review-intensive apprenticeship.** Juniors spend 60–70% of their first year reviewing agent-generated code under senior supervision. They learn by evaluating output — building pattern recognition, understanding failure modes, and developing architectural awareness. They write code for tasks specifically selected to build skills review alone cannot develop. *Risk:* Can feel passive; requires disciplined senior oversight and deliberate hands-on coding assignments.
+
+**Model B: Agent-assisted learning with scaffolded complexity.** Juniors use agents as learning tools — generating solutions, then analyzing and improving the output. Tasks start simple and increase in complexity. The senior engineer designs the progression: early tasks have clear right answers, later tasks require trade-off analysis agents cannot resolve. *Risk:* Without structure, juniors accept agent output uncritically. The scaffolding must actually exist, not just be assumed.
+
+**Model C: Specification-first roles.** Juniors focus upstream: writing specifications, defining acceptance criteria, decomposing requirements into agent-friendly tasks. This develops specification and design skills that are increasingly valuable and produces real team output immediately. Code review and debugging responsibilities increase over time. *Risk:* Delays hands-on coding experience; some skills require building things, not just specifying them.
+
+No model is sufficient alone. Model A builds judgment. Model B builds critical evaluation. Model C builds specification discipline. A structured first year combines all three, with the proportions shifting as the junior's capability grows.
+
+---
+
+## Skill Matrix Evolution
+
+The skills that differentiate engineers are shifting. This has hiring, retention, and development implications.
+
+| Skill | Pre-Agentic Value | Agentic Value | Direction |
+|---|---|---|---|
+| Syntax and language fluency | High — daily necessity | Low — agents handle this | Declining |
+| Algorithm and data structure mastery | Medium — interviews, specific domains | Low to medium — agents implement known algorithms | Declining for implementation, stable for design |
+| System design and architecture | High | Very high — the primary human differentiator | Increasing |
+| Code review and evaluation | Medium — supporting skill | High — core daily activity | Increasing |
+| Technical writing and specification | Low to medium — often neglected | High — specification quality drives agent output quality | Sharply increasing |
+| Context engineering | Did not exist | High — new foundational skill | New |
+| Debugging and root cause analysis | High | High — agent-generated bugs are subtler | Stable, but harder |
+| Domain knowledge | High | Very high — agents cannot learn what is not documented | Increasing |
+| Collaboration and communication | Medium | High — coordination with agents adds a new dimension | Increasing |
+
+### Hiring Implications
+
+The skill matrix changes what you screen for, what you stop requiring, and how you interview.
+
+**Screen for:** Systems thinking, technical communication (can the candidate explain a design decision in writing, not just verbally?), evaluation skill (can they identify subtle flaws in code they didn't write?), comfort with ambiguity, and learning velocity.
+
+**Stop requiring:** Whiteboard algorithm implementation, syntax trivia, memorized API knowledge. These were always imperfect proxies for engineering capability. They are now irrelevant proxies, because agents eliminate the tasks they supposedly measure.
+
+**Interview changes:** Include a review exercise — give candidates agent-generated code with subtle defects and evaluate how they identify and explain the problems. Include a specification exercise — give candidates an ambiguous requirement and evaluate how they decompose it into a clear, implementable specification. These exercises test the skills that matter now.
+
+### Retention Risks
+
+Two retention risks emerge during the transition.
+
+**Senior engineers who feel deskilled.** Engineers whose identity is tied to writing code may perceive agentic tools as devaluing their expertise. The reality is the opposite: their judgment is more valuable than ever, but the *form* of their contribution changes. Address this directly. Show them that context engineering and architectural guidance are expressions of the same expertise, applied differently.
+
+**Junior engineers who feel replaceable.** The discourse around AI replacing developers lands hardest on the newest members of the profession. If your organization is not actively investing in junior development — using the models from the previous section — your junior engineers will correctly conclude that their growth path is unclear and leave. This is not just an empathy argument. The seniors of 2030 are the juniors you invest in today.
+
+---
+
+## Staffing Models
+
+Team size and composition change under agentic development. The direction is consistent: smaller teams that are more senior in composition, with higher leverage per person.
+
+| Team profile | Pre-Agentic | Agentic (Mature) | Notes |
+|---|---|---|---|
+| Typical team size | 6–10 engineers | 4–7 engineers | Fewer people, higher output per person |
+| Senior-to-junior ratio | 1:2 to 1:3 | 1:1 to 2:1 | More senior judgment required for review and context |
+| Context engineering allocation | 0% | 10–20% of team capacity | Ongoing investment, not a one-time cost |
+| Review time allocation | 15–20% of team capacity | 25–35% of team capacity | Agent output requires more review, not less |
+
+Two caveats.
+
+**These are directional, not prescriptive.** Your ratios depend on codebase complexity, agent maturity, and domain risk. A team working on a payments system with strict regulatory requirements will need a higher senior ratio than a team building internal tooling.
+
+**Smaller does not mean fewer total engineers.** Agent-augmented teams produce more per person, but the economic argument is not "we need fewer engineers." It is "we need the same or fewer engineers to do more, with a different mix of skills." The staffing question is about composition and capability, not reduction.
+
+---
+
+## Team Assessment Worksheet
+
+Use this worksheet to evaluate your current team structure against the patterns described in this chapter. Score each dimension honestly. The purpose is to identify specific gaps that need attention, not to generate an overall grade.
+
+| Dimension | Question | Score (1-5) | Notes |
+|---|---|---|---|
+| **Knowledge explicitness** | What percentage of your team's working knowledge is documented vs. tribal? | ___ | 1 = almost all tribal; 5 = comprehensive docs |
+| **Review capability** | Can your team review agent-generated code effectively — catching subtle architectural violations, not just syntax errors? | ___ | 1 = no experience; 5 = structured review process |
+| **Specification discipline** | Do your team's work items contain enough detail for an agent to produce useful output without extensive clarification? | ___ | 1 = vague tickets; 5 = clear, scoped specs |
+| **Senior presence** | Is there sufficient senior judgment to evaluate agent output on every critical path? | ___ | 1 = no senior coverage; 5 = senior review on all critical work |
+| **Junior development** | Does your team have a structured path for juniors to build engineering skills in an agentic environment? | ___ | 1 = no plan; 5 = active apprenticeship models |
+| **Context ownership** | Is someone accountable for the quality of your team's context layer — the instructions, conventions, and agent configurations? | ___ | 1 = nobody; 5 = explicit ownership with maintenance |
+| **Feedback loops** | Does your team systematically capture agent failures and feed corrections back into the context layer? | ___ | 1 = no feedback loop; 5 = weekly context improvement cycle |
+| **Psychological safety** | Can team members admit when agent-assisted work fails without blame? | ___ | 1 = blame culture; 5 = learning culture |
+
+### Interpreting Results
+
+**Scores of 1–2 on any dimension** indicate a gap that will actively undermine agentic adoption. Address these before expanding agent usage. Knowledge explicitness and senior presence are the two dimensions that unblock everything else — if these score low, start there.
+
+**Scores of 3** indicate basic capability that will work for pilot-level adoption but will not scale. Plan to invest during the expansion phase described in Chapter 7.
+
+**Scores of 4–5** indicate readiness. These are the dimensions where your team can be a model for others.
+
+**The most common pattern** in early assessments: high marks on senior presence and psychological safety, low marks on knowledge explicitness and context ownership. This is normal. It reflects teams that have strong people and weak infrastructure — which is exactly what agentic development exposes.
+
+The worksheet is not a one-time exercise. Reassess quarterly during your first year of agentic adoption. The dimensions that need attention shift as the team matures — early focus is on knowledge explicitness and review capability; later focus shifts to junior development and feedback loops.
+
+---
+
+The structural changes described in this chapter take time. They are not a reorganization to announce on Monday. They are a set of shifts to design for, measure against, and adjust as your team learns what works in your context.
+
+Chapter 7 takes these structural insights and builds the operational plan — the phased transition from pilot to full adoption, with concrete criteria for each stage and honest metrics for tracking progress.
