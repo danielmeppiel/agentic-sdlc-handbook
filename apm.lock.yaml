@@ -1,10 +1,10 @@
 lockfile_version: '1'
-generated_at: '2026-03-22T16:50:57.905116+00:00'
+generated_at: '2026-03-22T17:08:53.418051+00:00'
 apm_version: 0.8.4
 dependencies:
 - repo_url: danielmeppiel/handbook-agents
   host: github.com
-  resolved_commit: 9851782734ccbf5820f781216a160911b7d768cf
+  resolved_commit: 103d2e75904c25e170433dee2b670b5556e987fe
   package_type: apm_package
   deployed_files:
   - .github/agents/chief-editor.agent.md
@@ -16,6 +16,7 @@ dependencies:
   - .github/agents/market-analyst.agent.md
   - .github/agents/platform-strategist.agent.md
   - .github/agents/practitioner-authority.agent.md
+  - .github/agents/publishing-advisor.agent.md
   - .github/agents/thought-leadership.agent.md
   - .github/skills/handbook-panel
-  content_hash: sha256:4d1b910a59390c4c4d980891127617b1ed0a2d19930578df2d041ee162eee92f
+  content_hash: sha256:2a2758559fd632c839f1e55e5990e4d3363e6d455f1eba1ed2fd760aeedce960

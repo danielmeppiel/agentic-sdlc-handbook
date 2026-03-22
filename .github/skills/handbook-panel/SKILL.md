@@ -2,10 +2,10 @@
 name: handbook-panel
 description: >-
   Activate when working on the Agentic SDLC Handbook. This skill
-  orchestrates an expert panel of 10 agents for iterative review,
-  drafting, visual design, fact-checking, and quality assurance of
-  handbook content. Use it for any handbook chapter creation, review,
-  illustration, or structural decision.
+  orchestrates an expert panel of 11 agents for iterative review,
+  drafting, visual design, fact-checking, publishing strategy, and
+  quality assurance of handbook content. Use it for any handbook
+  chapter creation, review, illustration, publishing, or structural decision.
 ---
 
 # Handbook Panel — Expert Review Orchestration
@@ -24,6 +24,7 @@ description: >-
 | [Thought Leadership](../../agents/thought-leadership.agent.md) | Personal Brand Strategist | Voice authenticity, credibility markers, positioning review |
 | [Illustrator](../../agents/illustrator.agent.md) | Visual Strategist | Diagram specification, visual audit, information design, Mermaid/ASCII specs |
 | [Fact & Ref Checker](../../agents/fact-ref-checker.agent.md) | Claims Auditor | Unverified claim detection, statistic validation, consistency audit |
+| [Publishing Advisor](../../agents/publishing-advisor.agent.md) | First-Time Author Strategist | Publishing path selection, monetization, launch strategy, distribution |
 
 ## Panel workflow
 
@@ -52,6 +53,14 @@ description: >-
 3. Runs cross-chapter consistency audit (numbers, frameworks, case study details)
 4. Produces structured report with recommendations
 5. Surface flagged claims to author for resolution
+
+### For publishing strategy
+1. Publishing Advisor assesses author profile, audience, and content characteristics
+2. Produces path comparison matrix with honest tradeoffs
+3. Recommends specific path with launch timeline
+4. CTO Proxy validates enterprise buyer perspective
+5. Thought Leadership Advisor validates positioning implications
+6. Surface recommendation to author for decision
 
 ### For integration review
 1. Chief Editor reads full manuscript for arc and flow
