@@ -10,3 +10,4 @@ _freeze/
 /.quarto/
 **/*.quarto_ipynb
 *_files/
+*.aux\n*.log\n*.toc\nindex.tex

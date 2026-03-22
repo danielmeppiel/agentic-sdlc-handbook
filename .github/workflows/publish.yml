@@ -16,15 +16,11 @@ jobs:
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          tinytex: true
-
-      - name: Install Chromium for Mermaid rendering
-        run: quarto install chromium --no-prompt
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
+          render: "html"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
