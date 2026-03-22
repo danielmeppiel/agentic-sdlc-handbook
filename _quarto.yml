@@ -61,8 +61,9 @@ format:
       - right=25mm
       - bottom=30mm
     code-overflow: wrap
-    fig-width: 6.5
+    fig-width: 5.5
     fig-height: 4
+    include-in-header: preamble.tex
   epub:
     toc: true
     number-sections: true

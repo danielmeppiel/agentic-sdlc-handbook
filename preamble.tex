@@ -1,0 +1,7 @@
+% Reduce font size in tables so wide tables fit within margins
+\usepackage{etoolbox}
+\AtBeginEnvironment{longtable}{\small}
+
+% Ensure figures don't overflow
+\usepackage{float}
+\floatplacement{figure}{H}
