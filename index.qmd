@@ -1,8 +1,8 @@
 ---
 title: "Preface"
+title-block-style: none
+number-sections: false
 ---
-
-# The Agentic SDLC Handbook {.unnumbered}
 
 A methodology for teams building software with AI agents — grounded in evidence, tested in production, independent of any single tool.
 
