@@ -10,23 +10,13 @@ Every AI interaction operates within a fixed capacity. A context window is not a
 
 A typical agent session divides its context roughly as follows:
 
-```
-┌──────────────────────────────────────────────────┐
-│  System prompt          ~5-10%                   │
-│  (model behavior, safety, base instructions)     │
-├──────────────────────────────────────────────────┤
-│  Instructions & rules   ~15-25%                  │
-│  (project conventions, scoped guidance)           │
-├──────────────────────────────────────────────────┤
-│  Code context           ~30-50%                  │
-│  (source files, dependencies, types)             │
-├──────────────────────────────────────────────────┤
-│  Conversation history   ~20-30%                  │
-│  (prior turns, agent reasoning, tool output)     │
-├──────────────────────────────────────────────────┤
-│  Working memory         remainder                │
-│  (the agent's space to think and produce output) │
-└──────────────────────────────────────────────────┘
+```mermaid
+pie title Context Window Budget (128K tokens)
+    "System prompt (~8K)" : 6
+    "Instructions & rules (~20K)" : 16
+    "Code context (~60K)" : 47
+    "Conversation history (~30K)" : 23
+    "Working memory (~10K)" : 8
 ```
 
 You control two of these segments directly: instructions and code context. You influence a third — conversation history — through session discipline. The system prompt and working memory are largely fixed by the tool. This means your leverage is concentrated: what instructions load, which code is visible, and how long the session runs before you reset.

@@ -62,6 +62,46 @@ The transition from pilot to full adoption follows three phases. Each phase has 
 
 **A note on timelines.** The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.
 
+```mermaid
+flowchart TB
+    PRE["<b>Pre-Transition</b><br/>Readiness assessments<br/>Baseline metrics<br/><em>Weeks 1–4</em>"]
+
+    P1["<b>Phase 1: Pilot</b><br/>1–2 teams, controlled scope<br/>Build minimum context layer<br/><em>1–5 months</em>"]
+
+    G1{"Exit signals met?<br/>Context layer works<br/>Review workflow trusted<br/>4+ weeks of metrics"}
+
+    P2["<b>Phase 2: Expand</b><br/>3–5 additional teams<br/>Shared context assets<br/>Governance at scale<br/><em>3–9 months from start</em>"]
+
+    G2{"Exit signals met?<br/>Teams self-sufficient<br/>Shared assets owned<br/>Metrics show trend"}
+
+    P3["<b>Phase 3: Scale</b><br/>Remaining teams<br/>Self-service onboarding<br/>Continuous practice<br/><em>6–24 months from start</em>"]
+
+    RB1["🔴 Rollback<br/>Rejection rate > 60%<br/>Intervention not declining<br/>Satisfaction drops"]
+
+    RB2["🔴 Rollback<br/>Coach dependency > 4 wks<br/>Metrics diverge from pilot<br/>Coach burnout"]
+
+    PRE --> P1
+    P1 --> G1
+    G1 -->|"Yes"| P2
+    G1 -->|"No"| RB1
+    RB1 -->|"fix & retry"| P1
+    P2 --> G2
+    G2 -->|"Yes"| P3
+    G2 -->|"No"| RB2
+    RB2 -->|"shrink & reinforce"| P2
+
+    style PRE fill:#95a5a6,color:#fff
+    style P1 fill:#3498db,color:#fff
+    style P2 fill:#e67e22,color:#fff
+    style P3 fill:#2ecc71,color:#fff
+    style G1 fill:#fff,stroke:#333
+    style G2 fill:#fff,stroke:#333
+    style RB1 fill:#e74c3c,color:#fff
+    style RB2 fill:#e74c3c,color:#fff
+```
+
+> *Each phase has explicit exit signals and rollback criteria. Moving forward without meeting exit signals is the single most common adoption mistake.*
+
 ### Phase 1: Pilot (1–5 months)
 
 *Typical duration: 1–3 months for orgs under 200 engineers; 3–5 months for 200–1,000; 4–6 months for 1,000+.*

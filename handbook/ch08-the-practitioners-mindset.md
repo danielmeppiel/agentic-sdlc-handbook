@@ -78,40 +78,27 @@ Agents are not universally better than manual coding. They are better at specifi
 
 The decision is not intuitive at first, so here is the flowchart. When a task arrives, run it through these questions in order:
 
-```
-                        ┌─────────────────────┐
-                        │    Task arrives      │
-                        └─────────┬───────────┘
-                                  │
-                                  ▼
-                   ┌──────────────────────────────┐
-                   │ Can you specify it clearly    │
-                   │ in under 2 minutes?           │
-                   └──────┬───────────────┬────────┘
-                          │               │
-                         YES              NO
-                          │               │
-                          ▼               ▼
-              ┌────────────────────┐   ┌──────────────────────┐
-              │ Is the spec shorter│   │ Can you split it into │
-              │ than the code?     │   │ agent + manual parts? │
-              └───┬────────────┬───┘   └───┬──────────────┬───┘
-                  │            │            │              │
-                 YES           NO          YES             NO
-                  │            │            │              │
-                  ▼            │            ▼              ▼
-         ┌──────────────┐     │   ┌─────────────────┐  ┌────────────┐
-         │ Is the scope  │     │   │ SPLIT: bounded  │  │CODE IT     │
-         │ bounded?      │     │   │ parts → agent,  │  │YOURSELF    │
-         └──┬────────┬───┘     │   │ judgment parts  │  └────────────┘
-            │        │         │   │ → you           │
-           YES       NO        │   └─────────────────┘
-            │        │         │
-            ▼        ▼         ▼
-  ┌──────────────┐  ┌─────────────────┐
-  │ DELEGATE     │  │ CODE IT         │
-  │ to agent     │  │ YOURSELF        │
-  └──────────────┘  └─────────────────┘
+```mermaid
+flowchart TD
+    START([Task arrives]) --> Q1{Can you specify it clearly\nin under 2 minutes?}
+
+    Q1 -- Yes --> Q2{Is the spec shorter\nthan the code?}
+    Q1 -- No --> Q3{Can you split it into\nagent + manual parts?}
+
+    Q2 -- Yes --> Q4{Is the scope\nbounded?}
+    Q2 -- No --> MANUAL1[CODE IT YOURSELF]
+
+    Q4 -- Yes --> DELEGATE[DELEGATE\nto agent]
+    Q4 -- No --> MANUAL2[CODE IT YOURSELF]
+
+    Q3 -- Yes --> SPLIT[SPLIT: bounded parts → agent\njudgment parts → you]
+    Q3 -- No --> MANUAL3[CODE IT YOURSELF]
+
+    style DELEGATE fill:#2d6a4f,color:#fff
+    style SPLIT fill:#2d6a4f,color:#fff
+    style MANUAL1 fill:#6c757d,color:#fff
+    style MANUAL2 fill:#6c757d,color:#fff
+    style MANUAL3 fill:#6c757d,color:#fff
 ```
 
 The two-minute test is the entry point. If you could explain the task to a new team member in two minutes and they could complete it with access to the right files and a style guide, an agent can do it. If explaining it would require a thirty-minute whiteboard session with a senior engineer, you've reached a "NO" — code it yourself, or at least isolate the judgment-heavy core for manual work.

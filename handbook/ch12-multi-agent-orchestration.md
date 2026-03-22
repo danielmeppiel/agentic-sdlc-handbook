@@ -225,6 +225,30 @@ Wave sizing matters. A wave with 2-3 agents completes in the time it takes the s
 
 In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.
 
+```mermaid
+gantt
+    title Wave Execution Timeline
+    dateFormat X
+    axisFormat %s
+
+    section Wave 0 — Foundation
+    Agent A (types)        :a, 0, 5
+    Agent B (utilities)    :b, 0, 4
+    Agent C (config)       :c, 0, 3
+    Test + commit          :crit, t0, 5, 7
+
+    section Wave 1 — Core
+    Agent D (migration)    :d, 7, 12
+    Agent E (API)          :e, 7, 11
+    Agent F (auth)         :f, 7, 13
+    Test + commit          :crit, t1, 13, 15
+
+    section Wave 2 — Integration
+    Agent G (wiring)       :g, 15, 19
+    Agent H (tests)        :h, 15, 18
+    Test + commit          :crit, t2, 19, 21
+```
+
 ### Pipeline Parallelism
 
 Some operations can run in parallel across workflow stages rather than across files. While execution agents work on Wave 1, review agents can start reviewing Wave 0's output. While human review happens on one wave, test agents can run extended validation on a previous wave.
@@ -292,7 +316,7 @@ Two agents, each following their specialization's best practices, produce output
 
 **Resolution.** This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan's priority-ordered principles resolve most of them mechanically — if UX is prioritized above structural purity, the domain agent's approach wins. When the principles don't resolve the conflict, the human decides and documents the rationale.
 
-The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed across 15 agent dispatches. Two of those were design conflicts that the priority ordering did not fully resolve. A rate of roughly 15-20% human intervention on design decisions is typical for well-planned multi-agent work. If you are intervening on more than 30%, the plan's principles are insufficiently specific. If you are intervening on less than 5%, you are either lucky or not checking carefully enough.
+The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed across 15 agent dispatches — a scope decision during planning, an agent recovery during Wave 2, and test triage after Wave 2b (see Chapter 13 for details). None were design conflicts between agents; all were judgment calls that the plan could not automate. A rate of roughly 15–20% human intervention is typical for well-planned multi-agent work. If you are intervening on more than 30%, the plan's principles are insufficiently specific. If you are intervening on less than 5%, you are either lucky or not checking carefully enough.
 
 ---
 
@@ -323,7 +347,7 @@ Not every problem requires human attention. A well-designed orchestration system
 
 The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.
 
-In the reference case study (Chapter 13), the distribution was roughly 80% autonomous (L1), 13% automated retry (L2), and 7% human decision (L3/L4) — characteristic of a well-planned execution. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
+In the reference case study (Chapter 13), the distribution across 15 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions out of fifteen dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
 
 ---
 

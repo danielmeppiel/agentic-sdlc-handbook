@@ -395,36 +395,31 @@ Total recovery cost: three focused dispatches instead of an open-ended retry loo
 
 When something goes wrong, the first question is what kind of wrong:
 
-```
-Something went wrong with agent output
-    |
-    +-- Is the code syntactically wrong?
-    |       YES --> Model capability issue. Stronger model, better
-    |               examples, or do it manually.
-    |       NO  -->
-    |
-    +-- Do tests fail?
-    |       YES --> Agent's code or pre-existing?
-    |       |         Agent's --> Check: task too broad? (Scope Creep)
-    |       |                    Check: context stale? (Stale Context)
-    |       |                    Check: constraint dropped? (Exhaustion)
-    |       |         Pre-existing --> Separate issue.
-    |       NO  -->
-    |
-    +-- Does the code follow your conventions?
-    |       NO  --> Primitive issue.
-    |               Check: is the rule in the instruction set?
-    |               Check: was the right primitive activated?
-    |               Check: too much noise in context?
-    |       YES -->
-    |
-    +-- Does it integrate correctly with the system?
-            NO  --> Architectural issue.
-                    Check: did the agent see the right interfaces?
-                    Check: did it respect module boundaries?
-            YES --> Probably fine. Verify edge cases: error paths,
-                    empty/null inputs, concurrent access, auth
-                    boundaries, and your domain's known invariants.
+```mermaid
+flowchart TD
+    START(["Something went wrong\nwith agent output"]) --> Q1{Code syntactically\nwrong?}
+
+    Q1 -- Yes --> FIX1["Model capability issue\nStronger model, better examples,\nor do it manually"]
+    Q1 -- No --> Q2{Tests fail?}
+
+    Q2 -- Yes --> Q2a{Agent's code\nor pre-existing?}
+    Q2a -- "Agent's" --> FIX2["Check: task too broad?\nContext stale?\nConstraint dropped?"]
+    Q2a -- Pre-existing --> FIX2b["Separate issue\nDo not fix in this session"]
+
+    Q2 -- No --> Q3{Follows your\nconventions?}
+
+    Q3 -- No --> FIX3["Primitive issue\nRule missing? Wrong scope?\nToo much context noise?"]
+    Q3 -- Yes --> Q4{Integrates correctly\nwith system?}
+
+    Q4 -- No --> FIX4["Architectural issue\nRight interfaces visible?\nModule boundaries respected?"]
+    Q4 -- Yes --> FIX5["Probably fine\nVerify edge cases: error paths,\nnull inputs, concurrency, auth"]
+
+    style FIX1 fill:#e63946,color:#fff
+    style FIX2 fill:#e76f51,color:#fff
+    style FIX3 fill:#f4a261,color:#000
+    style FIX4 fill:#e9c46a,color:#000
+    style FIX5 fill:#2d6a4f,color:#fff
+    style FIX2b fill:#6c757d,color:#fff
 ```
 
 ---

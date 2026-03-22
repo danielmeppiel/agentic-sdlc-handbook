@@ -20,7 +20,7 @@ The degradation follows a pattern. On a greenfield project — no legacy code, n
 - **Hallucinated interfaces.** Without visibility into your actual API surface, the agent confabulates plausible-looking method signatures that don't exist. The code compiles in the agent's imagination and fails at build time. Worse, it sometimes calls real methods with wrong semantics — code that compiles, passes superficial review, and breaks in production.
 - **Convention violations.** Your team's error-handling pattern, your logging standards, your module boundaries — none of these are visible to an agent unless someone has made them explicit. The agent doesn't break your rules on purpose. It doesn't know they exist.
 
-The cliff isn't a bug in any particular tool. It's a structural property of how language models interact with complex systems. And it explains why adoption surveys consistently show the same split: high satisfaction on simple tasks, declining returns on complex ones. Teams report that 30–60% of agent-generated code requires rework when applied to complex tasks — not because the models are weak, but because the context is.
+The cliff isn't a bug in any particular tool. It's a structural property of how language models interact with complex systems. And it explains why adoption surveys consistently show the same split: high satisfaction on simple tasks, declining returns on complex ones. Teams consistently report that 30–60% of agent-generated code on complex tasks requires significant rework — a figure observed across multiple organizations and tool ecosystems, though no single study has established it definitively. Not because the models are weak, but because the context is.
 
 Name any experienced engineering team that has tried to move beyond autocomplete into agentic workflows on a production codebase. They've hit this cliff. The symptoms vary — a sprint spent cleaning up agent-generated code that "worked" but violated every architectural boundary, a security review that caught agent output bypassing the team's auth patterns, a junior developer who trusted agent output that a senior would have immediately flagged — but the underlying cause is always the same.
 
@@ -44,7 +44,7 @@ Three properties of language models are structural. They hold regardless of mode
 
 **Output is probabilistic.** The same input can produce different outputs. Language models interpret rather than execute; variance is inherent, not a bug to be fixed. Determinism comes from constraints, structure, and grounding — not from the model itself. This means reliability must be *architected*, not assumed. Unlike a compiler that either accepts or rejects your code, a language model *always produces something* — making quality failures silent and insidious.
 
-These three properties are why better models don't solve the Vibe Coding Cliff. A more powerful model working with unstructured, incomplete, or noisy context doesn't produce better results. It produces more confident wrong answers, faster. The failure mode of a weak model is obvious — it can't do the task. The failure mode of a strong model with poor context is insidious — it produces plausible output that looks correct and silently violates your system's invariants. Context windows have grown 100× in two years; satisfaction with AI on complex engineering tasks has not kept pace, because the bottleneck was never raw capacity — it was the structure of what fills that capacity.
+These three properties are why better models don't solve the Vibe Coding Cliff. A more powerful model working with unstructured, incomplete, or noisy context doesn't produce better results. It produces more confident wrong answers, faster. The failure mode of a weak model is obvious — it can't do the task. The failure mode of a strong model with poor context is insidious — it produces plausible output that looks correct and silently violates your system's invariants. Context windows have grown 50–500× in five years — from GPT-3's 4K tokens in 2020 to the 200K–2M tokens available in current frontier models — yet satisfaction with AI on complex engineering tasks has not kept pace, because the bottleneck was never raw capacity — it was the structure of what fills that capacity.
 
 ## PROSE: Architectural Constraints for Human-AI Collaboration
 
@@ -74,12 +74,28 @@ In both cases, the constraints feel like restrictions until you see the properti
 
 How the five constraints relate:
 
-```
-Progressive Disclosure → determines WHAT enters context
-Reduced Scope         → determines HOW MUCH the agent handles
-Orchestrated Comp.    → determines HOW primitives combine
-Safety Boundaries     → determines WHAT the agent CAN DO
-Explicit Hierarchy    → determines WHICH RULES apply
+```mermaid
+flowchart LR
+    subgraph " "
+        direction TB
+        EH["Explicit Hierarchy<br/><em>Which rules apply</em>"]
+        PD["Progressive Disclosure<br/><em>What enters context</em>"]
+        RS["Reduced Scope<br/><em>How much agent handles</em>"]
+        OC["Orchestrated Composition<br/><em>How primitives combine</em>"]
+        SB["Safety Boundaries<br/><em>What agent can do</em>"]
+    end
+
+    EH -- "filters<br/>rules" --> PD
+    PD -- "fills" --> RS
+    RS -- "decomposes<br/>into" --> OC
+    SB -- "constrains<br/>all execution" --> OC
+    SB -- "limits scope<br/>of" --> RS
+
+    style EH fill:#4a9eff,color:#fff
+    style PD fill:#4a9eff,color:#fff
+    style RS fill:#4a9eff,color:#fff
+    style OC fill:#4a9eff,color:#fff
+    style SB fill:#e74c3c,color:#fff
 ```
 
 When these constraints are followed, systems exhibit reliability (consistent results from non-deterministic systems), scalability (same patterns work from scripts to large codebases), portability (works across any LLM-based agent platform), and transparency (agent behavior is inspectable and explainable).

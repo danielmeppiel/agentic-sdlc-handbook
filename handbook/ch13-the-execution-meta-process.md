@@ -12,11 +12,15 @@ The methodology is a five-phase meta-process. It works regardless of which AI co
 
 Every large change follows these phases, in order:
 
-```
-AUDIT ──→ PLAN ──→ WAVE[0..N] ──→ VALIDATE ──→ SHIP
-            ↑          │
-            └── ADAPT ─┘
-            (on failure)
+```mermaid
+flowchart LR
+    AUDIT["AUDIT\n(understand)"] --> PLAN["PLAN\n(scope, waves,\nteams)"]
+    PLAN --> WAVE["WAVE [0..N]\n(parallel agents)"]
+    WAVE --> VALIDATE["VALIDATE\n(test, spot-check)"]
+    VALIDATE -->|All waves done| SHIP["SHIP\n(commit, push,\nmerge)"]
+    VALIDATE -->|Next wave| WAVE
+    VALIDATE -->|Failure| ADAPT["ADAPT\n(diagnose, adjust)"]
+    ADAPT --> PLAN
 ```
 
 **Audit** — understand the codebase from the perspectives that matter for this change. **Plan** — define scope, decompose into dependency-ordered waves, assign agent teams. **Wave** — execute each wave as a batch of parallel agents, one file per agent. **Validate** — test after every wave, spot-check critical changes, commit. **Ship** — final verification and merge.

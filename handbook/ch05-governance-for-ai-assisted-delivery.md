@@ -43,6 +43,24 @@ Most organizations operating at Phase 3 (agentic coding, as described in Chapter
 
 **Where to start.** Audit trails and agent access controls are the two capabilities that unblock everything else. Without knowing what agents did and limiting what they can do, the other four capabilities have no foundation. If your assessment shows "None" in these areas, start here.
 
+```mermaid
+flowchart TD
+    START["Assess 6<br/>governance capabilities"] --> Q1{"Any capability<br/>at 'None'?"}
+    Q1 -->|Yes| FIX["Start here:<br/>Audit Trails +<br/>Access Controls"]
+    Q1 -->|No| Q2{"All at<br/>'Basic' or above?"}
+    Q2 -->|Yes| EXPAND["Safe to expand<br/>agent adoption"]
+    Q2 -->|No| FIX
+    FIX --> REASSESS["Reassess<br/>quarterly"]
+    EXPAND --> MATURE["Invest toward<br/>'Enterprise' per<br/>regulatory scope"]
+    REASSESS --> Q1
+
+    style FIX fill:#e74c3c,color:#fff
+    style EXPAND fill:#2ecc71,color:#fff
+    style MATURE fill:#3498db,color:#fff
+```
+
+> *The governance floor: no capability at "None" before expanding agent adoption. Start with audit trails and access controls — they unblock everything else.*
+
 ### Compliance Framework Mapping
 
 A checklist without regulatory context is a conversation starter, not a decision tool. The matrix below maps each capability row to the compliance frameworks where it is critical. Use it to prioritize: find your regulatory scope in the columns, then focus on the rows marked as critical for that scope.
@@ -206,7 +224,7 @@ A status snapshot is a status email. A governance artifact shows where you are, 
 |---|---|---|---|---|
 | **Adoption** | Developers using agent tools | *e.g., 120 of 400 (30%)* | *80% by Q4* | *↑ from 18% last quarter* |
 | | PRs with agent-generated code | *e.g., 22%* | *40% by Q4* | *↑ from 12%* |
-| | Phase maturity | *e.g., Phase 2 (agentic)* | *Phase 3 by year-end* | *Advanced from Phase 1 in Q1* |
+| | Phase maturity | *e.g., Phase 3 (agentic)* | *Phase 4 by year-end* | *Advanced from Phase 2 in Q1* |
 | **Value** | Cycle time (agent-assisted vs. baseline) | *e.g., −18% on eligible tasks* | *−25%* | *↑ improving (was −11%)* |
 | | Deployment frequency | *e.g., 3.2/week* | *4/week* | *→ flat* |
 | | Developer satisfaction (survey) | *e.g., 7.4/10* | *≥7.5* | *↑ from 6.8* |

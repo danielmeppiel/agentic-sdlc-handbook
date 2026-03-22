@@ -10,7 +10,7 @@ The most common justification for AI coding tools goes like this: developers rep
 
 **The denominator problem.** Productivity metrics for AI tools almost always measure the coding phase — writing and editing code in an editor. But coding is 20–35% of a developer's working time. The rest is reading code, reviewing pull requests, debugging, communicating, designing, and waiting for builds. A 50% improvement on 30% of work time is a 15% improvement on total work time. That's still significant. It's not 10×. Reporting it as 10× invites the CFO to ask why headcount hasn't decreased by 90%, and when the answer is an awkward silence, the credibility of every subsequent AI investment is damaged.
 
-**The quality discount.** Raw speed metrics count code produced. They don't count code reworked, reverted, or debugged downstream. Industry data consistently shows that 30–60% of AI-generated code on complex tasks requires meaningful rework — not cosmetic edits, but structural changes, convention fixes, and security remediation. If an agent produces a function in 30 seconds that takes 20 minutes to correct, the net productivity may be negative. Measuring production without measuring rework is measuring revenue without measuring returns.
+**The quality discount.** Raw speed metrics count code produced. They don't count code reworked, reverted, or debugged downstream. Teams consistently report that 30–60% of AI-generated code on complex tasks requires significant rework — a figure observed across multiple organizations and tool ecosystems, though no single study has established it definitively. This means structural changes, convention fixes, and security remediation — not cosmetic edits. If an agent produces a function in 30 seconds that takes 20 minutes to correct, the net productivity may be negative. Measuring production without measuring rework is measuring revenue without measuring returns.
 
 **The attribution problem.** When a developer uses an AI tool, which parts of the resulting code are "AI-generated"? The developer writes a prompt, the agent produces code, the developer edits it, asks for revisions, edits again, and commits. Attributing the final result to the AI overstates its contribution. Attributing it to the developer understates the tool's value. The honest answer — that the output is a collaboration whose proportions vary by task — doesn't fit neatly into a productivity spreadsheet. This ambiguity is inherent, not a measurement failure.
 
@@ -113,6 +113,21 @@ Every adoption plan that shows a smooth upward curve is lying. Real adoption fol
 **Months 6–12: Compounding returns.** Each new context artifact makes agents more effective. New team members onboard faster because the codebase is better documented. Review quality improves because conventions are explicit. The investment in context engineering begins paying back. Organizations that reach this phase with leadership patience and sustained context investment intact report the strongest satisfaction and the most honest productivity numbers.
 
 The timeline varies by organization. Teams with well-documented codebases enter the valley shallower and exit it faster. Teams with heavy undocumented tribal knowledge spend longer in the valley — but the context engineering they do during that period has value independent of AI tools.
+
+```mermaid
+---
+config:
+    xyChart:
+        titleFontSize: 16
+---
+xychart-beta
+    title "Adoption J-Curve: Expect the Valley"
+    x-axis "Months" ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+    y-axis "Net Productivity Impact" -30 --> 60
+    line [0, -10, -25, -20, -5, 10, 20, 28, 34, 39, 44, 48, 52]
+```
+
+> *Months 1–3 are an investment valley. Inflection begins around month 4 as context accumulates. Teams that abandon during the valley never reach the compounding phase.*
 
 ---
 

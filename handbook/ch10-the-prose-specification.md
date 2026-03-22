@@ -372,6 +372,16 @@ The five constraints are defined independently but produce their strongest effec
 
 The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.
 
+```mermaid
+graph TD
+    P["P\nProgressive\nDisclosure"] <-- "controls attention\nwithin scope" --> E["E\nExplicit\nHierarchy"]
+    R["R\nReduced\nScope"] <-- "constrains what\nsafety must cover" --> S["S\nSafety\nBoundaries"]
+    O["O\nOrchestrated\nComposition"] <-- "single source of\ntruth across tasks" --> R
+    P <-- "loads only what\nfits in scope" --> R
+    E <-- "hierarchy defines\nboundary scope" --> S
+    O <-- "composable units\nenable disclosure" --> P
+```
+
 ---
 
 ## Applying the Constraints: A Worked Example

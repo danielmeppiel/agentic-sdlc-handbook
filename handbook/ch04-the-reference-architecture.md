@@ -16,28 +16,34 @@ At every phase of the software development lifecycle, work happens across three 
 
 The layers are not independent. They form a stack where each depends on the one below it:
 
-```
-+------------------------------------------------------------------+
-|                        HUMAN LAYER                               |
-|  Roles: Product, Architecture, Engineering, QA, Operations       |
-|  Functions: Decisions, Governance, Accountability, Strategy       |
-+------------------------------------------------------------------+
-        |  sets constraints,    ^  escalations,
-        |  delegates tasks      |  approvals,
-        v                       |  results
-+------------------------------------------------------------------+
-|                        AGENT LAYER                               |
-|  Capabilities: Generate, Analyze, Test, Review, Transform        |
-|  Boundaries: Scoped authority, context-dependent, auditable      |
-+------------------------------------------------------------------+
-        |  invokes tools,       ^  build results,
-        |  reads context        |  test output,
-        v                       |  telemetry
-+------------------------------------------------------------------+
-|                       PLATFORM LAYER                             |
-|  Infrastructure: SCM, CI/CD, Auth, Observability, Registries     |
-|  Integrations: APIs, Webhooks, Context Sources, Artifact Stores  |
-+------------------------------------------------------------------+
+```mermaid
+flowchart TB
+    subgraph HUMAN ["🧑 HUMAN LAYER"]
+        direction LR
+        HR["Roles: Product, Architecture,<br/>Engineering, QA, Operations"]
+        HF["Functions: Decisions, Governance,<br/>Accountability, Strategy"]
+    end
+
+    subgraph AGENT ["🤖 AGENT LAYER"]
+        direction LR
+        AC["Capabilities: Generate, Analyze,<br/>Test, Review, Transform"]
+        AB["Boundaries: Scoped authority,<br/>context-dependent, auditable"]
+    end
+
+    subgraph PLATFORM ["⚙️ PLATFORM LAYER"]
+        direction LR
+        PI["Infrastructure: SCM, CI/CD,<br/>Auth, Observability, Registries"]
+        PN["Integrations: APIs, Webhooks,<br/>Context Sources, Artifact Stores"]
+    end
+
+    HUMAN -- "sets constraints,<br/>delegates tasks" --> AGENT
+    AGENT -- "escalations,<br/>approvals, results" --> HUMAN
+    AGENT -- "invokes tools,<br/>reads context" --> PLATFORM
+    PLATFORM -- "build results,<br/>test output, telemetry" --> AGENT
+
+    style HUMAN fill:#3498db,color:#fff
+    style AGENT fill:#e67e22,color:#fff
+    style PLATFORM fill:#2ecc71,color:#fff
 ```
 
 This structure is not a proposal. It is a description of what already exists in any organization using AI coding tools — whether they've designed it deliberately or not. The agent in your developer's editor is already operating across these three layers. The question is whether the boundaries, the context flow, and the governance are intentional.

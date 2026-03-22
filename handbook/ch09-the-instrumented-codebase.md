@@ -22,6 +22,17 @@ The term "primitive" is deliberate. These artifacts are the atomic units of agen
 
 Six categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all six on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.
 
+```mermaid
+block-beta
+    columns 3
+    A["Instructions\n.instructions.md\n─\nScoped conventions\nper file/directory"]:1
+    B["Agents\n.chatmode.md\n─\nSpecialist personas\nwith tool boundaries"]:1
+    C["Skills\nSKILL.md\n─\nReusable decision\nframeworks"]:1
+    D["Prompts\n.prompt.md\n─\nRepeatable\nworkflows"]:1
+    E["Memory\n.memory.md\n─\nCross-session\nknowledge"]:1
+    F["Orchestration\n.spec.md\n─\nExecution-ready\nspecifications"]:1
+```
+
 ### Instructions
 
 **Purpose:** Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular primitive — they tell an agent "when you touch code in this scope, follow these rules."

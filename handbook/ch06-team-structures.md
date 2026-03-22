@@ -10,7 +10,7 @@ Agentic development does not eliminate engineering roles. It restructures how te
 
 Before redrawing org charts, understand what actually changes about daily engineering work. Agent adoption shifts the *proportion* of time spent on different activities. It does not change which activities require human judgment.
 
-The most useful way to see this is through time allocation. The table below draws on industry data from the 2024 Stack Overflow Developer Survey, GitHub's Octoverse report, and published results from early enterprise adopters. It represents typical patterns, not universal truths — your distribution will vary by team maturity, codebase complexity, and adoption depth.
+The most useful way to see this is through time allocation. The table below draws on published results from early enterprise adopters and patterns observed across teams adopting AI-assisted development. It represents typical patterns, not universal truths — your distribution will vary by team maturity, codebase complexity, and adoption depth.
 
 | Activity | Pre-Agentic | With Agentic Tools | Direction |
 |---|---|---|---|
@@ -21,6 +21,22 @@ The most useful way to see this is through time allocation. The table below draw
 | Debugging and incident response | 15–20% | 10–15% | Slightly down, but the bugs that remain are subtler |
 | Context engineering | 0% | 10–15% | New — building and maintaining the context layer |
 | Meetings and coordination | 10–15% | 10–15% | Roughly unchanged |
+
+```mermaid
+---
+config:
+    xyChart:
+        titleFontSize: 14
+---
+xychart-beta
+    title "Developer Time Allocation Shift"
+    x-axis ["Write Code", "Read Code", "Review", "Spec & Design", "Debug", "Context Eng.", "Meetings"]
+    y-axis "% of Time" 0 --> 35
+    bar [32, 22, 12, 12, 17, 0, 12]
+    bar [12, 17, 22, 22, 12, 12, 12]
+```
+
+> *Blue = pre-agentic. Orange = with agentic tools. Writing code drops from ~32% to ~12%. Review and specification each nearly double. Context engineering appears as a new 10–15% allocation.*
 
 Three patterns matter.
 

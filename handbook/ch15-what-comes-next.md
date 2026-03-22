@@ -30,6 +30,25 @@ These predictions are directional. The author believes they describe where the f
 
 **Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and deployment. Context infrastructure — the primitives, instruction hierarchies, and knowledge bases that make agents effective — will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," the same way organizations without CI concluded automated testing "doesn't work at our scale."
 
+```mermaid
+gantt
+    title Three-Horizon Timeline
+    dateFormat YYYY
+    axisFormat %Y
+
+    section Near-Term (0–12 months)
+    Tool-using agents become standard       :active, n1, 2025, 2026
+    Multi-agent orchestration ships          :active, n2, 2025, 2026
+
+    section Medium-Term (1–3 years)
+    Agent governance as a discipline         :m1, 2026, 2028
+    Specification replaces implementation    :m2, 2026, 2028
+
+    section Long-Term (3–5 years)
+    Full lifecycle agent participation       :l1, 2028, 2030
+    Context infra as foundational as CI/CD   :l2, 2028, 2030
+```
+
 ---
 
 ## What Will Not Change

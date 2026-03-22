@@ -36,6 +36,23 @@ The market's evolution follows a clear progression, and understanding where you 
 
 **Phase 4: Orchestrated SDLC (emerging).** The leading edge of the market, where agents participate beyond the code editor — in issue triage, code review, testing, release management, and operations. GitHub's Coding Agent assigns issues to an AI that works in a cloud environment, submits pull requests, and responds to review feedback. Anthropic's Claude Code can read issues and produce PRs autonomously. Several startups — Devin, Factory, Codegen — are building similar workflows. No organization has fully automated an end-to-end SDLC with agents, but the components exist for the first multi-phase automations. This is where governance becomes non-optional.
 
+```mermaid
+flowchart LR
+    P1["<b>Phase 1</b><br/>Code Completion<br/><em>2021–2023</em><br/>Passive suggestion"]
+    P2["<b>Phase 2</b><br/>Conversational<br/><em>2023–2024</em><br/>Active Q&A"]
+    P3["<b>Phase 3</b><br/>Agentic Coding<br/><em>2024–2025</em><br/>Goal-directed execution"]
+    P4["<b>Phase 4</b><br/>Orchestrated SDLC<br/><em>Emerging</em><br/>Autonomous lifecycle"]
+
+    P1 -->|"risk ↑"| P2 -->|"risk ↑"| P3 -->|"risk ↑"| P4
+
+    style P1 fill:#2ecc71,color:#fff
+    style P2 fill:#3498db,color:#fff
+    style P3 fill:#e67e22,color:#fff
+    style P4 fill:#e74c3c,color:#fff
+```
+
+> *Each phase increases both capability and risk. Most organisations evaluate Phase 1–2 while their developers already operate at Phase 3.*
+
 | Phase | Interaction model | Primary value | Key risk | Maturity |
 |---|---|---|---|---|
 | Code completion | Passive suggestion | Speed on known tasks | Low — easy to reject | Available now |
@@ -134,7 +151,7 @@ The answers will tell you whether you have a strategy or a gap.
 
 Most AI tool evaluations focus on the coding phase. This is like evaluating a car by testing only the engine — you learn something, but you miss everything that determines whether the thing actually gets you where you're going. Software delivery spans eight phases. If you're only measuring AI's impact on one of them, you're not evaluating — you're guessing.
 
-**The insight most organizations miss: code generation is the *solved* phase. Plan, Test, and Review are where the next wave of high-value AI assistance will land — and where structured context (the kind this book teaches you to build) makes the difference between useful automation and expensive noise.**
+**The insight most organizations miss: code generation is the *most mature* phase — the one with the most capable tooling and the highest adoption. Plan, Test, and Review are where the next wave of high-value AI assistance will land — and where structured context (the kind this book teaches you to build) makes the difference between useful automation and expensive noise.**
 
 | Phase | What happens | What "good" looks like | Your current state |
 |---|---|---|---|
