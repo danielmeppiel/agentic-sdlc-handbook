@@ -4,7 +4,7 @@ project:
 
 book:
   title: "The Agentic SDLC Handbook"
-  subtitle: "A Practitioner's Guide to AI-Native Software Development"
+  subtitle: "A Guide to AI-Native Software Development for Leaders and Practitioners"
   author: "Daniel Meppiel"
   date: today
   date-format: "MMMM YYYY"
