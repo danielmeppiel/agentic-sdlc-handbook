@@ -37,29 +37,29 @@ Every vendor pitch includes the license fee. None of them include the other 70�
 
 The total cost of ownership for agentic development has six components. The first is the only one your vendor will mention.
 
-### 1. Tool licenses
+### Tool licenses
 
 The visible cost. Per-seat subscriptions for AI coding tools range from $10–40/month per developer for individual tiers; enterprise tiers with SSO, audit logs, and data residency controls run 2–3× higher. If you're evaluating platform-level tools (not just editor plugins), add platform licensing. Budget $200–600 per developer per year for tooling. This is the easy part.
 
-### 2. Context engineering investment
+### Context engineering investment
 
 The largest hidden cost, and the one that determines whether the tool investment pays off. Context engineering — the practice of structuring your team's knowledge so AI agents can use it reliably — requires upfront work: documenting architectural decisions, writing machine-readable conventions, building instruction hierarchies, and curating the artifacts that make agents effective on your specific codebase.
 
 For a team of 10–15 developers, expect 2–4 weeks of engineering time for initial context architecture. This is not optional overhead. Without it, you've purchased tools that will generate plausible code that violates your conventions and requires extensive rework. With it, agent output improves over time as context compounds. Chapter 4 covers this investment in detail.
 
-### 3. Token and compute costs
+### Token and compute costs
 
 Usage-based pricing is increasingly common for agentic workflows. When an agent reads 50 files, plans an approach, generates code, runs tests, and iterates on failures, it consumes tokens at each step. For teams running frequent agentic sessions on premium models, token costs can reach $50–200 per developer per month — sometimes exceeding the tool subscription itself. This cost scales with usage, which means it scales with success. Budget for it to grow.
 
-### 4. Training and change management
+### Training and change management
 
 Developers don't become effective with agentic tools by reading a getting-started guide. The shift from "AI suggests a line of code" to "AI executes a multi-step task" requires new skills: prompt decomposition, context management, output verification, and knowing when to delegate versus when to write code directly. Expect 1–2 weeks of reduced productivity per developer during the learning curve, plus ongoing investment in shared practices and internal documentation.
 
-### 5. Governance overhead
+### Governance overhead
 
 If your organization has compliance requirements — and most do — agent-generated code needs audit trails, review policies, and guardrails. Someone needs to define which agents can access which repositories, what approval workflow applies to agent-generated PRs, and how to handle data residency for code flowing through external APIs. This is a real cost in engineering and security team time, especially in the first quarter of adoption.
 
-### 6. Opportunity cost of the adoption curve
+### Opportunity cost of the adoption curve
 
 During the first 60–90 days, your team will be slower, not faster. Context hasn't been built. Skills haven't been developed. The tools are being configured. The team is learning which tasks to delegate and which to keep manual. This is normal. It is also a cost that must be accounted for — especially if leadership expects immediate returns and loses confidence during the valley.
 

@@ -44,7 +44,7 @@ Patterns 1–5 are the foundational anti-patterns from Chapter 1. Patterns 6–1
 
 These are the patterns from Chapter 1's PROSE constraint table, expanded with worked scenarios.
 
-### 1. The Monolithic Prompt
+### The Monolithic Prompt
 
 **Symptom.** One large instruction file containing every rule for your entire project. Adding a new rule breaks something unrelated. The agent ignores rules near the bottom or applies backend conventions to frontend code.
 
@@ -58,7 +58,7 @@ These are the patterns from Chapter 1's PROSE constraint table, expanded with wo
 
 **Recovery.** Extract the most volatile section into its own primitive. Validate for a week. Extract the next. Work outward from the pain.
 
-### 2. Context Dumping
+### Context Dumping
 
 **Symptom.** You include your entire codebase in every agent context. Responses slow. Quality degrades. The agent fixates on irrelevant details from unrelated files.
 
@@ -70,7 +70,7 @@ These are the patterns from Chapter 1's PROSE constraint table, expanded with wo
 
 **Recovery.** Subtract files from context one at a time, re-running the task. You will likely find that removing irrelevant files *improves* quality.
 
-### 3. The Unbounded Agent
+### The Unbounded Agent
 
 **Symptom.** The agent has access to every tool and file with no restrictions. It makes changes you didn't ask for — refactors imports, renames methods, modifies test files to match its changes. Some changes are useful; most are harmful, and they're tangled into the same diff.
 
@@ -82,7 +82,7 @@ These are the patterns from Chapter 1's PROSE constraint table, expanded with wo
 
 **Recovery.** Revert to the last checkpoint. Rewrite the task with explicit scope constraints. Re-dispatch. Re-execution costs less than surgical extraction from a tangled diff.
 
-### 4. Flat Instructions
+### Flat Instructions
 
 **Symptom.** Every session loads the same instructions regardless of context. Domain-specific rules contradict each other because they were never meant to coexist. The agent resolves ambiguity unpredictably.
 
@@ -96,7 +96,7 @@ These are the patterns from Chapter 1's PROSE constraint table, expanded with wo
 
 **Recovery.** Audit instructions for cross-domain contradictions. Move domain-specific rules into scoped primitives, starting with the contradiction that caused the most recent failure.
 
-### 5. Scope Creep
+### Scope Creep
 
 **Symptom.** A task that started as "add error handling to three functions" has grown to include refactoring, tests, logging, and a deprecation fix. Early output is solid; later output is inconsistent. The agent seems to "forget" constraints it followed earlier.
 
@@ -114,13 +114,13 @@ These are the patterns from Chapter 1's PROSE constraint table, expanded with wo
 
 Five patterns that emerge from multi-agent execution mechanics.
 
-### 6. The Solo Hero
+### The Solo Hero
 
 One agent handles an entire feature. It produces a large, unreviewed diff — some parts excellent, others violating patterns it was never told about. No decomposition, no isolation of regressions.
 
 **Fix.** One file, one agent per wave. Checkpoint discipline provides the review gate a solo agent lacks.
 
-### 7. The Trust Fall
+### The Trust Fall
 
 The agent says "Done. All changes applied." You commit without checking. Later: a file wasn't modified, tests weren't actually run, or an edge case the agent claimed to handle is missing from the code.
 
@@ -128,19 +128,19 @@ Agent self-reports are generated text, not system logs. An agent can "believe" i
 
 **Fix.** Never rely on self-reports. Run the test suite. Verify file state with `git diff`. Spot-check critical changes. One line of diff output is worth a thousand words of agent narrative.
 
-### 8. Same-File Parallel Edits
+### Same-File Parallel Edits
 
 Two agents edit different sections of the same file in the same wave. The first completes; the second's edits fail because string matches no longer apply. In some tools, this fails silently.
 
 **Fix.** One file, one agent per wave. Sequence cross-domain changes to the same file across waves.
 
-### 9. Skipping Checkpoints
+### Skipping Checkpoints
 
 "Wave 1 worked, wave 2 is similar, let me batch them." Wave 3 fails. The root cause was wave 2, but without a checkpoint between them, you can't bisect. You debug three waves simultaneously.
 
 **Fix.** Test after every wave. Commit after every wave. The two-minute checkpoint cost is insurance against three-hour debugging cascades.
 
-### 10. Not Fixing the Primitives
+### Not Fixing the Primitives
 
 An agent keeps making the same mistake across sessions — deprecated API, wrong pattern, invented method. Each time you correct the output manually. Next session, same mistake.
 
@@ -154,7 +154,7 @@ The correction happened in the code, not the instruction set. Manual corrections
 
 Nine patterns that emerge at the session level — where context capacity, state management, and external inputs create failure conditions the foundational and execution anti-patterns don't cover.
 
-### 11. Context Window Exhaustion
+### Context Window Exhaustion
 
 | | |
 |---|---|
@@ -165,7 +165,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Right-size tasks. If the agent followed a convention in its first three functions but ignores it in the fifth, the context is exhausted. End session, checkpoint, start fresh. |
 | **Recovery** | Revert degraded output. Split remaining work into a new task with fresh context. |
 
-### 12. Hallucinated Edits
+### Hallucinated Edits
 
 | | |
 |---|---|
@@ -176,7 +176,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Verify file state after completion. `git diff` is ground truth. The checkpoint discipline catches functional regressions; spot-checks catch non-functional missing edits. |
 | **Recovery** | Compare agent's reported changes against actual diff. Re-dispatch focused tasks for just the missing edits. |
 
-### 13. Stale Context Between Waves
+### Stale Context Between Waves
 
 | | |
 |---|---|
@@ -187,7 +187,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Re-read file state after each wave before assembling next wave's context. Include explicit references to interface changes: "Note: `resolve()` now takes a `strict` parameter (added in wave 2)." |
 | **Recovery** | Run integration tests that exercise cross-module interactions. Revert affected output and re-dispatch with current file content. |
 
-### 14. Cost Runaway
+### Cost Runaway
 
 | | |
 |---|---|
@@ -198,7 +198,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Set a retry budget. After two failed dispatches for the same task, change the approach: decompose further, add context, or escalate. Don't loop at the same level. |
 | **Recovery** | Stop. Review what's been attempted. Often the agent is stuck because the task is underspecified. One specific constraint added to context is worth more than ten retries with the same input. |
 
-### 15. The "Almost Done" Trap
+### The "Almost Done" Trap
 
 | | |
 |---|---|
@@ -209,7 +209,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Identify the hard part during planning. Consider doing it manually or as a separate, tightly-scoped agent task with maximum context. |
 | **Recovery** | Accept the 90%. Commit it. Handle the rest manually or in a fresh session focused exclusively on the hard part. |
 
-### 16. Session State Loss
+### Session State Loss
 
 | | |
 |---|---|
@@ -220,7 +220,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Commit after every wave. Externalize state that matters (plan file, task status) to persistent storage. Smaller waves mean smaller blast radius. |
 | **Recovery** | Revert to last committed checkpoint. Re-read the plan. Re-dispatch from the last completed wave. Cost is one wave's re-execution, not the entire session. |
 
-### 17. Persona Drift
+### Persona Drift
 
 | | |
 |---|---|
@@ -231,7 +231,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Keep persona definitions short and directive. Reinforce role boundaries in the task prompt, not just the system prompt. Shorter sessions reduce drift opportunity. |
 | **Recovery** | Fresh session with the persona restated. Review drifted output for out-of-role changes — a security reviewer that started editing code may have introduced changes outside its competence. |
 
-### 18. Cross-Wave Merge Conflicts
+### Cross-Wave Merge Conflicts
 
 | | |
 |---|---|
@@ -242,7 +242,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Integration tests after each wave, not just unit tests. When wave 2 modifies a module that wave 1 also touched, include wave 1's final output in wave 2's context. Treat shared interfaces as explicit contracts in the plan. |
 | **Recovery** | Run the full test suite on the combined state. Identify the conflict boundary. Re-dispatch the later wave with the earlier wave's output as context. |
 
-### 19. Prompt Injection via Dependencies
+### Prompt Injection via Dependencies
 
 | | |
 |---|---|
