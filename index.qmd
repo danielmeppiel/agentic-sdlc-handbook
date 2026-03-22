@@ -32,3 +32,10 @@ Daniel Meppiel works at Microsoft and created [APM](https://github.com/microsoft
 ## License & Updates
 
 This book is free. Share it, link to it, learn from it. Updates are published continuously — check back or watch the [repository](https://github.com/danielmeppiel/apm-handbook) for changes.
+
+## Download
+
+Read offline in your preferred format:
+
+[Download PDF](The-Agentic-SDLC-Handbook.pdf){.btn .btn-primary .btn-lg role="button" style="margin-right: 10px;"}
+[Download EPUB](The-Agentic-SDLC-Handbook.epub){.btn .btn-outline-primary .btn-lg role="button"}
