@@ -1,0 +1,554 @@
+# Chapter 9: The Instrumented Codebase
+
+Open any repository that uses AI agents reliably and you'll notice something before you read a single line of application code: the project is full of markdown files that aren't documentation. They're instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints — scattered through `.github/` directories and woven into the source tree. These files don't ship to production. They don't appear in the build output. But they determine whether an AI agent produces code that respects the project's architecture or code that confidently violates it.
+
+This chapter catalogs those files. It defines six primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that's ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?
+
+---
+
+## What Instrumentation Means
+
+An instrumented codebase is one that has externalized its tacit knowledge into machine-readable artifacts.
+
+Every mature project carries two kinds of knowledge. The first kind is in the code itself — types, function signatures, directory structure, test assertions. Any agent can read this. The second kind is in the team's heads — which authentication pattern is current and which is deprecated, why the logging module uses a custom wrapper instead of the standard library, what "follows the BaseIntegrator pattern" means in practice, why that one directory has different import rules than every other. An agent cannot read this. It will guess, and it will guess wrong.
+
+Instrumentation is the practice of converting the second kind of knowledge into structured files that an agent loads as context. The files are markdown. They version-control alongside the code they describe. They're reviewed in pull requests. And they create a feedback loop: when an agent makes a mistake, you don't fix the generated code — you fix the primitive that failed to prevent the mistake.
+
+The term "primitive" is deliberate. These artifacts are the atomic units of agentic behavior. Like functions in code, they do one thing, they compose with other primitives, and they're testable in isolation. Unlike prompts typed into a chat window and forgotten, primitives persist, accumulate value, and improve through iteration.
+
+---
+
+## The Six Primitive Types
+
+Six categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all six on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.
+
+### Instructions
+
+**Purpose:** Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular primitive — they tell an agent "when you touch code in this scope, follow these rules."
+
+**File format:** `.instructions.md` with frontmatter specifying scope.
+
+```markdown
+---
+applyTo: "src/api/**"
+description: "API layer conventions for endpoint implementation"
+---
+
+# API Development Rules
+
+## Middleware Registration
+- All middleware decorators are registered in `middleware.py`, never inline on routes.
+- Route files define endpoint logic only.
+
+## Rate Limiting
+- Use `app.rate_limiter.RateLimiter`, not third-party libraries.
+  The internal implementation integrates with the metrics pipeline.
+- Rate limit values come from environment variables, never hardcoded.
+
+## Error Responses
+- All error responses use `APIError.from_exception()` for consistent format.
+- Never return raw exception messages to clients.
+```
+
+**Design test:** Can you state the scope in one `applyTo` pattern? Does every rule in the file apply to that scope? If you're writing rules that apply to two unrelated domains, split the file. If you can't express the scope as a glob, the knowledge probably belongs in an agent configuration or a skill instead.
+
+**What distinguishes a good instruction file from a bad one:** length. If your instruction file exceeds 40-50 lines, it's trying to do too much. The reason is mechanical — every line of instruction competes for attention with the source code the agent needs to read. A 200-line instruction file doesn't give an agent more to work with. It gives it more to get lost in.
+
+### Agents
+
+**Purpose:** Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to "who should work on this?" — not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.
+
+**File format:** `.chatmode.md` or `.agent.md` with frontmatter specifying the model, tools, and description.
+
+```yaml
+---
+description: "Backend architecture specialist for Python services"
+tools: ["changes", "codebase", "editFiles", "runCommands",
+        "search", "problems", "testFailure"]
+model: claude-sonnet-4.5
+---
+```
+
+```markdown
+# Python Architect
+
+You are an expert Python architect specializing in CLI tool design
+and modular service architecture.
+
+## Design Philosophy
+- Speed and simplicity over complexity
+- Solid foundation that can be iterated on
+- Operations proportional to affected files, not workspace size
+
+## Patterns You Enforce
+- BaseIntegrator for all file-level integrators
+- CommandLogger for all CLI output
+- AuthResolver for all credential access
+
+## You Never
+- Add a new base class when an existing one can be extended
+- Instantiate AuthResolver per-request (it is a singleton)
+- Import from integration/ in the CLI layer (use the public API)
+```
+
+Four elements make an agent configuration effective:
+
+1. **Domain expertise.** Specific enough to constrain the agent's decisions. "You are an expert Python developer" is too broad to be useful. "You specialize in CLI tool design using the Click framework with Rich terminal output" constrains the solution space meaningfully.
+2. **Named patterns.** When the agent knows patterns by name — "BaseIntegrator," "CredentialChain," "CommandLogger" — it can reference them in its reasoning and produce code that uses them correctly.
+3. **Anti-patterns.** What the agent must never do. These encode institutional memory — each item represents a mistake that happened at least once and cost the team time to fix.
+4. **Tool boundaries.** Which tools the agent can invoke. A documentation agent shouldn't execute destructive commands. A frontend agent shouldn't access backend databases. Tool boundaries are safety boundaries made concrete.
+
+Start with three to five agent configurations. An architect, a domain expert for your core business logic, and a documentation writer cover most tasks. Add configurations when you observe repeated corrections — that's the signal that a new specialization has earned its place.
+
+### Skills
+
+**Purpose:** Package reusable decision frameworks that activate based on code patterns. A skill is more than a set of rules — it teaches an agent how to think about a specific domain.
+
+**File format:** A directory containing a `SKILL.md` file, optionally with examples and supporting context.
+
+```
+.github/skills/
+└── cli-logging-ux/
+    ├── SKILL.md
+    └── examples/
+        ├── good-warning.py
+        └── bad-warning.py
+```
+
+```markdown
+---
+name: cli-logging-ux
+description: >
+  Activate whenever code touches console helpers, DiagnosticCollector,
+  STATUS_SYMBOLS, or any user-facing terminal output.
+---
+
+# CLI Logging UX
+
+## Decision Framework
+
+### The "So What?" Test
+Every warning must answer: what should the user do about this?
+A warning without a suggested action is noise.
+
+### The Traffic Light Rule
+| Color  | Helper           | Meaning            |
+|--------|------------------|--------------------|
+| Green  | _rich_success()  | Completed          |
+| Yellow | _rich_warning()  | User action needed |
+| Red    | _rich_error()    | Cannot continue    |
+| Blue   | _rich_info()     | Status update      |
+
+### The Newspaper Test
+Can a user scan the output like headlines?
+If they have to read paragraphs to understand status, restructure.
+
+## Anti-Patterns
+- Never use bare print() or click.echo() without styling
+- Never emit a warning without an actionable suggestion
+- Never mix Rich and colorama in the same output path
+```
+
+The design test for a skill is three criteria: Does this knowledge apply across multiple files? Does it require more than a few rules to express? Is it triggered by a detectable code pattern? If all three are yes, it's a skill. If the knowledge applies to a single directory, it's an instruction. If it's a general disposition, it's an agent configuration.
+
+Skills differ from instructions in an important way: they provide *decision frameworks*, not just rules. A rule says "use `_rich_warning()` for warnings." A decision framework says "every warning must answer 'what should the user do about this?'" The framework generalizes to situations the author didn't anticipate. Rules cover known cases. Frameworks cover unknown ones.
+
+### Prompts
+
+**Purpose:** Define reusable, parameterized workflows that orchestrate multi-step tasks. A prompt is a repeatable process — the agentic equivalent of a script or a makefile target.
+
+**File format:** `.prompt.md` with frontmatter specifying execution mode and tools.
+
+```markdown
+---
+mode: agent
+description: "Code review workflow with security and architecture checks"
+---
+
+# Structured Code Review
+
+## Context Loading
+1. Read the [project architecture](../../docs/architecture.md)
+2. Review the diff to understand scope of changes
+3. Check [security guidelines](../../docs/security.md) for relevant patterns
+
+## Review Phases
+
+### Phase 1: Correctness
+- Does the code do what the PR description claims?
+- Are edge cases handled?
+- Do tests cover the new behavior?
+
+### Phase 2: Architecture
+- Does this change respect existing module boundaries?
+- Are new dependencies justified and minimal?
+- Would a senior engineer on this team approve the approach?
+
+### Phase 3: Security
+- Is user input validated at the boundary?
+- Are credentials handled through the standard resolver?
+- Could this change introduce injection, traversal, or leakage?
+
+## Output Format
+Provide findings grouped by severity (Critical / High / Medium / Low).
+For each finding: file, line, what's wrong, what to do instead.
+```
+
+Prompts are the bridge between ad-hoc chat and systematic workflows. Without them, every time a developer wants an agent to perform a code review, they type a slightly different request and get slightly different quality. With a prompt file, the process is consistent — the same phases, the same checks, the same output format. Quality becomes reproducible.
+
+### Memory
+
+**Purpose:** Preserve knowledge across sessions. Agents are stateless — every conversation starts from zero. Memory files give them access to accumulated decisions, resolved trade-offs, and project history that would otherwise vanish between sessions.
+
+**File format:** `.memory.md`, structured by domain.
+
+```markdown
+# Project Decisions
+
+## Authentication (last updated: 2025-06-15)
+- Migrated from session-based to JWT auth in Q1 2025
+- Token refresh uses exponential backoff, max 3 retries
+- EMU (Enterprise Managed User) tokens use `ghu_` prefix
+- The `SessionAuth` class is deprecated but not yet removed.
+  Do NOT use it for new code. Migration tracked in JIRA-4521.
+
+## API Versioning (last updated: 2025-05-20)
+- v1 endpoints frozen. No new features, security fixes only.
+- v2 is the active version. All new endpoints go here.
+- Versioning is URL-based (/v1/, /v2/), not header-based.
+  This was debated and decided in ADR-017.
+
+## Performance Decisions (last updated: 2025-07-01)
+- Database connection pooling uses pgbouncer, not application-level pools.
+- Cache invalidation is event-driven (via message queue), not TTL-based.
+- The /api/search endpoint has a 5-second timeout. This is intentional —
+  longer queries must use the async search endpoint.
+```
+
+Memory files capture the knowledge that doesn't fit in instructions because it isn't a rule — it's context. The distinction matters: "use JWT for authentication" is a rule (instruction). "We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated" is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won't.
+
+Memory files are the most likely primitive to drift from reality. Include dates. Review them quarterly. If a section hasn't been updated in six months, verify that it's still accurate or remove it.
+
+### Orchestration
+
+**Purpose:** Bridge planning and implementation by defining structured specifications that can be executed by humans or agents with the same precision. Orchestration primitives decompose large features into implementation-ready units.
+
+**File format:** `.spec.md` for specifications, or workflow composition files that coordinate multiple primitives.
+
+```markdown
+# Feature: Rate Limiting for Public API
+
+## Problem Statement
+Public API endpoints have no rate limiting. A single client can
+exhaust server resources with sustained high-frequency requests.
+
+## Approach
+Implement per-client rate limiting using the internal RateLimiter
+with Redis-backed sliding window counters.
+
+## Implementation Requirements
+
+### Components
+- [ ] Rate limiter middleware (`src/middleware/rate_limiter.py`)
+- [ ] Redis counter service (`src/services/rate_counter.py`)
+- [ ] Configuration loader (`src/config/rate_limits.yaml`)
+
+### API Contracts
+- 429 response with `Retry-After` header when limit exceeded
+- `X-RateLimit-Remaining` header on every response
+- Per-endpoint configuration via environment variables
+
+### Validation Criteria
+- [ ] Handles concurrent requests without race conditions
+- [ ] Sliding window accurate within 1-second granularity
+- [ ] Unit tests > 90% coverage on counter logic
+- [ ] Load test: 10K requests/second without limiter degradation
+```
+
+Specification files matter because they make the "Reduced Scope" constraint operational. Instead of telling an agent "implement rate limiting" and hoping it figures out the approach, the spec defines scope, components, contracts, and success criteria upfront. The agent implements against a specification, not a wish.
+
+---
+
+## Directory Structure
+
+The six primitive types organize into a predictable directory structure. This isn't the only valid layout, but it reflects the conventions that have emerged across projects that use these primitives in production.
+
+```
+project/
+├── .github/
+│   ├── copilot-instructions.md          # Global project principles
+│   ├── instructions/
+│   │   ├── api.instructions.md          # applyTo: "src/api/**"
+│   │   ├── auth.instructions.md         # applyTo: "src/auth/**"
+│   │   ├── frontend.instructions.md     # applyTo: "src/ui/**/*.tsx"
+│   │   ├── testing.instructions.md      # applyTo: "**/test/**"
+│   │   └── database.instructions.md     # applyTo: "src/db/**"
+│   ├── chatmodes/
+│   │   ├── architect.chatmode.md        # Structure, patterns, trade-offs
+│   │   ├── backend-dev.chatmode.md      # API implementation, business logic
+│   │   ├── security-reviewer.chatmode.md # Injection, traversal, credentials
+│   │   └── doc-writer.chatmode.md       # Documentation consistency
+│   ├── skills/
+│   │   ├── cli-logging-ux/
+│   │   │   ├── SKILL.md
+│   │   │   └── examples/
+│   │   ├── error-handling/
+│   │   │   └── SKILL.md
+│   │   └── api-middleware/
+│   │       └── SKILL.md
+│   ├── prompts/
+│   │   ├── code-review.prompt.md
+│   │   ├── feature-impl.prompt.md
+│   │   └── bug-investigation.prompt.md
+│   └── specs/
+│       ├── feature-template.spec.md
+│       └── api-endpoint.spec.md
+├── .memory.md                            # Project-level memory
+├── AGENTS.md                             # Root discovery file
+├── src/
+│   ├── api/
+│   │   └── AGENTS.md                    # API-specific context
+│   ├── auth/
+│   │   └── AGENTS.md                    # Auth-specific context
+│   └── ...
+└── ...
+```
+
+Three observations about this structure.
+
+**Primitives live in `.github/`**, not scattered through the source tree. This centralizes the knowledge layer — a developer looking for the project's AI configuration finds it in one place. The exceptions are `AGENTS.md` files, which live in the directories they describe, because they're part of a discovery hierarchy (Chapter 11 explains this in detail).
+
+**Each primitive type has its own directory.** Instructions, agents, skills, prompts, and specs don't mix. This makes it straightforward to audit what you have: how many instruction files exist, what domains they cover, which skills are defined. Mixed directories make this accounting harder than it needs to be.
+
+**The structure is flat within each directory.** Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you're probably over-engineering — most projects need 8-12 instruction files.
+
+---
+
+## How Primitives Compose
+
+Primitives are not independent. They form a layered system where each type provides a different kind of guidance, and the agent's effective context is the composition of all applicable primitives for the current task.
+
+The composition follows a hierarchy:
+
+```
+Global principles (copilot-instructions.md)
+  └─ Scoped instructions (*.instructions.md, matched by applyTo)
+      └─ Skills (activated by code patterns in the current task)
+          └─ Agent configuration (persona, model, tool boundaries)
+              └─ Prompt or spec (the specific workflow being executed)
+                  └─ Memory (accumulated project context)
+```
+
+When an agent is asked to modify `src/api/users.py`, the effective context assembles from:
+
+1. **Global principles** — error handling, security, testing rules that apply everywhere
+2. **API instructions** — the `applyTo: "src/api/**"` file loads; frontend instructions do not
+3. **API middleware skill** — activates because the task involves an API route
+4. **Backend-dev agent** — provides the persona, model selection, and tool constraints
+5. **Memory** — the API versioning decisions, the deprecated authentication class, the rate limit timeout choice
+
+Each layer adds specificity. None contradicts the layer above — more specific primitives refine general guidance, they don't override it. If a conflict exists, it indicates a design error in the primitives, not a resolution the agent should attempt.
+
+This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone's head.
+
+---
+
+## The Instrumentation Audit
+
+Before you build any of this, you need to know what your codebase already has and what it's missing. The instrumentation audit is a systematic inventory — not of your code, but of the knowledge your code depends on.
+
+**Step 1: List your conventions.** Spend 30 minutes with your team. Write down every convention, pattern, and constraint that a new engineer would need to learn in their first two weeks. Don't filter. Don't organize.
+
+You'll typically get 30-60 items. Examples:
+
+- All error responses use the `APIError` class
+- Token refresh has a 3-retry limit with exponential backoff
+- The `SessionAuth` class is deprecated; use `JWTAuth`
+- Tests use factory functions, never inline object construction
+- Frontend components use the project's design system, never raw HTML elements
+- Database migrations are reviewed by the DBA before merge
+- The logging module wraps Rich; never call `print()` directly
+
+**Step 2: Classify each item.** For every convention, mark where it lives today:
+
+| Location | Meaning | Agent visibility |
+|----------|---------|-----------------|
+| In code | Expressed in types, naming, structure | Partially visible — if it's in the context window |
+| In docs | Written in a README, wiki, ADR, style guide | Invisible unless explicitly loaded |
+| In heads | Known by team members, never written down | Completely invisible |
+
+The "in heads" column is your instrumentation debt. Every item there is a convention an agent will violate because it has no way to know about it.
+
+**Step 3: Rank by failure cost.**
+
+- **Critical:** Security vulnerabilities, data corruption, production outages
+- **High:** Architectural violations that accumulate as technical debt
+- **Medium:** Convention violations that require rework in code review
+- **Low:** Style preferences that don't affect correctness
+
+**Step 4: Map each item to a primitive type.**
+
+| If the knowledge... | It belongs in... |
+|---------------------|-----------------|
+| Is a rule scoped to specific files/directories | An instruction file |
+| Requires specialist expertise or a specific model | An agent configuration |
+| Applies across files and needs a decision framework | A skill |
+| Defines a repeatable multi-step process | A prompt |
+| Records a decision, trade-off, or historical fact | A memory file |
+| Specifies a feature with components and success criteria | A specification |
+
+**Step 5: Write your starter set.** Begin with 3-5 primitives covering your critical items. Don't aim for completeness — the feedback loop will guide you to what's actually needed faster than upfront planning will.
+
+---
+
+## Before and After
+
+Consider a mid-size backend service — 80,000 lines of Python, a REST API, a message queue consumer, an authentication module with some technical debt, and a CLI for operations tasks. The team has five engineers who've been working on it for two years.
+
+### Before: uninstrumented
+
+```
+project/
+├── README.md
+├── src/
+│   ├── api/
+│   ├── auth/
+│   ├── workers/
+│   ├── cli/
+│   └── models/
+├── tests/
+├── docs/
+│   └── architecture.md
+└── pyproject.toml
+```
+
+What happens when an agent is asked to "add a health check endpoint":
+
+- It creates a new route in the API directory, using Flask patterns it learned from training data — but this project uses FastAPI
+- It imports a database connection check, but uses a raw connection instead of the project's `HealthChecker` service
+- It returns a plain JSON response, ignoring the project's standard response envelope (`{"status": ..., "data": ..., "meta": ...}`)
+- It writes a test that passes, using inline object construction — violating the factory pattern the team uses everywhere else
+- It doesn't register the route in the middleware pipeline because it doesn't know the pipeline exists
+
+Everything compiles. Tests pass. The PR gets three review comments, all of the form "we don't do it that way here." The reviewer rewrites 60% of the code. The agent saved time on a first draft and cost time on corrections.
+
+### After: instrumented
+
+```
+project/
+├── .github/
+│   ├── copilot-instructions.md
+│   ├── instructions/
+│   │   ├── api.instructions.md
+│   │   ├── auth.instructions.md
+│   │   ├── testing.instructions.md
+│   │   └── cli.instructions.md
+│   ├── chatmodes/
+│   │   ├── backend-dev.chatmode.md
+│   │   └── doc-writer.chatmode.md
+│   ├── skills/
+│   │   └── api-middleware/
+│   │       └── SKILL.md
+│   └── prompts/
+│       └── new-endpoint.prompt.md
+├── .memory.md
+├── AGENTS.md
+├── README.md
+├── src/
+│   ├── api/
+│   │   └── AGENTS.md
+│   ├── auth/
+│   │   └── AGENTS.md
+│   ├── workers/
+│   ├── cli/
+│   └── models/
+├── tests/
+├── docs/
+│   └── architecture.md
+└── pyproject.toml
+```
+
+Same task. The agent now loads:
+
+1. Global instructions — error handling patterns, security rules, test requirements
+2. API instructions — FastAPI conventions, standard response envelope, route registration
+3. API middleware skill — the registration pipeline, middleware ordering
+4. Backend-dev agent — knows this is a FastAPI project, knows the service patterns
+5. New-endpoint prompt — step-by-step: check existing health patterns, register route, write factory-based test, update middleware
+
+What it produces:
+
+- A FastAPI route using the project's standard response envelope
+- A health check that delegates to `HealthChecker`, which already knows how to verify database, cache, and queue connectivity
+- Registration in the middleware pipeline via the standard pattern
+- A test using the project's factory functions, following the naming convention, respecting the fixture hierarchy
+- No review comments about conventions, because the conventions were in the context
+
+The difference is not the model. The difference is 150 lines of markdown distributed across 8 files.
+
+### What the numbers look like
+
+Based on projects that have undergone this transformation, including the reference case documented throughout this book:
+
+| Metric | Uninstrumented | Instrumented |
+|--------|---------------|-------------|
+| Convention-violating outputs | 40-60% of generated code | Under 10% |
+| Review comments per agent PR | 4-8 ("we don't do it that way") | 0-2 (substantive, not stylistic) |
+| Agent-generated code requiring rewrite | 30-50% | Under 15% |
+| Time from agent output to merge | Hours (review + rework) | Minutes (spot-check) |
+
+These numbers are directional, not guaranteed. They depend on the quality of your primitives and the complexity of your conventions. But the direction is consistent: instrumented codebases produce dramatically more reliable agent output than uninstrumented ones, with the same models, the same tools, and the same tasks.
+
+---
+
+## The Feedback Loop
+
+Instrumentation is not a one-time setup. It is a continuous practice, like testing.
+
+When an agent produces incorrect output, the diagnosis follows a consistent pattern:
+
+```
+Failure observed
+    |
+    v
+Root cause: which primitive failed?
+    |
+    +-- Agent too generic?          --> Add domain knowledge to agent config
+    +-- Skill rules incomplete?     --> Add the missing case to the skill
+    +-- Instructions missing scope? --> Add a scoped instruction file
+    +-- No decision framework?      --> Extract a new skill
+    +-- Context gap?                --> Update the memory file
+    +-- No repeatable process?      --> Create a prompt
+```
+
+Four examples from a real project, where fixing the primitive fixed the class of error permanently:
+
+| Failure | Root cause | Primitive fix |
+|---------|-----------|---------------|
+| Agent used `_rich_info()` directly instead of `logger.progress()` | Skill didn't explicitly ban direct calls | Added "never call `_rich_*` directly in commands" to CLI skill |
+| Agent invented a new collision detection pattern | Instructions didn't list all base-class methods | Added "use, don't reimplement" table to integrator instructions |
+| Agent produced inconsistent Unicode symbols in output | No single source of truth for status symbols | Created `STATUS_SYMBOLS` reference in skill, added to anti-patterns |
+| Agent used deprecated `SessionAuth` in new code | Memory file didn't record the deprecation | Added deprecation notice with migration tracking reference |
+
+This feedback loop is how primitive quality compounds over time. Every failure you diagnose and fix is a failure that never recurs. After 20-30 iterations, your primitive set covers the conventions that actually matter — not the ones you theorized about, but the ones agents actually violate. That practical grounding is what makes an instrumented codebase effective.
+
+---
+
+## Starting Points
+
+The six primitives and the full directory structure represent a mature instrumented codebase. You don't need to build all of it at once. Start where the leverage is highest.
+
+**Week one.** Write three files:
+1. Global instructions (10-15 lines) — your non-negotiable principles
+2. One scoped instruction file for your most-edited module
+3. One agent configuration for the task agents perform most often
+
+**Week two.** Use these primitives on real work. When the agent violates a convention not covered by your files, add it. When it does something right that surprised you, check whether your primitives contributed. Update the memory file with the decisions and trade-offs you resolved this week.
+
+**Week three.** Extract the first skill. You'll know it's time because you've written the same guidance in two different instruction files. Package the shared knowledge as a skill with a decision framework. Create your first prompt file for a task you've now asked an agent to do three or more times.
+
+**Ongoing.** Review primitives monthly. Remove rules that never trigger. Tighten rules that trigger but don't prevent the failure. Add new rules only in response to observed failures. Treat your primitive set like a test suite — it should grow with the codebase, stay accurate, and never contain dead rules.
+
+The instrumented codebase is not a finished state. It's a practice — an ongoing investment in making machine-readable what your team already knows. Chapter 10 defines the constraints that make these primitives effective. Chapter 11 teaches the context engineering discipline that determines how and when they load. This chapter showed you the artifacts themselves.
+
+Now you know what to build. What follows is how to make it work.

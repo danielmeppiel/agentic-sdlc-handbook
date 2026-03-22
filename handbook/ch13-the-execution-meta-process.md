@@ -1,0 +1,333 @@
+# Chapter 13: The Execution Meta-Process
+
+Here is what nobody tells you about using AI agents on a real codebase: the agent is the easy part. The hard part is knowing what to ask, in what order, and when to stop asking and start verifying.
+
+Chapters 10 through 12 gave you the building blocks — PROSE constraints to design by, context engineering to feed agents accurately, and agent primitives to encode your team's knowledge. This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from "I need to change 70 files" to "the PR is merged with zero regressions" — and what happens at every decision point in between.
+
+The methodology is a five-phase meta-process. It works regardless of which AI coding tool you use, because it operates at a level above any specific tool's mechanics. The tool dispatches agents, runs tests, and manages files. You manage the process.
+
+---
+
+## The Five Phases
+
+Every large change follows these phases, in order:
+
+```
+AUDIT ──→ PLAN ──→ WAVE[0..N] ──→ VALIDATE ──→ SHIP
+            ↑          │
+            └── ADAPT ─┘
+            (on failure)
+```
+
+**Audit** — understand the codebase from the perspectives that matter for this change. **Plan** — define scope, decompose into dependency-ordered waves, assign agent teams. **Wave** — execute each wave as a batch of parallel agents, one file per agent. **Validate** — test after every wave, spot-check critical changes, commit. **Ship** — final verification and merge.
+
+The ADAPT loop connects wave execution back to planning. When a wave fails — a test breaks, an agent gets stuck, a dependency was missed — you diagnose, adjust the plan, and re-execute. The loop is not a sign of failure. It is the mechanism that makes the process resilient.
+
+Each phase has a specific purpose, a specific human decision, and a specific output. What follows is the specification for each.
+
+### Phase 1: Audit
+
+**Purpose.** Build a multi-perspective understanding of the code you are about to change. The audit surfaces what you know, what you've forgotten, and what you never knew.
+
+**How it works.** You dispatch expert agents — typically 2 to 4, running in parallel — each with a distinct audit lens. An architecture expert examines structural patterns, coupling, and separation of concerns. A domain expert examines the specific subsystem (logging conventions, auth flows, API contracts). A security expert checks for vulnerabilities. Each agent produces ranked findings with severity levels, exact file-and-line citations, and remediation guidance.
+
+**The human decision.** You review the audit reports and decide what matters. Not every finding warrants action. Some are informational. Some are follow-up items for a different PR. The audit gives you the information; the plan reflects your judgment about which findings to act on now.
+
+**Key rule.** Audits are read-only. The agents explore the codebase. They do not modify it. This separation is important: it means you can dispatch audit agents freely, without worrying about partial changes or file conflicts.
+
+**Output.** A set of prioritized findings with citations. This becomes the input to planning.
+
+### Phase 2: Plan
+
+**Purpose.** Transform audit findings into an executable specification: what changes, in what order, by which agents, with what constraints.
+
+**How it works.** You define the scope (what's in, what's out, what's deferred), the agent teams (which personas own which concerns), and the wave structure (dependency-ordered batches of work). The plan includes principles — priority-ordered values that anchor every decision when trade-offs arise — and constraints — what must not change.
+
+A well-structured plan looks like this:
+
+```
+Scope
+  Auth resolver deduplication, verbose coverage gaps,
+  CommandLogger migration, unicode cleanup.
+  Out of scope: New auth providers, CLI help text changes.
+
+Teams
+  Architecture: python-architect leads.
+    Owns: type safety, separation of concerns, dead code.
+  Logging/UX: cli-logging-expert leads.
+    Owns: verbose coverage, CommandLogger, symbols.
+
+Waves
+  Wave 0 (foundation): Protocol types, method moves — fully parallel.
+  Wave 1 (core): Verbose coverage — depends on Wave 0 APIs.
+  Wave 2 (migration): CommandLogger migration — depends on Wave 1 patterns.
+  Wave 3 (polish): Unicode cleanup — depends on Wave 2 completeness.
+
+Principles (priority order)
+  1. SECURITY — no token leaks, no path traversal.
+  2. CORRECTNESS — tests pass, behavior preserved.
+  3. UX — world-class developer experience in every message.
+  4. KISS — simplest correct solution.
+  5. SHIP SPEED — favor shipping over perfection.
+
+Constraints
+  Do NOT modify test infrastructure.
+  Do NOT change CLI command signatures.
+  Do NOT alter public API return types.
+```
+
+**The human decision.** You approve the plan. This is the highest-leverage moment in the entire process. A mediocre plan with perfect execution produces mediocre software. A great plan with imperfect execution produces great software — because the test gates catch the imperfections. Take your time here. Review the wave dependencies. Question whether the scope is right. Ask whether the wave structure accounts for the files that will change in multiple phases.
+
+**Key rule.** No implementation starts until you approve the plan. This is the single most important gate.
+
+**Output.** An approved plan with scope, teams, waves, principles, and constraints.
+
+### Phase 3: Wave Execution
+
+**Purpose.** Execute the plan in dependency-ordered batches, with validation between each batch.
+
+**How it works.** Each wave is a set of tasks with no unmet dependencies. The orchestrating tool dispatches parallel agents for each task in the wave, grouped so that no two agents edit the same file simultaneously. Each agent receives precise instructions: which files to change, what patterns to follow, what constraints to respect, and what verification to run before reporting completion. When all agents in a wave finish, the full test suite runs. If tests pass, the wave is committed. If tests fail, you triage.
+
+The wave structure produces a clean commit history — one commit per wave — and guarantees that you can bisect regressions to a specific batch of changes.
+
+**The human decision.** You approve each wave launch (or, if you trust the plan, authorize the full sequence). You triage any test failures. You intervene on escalation.
+
+**Key rule.** Every wave ends with green tests and a commit. No exceptions.
+
+**Output.** A commit per wave, with all tests passing.
+
+### Phase 4: Validate
+
+**Purpose.** Confirm the final state before shipping.
+
+**How it works.** The full test suite runs — unit tests, acceptance tests, and optionally integration or end-to-end tests. You spot-check critical changes: the files with the most complex modifications, the boundary conditions you specified in the plan, the areas where agents were most likely to make subtle errors.
+
+**The human decision.** You decide whether the changes are ready to ship.
+
+**Output.** A validated changeset.
+
+### Phase 5: Ship
+
+**Purpose.** Commit, push, and merge.
+
+**How it works.** Update the changelog if it wasn't updated during wave execution. Push the branch. If CI passes, merge. The commit history — one commit per wave, each with passing tests — makes the PR reviewable and bisectable.
+
+**Output.** A merged PR.
+
+---
+
+## Wave Decomposition
+
+The wave structure is where planning becomes engineering. A poorly decomposed set of waves produces merge conflicts, stale context, and cascading failures. A well-decomposed set produces clean parallel execution with natural validation boundaries.
+
+### The Dependency Graph
+
+Waves are ordered by dependency. Wave 0 contains tasks with no dependencies — foundational changes that other waves build on. Wave 1 contains tasks that depend on Wave 0 outputs. Wave 2 depends on Wave 1. The dependency is directional and strict: no task in wave N may depend on a task in wave N+1.
+
+```
+Wave 0: FOUNDATION    No dependencies, fully parallel
+Wave 1: CORE          Depends on Wave 0 outputs
+Wave 2: MIGRATION     Depends on Wave 1 patterns being stable
+Wave 3: POLISH        Depends on Wave 2 completeness
+```
+
+The most common dependency pattern is foundation-before-migration. Type definitions, protocol changes, and method signatures go in Wave 0. Code that uses those new interfaces goes in Wave 1+. If you put both in the same wave, agents will try to both define and consume new APIs simultaneously — and the consumer agents will work against a file state that doesn't yet include the definitions.
+
+### The One-File-One-Agent Rule
+
+Within a wave, no two agents may edit the same file. Agent tooling typically uses string matching for edits — it finds a specific block of text and replaces it. If two agents edit the same file concurrently, the second agent's target text may no longer exist because the first agent changed it. The edit fails silently or produces garbled output.
+
+This rule shapes wave design more than any other. If two logically independent changes both touch the same file, they go in separate waves — or they're assigned to a single agent that handles both changes in sequence.
+
+```
+GOOD: Each agent owns distinct files
+  Agent A: resolver.py, dependency_graph.py
+  Agent B: install.py (all changes)
+
+BAD: Two agents on the same file
+  Agent B: install.py (lines 240-440)
+  Agent C: install.py (lines 580-2100)
+```
+
+### Sizing Waves
+
+The size of a wave affects execution time and risk. Smaller waves — 2 to 4 agents — complete faster and are easier to debug when something goes wrong. Larger waves — 6 to 10 agents — have higher throughput but are dominated by the slowest agent, and a single failure in a large wave means triaging more changes.
+
+| Factor | Smaller waves (2-4 agents) | Larger waves (6-10 agents) |
+|---|---|---|
+| Execution time | 3-5 minutes | 8-12 minutes (slowest agent dominates) |
+| Debug difficulty | Low — few changes to inspect | High — more changes interacting |
+| Commit granularity | Fine — easy to bisect | Coarse — harder to isolate regressions |
+| Overhead | Higher — more validation cycles | Lower — fewer cycles |
+
+The decision heuristic: start with smaller waves. Combine tasks into larger waves only when they are genuinely independent (different files, different concerns, no shared state) and when the validation overhead of extra cycles outweighs the debugging advantage.
+
+### The Self-Sufficiency Test
+
+Before finalizing a wave, apply this test to each task: can an agent complete this task without asking me a question? If the answer is no — because the task depends on an ambiguous design decision, because the scope is unclear, because the target file has undocumented conventions — the task isn't ready. Either refine the instructions, split the task, or move it to a later wave where its dependencies are resolved.
+
+Tasks that fail the self-sufficiency test are the primary source of mid-wave escalations. Catching them during planning eliminates interruptions during execution.
+
+---
+
+## PR #394: The Worked Example
+
+The meta-process is abstract until you see it execute. This section walks through a specific PR — an auth and logging architecture overhaul on a real codebase — with exact numbers.
+
+**Scope.** 5 cross-cutting concerns: auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage. The changes touched 70 files across the entire source tree.
+
+**Final metrics.**
+
+| Metric | Value |
+|---|---|
+| Files changed | 70 |
+| Lines added / removed | +5,886 / −1,030 |
+| Commits | 30 |
+| Tests passing | 2,874 |
+| Agents dispatched | 15 (across 4 waves + 2 audit agents) |
+| Human interventions | 3 |
+| Wall-clock time | ~90 minutes (audit through merge) |
+| Regressions detected | 0 (by the test suite) |
+
+That last number deserves honesty: "zero regressions" means "zero regressions detected by the test suite." The test suite had 2,874 tests, which is substantial coverage, but it is not proof of correctness — it is proof that no tested behavior changed. The distinction matters. The confidence you can place in the process is bounded by the quality of your tests.
+
+### Timeline
+
+**Audit (3 minutes).** Two explore agents dispatched in parallel: an architecture expert and a logging/UX expert. Each analyzed the codebase through its own lens and produced severity-ranked findings with file-and-line citations. The architecture audit identified resolver duplication, type safety gaps, and dead code. The logging audit identified verbose coverage gaps, inconsistent symbol usage, and CommandLogger migration opportunities.
+
+**Planning (5 minutes).** Review of audit findings. All findings included in scope — nothing deferred. Two teams defined: architecture (led by the python-architect persona) and logging/UX (led by the cli-logging-expert persona). Four waves structured by dependency. Plan approved.
+
+**Wave 0 — Foundation (5 minutes).** Two parallel agents. The architecture agent handled resolver deduplication and method moves. The logging agent handled traffic-light compliance and symbol definitions. No dependencies between them. Tests green. Committed.
+
+**Waves 1 and 2 — Core and Migration (8 minutes).** Five parallel agents covering verbose logging coverage (Wave 1) and CommandLogger migration (Wave 2). These waves were launched as a sequence after Wave 0 — Wave 1 completed, tests passed, committed; then Wave 2 launched immediately. The agents consumed the APIs and patterns established in Wave 0.
+
+**Wave 2b — Recovery (7 minutes).** This is where the process proved its value. One agent in Wave 2 got stuck — it was migrating 58 function calls in a large file and either hit a context limit or a connection failure (the root cause was ambiguous). This was the first human intervention: diagnosing that the agent had stalled, inspecting what it had completed, and deciding to have a fresh agent take over the remaining work. The replacement agents — two of them, splitting the remaining work by file section — completed the migration. Tests green. Committed.
+
+**Wave 3 — Polish (4 minutes).** One agent handling unicode arrow symbol cleanup across the codebase. Low risk, fully parallel with nothing. Tests green. Committed.
+
+**Validation and Ship (2 minutes).** Spot-checked the highest-risk changes (install.py, the largest file affected). Reviewed the changelog. Full test suite green. Pushed. CI passed. Merged.
+
+### The Three Human Interventions
+
+Across 90 minutes and 15 agent dispatches, the human intervened exactly three times. Each intervention illustrates a different category of human judgment that the process cannot automate.
+
+**Intervention 1: Scope decision (during planning).** The audit produced findings at four severity levels. The human decided to include all findings in scope — none deferred. This was a judgment call. A more conservative approach would have limited scope to CRITICAL and HIGH findings. The decision to include everything was based on the assessment that the changes were low-risk individually and that deferring MODERATE findings would create follow-up work that cost more than addressing them now. An agent cannot make this decision because it requires understanding the team's priorities, the release timeline, and the cost of context-switching back to this area later.
+
+**Intervention 2: Agent recovery (during Wave 2).** An agent stopped making progress. The human diagnosed the situation — inspected which edits had been applied and which remained — and decided to split the remaining work across two replacement agents rather than retrying the original. This required judgment about the failure mode (was it a transient error or a fundamental context problem?) and the recovery strategy (retry vs. split vs. manual completion). The decision to split was based on the assessment that the file was too large for a single agent session to handle reliably.
+
+**Intervention 3: Test triage (during Wave 2b).** After the replacement agents completed their work, one test failed. The human examined the failure, determined it was caused by an ordering issue in the migration (a function call was migrated but its setup code wasn't), and directed an agent to fix the specific issue. This required reading the test failure output, understanding what the test was asserting, and tracing the cause to a specific incomplete migration — a diagnostic chain that current agents can perform in some cases but not reliably when the failure spans multiple files and waves.
+
+Three interventions in 90 minutes. The rest was autonomous execution within the plan. The interventions were not random — they fell at predictable escalation points: a scope decision, a recovery decision, and a diagnostic decision. These are the categories of human judgment that the meta-process is designed to surface, not eliminate.
+
+---
+
+## Checkpoint Discipline
+
+A checkpoint is the pause between waves. It is the mechanism that makes the meta-process safe.
+
+### Why Test After Every Wave
+
+The alternative — executing all waves and testing at the end — is faster in the best case and catastrophic in the worst case. If wave 3 introduces a regression, and you haven't tested since wave 0, you don't know whether the regression was introduced in wave 1, 2, or 3. You can't bisect. You can't revert a single wave. You're debugging a composite changeset that spans the entire execution.
+
+Testing after every wave makes each wave an independently verifiable unit. If wave 2 breaks a test, you know the regression was introduced in wave 2. You can inspect the wave 2 diff, identify the cause, fix it, and continue — without touching waves 0 or 1.
+
+The cost is real: a full test suite run after every wave. In the PR #394 case, that was 2,874 tests taking approximately 2 minutes per run, across 5 checkpoints (4 waves + final validation) — roughly 10 minutes of testing total. The alternative — debugging a 70-file composite changeset without bisection points — would have cost hours.
+
+### What Happens at a Checkpoint
+
+Each checkpoint has four components:
+
+**Test gate.** The full test suite runs. If any test fails, the wave is not committed. The failure is triaged — either fixed immediately (if the cause is obvious) or escalated to the human.
+
+**Spot-check.** The human reviews a sample of changes. Focus on boundary conditions, pattern compliance, and scope discipline. Did the agent handle the edge case? Did it follow existing patterns or invent new ones? Did it change only what was specified?
+
+**Commit.** Every wave gets its own commit with a descriptive message. This creates a clean, bisectable history.
+
+**Plan review.** Optionally, the human reviews the remaining plan and adjusts if the current wave revealed something unexpected — a dependency that was missed, a task that should be split, a wave that should be reordered.
+
+### The ADAPT Loop
+
+When a checkpoint fails — tests are red, an agent is stuck, a dependency was missed — the meta-process doesn't stop. It adapts.
+
+```
+DETECT   → test failure, agent stall, unexpected conflict
+DIAGNOSE → what broke, why, which wave/task/file
+ADJUST   → modify the plan: add tasks, split tasks, reorder waves
+EXECUTE  → re-run the adjusted wave
+```
+
+The ADAPT loop connects wave execution back to planning. It is not a fallback. It is a designed part of the process — the mechanism that handles the irreducible uncertainty of working with non-deterministic systems on complex codebases.
+
+In the PR #394 case, the ADAPT loop fired once: during Wave 2, when an agent stalled. The diagnosis was that the file was too large for a single agent session. The adjustment was to split the remaining work across two agents. The re-execution completed successfully. Total cost of the adaptation: 7 minutes, including diagnosis, plan adjustment, agent dispatch, and re-validation.
+
+The key discipline: adaptation is conservative. You add tasks, split tasks, reorder waves. You do not skip validation. You do not merge unvalidated work. The checkpoint discipline holds even — especially — when things go wrong.
+
+---
+
+## Session Management
+
+A practical concern that the meta-process must account for: AI agent sessions are stateful and finite. Context accumulates. Attention degrades. A session that has been running for 40 turns is working with a context window that is largely consumed by conversation history, leaving less room for the instructions and code context that determine output quality.
+
+### When to Reset
+
+The natural reset boundary is the wave. Each wave is a logically complete unit of work. Starting a fresh session for each wave — or for each agent within a wave — means every agent works with a clean context window, loaded with only the instructions and code relevant to its specific task.
+
+Long-running sessions degrade in two ways. First, instructions loaded at the beginning of the session compete with accumulated conversation history for attention. Second, the agent's "memory" of what it was told to do becomes less reliable as the session grows. Both effects are gradual and invisible — the agent doesn't announce that it's losing focus. Output quality simply drifts.
+
+### Session Boundaries in Practice
+
+For the wave execution model, session management is straightforward:
+
+- **Audit agents** run in isolated sessions. They have no state to carry forward.
+- **Wave agents** run in isolated sessions. Each receives the full context for its task — instructions, relevant code, constraints — without any history from previous waves.
+- **The orchestrating session** — the one that manages the plan, dispatches agents, and runs checkpoints — is the only long-running session. It accumulates state intentionally: task status, wave history, decision rationale.
+
+This separation is why the meta-process uses parallel isolated agents rather than a single agent executing tasks sequentially. Parallel agents don't just execute faster — they execute with cleaner context.
+
+---
+
+## Adapting the Meta-Process
+
+The PR #394 case involved 70 files and 15 agents across 4 waves. Not every change is that large. The meta-process scales in both directions.
+
+### Small Changes (fewer than 10 files)
+
+For focused changes within a single concern — fixing a bug, adding a feature to one module, refactoring a small subsystem — the full wave structure is overhead. The meta-process compresses:
+
+- **Audit** becomes a single expert agent reviewing the relevant files.
+- **Plan** becomes a mental model — you know the scope, there's one wave.
+- **Execution** is a single wave with 1-2 agents.
+- **Validate and Ship** are unchanged.
+
+The checkpoint discipline still applies: test before committing. The planning discipline still applies: know what you're changing before you change it. What changes is the formality, not the structure.
+
+### Large Changes (more than 100 files)
+
+For changes that span a significant portion of the codebase — a framework migration, a cross-cutting security hardening, a major API version bump — the meta-process extends:
+
+- **Audit** uses more expert agents (4-6), each covering a different subsystem or concern.
+- **Plan** requires more waves (6-10), with careful dependency mapping and explicit scope boundaries for each.
+- **Execution** may use a two-team structure with distinct agent personas: an architecture team for structural changes and a domain team for concern-specific changes.
+- **The ADAPT loop** is more likely to fire, and the plan should anticipate it. Leave slack in the wave structure for recovery waves.
+
+The scaling property to preserve: each wave remains independently verifiable. If a 200-file change is decomposed into 8 waves of 25 files each, each wave is still a self-contained, testable unit. The total complexity grows; the complexity of any single checkpoint does not.
+
+---
+
+## What the Meta-Process Produces
+
+When followed, the meta-process produces four things that manual development typically does not.
+
+**Bisectable history.** Every wave is a separate commit with passing tests. If a bug surfaces after merge, you can bisect to the exact wave that introduced it. This is not possible with the typical "one giant commit per feature" or "squash everything" approaches.
+
+**Auditable decisions.** The plan documents what was decided and why. The checkpoint records document what happened at each validation point. The escalation records document what required human judgment and what the judgment was. A reviewer reading the PR has a complete record of the decision chain — not just the final code.
+
+**Reproducible process.** The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same primitives, and the same plan, would produce substantially similar output. The non-determinism of AI agents is bounded by the determinism of the process around them.
+
+**Proportional cost.** The time spent is proportional to the change, not the codebase. A 70-file change took 90 minutes regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.
+
+---
+
+The meta-process is the operational core of everything this book teaches. PROSE provides the constraints. Context engineering provides the information. Agent primitives encode the knowledge. The meta-process is how they combine into shipped code.
+
+But following a process correctly is only half the challenge. The other half is recognizing when it's going wrong — when an anti-pattern is forming, when a failure mode is emerging, when the process is producing output that looks correct and isn't. The next chapter documents what those failures look like and how to prevent them.
