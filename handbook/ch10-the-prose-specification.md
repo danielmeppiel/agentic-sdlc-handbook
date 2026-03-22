@@ -331,6 +331,8 @@ More specific patterns override or extend less specific ones. The authentication
 
 **Compilation for portability.** Instruction files authored in tool-specific formats (`.instructions.md` with `applyTo`) can be compiled into hierarchical `AGENTS.md` files for universal portability. The source of truth is the authored instructions. The compiled output is the portable delivery format. This separation means the hierarchy works regardless of which AI coding tool the developer uses.
 
+This hierarchical structure is what makes primitives distributable. Package managers for agent primitives — such as APM — automate the scaffolding and sharing of instruction hierarchies across repositories and teams. The constraint (hierarchical context) drives the tooling, not the reverse.
+
 ### Anti-pattern: Flat instructions
 
 A single instruction file at the project root containing every rule for every domain:

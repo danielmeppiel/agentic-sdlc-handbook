@@ -174,6 +174,8 @@ Tasks that fail the self-sufficiency test are the primary source of mid-wave esc
 
 The meta-process is abstract until you see it execute. This section walks through a specific PR — an auth and logging architecture overhaul on a real codebase — with exact numbers.
 
+The codebase is APM, an open-source agent package manager — the author's implementation of the distribution layer described in Chapters 9 and 10. The instruction files, skills, and agent configurations referenced below are real artifacts, available for inspection in the project's repository. This handbook was itself produced using PROSE conventions and APM-managed agent configurations — the same methodology and tooling described in these chapters.
+
 **Scope.** 5 cross-cutting concerns: auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage. The changes touched 70 files across the entire source tree.
 
 **Final metrics.**

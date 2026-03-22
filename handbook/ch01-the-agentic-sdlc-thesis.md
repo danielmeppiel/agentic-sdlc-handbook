@@ -72,6 +72,8 @@ These constraints sound abstract. Later in this book, we trace a single pull req
 
 In both cases, the constraints feel like restrictions until you see the properties they produce at scale. And in both cases, the constraints are independent of implementation — REST didn't require Apache, and PROSE doesn't require any particular IDE or AI provider.
 
+The constraints in this book are concrete enough that they can be — and have been — implemented as packageable, distributable artifacts with formal schemas.
+
 How the five constraints relate:
 
 ```mermaid
@@ -152,7 +154,7 @@ You don't need to read both blocks. Start with whichever matches your role. But 
 
 **This is not a tool tutorial.** The methodology in this book works across AI coding tools. Where specific tools appear as examples — and they will — they illustrate a principle, not a product recommendation. The constraints are portable. The implementations vary.
 
-**This is not a vendor whitepaper.** The author works at Microsoft. This is disclosed once and then the analysis stands on its own. Microsoft's tools and vision appear where relevant — as one data point among several in a multi-vendor landscape. Where the evidence supports a Microsoft approach, it's cited. Where it doesn't, it isn't.
+**This is not a vendor whitepaper.** The author works at Microsoft. This is disclosed once and then the analysis stands on its own. Microsoft's tools and vision appear where relevant — as one data point among several in a multi-vendor landscape. Where the evidence supports a Microsoft approach, it's cited. Where it doesn't, it isn't. The author also created APM, an open-source agent package manager. APM appears in later chapters where it provides evidence that the architectural constraints work in practice; the methodology does not require it.
 
 **This is not comprehensive.** The field moves too fast for any book to cover everything. This book is opinionated and battle-tested. It teaches one well-articulated framework, applies it to real evidence, and gives you enough structure to adapt as the landscape evolves. Where certainty exists, the book is direct. Where it doesn't — and there are many such places in a field this young — the book says so.
 

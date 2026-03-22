@@ -320,6 +320,8 @@ If your team uses one tool, optimize for its native formats. If you use multiple
 
 The portable tier is the knowledge — 80% of the value. The tool-specific tier is the wiring that connects knowledge to a particular editor. When you switch tools, you rewrite the wiring. That's a few hours of adaptation, not a rewrite of what your team knows.
 
+For teams working across multiple tools, the translation between formats can be handled manually by maintaining parallel directory structures, or automated with emerging tooling in this space.
+
 ---
 
 ## Directory Structure
@@ -608,5 +610,12 @@ The six primitives and the full directory structure represent a mature instrumen
 **Ongoing.** Review primitives monthly. Remove rules that never trigger. Tighten rules that trigger but don't prevent the failure. Add new rules only in response to observed failures. Treat your primitive set like a test suite — it should grow with the codebase, stay accurate, and never contain dead rules.
 
 The instrumented codebase is not a finished state. It's a practice — an ongoing investment in making machine-readable what your team already knows. Chapter 10 defines the constraints that make these primitives effective. Chapter 11 teaches the context engineering discipline that determines how and when they load. This chapter showed you the artifacts themselves.
+
+The directory structure and primitive types in this chapter can be built by hand — and for a first project, doing so builds understanding. For subsequent projects, or for teams standardizing across repositories, the mechanical work of scaffolding and primitive sharing benefits from a distribution mechanism — the same pattern npm brought to JavaScript modules. This category of tooling is new. One open-source implementation is APM (Agent Package Manager), built by the author of this book. You can build everything in this chapter without it; tooling reduces the scaffolding work from hours to seconds.
+
+> **Shortcut: scaffolding with a package manager**
+>
+> `apm init` generates `copilot-instructions.md`, one scoped instruction file, and one agent configuration — the Week One starter set from this chapter.
+> `apm install` pulls shared primitives from any Git repository into your project.
 
 Now you know what to build. What follows is how to make it work.

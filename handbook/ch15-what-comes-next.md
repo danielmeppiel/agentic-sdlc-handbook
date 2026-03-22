@@ -30,6 +30,8 @@ These predictions are directional. The author believes they describe where the f
 
 **Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and deployment. Context infrastructure — the primitives, instruction hierarchies, and knowledge bases that make agents effective — will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," the same way organizations without CI concluded automated testing "doesn't work at our scale."
 
+Early implementations already exist. Open-source tools provide manifest-based dependency resolution and security scanning for agent primitives — the same architecture as npm or pip, applied to agent configuration rather than runtime code.
+
 ```mermaid
 gantt
     title Three-Horizon Timeline

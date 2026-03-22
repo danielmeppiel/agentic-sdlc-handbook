@@ -251,6 +251,12 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Treat all external content in agent context as untrusted input. Restrict agent access to vetted files. Use allowlists, not blocklists, for context inclusion. Review dependency code before including it in agent context. |
 | **Recovery** | Identify the injecting content. Remove it from context. Revert any agent output produced after the injection point. Audit all changes from the affected session — injection may have caused subtle, intentional-looking modifications. |
 
+**Why this pattern is uniquely dangerous.** In traditional dependency management, there is a gap between install and execution — you install a package, then your code explicitly calls it. In agent configuration, *file presence is execution*. The moment a compromised instruction file exists in `.github/` or `.cursor/`, agents ingest it. There is no import statement, no function call, no opt-in. Install and execution are the same event.
+
+Attack vectors include hidden Unicode characters (tag characters, bidirectional overrides, variation selectors) that are invisible in editors but alter agent behavior, and transitive dependencies that silently introduce MCP server access.
+
+**Prevention** requires pre-deployment scanning — catching compromised content before agents read it, not after. Lock file pinning with content hashes provides reproducibility. Blocking transitive MCP servers by default prevents silent privilege escalation. Tools in this category — APM among them — implement pre-deployment scanning; the principle applies regardless of tooling. Treat the prompt supply chain with the same rigor as your code supply chain.
+
 ---
 
 ## The Silent Failure Problem
