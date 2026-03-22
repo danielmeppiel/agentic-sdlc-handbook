@@ -20,6 +20,12 @@ jobs:
       - name: Render HTML
         run: quarto render --to html
 
+      - name: Restore PDF and EPUB from gh-pages
+        run: |
+          git fetch origin gh-pages
+          git show origin/gh-pages:The-Agentic-SDLC-Handbook.pdf > _book/The-Agentic-SDLC-Handbook.pdf 2>/dev/null || echo "No PDF on gh-pages yet"
+          git show origin/gh-pages:The-Agentic-SDLC-Handbook.epub > _book/The-Agentic-SDLC-Handbook.epub 2>/dev/null || echo "No EPUB on gh-pages yet"
+
       - name: Publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:
