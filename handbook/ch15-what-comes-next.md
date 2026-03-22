@@ -44,7 +44,9 @@ These are the things the author is most confident about, precisely because they 
 
 **Human judgment will remain the bottleneck and the differentiator.** The scarce resource is not token generation. It is the ability to define what should be built, evaluate whether it was built correctly, and decide what to do when it wasn't. Agents accelerate execution. They do not accelerate judgment.
 
-These four properties are why the architectural constraints from Chapter 1 are durable. Progressive Disclosure addresses finite context. Safety Boundaries address probabilistic output. Explicit Hierarchy addresses the need for externalized knowledge. Reduced Scope addresses the limits of agent judgment. The constraints were not designed for today's models. They were designed for the structural properties of human-AI collaboration.
+**Composition will remain necessary.** No single agent will hold an entire large system in focus. Complex changes will still require decomposition into focused tasks, coordination across specialists, and structured integration of results. The tools for composition will improve; the need for it will not diminish.
+
+These five properties are why the architectural constraints from Chapter 1 are durable. Progressive Disclosure addresses finite context. Safety Boundaries address probabilistic output. Explicit Hierarchy addresses the need for externalized knowledge. Reduced Scope addresses the limits of agent judgment. Orchestrated Composition addresses the complexity that emerges when multiple agents interact — a property that becomes more critical as agent capabilities increase, not less. The constraints were not designed for today's models. They were designed for the structural properties of human-AI collaboration.
 
 ---
 
@@ -58,7 +60,7 @@ These four properties are why the architectural constraints from Chapter 1 are d
 | Specification replaces implementation as the core skill | Emerging | Medium — direction clear, timeline uncertain |
 | Full lifecycle agent coverage becomes operational | Directional | Low-to-medium — plausible, not inevitable |
 | Context infrastructure becomes as foundational as CI/CD | Directional | Medium — trajectory clear, timeline 5+ years |
-| The four structural constraints hold | Structural | High — properties of the problem |
+| The five structural constraints hold | Structural | High — properties of the problem |
 
 The reader should calibrate accordingly. Invest confidently in the "available now" tier. Prepare for the "emerging" tier. Be aware of the "directional" tier without betting the organization on specific timelines.
 
@@ -92,7 +94,7 @@ Pick the module your team changes most frequently. Not the biggest module — th
 
 ### Day 2: Write Your First Three Primitives
 
-Take the top three conventions from yesterday's audit. Write each as an instruction primitive — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 10: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
+Take the top three conventions from yesterday's audit. Write each as an instruction primitive — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 9, under the constraints from Chapter 10: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
 
 **Deliverable:** Three instruction files, committed to your repository.
 

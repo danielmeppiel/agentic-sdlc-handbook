@@ -239,37 +239,9 @@ The decision of what to externalize vs. what to keep in instructions follows a s
 
 ## The Context Audit
 
-Before you write your first instruction file, you need to know what knowledge your codebase depends on and where it currently lives. This is the context audit — a systematic assessment of the gap between what your team knows and what an agent can see.
+Run the instrumentation audit from Chapter 9 if you haven't already. Its five steps — list conventions, classify where they live, rank by failure cost, map to primitive types, and write a starter set — identify the raw material. This section focuses on what to do with that material once you have it: how to allocate your context budget, where each piece belongs in the hierarchy, and how to structure retrieval for knowledge that doesn't fit in always-loaded instructions.
 
-**Step 1: List your conventions.** Take 30 minutes with your team and write down every convention, pattern, and constraint that a new engineer would need to learn in their first two weeks. Error handling patterns. Naming conventions. Module boundaries. Authentication flows. Deployment requirements. Testing conventions. Which base classes to extend. Which methods are deprecated but not yet removed. Which directories own which concerns. Don't filter. Don't organize. Just list.
-
-You'll typically get 30-60 items. Most teams are surprised by the volume. If you get fewer than 15, you're either working on a very small project or you're not being thorough enough.
-
-**Step 2: Classify each item.** For every convention on your list, mark where it currently lives:
-
-| Location | What it means |
-|----------|---------------|
-| **In code** | Expressed in the implementation itself (types, naming, structure) |
-| **In docs** | Written down somewhere — README, wiki, ADR, style guide |
-| **In heads** | Known by team members but never documented |
-
-The "in heads" column is your context debt. These are the conventions an agent will violate because it has no way to know about them. They are also the conventions most likely to cause the kind of subtle, plausible-looking failures described in Chapter 1 — code that compiles, passes basic tests, and silently breaks an invariant.
-
-**Step 3: Prioritize by failure cost.** Not every convention is equally important. Rank your context debt by what happens when it's violated:
-
-- **Critical:** Security vulnerabilities, data corruption, production outages
-- **High:** Architectural violations that create technical debt
-- **Medium:** Convention violations that require rework in review
-- **Low:** Style preferences that don't affect correctness
-
-**Step 4: Map to instruction scope.** For each critical and high-priority item, determine where it belongs in the hierarchy:
-
-- Applies everywhere → global instruction
-- Applies to a specific module → directory-scoped instruction
-- Requires a decision framework → skill
-- Needs a specialist perspective → agent configuration
-
-**Step 5: Write your starter set.** Begin with 3-5 instruction files covering your critical items. Don't aim for completeness. The feedback loop — observe agent output, identify what went wrong, improve the primitive — will guide you to what's actually needed. Most teams over-engineer their first attempt and under-engineer what actually matters.
+The audit reveals three categories of knowledge: conventions already visible in code (partially available to agents), conventions written in documentation (available only if explicitly loaded), and conventions that exist only in your team's memory (completely invisible). The last category — your context debt — is where context engineering begins. Each item in that category needs a home: a scope in the hierarchy, a loading strategy (always-on instruction vs. on-demand retrieval), and a format that agents can act on.
 
 ## Before and After
 

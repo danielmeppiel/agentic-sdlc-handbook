@@ -186,6 +186,6 @@ The first two rows require no budget, no procurement, and no organizational chan
 
 ---
 
-The market is moving. Your developers are moving with it. The question this chapter should have settled is not *what* to buy — that requires the architectural framework in Chapter 3 and the context strategy in Chapter 4. The question is whether you're making deliberate decisions about a shift that is already happening inside your organization, or whether you're discovering it after the fact.
+The market is moving. Your developers are moving with it. The question this chapter should have settled is not *what* to buy — that requires the business case in Chapter 3 and the reference architecture in Chapter 4. The question is whether you're making deliberate decisions about a shift that is already happening inside your organization, or whether you're discovering it after the fact.
 
-Chapter 3 introduces the reference architecture: a three-layer model that gives you a shared vocabulary for planning which phases of your lifecycle agents should touch first, and what infrastructure they need to do it reliably.
+Chapter 3 builds the honest business case: what AI-assisted development actually costs, what it actually delivers, and how to measure value without inflating the numbers.

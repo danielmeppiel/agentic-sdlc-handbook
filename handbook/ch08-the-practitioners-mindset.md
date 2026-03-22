@@ -186,7 +186,7 @@ When you review code, you add a question. Beyond "is this correct?" and "is this
 
 When something fails, you fix the system, not the symptom. The agent produced wrong output because the instruction was ambiguous, or the specification missed a constraint, or the task was too broad for the context window. Fixing the generated code addresses this instance. Fixing the instruction, the specification, or the decomposition addresses every future instance.
 
-When you find yourself explaining a convention to an agent for the third time, you write it down — in a form that persists across sessions. A file in the repository, scoped to the right directory, expressed in terms the agent can act on. Your team's accumulated knowledge becomes infrastructure, not oral tradition. This is context engineering: the subject of the next chapter.
+When you find yourself explaining a convention to an agent for the third time, you write it down — in a form that persists across sessions. A file in the repository, scoped to the right directory, expressed in terms the agent can act on. Your team's accumulated knowledge becomes infrastructure, not oral tradition. This is context engineering, and it begins with the instrumented codebase described in the next chapter.
 
 The mindset is not complex. The AI is a capable, fast, amnesiac engineer. Your job is architect, reviewer, and escalation handler — the roles that require continuity, judgment, and accountability. The agent handles volume. You handle direction.
 

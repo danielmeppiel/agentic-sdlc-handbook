@@ -525,4 +525,4 @@ Use this checklist to evaluate whether your current setup satisfies PROSE constr
 
 ---
 
-The five constraints are the specification. The chapters that follow — context engineering, agent primitives, execution, delegation — are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.
+The five constraints are the specification. The chapters that follow — context engineering (Chapter 11), multi-agent orchestration (Chapter 12), and the execution meta-process (Chapter 13) — are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.

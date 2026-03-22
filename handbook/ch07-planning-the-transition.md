@@ -15,17 +15,9 @@ This chapter is the bridge between the strategic foundations of Chapters 2 throu
 
 Before planning a transition, you need to understand why the most common measure of success — productivity — is the most dangerous one to use.
 
-When organizations deploy agentic coding tools, the first metric that moves is output volume. More lines of code. More pull requests. Faster cycle times on individual tasks. These numbers are real, and they are misleading.
+The productivity paradox (Chapter 3) means traditional metrics mislead. Lines of code, PR volume, and per-task cycle time all inflate the apparent value of agentic tools while hiding the real costs — rework, review burden, and maintenance debt. The metrics below are designed to avoid that trap.
 
-Lines of code has never been a reliable productivity metric, and it becomes actively harmful when agents generate code. An agent can produce 500 lines in minutes. Whether those lines are maintainable, architecturally sound, and free of subtle defects is a separate question — the one that matters. Measuring lines of code when agents write code is like measuring words per minute when evaluating writing quality.
-
-Pull request volume has the same problem. If developers open more PRs but each requires three review cycles instead of one, you have not improved productivity. You have shifted work from creation to verification. Some organizations discover, after months of "increased productivity," that their total cost per feature has stayed flat — the creation phase got cheaper, but review, debugging, and maintenance got more expensive.
-
-Cycle time on individual tasks is the most seductive metric and the most incomplete. A task that took four hours now takes one. That is a genuine gain — on that task. But if the freed-up time is spent cleaning up context for the next agent interaction or fixing integration issues that didn't exist when a human wrote the code, the net gain is smaller than the per-task metric suggests.
-
-None of this means agentic development tools don't create value. They do. But measuring the wrong things leads to two bad outcomes: you overstate the value and lose credibility when scrutiny arrives, or you fail to capture the real value because you weren't measuring it.
-
-The metrics that matter are covered later in this chapter. The point here is simpler: do not plan your transition around a productivity number. Plan it around capability maturity — your organization's ability to use these tools reliably and at scale.
+Do not plan your transition around a productivity number. Plan it around capability maturity — your organization's ability to use these tools reliably and at scale.
 
 ---
 
@@ -39,11 +31,11 @@ Four dimensions determine readiness. Assess each on a three-point scale: not rea
 
 Assessment questions: Is there a written architecture document a new hire could use? Are coding standards documented or only enforced in review? Can someone unfamiliar with the project run the build and tests from documentation alone?
 
-**Process readiness.** Does the team have structured workflows that can accommodate AI-generated code? This means code review processes that handle higher volume, CI/CD pipelines that catch the kinds of defects agents introduce (pattern violations, not just compilation errors), and branching strategies that isolate agent-generated changes until they pass review. Chapter 6 covers governance in detail.
+**Process readiness.** Does the team have structured workflows that can accommodate AI-generated code? This means code review processes that handle higher volume, CI/CD pipelines that catch the kinds of defects agents introduce (pattern violations, not just compilation errors), and branching strategies that isolate agent-generated changes until they pass review. Chapter 5 covers governance in detail.
 
 Assessment questions: Does the team have automated quality gates beyond compilation? Is code review structured or ad hoc? How long does a typical PR take from submission to merge?
 
-**Skill readiness.** Does the team include developers who can evaluate agent output critically? This is not about AI expertise — it is about engineering judgment. A senior developer who understands the codebase can evaluate whether agent-generated code fits the architecture and handles edge cases. A team of junior developers without senior oversight will accept plausible-looking output that violates invariants they don't yet understand. Chapter 5 addressed this compositional dynamic.
+**Skill readiness.** Does the team include developers who can evaluate agent output critically? This is not about AI expertise — it is about engineering judgment. A senior developer who understands the codebase can evaluate whether agent-generated code fits the architecture and handles edge cases. A team of junior developers without senior oversight will accept plausible-looking output that violates invariants they don't yet understand. Chapter 6 addressed this compositional dynamic.
 
 Assessment questions: What is the ratio of senior to junior developers? Can reviewers articulate *why* code is wrong, not just that it looks wrong? Has the team onboarded a new hire using written documentation in the past year?
 
@@ -109,7 +101,7 @@ The rollback process: revert affected teams to their pre-pilot workflow. Preserv
 **Activities.**
 - Pilot team members become internal coaches. Each expanding team should have access to someone who went through the pilot — the tacit knowledge from Phase 1 is the most valuable asset for Phase 2.
 - Build shared context assets. The pilot team's context layer was project-specific. Now you need organizational primitives: shared coding standards, common architectural patterns, cross-project conventions. This is the context moat from Chapter 4 — the compounding asset that makes every subsequent adoption cheaper.
-- Establish governance processes for agent-generated code at organizational scale. The pilot used whatever review process the team already had. At this scale, you need explicit policies: what requires human review, what can be auto-merged with sufficient test coverage, how agent-generated changes are attributed. Chapter 6 provides the framework.
+- Establish governance processes for agent-generated code at organizational scale. The pilot used whatever review process the team already had. At this scale, you need explicit policies: what requires human review, what can be auto-merged with sufficient test coverage, how agent-generated changes are attributed. Chapter 5 provides the framework.
 - Begin tracking organizational metrics, not just team metrics. The metrics section below specifies what to measure.
 
 **Exit signals.** Move to Phase 3 when: (1) expanding teams are productive with agentic tools without daily support from pilot members, (2) shared context assets exist and have a responsible owner, (3) governance processes are documented and followed without enforcement, and (4) organizational metrics show a trend you can explain.
@@ -226,7 +218,7 @@ Use this template to plan your organization's transition. It is a starting point
 - [ ] Define pilot scope: specific workstreams with clear boundaries
 - [ ] Assign executive sponsor and transition lead
 - [ ] Determine tool selection based on the evaluation framework from Chapter 2
-- [ ] Review governance requirements from Chapter 6; identify minimum viable policies
+- [ ] Review governance requirements from Chapter 5; identify minimum viable policies
 
 ### Phase 1 — Pilot (1–5 months, depending on org size and documentation maturity)
 
@@ -273,6 +265,6 @@ Use this template to plan your organization's transition. It is a starting point
 
 This chapter closes Block 1. If you also write code — or need to understand what your practitioners will be doing — Block 2 begins with Chapter 8, where context engineering moves from strategy to implementation. The frameworks here are the "what" and "when." Block 2 is the "how."
 
-You now have the strategic picture: the market context that makes this transition urgent (Chapter 2), the architectural model that organizes the capability (Chapter 3), the context advantage that compounds over time (Chapter 4), the organizational changes required to sustain it (Chapter 5), the governance structures that make it trustworthy (Chapter 6), and the transition plan that sequences the rollout (this chapter).
+You now have the strategic picture: the market context that makes this transition urgent (Chapter 2), the business case that justifies the investment (Chapter 3), the reference architecture that organizes the capability (Chapter 4), the governance structures that make it trustworthy (Chapter 5), the team structures that sustain the organizational change (Chapter 6), and the transition plan that sequences the rollout (this chapter).
 
 The investment is real. The timeline is months, not weeks. The value compounds — but only if the foundation is structural, not aspirational.

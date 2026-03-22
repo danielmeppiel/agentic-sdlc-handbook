@@ -91,7 +91,7 @@ For cross-cutting changes, organize agents by area of expertise rather than by w
 └─────────────────────────┘  └─────────────────────────┘
 ```
 
-In the PR #394 execution, this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 70-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
+In the reference case study (PR #394, detailed in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 70-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
 
 This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.
 
@@ -223,16 +223,7 @@ The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0's 
 
 Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.
 
-The PR #394 execution used four waves plus a recovery wave:
-
-| Wave | Agents | Duration | What ran in parallel |
-|---|---|---|---|
-| 0 | 2 | ~5 min | Resolver refactor + install foundation |
-| 1+2 | 5 | ~8 min | Verbose coverage (3) + logger migration (2) |
-| 2b | 2 | ~7 min | Recovery for stuck agent + remaining migration |
-| 3 | 1 | ~4 min | Unicode cleanup (sequential, final polish) |
-
-Total parallel agent-minutes: roughly 45. Total wall-clock time for execution: roughly 24 minutes. The parallelism saved approximately 21 minutes compared to sequential execution — meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.
+In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.
 
 ### Pipeline Parallelism
 
@@ -332,34 +323,15 @@ Not every problem requires human attention. A well-designed orchestration system
 
 The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.
 
-In the PR #394 execution, the distribution was:
-
-- L1 (self-heal): 10 of 15 dispatches completed without any intervention
-- L2 (retry): 2 dispatches required re-dispatch with refined instructions
-- L3 (human decides): 2 design trade-offs escalated to the operator
-- L4 (scope change): 1 discovery deferred to a follow-up issue
-
-This ratio — roughly 80% autonomous, 13% automated retry, 7% human decision — is characteristic of a well-planned execution. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
+In the reference case study (Chapter 13), the distribution was roughly 80% autonomous (L1), 13% automated retry (L2), and 7% human decision (L3/L4) — characteristic of a well-planned execution. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
 
 ---
 
 ## The Coordination Tax: Honest Numbers
 
-Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting from PR #394.
+Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the reference case study detailed in Chapter 13.
 
-### Time Breakdown
-
-| Activity | Time | Notes |
-|---|---|---|
-| Planning and partitioning | ~15 min | Reading codebase, defining waves, writing dispatch prompts |
-| Monitoring execution | ~10 min | Watching 4 waves, spot-checking output between waves |
-| Handling interventions | ~12 min | 2 retries (~3 min each), 2 design decisions (~3 min each) |
-| Post-execution review | ~8 min | Reviewing critical changes, verifying test coverage |
-| **Total human time** | **~45 min** | |
-
-Agent execution (wall-clock): ~24 minutes across 4 waves. Total elapsed time: ~90 minutes, because human work overlaps with agent execution.
-
-### Comparison with Single-Agent
+The human time in a well-planned multi-agent execution breaks down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). In the PR #394 case, total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.
 
 The same 70-file change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts on changes of this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.
 

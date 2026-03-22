@@ -2,7 +2,7 @@
 
 Here is what nobody tells you about using AI agents on a real codebase: the agent is the easy part. The hard part is knowing what to ask, in what order, and when to stop asking and start verifying.
 
-Chapters 10 through 12 gave you the building blocks — PROSE constraints to design by, context engineering to feed agents accurately, and agent primitives to encode your team's knowledge. This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from "I need to change 70 files" to "the PR is merged with zero regressions" — and what happens at every decision point in between.
+Chapters 10 through 12 gave you the building blocks — PROSE constraints to design by (Chapter 10), context engineering to feed agents accurately (Chapter 11), and multi-agent orchestration to coordinate at scale (Chapter 12). This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from "I need to change 70 files" to "the PR is merged with zero regressions" — and what happens at every decision point in between.
 
 The methodology is a five-phase meta-process. It works regardless of which AI coding tool you use, because it operates at a level above any specific tool's mechanics. The tool dispatches agents, runs tests, and manages files. You manage the process.
 
@@ -143,19 +143,7 @@ The most common dependency pattern is foundation-before-migration. Type definiti
 
 ### The One-File-One-Agent Rule
 
-Within a wave, no two agents may edit the same file. Agent tooling typically uses string matching for edits — it finds a specific block of text and replaces it. If two agents edit the same file concurrently, the second agent's target text may no longer exist because the first agent changed it. The edit fails silently or produces garbled output.
-
-This rule shapes wave design more than any other. If two logically independent changes both touch the same file, they go in separate waves — or they're assigned to a single agent that handles both changes in sequence.
-
-```
-GOOD: Each agent owns distinct files
-  Agent A: resolver.py, dependency_graph.py
-  Agent B: install.py (all changes)
-
-BAD: Two agents on the same file
-  Agent B: install.py (lines 240-440)
-  Agent C: install.py (lines 580-2100)
-```
+The one-file-one-agent rule from Chapter 12 shapes wave design more than any other constraint. Within a wave, no two agents may edit the same file. If two logically independent changes both touch the same file, they go in separate waves — or they're assigned to a single agent that handles both changes in sequence.
 
 ### Sizing Waves
 

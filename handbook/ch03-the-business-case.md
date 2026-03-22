@@ -242,11 +242,9 @@ The human intervention rate — how often a developer must correct, override, or
 
 Every business case has an implicit comparison: the investment versus the status quo. Most business cases for agentic development model the investment side. Few price the alternative.
 
+Chapter 2 made the strategic argument: inaction is itself a decision, with consequences for talent, shadow IT, context accumulation, and competitive position. Here, we put a number on it.
+
 **The context gap compounds in reverse.** The same flywheel that rewards early context investment penalizes delay. While your team debates whether AI tools are worth it, competitors who started six months earlier have accumulated six months of machine-readable conventions, structured architecture decisions, and documented patterns. Their agents improve with every sprint. Yours, when you eventually adopt, start from zero. The gap is not six months of calendar time — it is six months of compounding context quality that you must build from scratch while the early adopter's agents are already leveraging it.
-
-**Hiring gets harder.** By 2026, experienced engineers will expect agentic tooling the way they currently expect CI/CD pipelines and code review workflows. Organizations without it will face the same hiring friction that organizations without modern development practices faced five years earlier — it becomes a signal that the engineering culture is behind. The cost is not the tools. It is the senior engineers who choose a different offer because your team's workflow looks outdated.
-
-**Knowledge walks out the door.** Without structured context, your engineering knowledge lives in people's heads. Every senior engineer who leaves takes architectural understanding, unwritten conventions, and system knowledge with them. This was always a risk. Agentic development makes it visible: the cost of undocumented knowledge is now measurable in rework hours on every agent interaction, every day. The "wait and see" strategy is not zero-cost. It is the cost of your current knowledge attrition rate, compounded by the opportunity cost of agent-assisted improvements you are not capturing.
 
 A rough estimate: for a 50-person team, a 12-month delay in structured adoption represents $1.5–2.5M in forgone throughput improvement (using the moderate scenario from the worked example above) plus the unquantified but real costs of competitive position and hiring friction. "Wait and see" is itself a decision with a price. Your board will ask "what if we wait a year?" This section is the answer.
 
