@@ -4,17 +4,7 @@
     "href": "index.html",
     "title": "The Agentic SDLC Handbook",
     "section": "",
-    "text": "The Agentic SDLC Handbook\nA methodology for teams building software with AI agents — grounded in evidence, tested in production, independent of any single tool.",
-    "crumbs": [
-      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
-    ]
-  },
-  {
-    "objectID": "index.html#who-this-book-is-for",
-    "href": "index.html#who-this-book-is-for",
-    "title": "The Agentic SDLC Handbook",
-    "section": "0.1 Who This Book Is For",
-    "text": "0.1 Who This Book Is For\nThis book speaks to two audiences:\nEngineering leaders (CTO, VP Engineering, Director) who need to understand the strategic implications of AI-native development, make investment decisions, and transform their organizations. Read Part II first.\nPractitioners (developers, tech leads, architects) who need concrete techniques, patterns, and workflows for working effectively with AI coding agents. Read Part III first.\nPart I provides the foundational thesis that both audiences share. The closing chapter looks ahead.",
+    "text": "Who This Book Is For\nA methodology for teams building software with AI agents — grounded in evidence, tested in production, independent of any single tool.\nThis book speaks to two audiences:\nEngineering leaders (CTO, VP Engineering, Director) who need to understand the strategic implications of AI-native development, make investment decisions, and transform their organizations. Read Part II first.\nPractitioners (developers, tech leads, architects) who need concrete techniques, patterns, and workflows for working effectively with AI coding agents. Read Part III first.\nPart I provides the foundational thesis that both audiences share. The closing chapter looks ahead.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
     ]
@@ -23,8 +13,8 @@
     "objectID": "index.html#how-to-read-this-book",
     "href": "index.html#how-to-read-this-book",
     "title": "The Agentic SDLC Handbook",
-    "section": "0.2 How to Read This Book",
-    "text": "0.2 How to Read This Book\nYou don’t need to read sequentially. Start with whichever part matches your role:\n\nPart I (Chapter 1): The thesis — why the current approach fails and what replaces it\nPart II (Chapters 2–7): The business case, reference architecture, governance, team structures, and transition planning\nPart III (Chapters 8–14): The practitioner’s mindset, instrumented codebase, PROSE specification, context engineering, multi-agent orchestration, execution meta-process, and anti-patterns\nClosing (Chapter 15): What comes next",
+    "section": "How to Read This Book",
+    "text": "How to Read This Book\nYou don’t need to read sequentially. Start with whichever part matches your role:\n\nPart I (Chapter 1): The thesis — why the current approach fails and what replaces it\nPart II (Chapters 2–7): The business case, reference architecture, governance, team structures, and transition planning\nPart III (Chapters 8–14): The practitioner’s mindset, instrumented codebase, PROSE specification, context engineering, multi-agent orchestration, execution meta-process, and anti-patterns\nClosing (Chapter 15): What comes next",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
     ]
@@ -33,8 +23,8 @@
     "objectID": "index.html#about-the-author",
     "href": "index.html#about-the-author",
     "title": "The Agentic SDLC Handbook",
-    "section": "0.3 About the Author",
-    "text": "0.3 About the Author\nDaniel Meppiel works at Microsoft and created APM (Agent Package Manager), an open-source tool for managing AI agent configurations. This handbook was produced using the same methodology and tooling it describes.",
+    "section": "About the Author",
+    "text": "About the Author\nDaniel Meppiel works at Microsoft and created APM (Agent Package Manager), an open-source tool for managing AI agent configurations. This handbook was produced using the same methodology and tooling it describes.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
     ]
@@ -43,8 +33,8 @@
     "objectID": "index.html#license-updates",
     "href": "index.html#license-updates",
     "title": "The Agentic SDLC Handbook",
-    "section": "0.4 License & Updates",
-    "text": "0.4 License & Updates\nThis book is free. Share it, link to it, learn from it. Updates are published continuously — check back or watch the repository for changes.",
+    "section": "License & Updates",
+    "text": "License & Updates\nThis book is free. Share it, link to it, learn from it. Updates are published continuously — check back or watch the repository for changes.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
     ]
