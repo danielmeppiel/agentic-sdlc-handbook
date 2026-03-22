@@ -10,7 +10,7 @@ The AI developer tools market is growing faster than any prior developer tooling
 
 The 2024 Stack Overflow Developer Survey found 76% of developers are using or plan to use AI coding tools — up from 44% in 2023. GitHub's 2024 Octoverse report placed the figure higher: 97% of developers surveyed had used AI coding tools in some capacity. Even accounting for sampling bias (developers on GitHub are likelier to adopt developer tools), the direction is unambiguous.
 
-The supply side is moving as fast as the demand side. In 2021, GitHub Copilot launched as a technical preview — an autocomplete tool powered by OpenAI Codex. By mid-2025, the market includes at least a dozen well-funded products spanning code completion, agentic coding, and full-lifecycle platforms. Several of these reached hundreds of millions in annual revenue in under two years. At least two crossed into billion-dollar run rates in under 18 months. These are not projections. These are reported numbers from mid-2025.
+The supply side is moving as fast as the demand side. In 2021, GitHub Copilot launched as a technical preview — an autocomplete tool powered by OpenAI Codex. By mid-2025, the market includes at least a dozen well-funded products spanning code completion, agentic coding, and full-lifecycle platforms. Cursor reportedly reached hundreds of millions in ARR faster than almost any developer tool in history. GitHub Copilot's revenue contribution to Microsoft crossed into significant scale on a similar timeline. Anthropic's API revenue — much of it code-generation workloads — followed the same curve. These are not projections. These are reported or credibly estimated numbers from mid-2025.
 
 Gartner estimated in 2024 that by 2028, 75% of enterprise software engineers will use AI code assistants — up from fewer than 10% in early 2023. The adoption curve is not linear; it is compounding. And the tools are not static targets — each major release expands what "AI-assisted development" means, which means the definition of the market is shifting while you're trying to evaluate it.
 
@@ -72,34 +72,43 @@ The mistake most organizations make: evaluating platform decisions with coding-t
 
 ---
 
-## The Landscape Today: Capabilities by Category
+## The Landscape Today: Capabilities That Actually Matter
 
-The table below maps the current market across capabilities and maturity tiers. This is a snapshot from mid-2025; specific entries will shift, but the category structure is stable.
+A feature comparison grid is the most natural thing to produce and the least useful thing to read. Every vendor has one. They all look favorable to the vendor that made them. The table below attempts something different: an honest snapshot of where each tool actually is, what it can't do by design, and — critically — which capabilities you should care about first.
 
-Maturity key: **Now** = available and shipping in production. **Emerging** = available but limited, or in public preview. **Directional** = announced or in early research, not yet usable at scale.
+The maturity tiers: **Now** = available and shipping in production. **Emerging** = available but limited, or in public preview. **Directional** = announced, demonstrated in research, or on a public roadmap but not yet usable at production scale. **N/A** = not applicable — the tool's architecture doesn't target this capability, and that's a design choice, not a gap.
 
 | Capability | GitHub Copilot | Cursor | Claude Code | Windsurf | Amazon Q Developer | JetBrains AI |
 |---|---|---|---|---|---|---|
-| Code completion | Now | Now | — | Now | Now | Now |
+| Code completion | Now | Now | N/A | Now | Now | Now |
 | Chat / explain | Now | Now | Now | Now | Now | Now |
 | Multi-file editing | Now | Now | Now | Now | Emerging | Emerging |
-| Agent mode (in-editor) | Now | Now | Now | Now | Emerging | Emerging |
-| Terminal / CLI agent | Now | — | Now | — | — | — |
-| Autonomous PR creation | Now | Emerging | Now | — | — | — |
-| Code review agent | Now | Emerging | — | — | — | — |
-| Multi-model routing | Now | Now | — | Now | — | Now |
+| Agent mode (in-editor) | Now | Now | N/A | Now | Emerging | Emerging |
+| Terminal / CLI agent | Now | N/A | Now | N/A | Emerging | N/A |
+| Autonomous PR creation | Now | Emerging | Now | Directional | Directional | N/A |
+| Code review agent | Now | Emerging | Directional | Directional | Emerging | Directional |
+| Multi-model routing | Now | Now | N/A | Now | Emerging | Now |
 | Custom instructions / rules | Now | Now | Now | Now | Emerging | Emerging |
-| Enterprise governance | Now | Emerging | — | — | Now | Emerging |
-| Full SDLC platform | Now | — | — | — | Emerging | — |
+| Enterprise governance | Now | Emerging | Emerging | Emerging | Now | Emerging |
+| Full SDLC platform | Now | Directional | N/A | N/A | Emerging | N/A |
 
-Observations worth noting:
+**Where to look first.** Not every row matters equally. If you're a CTO deciding where to invest evaluation time, three capabilities separate "we have a coding tool" from "we have a strategy":
 
-- No single tool covers every capability. The landscape is fragmented, and it will remain so.
-- Code completion and chat are commoditized — they no longer differentiate.
-- The competitive frontier has moved to agentic capabilities: autonomous PRs, code review, multi-step execution.
-- Governance and enterprise controls are where AI coding tools diverge most sharply from software delivery platforms.
-- Microsoft's tools (GitHub Copilot + GitHub platform) cover the widest breadth across both the coding-tool and platform categories. This is a factual observation — the author works at Microsoft and discloses this. Whether breadth matters more than depth at any given capability is a decision each organization makes for itself.
-- Custom instructions and context configuration — the mechanisms that address the Vibe Coding Cliff — are available across most tools but implemented differently (GitHub Copilot uses custom instructions and `.github/copilot-instructions.md`, Cursor uses `.cursor/rules`, Claude Code uses `CLAUDE.md`). The methodology in this book is portable across all of these.
+1. **Custom instructions / rules.** This is the mechanism that addresses the Vibe Coding Cliff. Without it, every agent interaction starts from zero context. With it, your architectural decisions, conventions, and constraints are loaded automatically. This is the row that determines whether AI tools get more reliable over time or stay permanently mediocre. All major tools support this now, but the implementations differ: GitHub Copilot uses custom instructions and `.github/copilot-instructions.md`, Cursor uses `.cursor/rules`, Claude Code uses `CLAUDE.md`. The methodology in this book is portable across all of them.
+2. **Enterprise governance.** Audit logs, SSO, data residency controls, policy enforcement. Without these, you're flying blind on compliance. This is where coding tools and platforms diverge most sharply — and where "good enough for a developer" and "acceptable for the organization" are different conversations.
+3. **Autonomous PR creation and code review agents.** These are the frontier capabilities that move AI from "helps me type faster" to "participates in my workflow." They're also where the governance gap is widest — an agent that can open a PR or approve a review needs the same trust framework you'd apply to a new hire.
+
+The rest of the matrix — completion, chat, multi-file editing — is table stakes. Every serious tool does it. Don't let a vendor differentiate on capabilities that stopped being differentiators in 2024.
+
+One more thing the matrix can't show you: **architecture shapes capability.** Claude Code has no code completion and no in-editor agent mode because it's a CLI tool, not an editor plugin — that's a design decision, not a deficiency. Cursor has no terminal agent because it's an editor-first experience. JetBrains AI doesn't do autonomous PRs because it's focused on the IDE experience. The N/A cells matter as much as the Now cells — they tell you what each tool is *trying to be*, which tells you whether it fits your workflow.
+
+Microsoft's tools (GitHub Copilot + GitHub platform) cover the widest breadth across both the coding-tool and platform categories. This is a factual observation — the author works at Microsoft and discloses this. Whether breadth matters more than depth at any given capability is a decision each organization makes for itself.
+
+---
+
+## How These Tools Are Priced
+
+Dollar figures go stale fast, so here's the structural pattern. AI coding tools follow three pricing models: **per-seat subscription** (Copilot, Cursor, Windsurf — flat monthly per developer), **usage-based** (API-driven tools like Claude Code — you pay for tokens consumed), and **platform-bundled** (AI capabilities included in a broader DevOps or cloud platform tier, as with Amazon Q and GitHub Enterprise). Enterprise tiers that add governance, SSO, and audit controls typically run 2–3× the individual price. The budget conversation that matters isn't "what does the tool cost?" — it's "what does the tool cost relative to the developer time it displaces, and does the enterprise tier's governance premium justify avoiding the shadow IT remediation cost?" Chapter 3 builds the business case for that math.
 
 ---
 
@@ -123,18 +132,20 @@ The answers will tell you whether you have a strategy or a gap.
 
 ## The 8-Phase Evaluation Framework
 
-Most AI tool evaluations focus on the coding phase. This is like evaluating a car by testing only the engine. Software delivery spans eight phases. Evaluating your AI tooling against all eight reveals coverage gaps that single-phase evaluations miss.
+Most AI tool evaluations focus on the coding phase. This is like evaluating a car by testing only the engine — you learn something, but you miss everything that determines whether the thing actually gets you where you're going. Software delivery spans eight phases. If you're only measuring AI's impact on one of them, you're not evaluating — you're guessing.
 
-| Phase | What happens | Agent assistance | Your current state |
+**The insight most organizations miss: code generation is the *solved* phase. Plan, Test, and Review are where the next wave of high-value AI assistance will land — and where structured context (the kind this book teaches you to build) makes the difference between useful automation and expensive noise.**
+
+| Phase | What happens | What "good" looks like | Your current state |
 |---|---|---|---|
-| **Ideate** | Requirements gathering, research, exploration | Research agents, specification drafting | ☐ Automated ☐ Assisted ☐ Manual |
-| **Plan** | Architecture decisions, task breakdown, estimation | Planning agents, ADR generation | ☐ Automated ☐ Assisted ☐ Manual |
-| **Code** | Implementation, code generation, refactoring | In-editor agents, code completion | ☐ Automated ☐ Assisted ☐ Manual |
-| **Build** | Compilation, dependency resolution, packaging | Build failure diagnosis, dependency agents | ☐ Automated ☐ Assisted ☐ Manual |
-| **Test** | Unit tests, integration tests, test generation | Test generation, coverage analysis | ☐ Automated ☐ Assisted ☐ Manual |
-| **Review** | Code review, security review, standards checks | Review agents, automated feedback | ☐ Automated ☐ Assisted ☐ Manual |
-| **Release** | Deployment, release management, changelog | Release automation, deployment agents | ☐ Automated ☐ Assisted ☐ Manual |
-| **Operate** | Monitoring, incident response, observability | SRE agents, incident triage | ☐ Automated ☐ Assisted ☐ Manual |
+| **Ideate** | Requirements gathering, research, exploration | Agents surface prior art, draft specs from rough notes, and flag conflicting requirements before a human commits to a direction. | ☐ Automated ☐ Assisted ☐ Manual |
+| **Plan** | Architecture decisions, task breakdown, estimation | Agents generate ADRs, decompose epics into sized tasks, and produce dependency graphs that a tech lead reviews rather than builds from scratch. | ☐ Automated ☐ Assisted ☐ Manual |
+| **Code** | Implementation, code generation, refactoring | Agents produce code that respects your conventions, calls your actual APIs, and passes your linter on the first attempt — not just code that compiles. | ☐ Automated ☐ Assisted ☐ Manual |
+| **Build** | Compilation, dependency resolution, packaging | Agents diagnose build failures, suggest dependency fixes, and resolve CI errors without a human reading the full log. | ☐ Automated ☐ Assisted ☐ Manual |
+| **Test** | Unit tests, integration tests, test generation | Agents generate tests that cover edge cases your team would write manually, achieve meaningful coverage increases, and don't just parrot the implementation. | ☐ Automated ☐ Assisted ☐ Manual |
+| **Review** | Code review, security review, standards checks | Agents catch real issues — not style nits — and produce review comments specific enough that the author can act on them without a follow-up conversation. | ☐ Automated ☐ Assisted ☐ Manual |
+| **Release** | Deployment, release management, changelog | Agents draft changelogs from commit history, flag breaking changes, and automate the mechanical parts of release so humans focus on go/no-go decisions. | ☐ Automated ☐ Assisted ☐ Manual |
+| **Operate** | Monitoring, incident response, observability | Agents correlate alerts to recent deployments, draft incident timelines, and suggest rollback actions — reducing mean-time-to-diagnose, not replacing on-call judgment. | ☐ Automated ☐ Assisted ☐ Manual |
 
 These eight phases group into three buckets that map to how leaders plan and budget:
 
@@ -142,9 +153,9 @@ These eight phases group into three buckets that map to how leaders plan and bud
 - **Build** (Code + Build + Test + Review): turning intent into verified software.
 - **Operate** (Release + Operate): getting software to users and keeping it running.
 
-Most organizations in mid-2025 have agent assistance concentrated in the Code phase, partial coverage in Test and Review, and minimal or no coverage in Ideate, Plan, Build, Release, and Operate. This is not a failure — Code was the most tractable phase to automate, and the tools started there. It is, however, incomplete. The highest-value gains in the next 12-18 months will come from extending agent assistance into the adjacent phases — particularly Plan, Test, and Review — where structured context can drive reliable automation.
+Most organizations in mid-2025 have agent assistance concentrated in the Code phase, partial coverage in Test and Review, and minimal or no coverage in everything else. That's not a failure — Code was the most tractable phase to automate, and the tools started there. But it's incomplete, and staying there means you're optimizing the cheapest part of the process. The highest-value gains in the next 12–18 months will come from extending agent assistance into Plan, Test, and Review — phases where the work is expensive, the feedback loops are slow, and structured context can drive reliable automation.
 
-**The exercise.** Print this table. Fill in the checkboxes for your organization. Share the result with your direct reports. The pattern of checks tells you where you have coverage, where you have gaps, and where your next pilot should focus.
+Fill in the checkboxes for your organization. The pattern of checks tells you where you have coverage, where you have gaps, and where your next pilot should focus.
 
 ---
 

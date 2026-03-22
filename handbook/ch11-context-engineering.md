@@ -33,6 +33,18 @@ You control two of these segments directly: instructions and code context. You i
 
 The budget model produces a simple decision rule. Before adding anything to an agent's context, ask: does this earn its space? Every instruction that loads is a line of code that doesn't. Every file that's visible is one that could have been more relevant. Context is not free, and attention within the window is not uniform — information at the beginning and end gets more weight; content in the middle degrades. This is not a theoretical concern. It is why a 40-line instruction file outperforms a 400-line one that covers the same material with less focus.
 
+Make this concrete. On a 128K-token window — common for models like Claude Sonnet or GPT-4 — the budget translates to real numbers:
+
+| Segment | % | ≈ Tokens | What fills it |
+|---|---|---|---|
+| System prompt | ~6% | ~8K | Model behavior, safety, base tool definitions |
+| Instructions & rules | ~16% | ~20K | Your scoped instruction files, agent config |
+| Code context | ~47% | ~60K | Source files, type definitions, dependencies |
+| Conversation history | ~23% | ~30K | Prior turns, tool output, agent reasoning |
+| Working memory | ~8% | ~10K | The agent's space to think and produce output |
+
+Those 20K instruction tokens are roughly 800 lines of markdown. If your global instructions alone consume 400 of those lines, you've spent half your instruction budget before a single scoped rule loads. And the 60K for code context sounds generous until you realize a single mid-sized module — types, implementation, tests — can easily consume 15K tokens. At scale, every line of instruction competes directly with a line of source code the agent could have seen instead.
+
 Two practical implications follow. First, shorter sessions produce better results than longer ones, because conversation history consumes progressively more of the budget. When a session has been running for 30 turns, the instructions you set at the beginning are competing with pages of accumulated dialogue. Second, loading instructions that aren't relevant to the current task is not neutral — it actively degrades performance on the task that matters.
 
 ## The Instruction Hierarchy
@@ -209,6 +221,14 @@ Three strategies address it.
 
 **Session context.** Within a single session, the agent accumulates information through conversation turns. Tool outputs, file reads, and your corrections all become part of the working context. This is the most natural form of memory, and the most fragile — it degrades as the session grows, and it disappears when the session ends. Session discipline means recognizing when the accumulated context has grown large enough to dilute the instructions. At that point, start a fresh session. Carry forward the relevant findings; leave the exploration history behind.
 
+**When to reset.** Session resets are cheap; accumulated drift is expensive. Three concrete triggers:
+
+1. **Stale references.** The agent references a file it read or modified more than 3-4 turns ago. Its mental model of that file is now competing with everything that's happened since — and losing.
+2. **Error spirals.** You've pasted more than two error messages in the same session. Each paste adds context that pulls the agent toward debugging the symptom rather than rethinking the approach. A fresh session with the error described in one sentence often solves in one turn what three debugging turns couldn't.
+3. **Conversation length.** The session exceeds roughly 30-40 turns. At that point, your original instructions are buried under pages of dialogue, and the agent's effective context has drifted far from where it started.
+
+When you reset, carry forward a one-paragraph summary of what was decided and what remains, not the full conversation. Fresh context beats accumulated drift.
+
 **Persistent instructions.** The instruction hierarchy described above is a form of persistent memory. It survives across sessions because it lives in files, not in conversation history. When you correct an agent's mistake and then update the instruction file that led to the mistake, you've converted session knowledge into persistent knowledge. This is the feedback loop: observe failure, diagnose root cause, fix the primitive, verify on the next task. Over time, this accumulation is what makes your codebase increasingly AI-ready.
 
 **External knowledge retrieval.** For codebases too large to fit relevant context in the window, retrieval mechanisms — code search, semantic index, documentation search — bring specific information into context on demand. The agent requests what it needs rather than having everything preloaded. This is progressive disclosure at the knowledge level. The practical implementation varies by tool: some offer built-in retrieval, others use tool calls to search, and some require you to structure your codebase so that relevant information is co-located with the files that need it. The principle is consistent: give the agent a way to pull specific knowledge rather than pushing everything.
@@ -270,13 +290,43 @@ def get_users():
 
 This looks reasonable. It also violates three conventions that exist only in the team's heads: the project uses a custom rate limiter that integrates with the metrics pipeline, rate limit configuration lives in the environment (not hardcoded), and all middleware decorators are applied in `middleware.py`, not inline on routes.
 
-**With structured context**, the agent loads:
+**With structured context**, the agent loads three scoped instruction files. Here's what they actually contain:
 
-- A global instruction requiring all middleware to be registered in `middleware.py`
-- A directory-scoped instruction for `src/api/` that references the custom rate limiter and environment-based configuration
-- A skill for API middleware that includes the registration pattern
+```markdown
+# Global: middleware-registration.instructions.md
+applyTo: "**"
 
-The agent produces:
+## Middleware Registration
+- ALL middleware decorators are registered in `middleware.py`, never inline on routes.
+- Route files define endpoint logic only. Side effects (auth, rate limiting,
+  caching) are composed externally.
+```
+
+```markdown
+# Directory: src/api/.instructions.md
+applyTo: "src/api/**"
+
+## Rate Limiting
+- Use `app.rate_limiter.RateLimiter`, not flask-limiter or third-party libraries.
+  Our implementation integrates with the Prometheus metrics pipeline.
+- Rate limit values come from environment variables (`API_RATE_LIMIT_{RESOURCE}`),
+  never hardcoded. Defaults are defined in `config/defaults.yaml`.
+- Rate limiter instances are created via `RateLimiter.from_env()`.
+```
+
+```markdown
+# Skill: api-middleware.skill.md
+
+## When This Activates
+Adding or modifying middleware for any endpoint in `src/api/`.
+
+## Registration Pattern
+1. Define the middleware instance in `middleware.py`
+2. Call `.register(route, methods=)` to bind it
+3. Never import middleware classes in route files
+```
+
+These three files total 25 lines. The agent loads them, and produces:
 
 ```python
 # middleware.py

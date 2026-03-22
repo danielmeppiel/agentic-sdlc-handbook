@@ -1,6 +1,6 @@
 # Chapter 10: The PROSE Specification
 
-Chapter 1 introduced five architectural constraints for human-AI collaboration and gave each a name. This chapter gives each a specification. By the end, you will know how to implement every constraint, how to recognize when one is violated, and how the five constraints interact to produce properties that none achieves alone.
+Chapter 1 introduced five architectural constraints for human-AI collaboration and gave each a name. This chapter gives each a specification — what it means, how to implement it, what violation looks like, and what breaks when two constraints interact and one is missing.
 
 This is the reference chapter. Return to it when you are designing your instruction hierarchy, sizing a task for an agent, or debugging why a workflow that used to be reliable has started producing inconsistent results.
 
@@ -18,7 +18,7 @@ PROSE defines five constraints. Each addresses a structural property of language
 | **S**afety Boundaries | Unbounded autonomy | Reliability, verifiability |
 | **E**xplicit Hierarchy | Flat guidance | Modularity, domain adaptation |
 
-The remainder of this chapter specifies each constraint in full: what it means, why it matters, how to implement it, what violation looks like, and how it interacts with the others.
+The remainder of this chapter specifies each constraint: definition, implementation patterns, anti-patterns, and — in the final section — what goes wrong when constraints are missing in combination.
 
 ---
 
@@ -26,9 +26,7 @@ The remainder of this chapter specifies each constraint in full: what it means, 
 
 **Definition.** Structure information to reveal complexity progressively. Context arrives just-in-time — loaded when the agent needs it for the current task — not just-in-case, where everything is loaded upfront on the assumption it might be relevant.
 
-**Why it matters.** Context windows are finite. Attention within those windows is not uniform — information competes for focus, and material far from the active task gets lost. Loading everything upfront does not ensure the agent sees everything. It ensures the agent sees nothing clearly.
-
-A 200,000-token context window filled with architecture documents, coding standards, API specifications, and every source file that might be relevant is not a well-informed agent. It is a diluted one. The signal-to-noise ratio determines quality, not the volume of signal.
+**Why it matters.** Chapter 1 established that context is finite and attention degrades under load. Here is how to implement that insight. The issue is not capacity — context windows keep growing — but attention. Information competes for focus, and material far from the active task gets deprioritized. A context window packed with architecture documents, coding standards, API specifications, and every source file that *might* be relevant is not a well-informed agent. It is a diluted one. The signal-to-noise ratio determines quality, not the volume of signal.
 
 ### Implementation patterns
 
@@ -108,9 +106,13 @@ Same information. Fraction of the context cost per task.
 
 **Definition.** Match task size to context capacity. Complex work is decomposed into tasks sized to fit available context. Each sub-task operates with fresh context and focused scope.
 
-**Why it matters.** Attention degrades with context length. A task that starts as "fix the authentication bug" and expands mid-session to include "also update the tests, refactor that utility, and add the new endpoint" will produce lower-quality output on every sub-task than if each had been handled independently. The agent does not forget earlier instructions in the way a human does — it deprioritizes them as newer, more recent content claims attention.
+**The sizing heuristic.** The best-sized task is one the agent can complete without asking a follow-up question. That is the headline. If the agent needs to ask "which error format should I use?" or "where is the existing session logic?", either the task is too large (decompose it) or the context is insufficient (add the missing information). Both are scope problems. If you find yourself adding context mid-session to keep the agent on track, the scope was wrong from the start.
 
-The practical consequence is that the best-sized task is one that an agent can complete without asking follow-up questions and without accumulating enough context to degrade its own attention. If you find yourself adding context mid-session to keep the agent on track, the task is too large.
+Three examples of tasks that were too big, and how they got split:
+
+- **"Add JWT authentication."** Too big — spans token schema, middleware, refresh endpoint, tests, and frontend. Split into five sessions (one per component), each with fresh context and a single deliverable.
+- **"Fix the login bug and update the session tests."** Two domains in one session. The bug fix accumulates context that degrades the quality of the test updates. Split: fix in one session, test updates in a follow-up with the fix already committed.
+- **"Refactor the payment service to use the new API client."** The agent needs to understand the old client, the new client, every call site, and the test suite simultaneously. Split by call site: each session migrates one module, with only the old→new API mapping and the target module's source files in context.
 
 ### Implementation patterns
 
@@ -131,8 +133,6 @@ Phase 3: Validate
 ```
 
 Each phase operates with a clean context. The diagnosis phase does not carry the implementation context. The validation phase does not carry the diagnosis context. Quality remains consistent across phases because attention is never split.
-
-**The completeness test.** Before dispatching a task to an agent, ask: "Can the agent complete this without asking me a follow-up question?" If the answer is no, either the task is too large (decompose it) or the context is insufficient (add the missing information). Both are scope problems.
 
 **Session splitting across domains.** When a change spans multiple domains — frontend, backend, database — use separate sessions for each. A backend agent does not need the frontend component tree in its context. A database migration agent does not need the UI routing logic.
 
@@ -158,9 +158,7 @@ By the fourth request, the agent is operating with the accumulated context of fo
 
 **Definition.** Favor small, chainable primitives over monolithic frameworks. Build complex behaviors by composing simple, well-defined units.
 
-**Why it matters.** Language models reason better with clear, focused instructions. A 3,000-word mega-prompt that covers role definition, coding standards, error handling, testing requirements, security rules, documentation format, and output structure is not a well-specified agent. It is an unpredictable one. Small changes to any section produce unexpected changes in behavior across all sections, because the model processes the entire block as a single context.
-
-Composition preserves clarity. Each primitive is small enough to understand, test, and debug independently. Complex behavior emerges from combining primitives, not from making any single primitive more complex.
+**Why it matters.** A 3,000-word mega-prompt that covers role definition, coding standards, error handling, testing requirements, security rules, documentation format, and output structure is not a well-specified agent. It is an unpredictable one. Small changes to any section produce unexpected changes in behavior across all sections, because the model processes the entire block as a single context. Composition preserves clarity. Each primitive is small enough to understand, test, and debug independently. Complex behavior emerges from combining primitives, not from making any single primitive more complex.
 
 ### Implementation patterns
 
@@ -198,8 +196,6 @@ Each file has a single responsibility. The frontend instructions do not contain 
 
 The workflow does not restate the coding standards — the instruction files handle that. It does not redefine the agent's role — the agent configuration handles that. It composes existing primitives into a sequence.
 
-**Explicit contracts between agents.** When multiple agents work in parallel, each must have a defined output contract. Agent A produces a diagnosis. Agent B consumes that diagnosis and produces an implementation. The contract between them — the format and content of the diagnosis — is specified, not assumed.
-
 ### Anti-pattern: Monolithic prompt
 
 All guidance in a single block. Role, rules, examples, constraints, output format — everything in one prompt:
@@ -224,9 +220,20 @@ This works until it does not. When the agent produces incorrect output, which in
 
 **Definition.** Every agent operates within explicit boundaries: what tools are available (capability), what context is loaded (knowledge), and what requires human approval (authority).
 
-**Why it matters.** Language models are non-deterministic. The same input can produce different outputs. This is a fundamental property, not a quality issue to be resolved with better training. When a non-deterministic system has unbounded authority — access to every tool, permission to modify any file, no requirement to seek approval — the variance in its outputs translates directly into variance in its effects. A deterministic system with a bug produces the same bug every time; you can find it and fix it. A non-deterministic system with unbounded authority produces different failures each time, making debugging impractical.
+**Why it matters.** Chapter 1 established that output is probabilistic — variance is inherent, not a bug. Here is how to constrain it. When a non-deterministic system has unbounded authority, the variance in its outputs translates directly into variance in its effects. Boundaries do not reduce the agent's usefulness. They constrain its blast radius. An agent that can modify backend code but not frontend assets, that can run tests but not deploy to production, that must pause for approval before deleting files — this agent is both more useful and more trustworthy than one with no restrictions.
 
-Boundaries do not reduce the agent's usefulness. They constrain its variance. An agent that can modify backend code but not frontend assets, that can run tests but not deploy to production, that must pause for approval before deleting files — this agent is both more useful and more trustworthy than one with no restrictions.
+### Standard role boundaries
+
+The table below defines four common agent roles with concrete capability, knowledge, and authority boundaries. Adapt these for your team — the specific tools will vary by platform, but the *shape* of each boundary should not.
+
+| Role | Tools (capability) | Knowledge (scope) | Authority (approval gates) |
+|---|---|---|---|
+| **Code writer** | `editFiles`, `runCommands`, `search`, `readFiles`, `testRunner` | Files matching its domain (`applyTo` or directory scope). Cannot see infra config, CI/CD, or deploy scripts. | Must **STOP** before: modifying public API signatures, changing database schemas, touching auth logic. |
+| **Reviewer** | `readFiles`, `search`, `runCommands` (read-only: lint, test, type-check) | Full repository read access. No write tools. | No approval gates — reviewer cannot change anything. Output is commentary only. |
+| **Test runner** | `runCommands`, `readFiles`, `testRunner` | Test files + source files under test. No access to deploy config, secrets, or CI definitions. | Must **STOP** before: deleting test fixtures, modifying shared test infrastructure, skipping tests. |
+| **Deployer** | `runCommands` (deploy scripts only), `readFiles` | Deployment manifests, environment config, release notes. No source code write access. | Must **STOP** before: every deployment action. Human approves each environment promotion. |
+
+A planning agent (architect chatmode) is a special case: it gets `readFiles` and `search` only — no write tools at all. Its output is a plan, not code. The implementation agent consumes that plan in a separate session.
 
 ### Implementation patterns
 
@@ -235,7 +242,7 @@ Boundaries do not reduce the agent's usefulness. They constrain its variance. An
 ```yaml
 ---
 description: "Backend development specialist"
-tools: ["editFiles", "runCommands", "search", "testFailure"]
+tools: ["editFiles", "runCommands", "search", "testRunner"]
 ---
 ```
 
@@ -253,16 +260,9 @@ Before modifying any authentication logic:
 
 The gate is part of the instruction, not an external enforcement mechanism. The agent's context includes the requirement to pause.
 
-**Knowledge scoping with `applyTo` patterns.** Instructions load only when the agent is working on matching files. Backend security rules do not load when the agent edits CSS. Frontend accessibility requirements do not load during database migrations:
+**Knowledge scoping.** Instructions load only when the agent is working on matching files. Backend security rules do not load when the agent edits CSS. Frontend accessibility requirements do not load during database migrations.
 
-```yaml
----
-applyTo: "src/auth/**"
-description: "Security patterns for authentication module"
----
-```
-
-The `applyTo` pattern is a knowledge boundary — it determines what the agent knows, not just what it can do.
+Note: the `applyTo` pattern serves double duty. It is primarily an Explicit Hierarchy mechanism (see next section) — defining *which rules apply where*. But it also functions as a knowledge boundary, constraining *what the agent knows* during a given task. The hierarchy section defines how `applyTo` works; this section explains why constraining knowledge matters for safety.
 
 **Deterministic tools as truth anchors.** When an agent claims a test passes, a boundary-constrained system requires the agent to actually run the test and report the deterministic result. Code execution, API calls, file system operations — these are deterministic tools that ground probabilistic generation in verifiable reality.
 
@@ -279,7 +279,7 @@ tools: ["*"]
 
 This agent can modify production configuration, delete test fixtures, rewrite CI pipelines, and access credentials — all without human oversight. When (not if) it produces an unexpected output, the blast radius is the entire repository.
 
-**Fix:** Define the minimum set of tools, the minimum scope of knowledge, and the explicit approval points for each agent role. A planning agent gets read-only tools. An implementation agent gets write tools for its domain only. A deployment agent requires human approval at every stage.
+**Fix:** Start with the role table above. Find the closest match, copy its boundaries, and tighten from there. The minimum set of tools is always fewer than you think.
 
 ---
 
@@ -287,9 +287,7 @@ This agent can modify production configuration, delete test fixtures, rewrite CI
 
 **Definition.** Instructions form a hierarchy from global to local. Local context inherits from and may override global context. Agents resolve context by walking from the most specific scope to the most general.
 
-**Why it matters.** Different domains require different guidance. The coding standards for a React frontend are not the coding standards for a Python backend. The security rules for an authentication module are not the security rules for a static content page. Flat guidance — the same rules everywhere — either over-generalizes (rules too vague to be useful) or over-specifies (rules for every domain loaded into every context, polluting attention with irrelevant material).
-
-Hierarchy solves both problems. Global rules establish consistency: naming conventions, commit message format, documentation standards. Local rules enable specialization: the authentication module gets security-specific instructions, the frontend gets accessibility-specific instructions, the database layer gets migration-specific instructions. Each domain inherits the global rules and adds or overrides with local ones.
+**Why it matters.** Different domains require different guidance, but they also share common ground. Hierarchy solves both problems. Global rules establish consistency: naming conventions, commit message format, documentation standards. Local rules enable specialization: the authentication module gets security-specific instructions, the frontend gets accessibility-specific instructions, the database layer gets migration-specific instructions. Each domain inherits the global rules and adds or overrides with local ones.
 
 ### Implementation patterns
 
@@ -362,65 +360,168 @@ Every agent, regardless of what it is working on, loads all of this. The Python 
 
 ---
 
-## Interaction Effects
+## When Constraints Are Missing: Three Failure Stories
 
-The five constraints are defined independently but produce their strongest effects in combination. Three interactions are particularly important.
+The five constraints are defined independently but produce their strongest effects in combination. Theory says each pair closes a gap that neither constraint addresses alone. Practice is more memorable. Here are three teams that had one constraint in place and discovered the hard way what the missing partner cost them.
 
-**Progressive Disclosure + Explicit Hierarchy = Precision context loading.** Hierarchy determines which rules could apply to a given task. Progressive Disclosure determines which of those rules actually load. Together, they produce an agent that receives exactly the guidance it needs — the right rules, at the right specificity level, loaded at the right time. Neither constraint alone achieves this. Hierarchy without progressive disclosure loads all rules at all levels. Progressive disclosure without hierarchy loads the right amount of context but cannot distinguish between domains.
+**The team with hierarchy but no progressive disclosure.** A fintech startup built a meticulous instruction hierarchy: global rules at the root, domain rules per service, module-specific rules for payments and auth. Textbook Explicit Hierarchy. But every instruction file was self-contained — the auth instructions inlined the full OWASP token reference (1,400 words), the complete session management spec (900 words), and the rate-limiting policy (600 words). When an agent worked on a simple token-validation bugfix, it loaded the auth-level file and received nearly 3,000 words of guidance for a 15-line change. The agent "solved" the bug by refactoring the token validation to also implement a rate-limiting improvement mentioned in the same file — a change no one asked for, that introduced a subtle race condition in the refresh flow. The hierarchy got the *right rules* to the agent. Without progressive disclosure, it got all of them at once, and the agent could not distinguish the relevant from the adjacent.
 
-**Reduced Scope + Orchestrated Composition = Reliable complex workflows.** Reduced Scope ensures each task fits in a context window. Orchestrated Composition chains those tasks into a sequence that accomplishes complex goals. A 70-file refactor is not one task — it is a planned sequence of scoped tasks, each composed from simple primitives. The scope constraint keeps each step reliable. The composition constraint keeps the sequence coherent.
+**The team with reduced scope but no composition.** A platform team was disciplined about task sizing — every agent session had a single, focused objective, fresh context, clean scope. Textbook Reduced Scope. But they had no composition layer. Each task carried its own copy of the coding standards, the error-handling patterns, and the testing requirements — pasted into the prompt, not referenced from shared primitives. When the team updated their error format from string messages to structured error objects, they updated the canonical doc but missed the pasted copies in four prompt templates. For two weeks, agents working on different services produced two different error formats depending on which prompt they received. The scope constraint kept each task reliable in isolation. Without composition, there was no single source of truth to keep them consistent with each other.
 
-**Safety Boundaries + Reduced Scope = Auditable agent behavior.** When an agent has a narrow task and explicit capability limits, every action it takes is inspectable. What did it change? Was it authorized to change it? Did it stay within its knowledge scope? An agent with a broad task and no boundaries produces output that is difficult to audit because the reviewer cannot determine what the agent should and should not have done.
+**The team with safety boundaries but no reduced scope.** An enterprise team enforced strict boundaries — tool whitelists per agent, mandatory approval gates for security-sensitive files, knowledge scoping via `applyTo`. Textbook Safety Boundaries. But they routinely dispatched broad tasks: "implement the full OAuth2 integration," spanning token exchange, PKCE flow, session management, and error handling in one session. The agent operated within its tool boundaries but accumulated so much context over the long session that its attention degraded. Late in the session, it generated a refresh-token endpoint that stored tokens in a client-accessible cookie — a pattern explicitly forbidden by the security instructions loaded at session start, now buried under 40,000 tokens of accumulated implementation context. The safety boundaries constrained what the agent *could* do. Without reduced scope, they could not ensure the agent still *remembered* what it should not do.
 
-The general pattern: each constraint addresses one failure mode, and each pair of constraints closes a gap that neither addresses alone.
+The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.
 
 ---
 
 ## Applying the Constraints: A Worked Example
 
-Consider a team adding JWT authentication to an existing application. Without PROSE constraints, this is a single task given to a single agent with all project documentation loaded.
+Consider a team adding JWT authentication to an existing Express.js application. Without PROSE constraints, this is a single task given to a single agent with all project documentation loaded. With PROSE constraints, the same work produces five focused sessions, each with explicit boundaries and purpose-built context.
 
-With PROSE constraints applied:
+Here is what the key artifacts look like.
 
-**Explicit Hierarchy.** The team creates `backend/auth/AGENTS.md` with security-specific instructions: token signing algorithms, refresh token rotation policy, rate limiting requirements. These inherit from `backend/AGENTS.md` (API design patterns, error handling) and root `AGENTS.md` (naming conventions, commit format). The frontend agent adding the login form never sees the token rotation policy.
+### The instruction hierarchy
 
-**Progressive Disclosure.** The auth instructions reference `[OWASP token best practices](./docs/security/owasp-tokens.md)` and `[existing session management](./src/services/session.ts)` by link, not by inline content. The agent loads these only when implementing the specific components that need them.
+**Root instructions** (`AGENTS.md`) — global rules every agent inherits:
 
-**Reduced Scope.** The work is decomposed: (1) design the token schema, (2) implement the middleware, (3) add the refresh endpoint, (4) write integration tests, (5) update the login form. Each is a separate session with fresh context.
+```markdown
+# Project Instructions
 
-**Orchestrated Composition.** The middleware task uses `backend-dev.chatmode.md` for the agent role, `auth.instructions.md` for domain rules, and `implement-from-spec.prompt.md` for the workflow. None of these primitives was written for this task — they compose to serve it.
+- Use TypeScript strict mode. No `any` types without a justifying comment.
+- Commit messages follow Conventional Commits: `type(scope): description`.
+- All public functions require JSDoc with `@param` and `@returns`.
+- See [error taxonomy and response formatting](./docs/errors.md) for API error patterns.
+- See [testing strategy and fixture conventions](./docs/testing.md) for test standards.
+```
 
-**Safety Boundaries.** The backend agent has tools to modify `src/` and run tests. It cannot modify the frontend. It cannot deploy. It must present its middleware design for human approval before writing code.
+**Backend instructions** (`backend/AGENTS.md`) — API-layer rules, inherited by all backend modules:
 
-The result is five focused sessions, each producing auditable output, each operating within explicit limits, none polluting the others with irrelevant context.
+```markdown
+# Backend Development
+
+Inherits: root AGENTS.md
+
+- Express route handlers must use the `asyncHandler` wrapper from `src/middleware/async.ts`.
+- All request bodies validated with Zod schemas before processing.
+- Database access only through repository classes in `src/repositories/`.
+- See [API design patterns and pagination](./docs/api-design.md) for endpoint conventions.
+```
+
+**Auth module instructions** (`.github/instructions/auth.instructions.md`) — the security-specific rules for this domain:
+
+```markdown
+---
+applyTo: "src/auth/**"
+description: "Security patterns for the authentication module — token signing,
+  refresh rotation, rate limiting, and session management"
+---
+
+# Authentication Module Rules
+
+## Token Standards
+- Sign access tokens with RS256 using keys from environment config (`JWT_PRIVATE_KEY`).
+  Never use symmetric algorithms (HS256) for access tokens.
+- Access token TTL: 15 minutes. Refresh token TTL: 7 days.
+- Refresh tokens are single-use. On refresh, issue a new refresh token and
+  invalidate the previous one (rotation).
+
+## Security Constraints
+- Never log token values — log token IDs (`jti` claim) only.
+- Never store tokens in localStorage. Use httpOnly secure cookies for refresh
+  tokens. Access tokens stay in memory only.
+- Rate limit the `/auth/refresh` endpoint: 10 requests per minute per user.
+
+## References
+- See [OWASP token best practices](../../docs/security/owasp-tokens.md) for
+  the threat model behind these rules.
+- See [existing session management](../../src/services/session.ts) for the
+  current session implementation this module replaces.
+
+## Validation Gate
+Before modifying token signing logic or refresh rotation:
+1. Present the proposed changes with security rationale
+2. **STOP** and wait for explicit human approval
+3. Do not proceed until approval is received
+```
+
+An agent editing `src/auth/middleware.ts` loads this file plus the backend and root instructions. An agent editing `src/billing/invoice.ts` never sees it.
+
+### The agent configuration
+
+The backend implementation agent is scoped to write code in its domain and run tests — nothing else:
+
+```markdown
+---
+description: "Backend auth implementation specialist. Writes and tests
+  authentication module code. Cannot modify frontend, CI/CD, or deploy config."
+tools: ["editFiles", "runCommands", "search", "readFiles", "testRunner"]
+---
+
+# Auth Backend Developer
+
+You implement backend authentication features in `src/auth/`.
+
+## Boundaries
+- You may create and edit files under `src/auth/` and `tests/auth/`.
+- You may read any file in the repository for reference.
+- You may run tests with `npm test -- --grep auth`.
+- You must NOT modify files outside `src/auth/` and `tests/auth/`.
+- You must NOT modify CI/CD configuration, deployment scripts, or environment files.
+- You must NOT install new dependencies without presenting the rationale first.
+
+## Workflow
+1. Read the task description and relevant source files.
+2. Check active instructions (auth module rules will load automatically).
+3. Implement the change.
+4. Run tests and verify they pass.
+5. **STOP** — present a summary of changes for human review.
+```
+
+### The task decomposition
+
+The work decomposes into five sessions. Each gets a fresh context window:
+
+| Session | Task | Key context loaded | Deliverable |
+|---|---|---|---|
+| 1 | Design token schema and Zod validation types | Auth instructions, existing user model, JWT library docs | `src/auth/schemas.ts` |
+| 2 | Implement auth middleware (verify + decode) | Auth instructions, token schemas from Session 1, Express middleware patterns | `src/auth/middleware.ts` |
+| 3 | Build refresh endpoint with token rotation | Auth instructions, token schemas, session service reference | `src/auth/routes/refresh.ts` |
+| 4 | Write integration tests for auth flow | Auth instructions, test conventions, all auth source files | `tests/auth/` test suite |
+| 5 | Update login form to use new auth endpoints | Frontend instructions (different agent), API contract from Sessions 2–3 | `src/components/LoginForm.tsx` |
+
+Session 5 uses a different agent (frontend developer) with different instructions, different tools, and no access to `src/auth/` internals. It receives only the API contract — endpoint URLs, request/response shapes — not the implementation details.
+
+### Where a constraint prevented a failure
+
+During Session 2, the agent implemented the auth middleware and — following patterns it had seen in the codebase — started to also update the frontend API client to include the new auth headers. The safety boundary stopped it: the agent's tool whitelist restricted file edits to `src/auth/` and `tests/auth/`. It could not modify `src/api/client.ts`. The agent reported the suggested frontend change in its summary, and the team addressed it in Session 5 with the frontend agent that had the right context for that change.
+
+Without the boundary, the backend agent would have modified the API client using only the backend context — missing the frontend's existing interceptor pattern, the retry logic, and the error-handling conventions that the frontend instructions specify. The fix would have "worked" in isolation and broken the frontend's error recovery flow.
 
 ---
 
 ## Compliance Checklist
 
-Use this checklist to evaluate whether your current setup satisfies PROSE constraints. A "no" answer identifies a specific gap to address.
+Use this checklist to evaluate whether your current setup satisfies PROSE constraints. Each question is specific enough to answer with a definitive yes or no.
 
 | # | Constraint | Question | Pass |
 |---|---|---|---|
-| P1 | Progressive Disclosure | Do instruction files use links to deeper content rather than inlining everything? | |
-| P2 | Progressive Disclosure | Can the agent assess relevance before loading detailed context? | |
-| R1 | Reduced Scope | Is every agent task completable without mid-session scope expansion? | |
-| R2 | Reduced Scope | Do multi-step workflows use fresh context per phase? | |
-| O1 | Orchestrated Composition | Is each instruction file focused on a single concern? | |
-| O2 | Orchestrated Composition | Do workflows compose existing primitives rather than restating their content? | |
-| S1 | Safety Boundaries | Does every agent have an explicit tool whitelist? | |
-| S2 | Safety Boundaries | Are human approval gates defined for high-risk operations? | |
-| S3 | Safety Boundaries | Is knowledge scoped to relevant domains via `applyTo` or directory placement? | |
-| E1 | Explicit Hierarchy | Do instructions exist at multiple specificity levels (global, domain, module)? | |
-| E2 | Explicit Hierarchy | Can local rules override or extend global rules without editing the global file? | |
+| P1 | Progressive Disclosure | Does every instruction file over 100 lines use links (not inline content) for subsidiary topics? | |
+| P2 | Progressive Disclosure | Does every cross-reference link include a description of what the target contains (not just a filename)? | |
+| R1 | Reduced Scope | Can you state each agent task in one sentence with a single deliverable? | |
+| R2 | Reduced Scope | Do multi-step workflows start each phase with a fresh context (no accumulated session state)? | |
+| O1 | Orchestrated Composition | Does each instruction file address exactly one concern (check: could you name the file after its single topic)? | |
+| O2 | Orchestrated Composition | Do workflow prompts reference shared primitives by link rather than pasting their content? | |
+| S1 | Safety Boundaries | Does every agent configuration have an explicit `tools` list (no wildcards)? | |
+| S2 | Safety Boundaries | Is there a `**STOP**` gate before every operation that modifies auth, database schemas, or production config? | |
+| S3 | Safety Boundaries | Does every agent have a file-path boundary (explicit list of directories it may modify)? | |
+| E1 | Explicit Hierarchy | Do instructions exist at three or more specificity levels (e.g., root → domain → module)? | |
+| E2 | Explicit Hierarchy | Can you add module-specific rules without editing any file above that module's scope? | |
 
-**12/12:** Fully PROSE-compliant. Your setup addresses all five failure modes.
+**If you fail S1, S2, or S3** — start there regardless of your total score. Safety gaps have the highest blast radius and are the fastest to close (one YAML change per agent).
 
-**8–11:** Substantially compliant. Review the failing items — each represents a specific failure mode that is not yet addressed.
+**If you fail E1 or E2** — address these next. Hierarchy is the fastest structural change to implement (create two scoped files and you have three levels).
 
-**4–7:** Partially compliant. The gaps are likely producing inconsistent agent behavior. Prioritize Safety Boundaries and Explicit Hierarchy — these have the highest impact on reliability.
-
-**0–3:** Ad-hoc. Agent behavior is unpredictable because the structural constraints that produce reliability are not in place. Start with Explicit Hierarchy (it is the fastest to implement) and Reduced Scope (it requires no file changes, only discipline in how you assign tasks).
+**If you fail P1, P2, R1, R2, O1, or O2** — these are discipline and refactoring issues. Prioritize whichever constraint maps to the failure mode you are currently experiencing. Scope creep? Fix R1/R2. Context dilution? Fix P1/P2. Debugging nightmares? Fix O1/O2.
 
 ---
 
