@@ -58,30 +58,13 @@ The three layers apply at every phase of software delivery. The table below maps
 
 Maturity tiers: **Now** = available across two or more vendors. **Emerging** = available in one or two tools, or in limited preview. **Directional** = announced, demonstrated, or on public roadmaps but not production-ready.
 
-```
-              INTENT                    BUILD                           OPERATE
-        +-----------+---------+  +------+-------+-------+--------+  +---------+---------+
-        | Ideate    | Plan    |  | Code | Build | Test  | Review |  | Release | Operate |
-+-------+-----------+---------+--+------+-------+-------+--------+--+---------+---------+
-|       | Set       | Make    |  |Review| Own   | Define| Final  |  | Go/no-  | Own     |
-|HUMAN  | objectives| arch    |  |agent | build | test  | code   |  | go      | incident|
-|       | and scope | choices |  |output| config| policy| sign-  |  | decision| response|
-|       |           |         |  |      |       |       | off    |  |         |         |
-+-------+-----------+---------+--+------+-------+-------+--------+--+---------+---------+
-|       | Research  | Draft   |  |Multi-| Diag- | Gen.  | Auto-  |  | Draft   | Corre-  |
-|AGENT  | prior art,| ADRs,   |  |file  | nose  | tests,| mated  |  | change- | late    |
-|       | surface   | decomp. |  |code  | build | cover | review,|  | logs,   | alerts, |
-|       | conflicts | tasks   |  |gen.  | fails | gaps  | catch  |  | flag    | suggest |
-|       |           |         |  |      |       |       | defects|  | breaks  | actions |
-+-------+-----------+---------+--+------+-------+-------+--------+--+---------+---------+
-|       | Knowledge | Issue   |  |IDE,  | CI/CD | Test  | Pull   |  | Deploy  | Monitor,|
-|PLAT-  | bases,    | trackers|  |SCM,  | pipe- | frame-| request| | pipe-   | alert,  |
-|FORM   | collab    | project | |context| lines,| works,| APIs,  |  | lines,  | log     |
-|       | tools     | mgmt.   |  |APIs  | deps  | infra | policy |  | gates   | systems |
-+-------+-----------+---------+--+------+-------+-------+--------+--+---------+---------+
-
-MATURITY   Emerging    Emerging    Now    Now   Emerging  Now      Emerging   Directional
-```
+|  | Ideate | Plan | Code | Build | Test | Review | Release | Operate |
+|---|---|---|---|---|---|---|---|---|
+| | *INTENT* | | *BUILD* | | | | *OPERATE* | |
+| **Human** | Set objectives and scope | Make architecture choices | Review agent output | Own build config | Define test policy | Final code sign-off | Go/no-go decision | Own incident response |
+| **Agent** | Research prior art, surface conflicts | Draft ADRs, decompose tasks | Multi-file code generation | Diagnose build failures | Generate tests, find coverage gaps | Automated review, catch defects | Draft changelogs, flag breaking changes | Correlate alerts, suggest actions |
+| **Platform** | Knowledge bases, collaboration tools | Issue trackers, project management | IDE, SCM, context APIs | CI/CD pipelines, dependency management | Test frameworks, infrastructure | Pull request APIs, policy engines | Deployment pipelines, gates | Monitoring, alerting, log systems |
+| **Maturity** | Emerging | Emerging | Now | Now | Emerging | Now | Emerging | Directional |
 
 Executives do not need to think in eight phases. They need three buckets that map to planning cadences, budget lines, and organizational accountability:
 
