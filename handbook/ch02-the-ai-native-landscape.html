@@ -563,10 +563,12 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Phase 4: Orchestrated SDLC (emerging).</strong> The leading edge of the market, where agents participate beyond the code editor — in issue triage, code review, testing, release management, and operations. GitHub’s Coding Agent assigns issues to an AI that works in a cloud environment, submits pull requests, and responds to review feedback. Anthropic’s Claude Code can read issues and produce PRs autonomously. Several startups — Devin, Factory, Codegen — are building similar workflows. No organization has publicly demonstrated a fully automated end-to-end SDLC at production scale, but the components exist for the first multi-phase automations. This is where governance becomes non-optional.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-ai-evolution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ai-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-ai-evolution">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart LR
     P1["&lt;b&gt;Phase 1&lt;/b&gt;&lt;br/&gt;Code Completion&lt;br/&gt;&lt;em&gt;2021–2023&lt;/em&gt;&lt;br/&gt;Passive suggestion"]
     P2["&lt;b&gt;Phase 2&lt;/b&gt;&lt;br/&gt;Conversational&lt;br/&gt;&lt;em&gt;2023–2024&lt;/em&gt;&lt;br/&gt;Active Q&amp;A"]
     P3["&lt;b&gt;Phase 3&lt;/b&gt;&lt;br/&gt;Agentic Coding&lt;br/&gt;&lt;em&gt;2024–2025&lt;/em&gt;&lt;br/&gt;Goal-directed execution"]
@@ -574,13 +576,17 @@ ul.task-list li input[type="checkbox"] {
 
     P1 --&gt;|"risk ↑"| P2 --&gt;|"risk ↑"| P3 --&gt;|"risk ↑"| P4
 
-    style P1 fill:#2ecc71,color:#fff
-    style P2 fill:#3498db,color:#fff
-    style P3 fill:#e67e22,color:#fff
-    style P4 fill:#e74c3c,color:#fff
+    style P1 fill:#27ae60,stroke:#1e8449,color:#fff
+    style P2 fill:#3498db,stroke:#2980b9,color:#fff
+    style P3 fill:#f39c12,stroke:#e67e22,color:#fff
+    style P4 fill:#c0392b,stroke:#922b21,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ai-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.1: Four phases of AI-assisted development evolution
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

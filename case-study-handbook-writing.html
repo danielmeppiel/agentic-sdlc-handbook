@@ -613,10 +613,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The orchestrator designed an 8-persona expert panel at project inception, then dynamically created 3 more as needs emerged during execution. The personas organized into four functional pods:</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-team-topology" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-team-topology-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TB
+<pre class="mermaid mermaid-js" data-label="fig-cs-team-topology">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+graph TB
     subgraph Editorial["Editorial Pod"]
         CE[Chief Editor&lt;br/&gt;Cross-chapter coherence]
         TLA[Thought Leadership Advisor&lt;br/&gt;Positioning &amp; differentiation]
@@ -645,13 +647,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     CE --&gt; IL
     CE --&gt; FC
 
-    style Editorial fill:#2d4a7a,color:#fff
-    style Domain fill:#4a6741,color:#fff
-    style Review fill:#7a5c2d,color:#fff
-    style Audit fill:#6b3a5c,color:#fff
+    style Editorial fill:#2c3e50,stroke:#34495e,color:#ecf0f1
+    style Domain fill:#27ae60,stroke:#1e8449,color:#fff
+    style Review fill:#f39c12,stroke:#e67e22,color:#fff
+    style Audit fill:#8e44ad,stroke:#6c3483,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-team-topology-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18.1: Agent team topology: 11 personas organized in four pods
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -663,10 +669,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The manuscript was produced in a phased pipeline: corpus audit → architecture → four writing waves → integration review → polish. Each wave followed checkpoint discipline: draft, review, revise, commit.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-production-pipeline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-production-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">gantt
+<pre class="mermaid mermaid-js" data-label="fig-cs-production-pipeline">---
+config:
+  gantt:
+    fontSize: 12
+---
+gantt
     title Manuscript Production Pipeline
     dateFormat X
     axisFormat %s
@@ -705,7 +717,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     Polish + README                          :done, pol, 18, 19
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-production-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18.2: Manuscript production pipeline: four writing waves plus integration
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -717,10 +733,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Every chapter passed through an identical three-stage pipeline. This is the core quality loop the book describes in Chapter 13.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-draft-review-cycle" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-draft-review-cycle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
+<pre class="mermaid mermaid-js" data-label="fig-cs-draft-review-cycle">%%{init: {'theme': 'base', 'themeVariables': {'actorBkg': '#2c3e50', 'actorTextColor': '#ecf0f1', 'actorBorder': '#34495e', 'signalColor': '#2c3e50', 'signalTextColor': '#2c3e50', 'labelBoxBkgColor': '#ecf0f1', 'labelTextColor': '#2c3e50', 'noteBkgColor': '#f1c40f', 'noteTextColor': '#2c3e50', 'fontSize': '14px'}}}%%
+sequenceDiagram
     participant O as Orchestrator
     participant D as Draft Agent (Domain Specialist)
     participant R1 as CTO Proxy
@@ -747,7 +765,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     O-&gt;&gt;O: Checkpoint: commit draft + revision
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-draft-review-cycle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18.3: The draft, review, revise cycle for each chapter
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -759,10 +781,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Three of the eleven personas did not exist at project inception. They were created in response to gaps the process itself surfaced.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-dynamic-personas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-dynamic-personas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-cs-dynamic-personas">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     A[Integration Review&lt;br/&gt;Editor reads all 15 chapters] --&gt; B{Visual anchors&lt;br/&gt;missing?}
     B --&gt;|Yes| C[Create Illustrator Agent&lt;br/&gt;Visual Strategist persona]
     C --&gt; D[Fleet of 2: Block 1 + Block 2&lt;br/&gt;40 visual opportunities&lt;br/&gt;15 Mermaid diagrams embedded]
@@ -775,12 +799,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     I --&gt;|Yes| J[Create Publishing Advisor&lt;br/&gt;5 paths evaluated]
     J --&gt; K[Recommended Open Core +&lt;br/&gt;Premium model]
 
-    style C fill:#6b3a5c,color:#fff
-    style F fill:#6b3a5c,color:#fff
-    style J fill:#6b3a5c,color:#fff
+    style C fill:#8e44ad,stroke:#6c3483,color:#fff
+    style F fill:#8e44ad,stroke:#6c3483,color:#fff
+    style J fill:#8e44ad,stroke:#6c3483,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-dynamic-personas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18.4: Dynamic persona creation in response to process gaps
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

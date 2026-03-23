@@ -586,10 +586,12 @@ ul.task-list li input[type="checkbox"] {
 <p>HTML render: 16 files, zero errors, 15 Mermaid diagrams confirmed. The site went live on the <code>gh-pages</code> branch within the same wave.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-conversion-wave" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-conversion-wave-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-cs-conversion-wave">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart LR
     A["15 Markdown&lt;br/&gt;chapters"] --&gt; B["git mv .md → .qmd&lt;br/&gt;+ YAML frontmatter"]
     B --&gt; C["_quarto.yml&lt;br/&gt;book config"]
     C --&gt; D["quarto render"]
@@ -601,7 +603,11 @@ ul.task-list li input[type="checkbox"] {
     G --&gt; I
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-conversion-wave-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19.1: Publishing conversion pipeline: Markdown to HTML, PDF, and EPUB
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -611,21 +617,27 @@ ul.task-list li input[type="checkbox"] {
 <p>What happened next is a textbook instance of <strong>Anti-Pattern #15: The “Almost Done” Trap</strong> — each fix revealed the next issue, creating a cascade where “one more fix” repeated five times.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-almost-done" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-almost-done-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-cs-almost-done">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     A["PDF renders ✓&lt;br/&gt;text too narrow"] --&gt;|scrreprt class| B["Layout fixed ✓&lt;br/&gt;Mermaid missing"]
     B --&gt;|syntax fix| C["Diagrams render ✓&lt;br/&gt;duplicate numbers"]
     C --&gt;|strip numbers| D["Headings clean ✓&lt;br/&gt;margins overflow"]
     D --&gt;|fig-width+wrap| E["Overflow fixed ✓&lt;br/&gt;fig-width too wide"]
     E --&gt;|5.5 + preamble| F["PDF clean ✓&lt;br/&gt;686KB → 3.8MB"]
 
-    style A fill:#fee,stroke:#c33
-    style F fill:#efe,stroke:#3c3
+    style A fill:#c0392b,stroke:#922b21,color:#fff
+    style F fill:#27ae60,stroke:#1e8449,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-almost-done-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19.2: The ‘Almost Done’ trap: cascading PDF rendering fixes
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -699,10 +711,12 @@ ul.task-list li input[type="checkbox"] {
 <div class="landscape">
 <div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-cicd-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-cicd-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TB
+<pre class="mermaid mermaid-js" data-label="fig-cs-cicd-architecture">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TB
     subgraph CI ["CI Pipeline (49 seconds)"]
         A1["Checkout"] --&gt; A2["Install Quarto"]
         A2 --&gt; A3["quarto render --to html"]
@@ -719,11 +733,15 @@ ul.task-list li input[type="checkbox"] {
         B6 --&gt; B7["quarto publish&lt;br/&gt;--no-render"]
     end
 
-    style CI fill:#e8f4e8,stroke:#4a4
-    style Local fill:#e8e8f4,stroke:#44a
+    style CI fill:#27ae60,stroke:#1e8449,color:#fff
+    style Local fill:#3498db,stroke:#2980b9,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-cicd-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19.3: Final CI/CD architecture: CI pipeline and local render workflow
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

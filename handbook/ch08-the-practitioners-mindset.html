@@ -590,10 +590,12 @@ ul.task-list li input[type="checkbox"] {
 <p>The decision is not intuitive at first, so here is the flowchart. When a task arrives, run it through these questions in order:</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-agent-decision" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-agent-decision-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-agent-decision">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     START([Task arrives]) --&gt; Q1{Can you specify it clearly\nin under 2 minutes?}
 
     Q1 -- Yes --&gt; Q2{Is the spec shorter\nthan the code?}
@@ -608,14 +610,18 @@ ul.task-list li input[type="checkbox"] {
     Q3 -- Yes --&gt; SPLIT[SPLIT: bounded parts → agent\njudgment parts → you]
     Q3 -- No --&gt; MANUAL3[CODE IT YOURSELF]
 
-    style DELEGATE fill:#2d6a4f,color:#fff
-    style SPLIT fill:#2d6a4f,color:#fff
-    style MANUAL1 fill:#6c757d,color:#fff
-    style MANUAL2 fill:#6c757d,color:#fff
-    style MANUAL3 fill:#6c757d,color:#fff
+    style DELEGATE fill:#27ae60,stroke:#1e8449,color:#fff
+    style SPLIT fill:#27ae60,stroke:#1e8449,color:#fff
+    style MANUAL1 fill:#3498db,stroke:#2980b9,color:#fff
+    style MANUAL2 fill:#3498db,stroke:#2980b9,color:#fff
+    style MANUAL3 fill:#3498db,stroke:#2980b9,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-agent-decision-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10.1: Decision framework: when to use agents and when to code manually
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

@@ -590,10 +590,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>A typical agent session divides its context roughly as follows:</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-context-budget" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-context-budget-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">pie title Context Window Budget (128K tokens)
+<pre class="mermaid mermaid-js" data-label="fig-context-budget">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+pie title Context Window Budget (128K tokens)
     "System prompt (~8K)" : 6
     "Instructions &amp; rules (~20K)" : 16
     "Code context (~60K)" : 47
@@ -601,7 +603,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "Working memory (~10K)" : 8
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-context-budget-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.1: Context window budget allocation for a typical 128K-token agent session
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

@@ -1391,10 +1391,12 @@ git commit -m "feat: auth module migration — core flows complete"</code></pre>
 <p>When something goes wrong, the first question is what kind of wrong:</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-failure-decision-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-failure-decision-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-failure-decision-tree">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     START(["Agent output&lt;br/&gt;issue?"]) --&gt; Q1{"Syntax error?"}
 
     Q1 -- Yes --&gt; FIX1["Model issue&lt;br/&gt;Upgrade or manual"]
@@ -1412,15 +1414,19 @@ git commit -m "feat: auth module migration — core flows complete"</code></pre>
     Q4 -- No --&gt; FIX4["Architecture issue&lt;br/&gt;Fix boundaries"]
     Q4 -- Yes --&gt; FIX5["Probably fine&lt;br/&gt;Check edges"]
 
-    style FIX1 fill:#e63946,color:#fff
-    style FIX2 fill:#e76f51,color:#fff
-    style FIX3 fill:#f4a261,color:#000
-    style FIX4 fill:#e9c46a,color:#000
-    style FIX5 fill:#2d6a4f,color:#fff
-    style FIX2b fill:#6c757d,color:#fff
+    style FIX1 fill:#c0392b,color:#fff
+    style FIX2 fill:#f39c12,color:#fff
+    style FIX3 fill:#f39c12,color:#000
+    style FIX4 fill:#f39c12,color:#000
+    style FIX5 fill:#27ae60,color:#fff
+    style FIX2b fill:#3498db,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-failure-decision-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.1: Failure mode decision tree for diagnosing agent output issues
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

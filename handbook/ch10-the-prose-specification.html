@@ -949,10 +949,12 @@ User: And can you add the new /logout endpoint?</code></pre>
 <p>The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-prose-constraints" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-prose-constraints-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TD
+<pre class="mermaid mermaid-js" data-label="fig-prose-constraints">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+graph TD
     P["P&lt;br/&gt;Progressive&lt;br/&gt;Disclosure"] &lt;-- "controls attention&lt;br/&gt;within scope" --&gt; E["E&lt;br/&gt;Explicit&lt;br/&gt;Hierarchy"]
     R["R&lt;br/&gt;Reduced&lt;br/&gt;Scope"] &lt;-- "constrains what&lt;br/&gt;safety must cover" --&gt; S["S&lt;br/&gt;Safety&lt;br/&gt;Boundaries"]
     O["O&lt;br/&gt;Orchestrated&lt;br/&gt;Composition"] &lt;-- "single source of&lt;br/&gt;truth across tasks" --&gt; R
@@ -961,7 +963,11 @@ User: And can you add the new /logout endpoint?</code></pre>
     O &lt;-- "composable units&lt;br/&gt;enable disclosure" --&gt; P
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-prose-constraints-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.1: Relationships between the five PROSE constraints
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

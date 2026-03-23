@@ -574,10 +574,16 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="timeline">Timeline</h2>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-growth-timeline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-growth-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">gantt
+<pre class="mermaid mermaid-js" data-label="fig-cs-growth-timeline">---
+config:
+  gantt:
+    fontSize: 12
+---
+gantt
     title Growth Engine Build Phases
     dateFormat X
     axisFormat %s
@@ -600,7 +606,11 @@ ul.task-list li input[type="checkbox"] {
     History scrub + remediation      :done, a2, 14, 15
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-growth-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.1: Growth engine implementation timeline
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -610,10 +620,12 @@ ul.task-list li input[type="checkbox"] {
 <p>The most instructive failure sequence was the Kit email platform automation – three distinct approaches, each hitting a different wall.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-kit-escalation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-kit-escalation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
+<pre class="mermaid mermaid-js" data-label="fig-cs-kit-escalation">%%{init: {'theme': 'base', 'themeVariables': {'actorBkg': '#2c3e50', 'actorTextColor': '#ecf0f1', 'actorBorder': '#34495e', 'signalColor': '#2c3e50', 'signalTextColor': '#2c3e50', 'labelBoxBkgColor': '#ecf0f1', 'labelTextColor': '#2c3e50', 'noteBkgColor': '#f1c40f', 'noteTextColor': '#2c3e50', 'fontSize': '14px'}}}%%
+sequenceDiagram
     participant O as Orchestrator
     participant PW as Playwright Scripts
     participant MCP as Playwright MCP
@@ -638,7 +650,11 @@ ul.task-list li input[type="checkbox"] {
     H--&gt;&gt;O: Completed in 2 minutes
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-kit-escalation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.2: Kit email automation escalation sequence
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -677,10 +693,12 @@ ul.task-list li input[type="checkbox"] {
 <p>Four parallel agents scanned the repository for sensitive data. Three completed normally, finding findings across 25+ files. One agent refused to scan – the career directory contained personal documents and the agent’s safety guardrails triggered, declining to process content it classified as sensitive personal information. The guardrail was correct in principle (the files <em>were</em> sensitive), but the task was finding sensitive content to <em>remove</em> it – an edge case where safety boundaries and task objectives were aligned but the agent couldn’t distinguish audit-to-remove from audit-to-exploit. The orchestrator adapted with manual grep analysis.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-pii-audit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-pii-audit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-cs-pii-audit">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart LR
     subgraph "Dispatch -- 4 Parallel Agents"
         A1[Agent 1: career/]
         A2[Agent 2: reviews/]
@@ -696,7 +714,11 @@ ul.task-list li input[type="checkbox"] {
     G --&gt; V[Clean history, originals preserved locally]
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-pii-audit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20.3: PII audit pipeline for email template review
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

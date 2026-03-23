@@ -808,10 +808,12 @@ Note
 <p><code>_rich_echo</code> was never imported in <code>install.py</code>. The <code>verbose_log</code> lambda triggered a <code>NameError</code> caught by an outer <code>try/except</code>. Verbose mode silently did nothing. No test caught it because the test suite never asserted on verbose output.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-cs-silent-nameerror" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-cs-silent-nameerror-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
+<pre class="mermaid mermaid-js" data-label="fig-cs-silent-nameerror">%%{init: {'theme': 'base', 'themeVariables': {'actorBkg': '#2c3e50', 'actorTextColor': '#ecf0f1', 'actorBorder': '#34495e', 'signalColor': '#2c3e50', 'signalTextColor': '#2c3e50', 'labelBoxBkgColor': '#ecf0f1', 'labelTextColor': '#2c3e50', 'noteBkgColor': '#f1c40f', 'noteTextColor': '#2c3e50', 'fontSize': '14px'}}}%%
+sequenceDiagram
     participant User
     participant CLI as CLI (--verbose)
     participant VL as verbose_log
@@ -825,7 +827,11 @@ Note
     CLI-&gt;&gt;User: (silent failure)
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-cs-silent-nameerror-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17.1: Sequence showing how a NameError was silently swallowed
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

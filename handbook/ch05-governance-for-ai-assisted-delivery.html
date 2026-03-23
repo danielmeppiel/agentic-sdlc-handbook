@@ -639,12 +639,14 @@ ul.task-list li input[type="checkbox"] {
 <p>Most organizations operating at Phase 3 (agentic coding, as described in Chapter 2) will find themselves in the “None” or “Basic” column for at least four of these six areas. That is expected. The purpose of the checklist is not to achieve “Enterprise” everywhere — it is to ensure you are not at “None” in any area that carries material risk for your business.</p>
 <p><strong>A note on the Enterprise column.</strong> The rightmost column describes a target state. Some of its requirements — full provenance chains, real-time cost attribution per agent task, automated compliance dashboards — exceed what current-generation tooling delivers out of the box. Treat the Enterprise column as directional, not immediate. When your compliance team asks “when do we get there,” the honest answer is: some capabilities are available now with custom integration; others depend on tooling maturity that, as of mid-2025, remains ahead of generally available products. Plan accordingly, and do not let the aspiration prevent progress on Basic.</p>
 <p><strong>Where to start.</strong> Audit trails and agent access controls are the two capabilities that unblock everything else. Without knowing what agents did and limiting what they can do, the other four capabilities have no foundation. If your assessment shows “None” in these areas, start here.</p>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-governance-assessment" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-governance-assessment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-governance-assessment">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     START["Assess 6&lt;br/&gt;governance capabilities"] --&gt; Q1{"Any capability&lt;br/&gt;at 'None'?"}
     Q1 --&gt;|Yes| FIX["Start here:&lt;br/&gt;Audit Trails +&lt;br/&gt;Access Controls"]
     Q1 --&gt;|No| Q2{"All at&lt;br/&gt;'Basic' or above?"}
@@ -654,12 +656,18 @@ ul.task-list li input[type="checkbox"] {
     EXPAND --&gt; MATURE["Invest toward&lt;br/&gt;'Enterprise' per&lt;br/&gt;regulatory scope"]
     REASSESS --&gt; Q1
 
-    style FIX fill:#e74c3c,color:#fff
-    style EXPAND fill:#2ecc71,color:#fff
-    style MATURE fill:#3498db,color:#fff
+    style Q1 fill:#2c3e50,stroke:#ecf0f1,color:#ecf0f1
+    style Q2 fill:#2c3e50,stroke:#ecf0f1,color:#ecf0f1
+    style FIX fill:#c0392b,stroke:#922b21,color:#fff
+    style EXPAND fill:#27ae60,stroke:#1e8449,color:#fff
+    style MATURE fill:#3498db,stroke:#2980b9,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-governance-assessment-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.1: Governance capability quick-start assessment
+</figcaption>
+</figure>
 </div>
 </div>
 </div>

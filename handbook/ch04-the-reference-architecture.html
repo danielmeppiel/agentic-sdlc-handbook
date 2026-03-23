@@ -557,10 +557,12 @@ ul.task-list li input[type="checkbox"] {
 <p>The layers are not independent. They form a stack where each depends on the one below it:</p>
 <div class="cell" data-fig-width="5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-three-layers" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-three-layers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-three-layers">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart LR
     subgraph HUMAN ["HUMAN LAYER"]
         direction LR
         HR["Roles: Product, Architecture,&lt;br/&gt;Engineering, QA, Operations"]
@@ -584,12 +586,16 @@ ul.task-list li input[type="checkbox"] {
     AGENT -- "invokes tools,&lt;br/&gt;reads context" --&gt; PLATFORM
     PLATFORM -- "build results,&lt;br/&gt;test output, telemetry" --&gt; AGENT
 
-    style HUMAN fill:#3498db,color:#fff
-    style AGENT fill:#e67e22,color:#fff
-    style PLATFORM fill:#2ecc71,color:#fff
+    style HUMAN fill:#3498db,stroke:#2980b9,color:#fff
+    style AGENT fill:#f39c12,stroke:#e67e22,color:#fff
+    style PLATFORM fill:#27ae60,stroke:#1e8449,color:#fff
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-three-layers-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: The three-layer reference architecture: Human, Agent, Platform
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -884,7 +890,8 @@ ul.task-list li input[type="checkbox"] {
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-context-flywheel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-context-flywheel">graph LR
+<pre class="mermaid mermaid-js" data-label="fig-context-flywheel">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+graph LR
     A["Structured&lt;br/&gt;context"] --&gt; B["Better agent&lt;br/&gt;output"]
     B --&gt; C["Richer&lt;br/&gt;artifacts"]
     C --&gt; A
@@ -892,7 +899,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-context-flywheel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.1: The context compounding flywheel
+Figure&nbsp;6.2: The context compounding flywheel
 </figcaption>
 </figure>
 </div>

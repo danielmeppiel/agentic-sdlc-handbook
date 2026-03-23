@@ -644,16 +644,22 @@ ul.task-list li input[type="checkbox"] {
 <p>The most common pattern separates code production from code validation. One agent writes the code. A second agent reviews it. A third writes or updates tests.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-writer-reviewer-tester" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-writer-reviewer-tester-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-writer-reviewer-tester">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     W["Writer agent"] --&gt;|"Code changes"| R["Reviewer agent"]
     R --&gt;|"Findings: bugs,&lt;br/&gt;logic errors, security"| T["Tester agent"]
     T --&gt;|"Test updates +&lt;br/&gt;verification"| Done["Verified output"]
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-writer-reviewer-tester-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.1: Writer, Reviewer, Tester pattern
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -733,17 +739,23 @@ Fix any failures before reporting done.</code></pre>
 <p>For exploratory work where the scope is not fully known in advance, separate the agents that discover what needs to change from the agents that make the changes.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-audit-execute-validate" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-audit-execute-validate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-audit-execute-validate">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     A["Audit agents&lt;br/&gt;(read-only)"] --&gt;|"Findings: files,&lt;br/&gt;severity, recommendations"| B["Planning&lt;br/&gt;(human decision)"]
     B --&gt;|"Scoped tasks with&lt;br/&gt;file assignments"| C["Execution agents&lt;br/&gt;(read-write)"]
     C --&gt;|"Code changes"| D["Validation agents&lt;br/&gt;(read-only)"]
     D --&gt;|"Review findings,&lt;br/&gt;test results"| E["Ship"]
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-audit-execute-validate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.2: Audit, Execute, Validate pattern
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -815,10 +827,12 @@ Fix any failures before reporting done.</code></pre>
 <p>The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-wave-parallelism" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wave-parallelism-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-wave-parallelism">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     W0["Wave 0: FOUNDATION"]
     W0A["Types"]
     W0B["Utilities"]
@@ -841,7 +855,11 @@ Fix any failures before reporting done.</code></pre>
     W2 --- W2G &amp; W2H
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wave-parallelism-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.3: Wave-based parallelism with dependency ordering
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -851,10 +869,16 @@ Fix any failures before reporting done.</code></pre>
 <div class="landscape">
 <div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-wave-timeline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-wave-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">gantt
+<pre class="mermaid mermaid-js" data-label="fig-wave-timeline">---
+config:
+  gantt:
+    fontSize: 12
+---
+gantt
     title Wave Execution Timeline
     dateFormat X
     axisFormat %s
@@ -877,7 +901,11 @@ Fix any failures before reporting done.</code></pre>
     Checkpoint         :crit, t2, 19, 21
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-wave-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.4: Wave execution timeline showing parallel agent dispatch
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -888,10 +916,16 @@ Fix any failures before reporting done.</code></pre>
 <p>Some operations can run in parallel across workflow stages rather than across files. While execution agents work on Wave 1, review agents can start reviewing Wave 0’s output. While human review happens on one wave, test agents can run extended validation on a previous wave.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-pipeline-parallelism" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pipeline-parallelism-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">gantt
+<pre class="mermaid mermaid-js" data-label="fig-pipeline-parallelism">---
+config:
+  gantt:
+    fontSize: 12
+---
+gantt
     title Pipeline Parallelism
     dateFormat X
     axisFormat %s
@@ -904,7 +938,11 @@ Fix any failures before reporting done.</code></pre>
     Review    :r1, 22, 26
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pipeline-parallelism-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.5: Pipeline parallelism: overlapping wave execution
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -1042,10 +1080,12 @@ Fix any failures before reporting done.</code></pre>
 <p>The implication: information flows between agents through committed artifacts, not through shared sessions. When Agent B needs to build on Agent A’s work, it reads the committed files — the same files that passed tests and were validated at the wave checkpoint. It does not read Agent A’s internal reasoning or discarded alternatives.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-session-isolation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-session-isolation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-session-isolation">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     subgraph A1["Agent 1"]
         C1["Conversation&lt;br/&gt;(isolated)"]
     end
@@ -1061,7 +1101,11 @@ Fix any failures before reporting done.</code></pre>
     C3 --&gt; FS
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-session-isolation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.6: Session isolation: agents share filesystem, not conversation state
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
@@ -1095,10 +1139,12 @@ Fix any failures before reporting done.</code></pre>
 <p>The patterns described in this chapter compose into a workflow:</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
+<div id="fig-orchestration-workflow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-orchestration-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-orchestration-workflow">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+flowchart TD
     A1["1. ASSESS&lt;br/&gt;Scope decision"] --&gt; A2["2. SPECIALIZE&lt;br/&gt;Team pattern"]
     A2 --&gt; A3["3. PARTITION&lt;br/&gt;File ownership"]
     A3 --&gt; A4["4. ORDER&lt;br/&gt;Wave dependencies"]
@@ -1112,7 +1158,11 @@ Fix any failures before reporting done.</code></pre>
     HUMAN --&gt; A4
 </pre>
 </div>
-<p></p></figure><p></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-orchestration-workflow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14.7: Complete multi-agent orchestration workflow
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
