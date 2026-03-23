@@ -1,0 +1,242 @@
+---
+title: "The APM Auth + Logging Overhaul"
+number-sections: false
+---
+
+---
+
+## How Copilot CLI Orchestrated a 52-File Architecture Change Across 25 Agents
+
+::: {.callout-note}
+This case study documents a real Copilot CLI session against
+[microsoft/apm](https://github.com/microsoft/apm) (PR #394).
+Every metric comes from session checkpoint logs.
+Chapters 12–13 introduced this session's structure. Here we focus on
+**what went wrong, what the recovery looked like, and what it proves.**
+:::
+
+::: {.callout-tip title="Five Lessons — The TL;DR"}
+1. **Budget context before you dispatch.** Count call sites; split at ~25 per agent. 58 was too many.
+2. **Verify filesystem, not self-reports.** `diff` target files after every dispatch. Agent success messages are probabilistic output.
+3. **Expert panels are audits, not oracles.** Panel findings must be validated before they become wiring instructions.
+4. **Expand scope through the plan gate.** Mid-planning expansion is healthy. Mid-wave expansion is dangerous.
+5. **Checkpoints must assert behaviour.** 2,829 passing tests did not catch a silent `NameError`. Assert on observable output.
+:::
+
+---
+
+## The Problem
+
+A user reported confusing UX when `apm install` failed for a GitHub
+Enterprise Managed Users (EMU) organization package. Investigation
+revealed a single root cause branching into three systemic failures:
+
+1. **Auth bypass.** `_validate_package_exists()` ran bare `git ls-remote`
+   without credentials — `GITHUB_APM_PAT` was ignored for github.com hosts.
+2. **Auth fragmentation.** Four inconsistent auth implementations were
+   scattered across install, download, copilot, and operations modules.
+3. **Observability gap.** 766 ad-hoc `_rich_*` logging calls across 27
+   files with no shared abstraction. When verbose logging silently failed
+   (a `NameError` caught by an outer `try/except`), there was no way to
+   know.
+
+A point fix would have patched `_validate_package_exists()`. The
+structural fix required centralised auth resolution, a command-logger
+abstraction, and diagnostic collection — touching 52 files.
+
+---
+
+## Expert Panel and Plan Evolution
+
+The session operated at three scales: a **6-expert audit panel** for
+diagnosis, a **fleet of ~25 agents** for implementation, and
+**individual agents** for targeted fixes.
+
+Six experts ran in parallel during the audit phase: GitHub auth patterns,
+EMU constraints, Azure DevOps auth, architecture design, CLI UX, and
+documentation. Each produced severity-ranked findings. The EMU Expert
+identified that host-gating `ghu_` tokens was incorrect (later validated
+as Escalation #3). The Architecture Expert proposed Strategy + Chain of
+Responsibility as the auth consolidation pattern. The CLI UX Expert found
+766 ad-hoc logging calls with no shared abstraction. All findings were
+synthesised into a single source-of-truth document.
+
+### Eight Plan Iterations
+
+The plan went through eight iterations before approval. This is not a
+failure — it is the meta-process working as designed (Ch13 §Plan).
+
+| Version | Scope | Trigger |
+|---------|-------|---------|
+| v1 | 10 UX message fixes | Initial triage |
+| v2 | Removed v0.8.2-only bug | User correction |
+| v3 | Added auth gap as root cause | Expert panel findings |
+| v4 | Unauth-first → auth-fallback | Architecture expert |
+| v5 | Architecture-first, 4 phases | Orchestrator restructure |
+| v6 | Added agent/skill primitives | Instrumented codebase needs |
+| v7 | ALL commands covered | **User escalation (L4)** |
+| v8 ✓ | 25 todos, 47 files, 5 phases | Approved |
+
+Version 7 was the critical turn. The user rejected a plan scoped to
+`install` only and demanded every command route through `AuthResolver` and
+`CommandLogger`. The orchestrator dispatched three more **explore agents**
+to audit all logging calls (766+), all auth touchpoints (95+), and
+per-dependency auth paths. This is **Scope Creep** (Anti-pattern #5) —
+but handled correctly. The scope expanded *before* execution began,
+through the plan gate, not mid-wave.
+
+---
+
+## Wave Execution
+
+The plan decomposed into five phases. Each wave followed **checkpoint
+discipline** — full test suite after every wave, commit before the next.
+Tests climbed from 2,829 to 2,897 across nine waves.
+
+| Wave | Agents | Scope | Checkpoint |
+|------|--------|-------|------------|
+| Foundation | 3 parallel | AuthResolver, CommandLogger, DiagnosticCollector | 2,839 tests |
+| Auth wiring | 8 parallel | One file per agent (downloader, install, copilot, operations, errors) | 2,846 tests |
+| Logger wiring | 7 parallel | All commands through CommandLogger. install.py (58 calls) **got stuck** → escalated | 2,874 tests |
+| Tests | parallel | 78 unit + 26 integration + 11 diagnostics | 2,897 tests |
+| Ship | sequential | Docs, skills, CHANGELOG, PR review fixes | Released as v0.8.4 |
+
+The **one-file-one-agent-per-wave** rule (Ch12) prevented merge conflicts
+across all parallel dispatches. The one exception — install.py in the
+logger wave — is Escalation #1 below.
+
+---
+
+## Escalation Events
+
+Five escalations occurred. Each maps to a specific anti-pattern.
+
+Escalation severity follows a three-tier model:
+
+| Level | Meaning | Action |
+|-------|---------|--------|
+| **L2** | Agent needs guidance | Orchestrator adjusts prompt and re-dispatches |
+| **L3** | Agent cannot complete | Orchestrator takes over the task manually |
+| **L4** | Plan scope changes | New todos added, potentially new wave |
+
+### 1. The install.py Agent (Anti-pattern #11: Context Window Exhaustion)
+
+The agent migrating `install.py` (58 `_rich_*` calls, the largest single
+file) ran for 45+ minutes and stopped producing coherent edits. The
+context window filled with its own prior output — a textbook case of
+**Context Window Exhaustion**.
+
+**Recovery.** The orchestrator escalated to L3: wrote a Python script to
+strip 30 dead `else`-branch fallbacks, manually fixed 3 duplicate calls,
+and committed. The **context budgeting** lesson: 58 call sites in one
+dispatch is too many. The file should have been split across two waves —
+structural calls in Wave 3a, verbose calls in Wave 3b.
+
+### 2. Unicode Agent Persistence (Anti-pattern #12: Hallucinated Edits)
+
+The Wave 3 unicode cleanup agent reported all replacements complete. File
+inspection showed zero changes — the agent had written to a temporary
+copy. This is **Hallucinated Edits**: the agent's self-report diverged
+from filesystem state.
+
+**Recovery.** Orchestrator performed all replacements manually: `✓`→`[+]`,
+`✗`→`[x]`, `⚠`→`[!]`, `→`→`->`, `—`→`--` across 4 files. **The Trust
+Fall** (Anti-pattern #7) was also in play — the orchestrator initially
+accepted the agent's success report without file verification.
+
+### 3. Token Type Correction (Anti-pattern #13: Stale Context Between Waves)
+
+The expert panel classified `ghu_` tokens as EMU-specific. The user
+corrected: `ghu_` is OAuth; EMU users receive standard `ghp_`/`github_pat_`
+tokens. The security constraint host-gating global env vars was built on
+stale expert output — **Stale Context Between Waves**.
+
+**Recovery.** Orchestrator updated `AuthResolver` to remove the incorrect
+host-gating logic and re-ran auth tests.
+
+### 4. Fine-Grained PAT 403 Failure (L4 — Plan scope change)
+
+Auth still failed with a valid fine-grained PAT.  Root cause:
+`x-access-token:{token}@host` URL format sends Basic auth, which GitHub
+rejects for fine-grained PATs. The plan assumed `git ls-remote` would
+work for all token types.
+
+**Recovery.** Pivoted validation entirely from `git ls-remote` to the
+GitHub REST API — a single code path that works for all token types.
+This was an **L4 escalation** — scope expanded beyond the original plan.
+The orchestrator chose one validation strategy over a branching tree of
+token-type logic, avoiding complexity at the architecture level.
+
+### 5. Verbose Logging Silent NameError
+
+`_rich_echo` was never imported in `install.py`. The `verbose_log` lambda
+triggered a `NameError` caught by an outer `try/except`. Verbose mode
+silently did nothing. No test caught it because the test suite never
+asserted on verbose output.
+
+```{mermaid}
+sequenceDiagram
+    participant User
+    participant CLI as apm install --verbose
+    participant VL as verbose_log lambda
+    participant RE as _rich_echo (NOT IMPORTED)
+
+    User->>CLI: apm install pkg --verbose
+    CLI->>VL: verbose_log("Resolving pkg...")
+    VL->>RE: _rich_echo("Resolving pkg...")
+    RE-->>VL: NameError: _rich_echo not defined
+    VL-->>CLI: Exception caught by try/except → silently swallowed
+    CLI->>User: (no verbose output, no error)
+```
+
+This is why **checkpoint discipline** matters (Ch12) — and why it must
+include *behavioural* assertions, not just "tests pass." The test suite
+had 2,829 passing tests and none verified that verbose mode actually
+produced output.
+
+---
+
+## Anti-Pattern Mapping
+
+| Escalation | Anti-pattern | PROSE Constraint | Resolution |
+|------------|-------------|------------------|------------|
+| install.py stuck | #11 Context Window Exhaustion | Progressive Disclosure | Split file across waves; manual completion |
+| Unicode persistence | #12 Hallucinated Edits | Safety Boundaries | File-state verification after every dispatch |
+| Unicode persistence | #7 The Trust Fall | Safety Boundaries | Never accept self-report without diff check |
+| Token type error | #13 Stale Context Between Waves | Progressive Disclosure | Re-validate expert findings before wiring |
+| PAT 403 | #5 Scope Creep | Reduced Scope | L4 escalation through plan gate |
+| Silent NameError | #9 Skipping Checkpoints | Safety Boundaries | Add behavioural assertions to checkpoint |
+
+---
+
+## What Held True Regardless of the Model
+
+Ch15 defines five properties that hold regardless of model capability.
+This session tested three under production conditions.
+
+**"Context will remain finite and fragile."** The install.py agent proved
+it. 58 call sites exhausted the context window. No amount of model
+improvement eliminates the need for **context budgeting** — partitioning
+work to fit the window with room for reasoning.
+
+**"Output will remain probabilistic."** The unicode agent reported success
+on changes it never persisted. The same prompt, re-dispatched, might have
+worked. Reliability was architectured through **checkpoint discipline**
+and file-state verification — not by trusting any single execution.
+
+**"Human judgment will remain the bottleneck and the differentiator."**
+The user's v7 escalation — demanding all commands be covered, not just
+install — was the highest-leverage decision in the session. No agent
+suggested it. The 8 plan iterations were not wasted work; they were the
+mechanism through which human judgment shaped the architecture.
+
+---
+
+The lessons from the TL;DR at the top were earned here. The full
+evidence chain — from a single confusing error message to a 52-file
+architecture overhaul — is inspectable at
+[PR #394](https://github.com/microsoft/apm/pull/394).
+
+::: {.callout-note title="Metrics"}
+52 files changed · 2,829 → 2,897 tests (+68) · 6 audit agents · 25 implementation agents · 8 plan iterations · 5 escalations (1×L2, 2×L3, 2×L4) · 9 waves
+:::

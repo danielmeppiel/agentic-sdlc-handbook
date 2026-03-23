@@ -39,6 +39,12 @@ book:
     - part: "Closing"
       chapters:
         - handbook/ch15-what-comes-next.qmd
+    - part: "Part IV: Case Studies"
+      chapters:
+        - case-study-apm-overhaul.qmd
+        - case-study-handbook-writing.qmd
+        - case-study-publishing-pipeline.qmd
+        - case-study-growth-engine.qmd
 
 format:
   html:

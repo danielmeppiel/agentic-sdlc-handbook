@@ -1,0 +1,185 @@
+---
+title: "The Publishing Pipeline"
+number-sections: false
+---
+
+**How Copilot CLI orchestrated a 62,500-word book from manuscript to multi-format deployment**
+
+::: {.callout-tip title="Key Takeaways — The TL;DR"}
+- Every design decision was human; every technical execution was agent — that division held throughout.
+- The "Almost Done" Trap is real: each PDF fix exposed the next issue, five layers deep. Treat each fix as its own micro-wave with a checkpoint.
+- CI and local rendering serve different masters — optimize CI for speed (HTML-only, 49s), local for completeness (all formats).
+- Expert panels produce better outcomes than solo research, but the human still chooses the publishing philosophy.
+:::
+
+::: {.callout-note}
+This session used GitHub Copilot CLI as the orchestrator, but the patterns apply to any agent-capable environment.
+:::
+
+---
+
+## The Problem
+
+You have a 15-chapter technical handbook in Markdown. You want readers to find it as a fast-loading website, a downloadable PDF, and an EPUB for e-readers — all auto-deployed from a single source. The publishing industry offers dozens of toolchains, each with trade-offs in cost, control, update friction, and reader reach.
+
+The author knew what the book should *feel* like. The agents knew how to make it *work*.
+
+## Publishing Strategy: Three Rounds of Deliberation
+
+The first wave wasn't code — it was research. The orchestrator's initial recommendation was an Open Core model: free web, paid PDF/EPUB. The author pushed back immediately: *"Why not Amazon ebooks? Why just PDF in a repo?"*
+
+A research agent investigated Quarto, Leanpub, GitBook, and mdBook. The revised recommendation — Leanpub plus Amazon KDP plus a GitHub source repo — was closer, but the author pushed again: *What's state of the art for free tech books with regular updates?*
+
+The final answer was **Quarto + GitHub Pages**, the pattern used by *R for Data Science* and *Python for Data Analysis*. One source repository. Markdown-native authoring. Multi-format output. CI/CD deployment. Zero hosting cost.
+
+This three-round deliberation illustrates a property tested under real conditions: **human judgment remains the bottleneck and differentiator**. The agents surfaced options and trade-offs; the human chose the publishing philosophy.
+
+## The Conversion Wave
+
+A single general-purpose agent converted the entire manuscript in one wave:
+
+- Created `_quarto.yml` with a four-part book structure (Foundation, Leaders, Practitioners, Closing)
+- Converted 15 `.md` files to `.qmd` via `git mv` — preserving git history at 99% similarity
+- Added YAML frontmatter to each chapter
+- Created `index.qmd` with a reading guide and download callouts
+- Created `.github/workflows/publish.yml` for CI auto-deploy
+
+HTML render: 16 files, zero errors, 15 Mermaid diagrams confirmed. The site went live on the `gh-pages` branch within the same wave.
+
+```{mermaid}
+flowchart LR
+    A["15 Markdown<br/>chapters"] --> B["git mv .md → .qmd<br/>+ YAML frontmatter"]
+    B --> C["_quarto.yml<br/>book config"]
+    C --> D["quarto render"]
+    D --> E["HTML<br/>(web)"]
+    D --> F["PDF<br/>(LaTeX)"]
+    D --> G["EPUB"]
+    E --> H["GitHub Pages<br/>CI deploy"]
+    F --> I["Local render<br/>+ copy to site"]
+    G --> I
+```
+
+## The "Almost Done" Trap: PDF Rendering Cascade
+
+What happened next is a textbook instance of **Anti-Pattern #15: The "Almost Done" Trap** — each fix revealed the next issue, creating a cascade where "one more fix" repeated five times.
+
+```{mermaid}
+flowchart TD
+    A["PDF renders ✓<br/>but text boxes<br/>too narrow"] -->|Fix: scrreprt +<br/>explicit geometry| B["Layout fixed ✓<br/>but Mermaid diagrams<br/>missing"]
+    B -->|"Fix: convert all 15<br/>```mermaid → ```{mermaid}"| C["Diagrams render ✓<br/>but headings show<br/>duplicate numbers"]
+    C -->|Fix: strip manual<br/>numbers from<br/>25 headings| D["Headings clean ✓<br/>but diagrams and<br/>code overflow margins"]
+    D -->|Fix: fig-width 6.5<br/>+ code-overflow wrap| E["Overflow fixed ✓<br/>but fig-width exceeds<br/>6.3 in usable width"]
+    E -->|Fix: reduce to 5.5<br/>+ preamble.tex| F["PDF clean ✓<br/>686KB → 3.8MB"]
+
+    style A fill:#fee,stroke:#c33
+    style F fill:#efe,stroke:#3c3
+```
+
+**Issue 1 — Narrow text.** The `scrbook` document class has wide binding margins designed for physical books. Fix: switch to `scrreprt` with explicit geometry (25mm left/right, 30mm top/bottom).
+
+**Issue 2 — Missing Mermaid diagrams.** All 15 chapters used GitHub-flavored `` ```mermaid `` fences. Quarto requires `` ```{mermaid} `` for PDF rendering via headless Chromium. This was **Anti-Pattern #10: Not Fixing the Primitives** — the syntax was wrong at the source level across every chapter. A bulk `sed` conversion fixed all 15 blocks; the PDF grew from 686KB to 3.7MB as rendered diagram PNGs appeared.
+
+**Issue 3 — Duplicate heading numbers.** Manual numbers in headings (`### 1. The Monolithic Prompt`) clashed with Quarto's auto-numbering, producing `15.2.1 1.` in the PDF. Stripped manual numbers from 25 headings across two chapters.
+
+**Issue 4 — Margin overflow.** Diagrams and code blocks exceeded the text area. Added `fig-width: 6.5`, `code-overflow: wrap`, and LaTeX packages (`fvextra`, `float`). Then discovered 6.5 inches exceeded the 6.3-inch usable width — reduced to 5.5 and created `preamble.tex` with `\small` font for long table environments.
+
+**Issue 5 — ASCII art table.** Chapter 4 contained a complex ASCII art SDLC phases table that rendered as a code block in PDF. Converted to a proper 9-column markdown pipe table.
+
+Each fix was technically correct. The trap is that correctness at one layer exposes incorrectness at the next. The orchestrator treated each as a new micro-wave with its own checkpoint — never batching speculative fixes.
+
+## CI/CD: Four Iterations to Stability
+
+The deployment pipeline went through its own iteration gauntlet:
+
+| Iteration | Failure | Fix |
+|-----------|---------|-----|
+| 1 | Mermaid→PNG via headless Chromium hung on CI | Added `quarto install chromium --no-prompt` |
+| 2 | Custom LaTeX packages (DejaVu fonts, fvextra) hung CI | Simplified PDF config, removed custom fonts |
+| 3 | `render: "html"` param to publish action — `_book` dir not found | Split into explicit `quarto render --to html` then `quarto publish` with `render: false` |
+| 4 | CI HTML-only deploy overwrote PDF/EPUB on `gh-pages` | Added "Restore PDF and EPUB from gh-pages" step using `git show` |
+
+The final architecture splits rendering by environment:
+
+```{mermaid}
+flowchart TB
+    subgraph CI ["CI Pipeline (49 seconds)"]
+        A1["Checkout"] --> A2["Install Quarto"]
+        A2 --> A3["quarto render --to html"]
+        A3 --> A4["Restore PDF/EPUB<br/>from gh-pages"]
+        A4 --> A5["quarto publish<br/>--no-render"]
+    end
+
+    subgraph Local ["Local Render (15 min)"]
+        B1["quarto render --to pdf"] --> B2["Save PDF"]
+        B2 --> B3["quarto render --to epub"]
+        B3 --> B4["Save EPUB"]
+        B4 --> B5["quarto render --to html"]
+        B5 --> B6["Copy PDF + EPUB<br/>into _book/"]
+        B6 --> B7["quarto publish<br/>--no-render"]
+    end
+
+    style CI fill:#e8f4e8,stroke:#4a4
+    style Local fill:#e8e8f4,stroke:#44a
+```
+
+The 15-minute local render is a direct consequence of **context window exhaustion applied to CI** — Chromium-based Mermaid rendering is too heavy for a fast feedback loop. The architecture makes this explicit: CI optimizes for speed (HTML-only, 49 seconds), local optimizes for completeness (all formats).
+
+## Download UX: Seven Iterations of Human Refinement
+
+The download experience went through seven rounds — all driven by the human author:
+
+1. Quarto's built-in `downloads: [pdf, epub]` — toolbar icon too small
+2. Large Bootstrap buttons in a preface callout box — concept approved
+3. Fixed duplicate title (manual H1 overlapping Quarto-generated H1)
+4. Fixed "0.1" section numbering in preface — set `number-sections: false`
+5. Fixed subtitle to address both audiences (leaders and practitioners)
+6. Removed redundant intro text (subtitle and body repeated the same message)
+7. Simplified to: *"Free to read online. Free to download."*
+
+Every iteration was a human design judgment. The agent executed each change in under a minute. This is the collaboration pattern at its clearest: **the human refines intent; the agent refines implementation**.
+
+## Licensing: Expert Panel Deliberation
+
+A three-expert panel (IP Attorney, Publishing Strategist, Growth Hacker) evaluated licensing options. The recommendation was unanimous: **CC BY-NC-ND 4.0**.
+
+```{mermaid}
+sequenceDiagram
+    participant O as Orchestrator
+    participant P as 3-Expert Panel
+    participant H as Human Author
+
+    O->>P: Evaluate licensing for free tech book<br/>with commercial author brand
+    P->>P: IP Attorney: CC BY-NC-ND protects<br/>canonical version
+    P->>P: Publishing Strategist: invites sharing,<br/>requires attribution
+    P->>P: Growth Hacker: maximizes reach<br/>while protecting monetization
+    P->>O: Unanimous: CC BY-NC-ND 4.0
+    O->>H: Recommendation + rationale
+    H->>O: Approved
+    O->>O: Apply to LICENSE, README,<br/>index.qmd, _quarto.yml footer
+```
+
+The rationale maps to four properties: invites sharing (reach), requires attribution (authorship), prohibits commercial use (author's brand), prohibits derivatives (one canonical version). Implementation touched four files — `LICENSE`, `README.md`, `index.qmd`, and the `_quarto.yml` footer.
+
+## The Authenticity Question
+
+A separate three-expert panel (HN Skeptic, Thought Leadership Strategist, Meta-Authenticity Analyst) evaluated the risk of openly documenting the AI-assisted pipeline. The consensus: **net positive**. The key test:
+
+> *"Could this person have written a credible book without AI? If yes, AI reads as methodology demonstration."*
+
+The framing rule: *"built using the same methodology it teaches"* — never *"AI-written."* Expected risk: roughly 15–20% drive-by dismissal, but engaged readers find the transparency more impressive than the alternative.
+
+The README was rewritten to showcase the pipeline: an 11-agent team table, a 5-stage pipeline diagram, and links to review artifacts. **Explicit knowledge over implicit knowledge** — a property that held true here too. Hiding the process would contradict the book's thesis.
+
+## What This Case Study Shows
+
+The publishing pipeline compressed weeks of toolchain research, format debugging, and CI configuration into focused waves of agent execution guided by human judgment.
+
+::: {.callout-note title="Metrics"}
+3 output formats (HTML, PDF, EPUB) · 15 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy
+:::
+
+The division of labor was consistent: every design decision was human; every technical execution was agent. See the TL;DR at the top for the distilled lessons.
+
+---
+
+*This case study documents the publishing pipeline for [The Agentic SDLC Handbook](https://danielmeppiel.github.io/apm-handbook/). The book, the pipeline, and this case study were all produced using the methodology described in Chapters 12–15.*
