@@ -46,13 +46,13 @@ Three properties of language models are structural. They hold regardless of mode
 
 **Output is probabilistic.** The same input can produce different outputs. Language models interpret rather than execute; variance is inherent, not a bug to be fixed. Determinism comes from constraints, structure, and grounding — not from the model itself. This means reliability must be *architected*, not assumed. Unlike a compiler that either accepts or rejects your code, a language model *always produces something* — making quality failures silent and insidious.
 
-These three properties are why better models don't solve the Vibe Coding Cliff. A more powerful model working with unstructured, incomplete, or noisy context doesn't produce better results. It produces more confident wrong answers, faster. The failure mode of a weak model is obvious — it can't do the task. The failure mode of a strong model with poor context is insidious — it produces plausible output that looks correct and silently violates your system's invariants. Context windows have grown 50–500× in five years — from GPT-3's 4K tokens in 2020 to the 200K–2M tokens available in current frontier models[^ch1-context] — yet satisfaction with AI on complex engineering tasks has not kept pace[^ch1-satisfaction], because the bottleneck was never raw capacity — it was the structure of what fills that capacity.
+These three properties are why better models don't solve the Vibe Coding Cliff. A more powerful model working with unstructured, incomplete, or noisy context doesn't necessarily produce better results. It can produce more confident wrong answers, faster. The failure mode of a weak model is obvious — it can't do the task. The failure mode of a strong model with poor context is insidious — it often produces plausible output that looks correct and can silently violate your system's invariants. Context windows have grown 50–500× in five years — from GPT-3's 4K tokens in 2020 to the 200K–2M tokens available in current frontier models[^ch1-context] — yet satisfaction with AI on complex engineering tasks has not kept pace[^ch1-satisfaction], because the bottleneck was never raw capacity — it was the structure of what fills that capacity.
 
 ## PROSE: Architectural Constraints for Human-AI Collaboration
 
 In 2000, Roy Fielding didn't build a web framework. He published a dissertation that defined *constraints* — statelessness, uniform interface, layered system, and others — that, when followed together, produced systems with desirable properties: scalability, reliability, independent evolution. He called the style REST.
 
-REST didn't eliminate SOAP or RPC. It didn't prescribe a technology stack. It defined an architectural style — a coherent set of constraints that, applied to the problem of distributed systems, induced properties that individual tools and protocols couldn't guarantee on their own.
+REST didn't immediately replace SOAP or RPC. It didn't prescribe a technology stack. It defined an architectural style — a coherent set of constraints that, applied to the problem of distributed systems, induced properties that individual tools and protocols couldn't guarantee on their own.
 
 **PROSE** occupies the same position for AI-native development. It defines five architectural constraints for human-AI collaboration that, applied together, address the structural failures described above. It is not a tool, not a file format, not a prompting technique. It is an architectural style.
 
@@ -120,7 +120,7 @@ Most of these anti-patterns stem from a single root cause: ignoring that context
 
 PROSE is one framework among emerging approaches to structured AI-assisted development. It is the one this book teaches, because it has verifiable evidence behind it. But intellectual honesty demands acknowledging the landscape.
 
-Anthropic publishes guidelines for structuring agent interactions. LangChain and LangGraph define patterns for composing LLM workflows. AutoGen provides multi-agent conversation frameworks. Various tool-specific conventions — project rule files, instruction formats, agent configurations — encode subsets of these ideas in tool-native ways.
+Anthropic publishes guidelines for structuring agent interactions. As of 2025, LangChain and LangGraph define patterns for composing LLM workflows. AutoGen provides multi-agent conversation frameworks. Various tool-specific conventions — project rule files, instruction formats, agent configurations — encode subsets of these ideas in tool-native ways.
 
 What distinguishes PROSE is the level of abstraction. Most alternatives operate at the tool or workflow level: how to chain calls, how to structure prompts for a specific platform. PROSE operates at the architectural level: what constraints must hold *regardless* of which tool or model you use. This is also what distinguishes REST from any specific HTTP framework — the constraints are the point, not the implementation.
 

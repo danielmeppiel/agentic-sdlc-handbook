@@ -39,13 +39,13 @@ The total cost of ownership for agentic development has six components. The firs
 
 ### Tool licenses
 
-The visible cost. Per-seat subscriptions for AI coding tools range from $10–40/month per developer for individual tiers; enterprise tiers with SSO, audit logs, and data residency controls run 2–3× higher. If you're evaluating platform-level tools (not just editor plugins), add platform licensing. Budget $200–600 per developer per year for tooling. This is the easy part.
+The visible cost. Per-seat subscriptions for AI coding tools range from $10–40/month per developer for individual tiers; enterprise tiers with SSO, audit logs, and data residency controls run 2–3× higher. If you're evaluating platform-level tools (not just editor plugins), add platform licensing. Budget $200–600 per developer per year for team tiers; enterprise agreements typically run $500–1,500. This is the easy part.
 
 ### Context engineering investment
 
 The largest hidden cost, and the one that determines whether the tool investment pays off. Context engineering — the practice of structuring your team's knowledge so AI agents can use it reliably — requires upfront work: documenting architectural decisions, writing machine-readable conventions, building instruction hierarchies, and curating the artifacts that make agents effective on your specific codebase.
 
-For a team of 10–15 developers, expect 2–4 weeks of engineering time for initial context architecture. This is not optional overhead. Without it, you've purchased tools that will generate plausible code that violates your conventions and requires extensive rework. With it, agent output improves over time as context compounds. Chapter 4 covers this investment in detail.
+For a team of 10–15 developers, in our experience with teams adopting this methodology, expect 2–4 weeks of engineering time for initial context architecture. This is not optional overhead. Without it, you've purchased tools that will generate plausible code that violates your conventions and requires extensive rework. With it, agent output improves over time as context compounds. Chapter 4 covers this investment in detail.
 
 ### Token and compute costs
 
@@ -65,7 +65,7 @@ During the first 60–90 days, your team will be slower, not faster. Context has
 
 ### The honest TCO picture
 
-| Cost component | Typical range (team of 10, year 1) | What's often missed |
+| Cost component | Illustrative range (team of 10, year 1) | What's often missed |
 |---|---|---|
 | Tool licenses | $6,000–30,000 | Enterprise governance tier premium |
 | Context engineering | $20,000–60,000 | Measured in engineering time, not invoices |
@@ -87,7 +87,7 @@ If the cost side is underestimated, the value side is measured wrong. Most busin
 
 **Defect reduction.** Counterintuitive, because agents introduce defects too. But structured context — explicit conventions, required patterns, documented boundaries — catches errors that human developers miss through familiarity blindness. When the linter, the test suite, and the agent's instructions all encode the same standards, violations surface earlier. Teams with mature context engineering report fewer convention-violation defects in code review, not because the agent is smarter than a human, but because the standards are enforced consistently rather than recalled from memory.
 
-**Knowledge retention.** The most undervalued benefit, and the one with the longest payback period. Every instruction file, every documented convention, every machine-readable architecture decision is an organizational asset that survives employee turnover. When a senior engineer leaves, their knowledge of "how we do things here" typically walks out the door with them. When that knowledge is encoded in context artifacts, it persists — usable by both human developers and AI agents. This doesn't show up in a quarterly report. It shows up when onboarding a new hire takes two weeks instead of two months because the codebase is self-documenting.
+**Knowledge retention.** The most undervalued benefit, and the one with the longest payback period. Every instruction file, every documented convention, every machine-readable architecture decision is an organizational asset that survives employee turnover. When a senior engineer leaves, their knowledge of "how we do things here" typically walks out the door with them. When that knowledge is encoded in context artifacts, it persists — usable by both human developers and AI agents. This doesn't show up in a quarterly report. It shows up when onboarding a new hire can take weeks instead of months because the codebase is self-documenting.
 
 **Attention reallocation.** Not "developers do more work" but "developers do different work." When routine implementation is delegated, developer attention shifts to design decisions, architecture, code review, and the complex problems that humans still do better than any model. The value is not more output — it is higher-quality attention on the problems that matter most. This is hard to quantify and easy to feel. Teams that adopt agentic development well report higher job satisfaction not because the work is easier, but because it is more interesting.
 
@@ -97,6 +97,8 @@ If the cost side is underestimated, the value side is measured wrong. Most busin
 | Defect reduction | Review rejection rate, post-deploy defects | Months 6–9 | 15–30% reduction in convention violations |
 | Knowledge retention | Onboarding time, bus factor metrics | Months 9–12+ | Gradual; compounds over time |
 | Attention reallocation | Developer survey, task-type distribution | Months 3–6 | Shift from implementation to design/review |
+
+*These timelines reflect patterns observed across early-adoption teams; your experience will vary.*
 
 ---
 
@@ -204,7 +206,7 @@ Second, knowledge retention savings are real but slow. Don't lean on them for a 
 The formula above is a template. Here is what it looks like with numbers.
 
 **Assumptions** (moderate scenario):
-- 50 engineers, fully loaded cost $200,000/year each
+- 50 engineers, fully loaded cost $200,000/year each (US market, senior engineers)
 - Cycle time improvement: 25% (midpoint of moderate range)
 - Current defect remediation: $500,000/year (rework, incident response, post-deploy fixes)
 - Expected defect reduction: 20%
@@ -263,7 +265,7 @@ Chapter 2 made the strategic argument: inaction is itself a decision, with conse
 
 **The context gap compounds in reverse.** The same flywheel that rewards early context investment penalizes delay. While your team debates whether AI tools are worth it, competitors who started six months earlier have accumulated six months of machine-readable conventions, structured architecture decisions, and documented patterns. Their agents improve with every sprint. Yours, when you eventually adopt, start from zero. The gap is not six months of calendar time — it is six months of compounding context quality that you must build from scratch while the early adopter's agents are already leveraging it.
 
-A rough estimate: for a 50-person team, a 12-month delay in structured adoption represents $1.5–2.5M in forgone throughput improvement (using the moderate scenario from the worked example above) plus the unquantified but real costs of competitive position and hiring friction. "Wait and see" is itself a decision with a price. Your board will ask "what if we wait a year?" This section is the answer.
+Using the moderate scenario modeled above, a 12-month delay for a 50-person team could represent $1.5–2.5M in forgone throughput improvement — acknowledging that this depends entirely on the model's assumptions — plus the unquantified but real costs of competitive position and hiring friction. "Wait and see" is itself a decision with a price. Your board will ask "what if we wait a year?" This section is the answer.
 
 ---
 

@@ -546,11 +546,11 @@ What it produces:
 - A test using the project's factory functions, following the naming convention, respecting the fixture hierarchy
 - No review comments about conventions, because the conventions were in the context
 
-The difference is not the model. The difference is 150 lines of markdown distributed across 8 files.
+The difference is not the model. In the case documented in this book, the difference is 150 lines of markdown distributed across 8 files.
 
 ### What the numbers look like
 
-Based on projects that have undergone this transformation, including the reference case documented throughout this book:
+In the author's experience, based on projects that have undergone this transformation — including the reference case documented throughout this book:
 
 | Metric | Uninstrumented | Instrumented |
 |--------|---------------|-------------|

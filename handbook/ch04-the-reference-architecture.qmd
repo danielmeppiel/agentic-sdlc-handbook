@@ -72,9 +72,9 @@ Executives do not need to think in eight phases. They need three buckets that ma
 
 **Build** (Code + Build + Test + Review) answers "how do we turn intent into verified software?" This is where agent capabilities are most mature. Code generation, build diagnostics, test generation, and automated code review all have production-ready implementations across multiple vendors. This is also where most organizations start, and where the Vibe Coding Cliff from Chapter 1 hits hardest if context is not structured.
 
-**Operate** (Release + Operate) answers "how do we get software to users and keep it running?" Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions — these capabilities exist in isolated tools but not yet in integrated workflows.
+**Operate** (Release + Operate) answers "how do we get software to users and keep it running?" Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions — these capabilities exist in point solutions (e.g., PagerDuty's AIOps, Datadog's Watchdog) but not yet in workflows integrated end-to-end with the development lifecycle.
 
-The practical implication: most organizations in mid-2025 have invested in the Build bucket, have minimal coverage in Intent, and almost none in Operate. This is not a failure. It reflects where the technology is mature. But it means the next high-value investments are in Plan, Test, and Review — where the work is expensive, the feedback loops are slow, and structured context makes the difference between useful automation and expensive noise.
+The practical implication: based on vendor maturity and published adoption patterns, most organizations appear to have concentrated investment in the Build bucket, with minimal coverage in Intent and almost none in Operate. This is not a failure. It reflects where the technology is mature. But it means the next high-value investments are in Plan, Test, and Review — where the work is expensive, the feedback loops are slow, and structured context makes the difference between useful automation and expensive noise.
 
 ### Three-Tier Honesty
 
@@ -117,7 +117,7 @@ Chapter 6 covers the organizational design implications in detail: team structur
 
 Your competitors have access to the same AI models you do. They can license the same coding tools. What they cannot replicate is your organization's accumulated engineering knowledge — if you have made it machine-readable. If you have not, your AI tools are working with the same generic training data as everyone else's. This is the context moat.
 
-**Why context beats models.** Model quality commoditizes. In 2022, one model family dominated code generation. By mid-2025, at least five model families compete credibly. Pricing falls as competition increases. The model powering your agent is a procurement decision, not a strategic advantage. Context is the opposite: it is proprietary, it accumulates over time, and it directly determines the quality of every agent interaction.
+**Why context beats models.** Model quality commoditizes. In 2022, OpenAI's Codex was the dominant commercial code-generation offering. By mid-2025, several model families compete credibly (OpenAI, Anthropic, Google, Meta, Mistral, among others). Pricing has trended downward as competition increases. The model powering your agent is a procurement decision, not a strategic advantage. Context is the opposite: it is proprietary, it accumulates over time, and it directly determines the quality of every agent interaction.
 
 Consider two teams of similar size, working on codebases of similar complexity, using identical AI tools on the same underlying model. Team A has documented its coding conventions, API patterns, error-handling standards, and module boundaries in structured instruction files that agents load automatically. Team B has not — its conventions exist in senior engineers' heads and scattered code comments.
 
@@ -172,7 +172,7 @@ This flywheel means the gap between organizations that invest in context early a
 
 ### Technical Debt Gets a New Cost
 
-AI changes the ROI calculus for documentation debt, convention debt, and knowledge-base debt. Consider a concrete example: documenting your API conventions takes two days of engineering time. Without that documentation, agents hallucinate your internal patterns. Every pull request review catches three to five convention violations that require rework. With documentation, the agent generates convention-compliant code from the first attempt. The payback period is two weeks.
+AI changes the ROI calculus for documentation debt, convention debt, and knowledge-base debt. Consider an illustrative example: in a representative scenario, documenting your API conventions might take two days of engineering time. Without that documentation, agents hallucinate your internal patterns. In teams we have observed, pull request reviews frequently caught three to five convention violations that required rework. With documentation, the agent generates convention-compliant code from the first attempt. The payback period in these cases was roughly two weeks.
 
 This recalculation applies across the codebase. Undocumented module boundaries, implicit architectural decisions, tribal knowledge stored only in senior engineers' heads — all of these were always technical debt. AI makes the cost of that debt visible on every agent interaction, because the agent fails precisely where the documentation fails.
 
@@ -225,7 +225,7 @@ No single vendor covers all three context domains comprehensively today. This is
 
 ## Start Anywhere, Expand Deliberately
 
-The architecture presented in this chapter is designed to be adopted incrementally. There is no prerequisite checklist that must be completed before you begin. The most common — and most effective — starting point:
+The architecture presented in this chapter is designed to be adopted incrementally. There is no prerequisite checklist that must be completed before you begin. The following thresholds are starting points based on patterns observed across early-adopter teams; calibrate them to your baseline. The most common — and most effective — starting point:
 
 **Month 1.** Pick one team, one phase (usually Code), and one investment (custom instructions encoding your top five conventions). Measure agent output quality before and after. *Gate to expand:* agent-generated code passes linting on first attempt ≥70% of the time, and the team has documented at least five conventions in machine-readable form.
 
