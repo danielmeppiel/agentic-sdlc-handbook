@@ -45,8 +45,8 @@ graph TB
     end
 
     subgraph Review["Review Pod"]
-        CTO[CTO Proxy<br/>"Would I buy this for my team?"]
-        DL[Dev Lead Proxy<br/>"Would my engineers use this?"]
+        CTO[CTO Proxy<br/>Would I buy this for my team?]
+        DL[Dev Lead Proxy<br/>Would my engineers use this?]
     end
 
     subgraph Audit["Audit Pod — Dynamically Created"]
@@ -127,7 +127,7 @@ Every chapter passed through an identical three-stage pipeline. This is the core
 %%| fig-width: 4.5
 sequenceDiagram
     participant O as Orchestrator
-    participant D as Draft Agent<br/>(Domain Specialist)
+    participant D as Draft Agent (Domain Specialist)
     participant R1 as CTO Proxy
     participant R2 as Dev Lead Proxy
     participant R3 as Chief Editor
