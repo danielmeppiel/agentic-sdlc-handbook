@@ -611,18 +611,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-five-phases" class="level2" data-number="15.1">
 <h2 data-number="15.1" class="anchored" data-anchor-id="the-five-phases"><span class="header-section-number">15.1</span> The Five Phases</h2>
 <p>Every large change follows these phases, in order:</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    AUDIT["AUDIT&lt;br/&gt;(understand)"] --&gt; PLAN["PLAN&lt;br/&gt;(scope, waves,&lt;br/&gt;teams)"]
-    PLAN --&gt; WAVE["WAVE [0..N]&lt;br/&gt;(parallel agents)"]
-    WAVE --&gt; VALIDATE["VALIDATE&lt;br/&gt;(test, spot-check)"]
-    VALIDATE --&gt;|All waves done| SHIP["SHIP&lt;br/&gt;(commit, push,&lt;br/&gt;merge)"]
+    AUDIT["AUDIT"] --&gt; PLAN["PLAN"]
+    PLAN --&gt; WAVE["WAVE"]
+    WAVE --&gt; VALIDATE["VALIDATE"]
+    VALIDATE --&gt;|All waves done| SHIP["SHIP"]
     VALIDATE --&gt;|Next wave| WAVE
-    VALIDATE --&gt;|Failure| ADAPT["ADAPT&lt;br/&gt;(diagnose, adjust)"]
+    VALIDATE --&gt;|Failure| ADAPT["ADAPT"]
     ADAPT --&gt; PLAN
 </pre>
 </div>
@@ -718,9 +718,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    W0["Wave 0&lt;br/&gt;FOUNDATION"] --&gt;|"No deps"| W1["Wave 1&lt;br/&gt;CORE"]
-    W1 --&gt;|"Wave 0 outputs"| W2["Wave 2&lt;br/&gt;MIGRATION"]
-    W2 --&gt;|"Wave 1 stable"| W3["Wave 3&lt;br/&gt;POLISH"]
+    W0["Wave 0"] --&gt;|"No deps"| W1["Wave 1"]
+    W1 --&gt;|"Wave 0 outputs"| W2["Wave 2"]
+    W2 --&gt;|"Wave 1 stable"| W3["Wave 3"]
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -923,15 +923,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-adapt-loop" class="level3" data-number="15.4.3">
 <h3 data-number="15.4.3" class="anchored" data-anchor-id="the-adapt-loop"><span class="header-section-number">15.4.3</span> The ADAPT Loop</h3>
 <p>When a checkpoint fails — tests are red, an agent is stuck, a dependency was missed — the meta-process doesn’t stop. It adapts.</p>
-<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<div class="cell" data-fig-width="4" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    D["DETECT&lt;br/&gt;Test failure, agent stall,&lt;br/&gt;unexpected conflict"] --&gt; DG["DIAGNOSE&lt;br/&gt;What broke, why,&lt;br/&gt;which wave/task/file"]
-    DG --&gt; A["ADJUST&lt;br/&gt;Modify plan: add tasks,&lt;br/&gt;split, reorder waves"]
-    A --&gt; E["EXECUTE&lt;br/&gt;Re-run adjusted wave"]
+    D["DETECT&lt;br/&gt;Failure or stall"] --&gt; DG["DIAGNOSE&lt;br/&gt;Root cause"]
+    DG --&gt; A["ADJUST&lt;br/&gt;Modify plan"]
+    A --&gt; E["EXECUTE&lt;br/&gt;Re-run wave"]
     E -.-&gt;|"If new issue"| D
 </pre>
 </div>

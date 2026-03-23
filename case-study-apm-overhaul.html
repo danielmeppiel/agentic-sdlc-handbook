@@ -771,23 +771,23 @@ Note
 <section id="verbose-logging-silent-nameerror" class="level3">
 <h3 class="anchored" data-anchor-id="verbose-logging-silent-nameerror">5. Verbose Logging Silent NameError</h3>
 <p><code>_rich_echo</code> was never imported in <code>install.py</code>. The <code>verbose_log</code> lambda triggered a <code>NameError</code> caught by an outer <code>try/except</code>. Verbose mode silently did nothing. No test caught it because the test suite never asserted on verbose output.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">sequenceDiagram
     participant User
-    participant CLI as apm install --verbose
-    participant VL as verbose_log lambda
-    participant RE as _rich_echo (NOT IMPORTED)
+    participant CLI as CLI (--verbose)
+    participant VL as verbose_log
+    participant RE as _rich_echo
 
     User-&gt;&gt;CLI: apm install pkg --verbose
-    CLI-&gt;&gt;VL: verbose_log("Resolving pkg...")
-    VL-&gt;&gt;RE: _rich_echo("Resolving pkg...")
-    RE--&gt;&gt;VL: NameError: _rich_echo not defined
-    VL--&gt;&gt;CLI: Exception caught by try/except → silently swallowed
-    CLI-&gt;&gt;User: (no verbose output, no error)
+    CLI-&gt;&gt;VL: verbose_log("Resolving...")
+    VL-&gt;&gt;RE: _rich_echo("Resolving...")
+    RE--&gt;&gt;VL: NameError: not defined
+    VL--&gt;&gt;CLI: Exception silently swallowed
+    CLI-&gt;&gt;User: (silent failure)
 </pre>
 </div>
 <p></p></figure><p></p>

@@ -591,7 +591,7 @@ Note
 <section id="team-topology-11-personas-four-pods" class="level2">
 <h2 class="anchored" data-anchor-id="team-topology-11-personas-four-pods">Team Topology: 11 Personas, Four Pods</h2>
 <p>The orchestrator designed an 8-persona expert panel at project inception, then dynamically created 3 more as needs emerged during execution. The personas organized into four functional pods:</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -615,9 +615,9 @@ Note
     end
 
     subgraph Audit["Audit Pod — Dynamically Created"]
-        IL[Illustrator &amp;#35;9&lt;br/&gt;Visual strategist]
-        FC[Fact-Ref-Checker &amp;#35;10&lt;br/&gt;Claims auditor]
-        PB[Publishing Advisor &amp;#35;11&lt;br/&gt;Distribution strategy]
+        IL[Illustrator&lt;br/&gt;Visual strategist]
+        FC[Fact-Ref-Checker&lt;br/&gt;Claims auditor]
+        PB[Publishing Advisor&lt;br/&gt;Distribution strategy]
     end
 
     CE --&gt; CTO
@@ -641,7 +641,7 @@ Note
 <section id="execution-timeline-four-waves-plus-integration" class="level2">
 <h2 class="anchored" data-anchor-id="execution-timeline-four-waves-plus-integration">Execution Timeline: Four Waves Plus Integration</h2>
 <p>The manuscript was produced in a phased pipeline: corpus audit → architecture → four writing waves → integration review → polish. Each wave followed checkpoint discipline: draft, review, revise, commit.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -652,36 +652,36 @@ Note
     axisFormat %s
 
     section Phase 0
-    Corpus Audit (4 parallel specialists)    :done, p0, 0, 1
-    Chief Editor Synthesis                    :done, p0s, 1, 2
+    Corpus Audit (4 agents)                  :done, p0, 0, 1
+    Editor Synthesis                          :done, p0s, 1, 2
 
     section Phase 1
-    Architecture Attempt 1 (FAILED)          :crit, p1f, 2, 3
-    Architecture Split (2 parallel)          :done, p1, 3, 4
+    Arch Attempt 1 (FAIL)                    :crit, p1f, 2, 3
+    Arch Split (2 agents)                    :done, p1, 3, 4
 
     section Wave 0
     Ch1 Draft                                :done, w0d, 4, 5
-    3 Parallel Reviews                       :done, w0r, 5, 6
-    Revision (7 fixes)                       :done, w0v, 6, 7
+    3 Reviews                                :done, w0r, 5, 6
+    Revision                                 :done, w0v, 6, 7
 
     section Wave 1
-    4 Parallel Drafts (Ch2,10,11,14)         :done, w1d, 7, 8
-    4 Parallel Reviews                       :done, w1r, 8, 9
-    4 Parallel Revisions                     :done, w1v, 9, 10
+    4 Drafts                                 :done, w1d, 7, 8
+    4 Reviews                                :done, w1r, 8, 9
+    4 Revisions                              :done, w1v, 9, 10
 
     section Wave 2
-    5 Parallel Drafts (Ch5,7,8,9,13)         :done, w2d, 10, 11
-    2 Combined Reviews                       :done, w2r, 11, 12
-    5 Parallel Revisions                     :done, w2v, 12, 13
+    5 Drafts                                 :done, w2d, 10, 11
+    2 Reviews                                :done, w2r, 11, 12
+    5 Revisions                              :done, w2v, 12, 13
 
     section Wave 3
-    5 Parallel Drafts (Ch3,4,6,12,15)        :done, w3d, 13, 14
-    2 Combined Reviews                       :done, w3r, 14, 15
-    2 Parallel Revisions                     :done, w3v, 15, 16
+    5 Drafts                                 :done, w3d, 13, 14
+    2 Reviews                                :done, w3r, 14, 15
+    2 Revisions                              :done, w3v, 15, 16
 
     section Integration
-    Block 1+2 Reviews (parallel)             :done, ir, 16, 17
-    2 Parallel Fix Agents                    :done, fix, 17, 18
+    Block 1+2 Reviews                        :done, ir, 16, 17
+    2 Fix Agents                             :done, fix, 17, 18
     Polish + README                          :done, pol, 18, 19
 </pre>
 </div>
@@ -695,7 +695,7 @@ Note
 <section id="the-draftreviewrevise-cycle" class="level2">
 <h2 class="anchored" data-anchor-id="the-draftreviewrevise-cycle">The Draft→Review→Revise Cycle</h2>
 <p>Every chapter passed through an identical three-stage pipeline. This is the core quality loop the book describes in Chapter 13.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -737,22 +737,22 @@ Note
 <section id="dynamic-persona-creation" class="level2">
 <h2 class="anchored" data-anchor-id="dynamic-persona-creation">Dynamic Persona Creation</h2>
 <p>Three of the eleven personas did not exist at project inception. They were created in response to gaps the process itself surfaced.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    A[Integration Review&lt;br/&gt;Chief Editor reads all 15 chapters] --&gt; B{Visual anchors&lt;br/&gt;missing?}
-    B --&gt;|Yes| C[Create Illustrator Agent &amp;#35;9&lt;br/&gt;Visual Strategist persona]
-    C --&gt; D[Fleet of 2: Block 1 + Block 2&lt;br/&gt;40 visual opportunities found&lt;br/&gt;15 Mermaid diagrams embedded]
+    A[Integration Review&lt;br/&gt;Editor reads all 15 chapters] --&gt; B{Visual anchors&lt;br/&gt;missing?}
+    B --&gt;|Yes| C[Create Illustrator Agent&lt;br/&gt;Visual Strategist persona]
+    C --&gt; D[Fleet of 2: Block 1 + Block 2&lt;br/&gt;40 visual opportunities&lt;br/&gt;15 Mermaid diagrams embedded]
 
     A --&gt; E{Inconsistent statistics&lt;br/&gt;across chapters?}
-    E --&gt;|Yes| F[Create Fact-Ref-Checker &amp;#35;10&lt;br/&gt;Claims Auditor persona]
-    F --&gt; G[Fleet of 2: 75 flags found&lt;br/&gt;5 critical — including PR &amp;#35;394&lt;br/&gt;statistic contradiction]
+    E --&gt;|Yes| F[Create Fact-Ref-Checker&lt;br/&gt;Claims Auditor persona]
+    F --&gt; G[Fleet of 2: 75 flags found&lt;br/&gt;5 critical incl. PR-394&lt;br/&gt;statistic contradiction]
 
-    H[Question: How do we publish?] --&gt; I{Publishing expertise&lt;br/&gt;needed?}
-    I --&gt;|Yes| J[Create Publishing Advisor &amp;#35;11&lt;br/&gt;5 publishing paths evaluated]
+    H[Question: How to publish?] --&gt; I{Publishing expertise&lt;br/&gt;needed?}
+    I --&gt;|Yes| J[Create Publishing Advisor&lt;br/&gt;5 paths evaluated]
     J --&gt; K[Recommended Open Core +&lt;br/&gt;Premium model]
 
     style C fill:#6b3a5c,color:#fff

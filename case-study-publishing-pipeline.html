@@ -597,7 +597,7 @@ Note
 <li>Created <code>.github/workflows/publish.yml</code> for CI auto-deploy</li>
 </ul>
 <p>HTML render: 16 files, zero errors, 15 Mermaid diagrams confirmed. The site went live on the <code>gh-pages</code> branch within the same wave.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -622,17 +622,17 @@ Note
 <section id="the-almost-done-trap-pdf-rendering-cascade" class="level2">
 <h2 class="anchored" data-anchor-id="the-almost-done-trap-pdf-rendering-cascade">The “Almost Done” Trap: PDF Rendering Cascade</h2>
 <p>What happened next is a textbook instance of <strong>Anti-Pattern #15: The “Almost Done” Trap</strong> — each fix revealed the next issue, creating a cascade where “one more fix” repeated five times.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    A["PDF renders ✓&lt;br/&gt;but text boxes&lt;br/&gt;too narrow"] --&gt;|Fix: scrreprt +&lt;br/&gt;explicit geometry| B["Layout fixed ✓&lt;br/&gt;but Mermaid diagrams&lt;br/&gt;missing"]
-    B --&gt;|"Fix: convert all 15&lt;br/&gt;```mermaid → ```{mermaid}"| C["Diagrams render ✓&lt;br/&gt;but headings show&lt;br/&gt;duplicate numbers"]
-    C --&gt;|Fix: strip manual&lt;br/&gt;numbers from&lt;br/&gt;25 headings| D["Headings clean ✓&lt;br/&gt;but diagrams and&lt;br/&gt;code overflow margins"]
-    D --&gt;|Fix: fig-width 6.5&lt;br/&gt;+ code-overflow wrap| E["Overflow fixed ✓&lt;br/&gt;but fig-width exceeds&lt;br/&gt;6.3 in usable width"]
-    E --&gt;|Fix: reduce to 5.5&lt;br/&gt;+ preamble.tex| F["PDF clean ✓&lt;br/&gt;686KB → 3.8MB"]
+    A["PDF renders ✓&lt;br/&gt;text too narrow"] --&gt;|scrreprt class| B["Layout fixed ✓&lt;br/&gt;Mermaid missing"]
+    B --&gt;|syntax fix| C["Diagrams render ✓&lt;br/&gt;duplicate numbers"]
+    C --&gt;|strip numbers| D["Headings clean ✓&lt;br/&gt;margins overflow"]
+    D --&gt;|fig-width+wrap| E["Overflow fixed ✓&lt;br/&gt;fig-width too wide"]
+    E --&gt;|5.5 + preamble| F["PDF clean ✓&lt;br/&gt;686KB → 3.8MB"]
 
     style A fill:#fee,stroke:#c33
     style F fill:#efe,stroke:#3c3
@@ -689,7 +689,8 @@ Note
 </tbody>
 </table>
 <p>The final architecture splits rendering by environment:</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="landscape">
+<div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -719,6 +720,7 @@ Note
 </div>
 </div>
 </div>
+</div>
 <p>The 15-minute local render is a direct consequence of <strong>context window exhaustion applied to CI</strong> — Chromium-based Mermaid rendering is too heavy for a fast feedback loop. The architecture makes this explicit: CI optimizes for speed (HTML-only, 49 seconds), local optimizes for completeness (all formats).</p>
 </section>
 <section id="download-ux-seven-iterations-of-human-refinement" class="level2">
@@ -738,27 +740,29 @@ Note
 <section id="licensing-expert-panel-deliberation" class="level2">
 <h2 class="anchored" data-anchor-id="licensing-expert-panel-deliberation">Licensing: Expert Panel Deliberation</h2>
 <p>A three-expert panel (IP Attorney, Publishing Strategist, Growth Hacker) evaluated licensing options. The recommendation was unanimous: <strong>CC BY-NC-ND 4.0</strong>.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="landscape">
+<div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">sequenceDiagram
     participant O as Orchestrator
-    participant P as 3-Expert Panel
-    participant H as Human Author
+    participant P as Expert Panel
+    participant H as Author
 
-    O-&gt;&gt;P: Evaluate licensing for free tech book&lt;br/&gt;with commercial author brand
-    P-&gt;&gt;P: IP Attorney: CC BY-NC-ND protects&lt;br/&gt;canonical version
-    P-&gt;&gt;P: Publishing Strategist: invites sharing,&lt;br/&gt;requires attribution
-    P-&gt;&gt;P: Growth Hacker: maximizes reach&lt;br/&gt;while protecting monetization
+    O-&gt;&gt;P: Evaluate licensing&lt;br/&gt;for free tech book
+    P-&gt;&gt;P: IP Attorney: protects&lt;br/&gt;canonical version
+    P-&gt;&gt;P: Strategist: sharing&lt;br/&gt;+ attribution
+    P-&gt;&gt;P: Growth: max reach,&lt;br/&gt;protect monetization
     P-&gt;&gt;O: Unanimous: CC BY-NC-ND 4.0
     O-&gt;&gt;H: Recommendation + rationale
     H-&gt;&gt;O: Approved
-    O-&gt;&gt;O: Apply to LICENSE, README,&lt;br/&gt;index.qmd, _quarto.yml footer
+    O-&gt;&gt;O: Apply to LICENSE, README,&lt;br/&gt;index, _quarto.yml
 </pre>
 </div>
 <p></p></figure><p></p>
+</div>
 </div>
 </div>
 </div>

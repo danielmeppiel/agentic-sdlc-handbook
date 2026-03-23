@@ -642,7 +642,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="pattern-1-writer-reviewer-tester" class="level3" data-number="14.2.1">
 <h3 data-number="14.2.1" class="anchored" data-anchor-id="pattern-1-writer-reviewer-tester"><span class="header-section-number">14.2.1</span> Pattern 1: Writer / Reviewer / Tester</h3>
 <p>The most common pattern separates code production from code validation. One agent writes the code. A second agent reviews it. A third writes or updates tests.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -813,31 +813,31 @@ Fix any failures before reporting done.</code></pre>
 <section id="wave-based-parallelism" class="level3" data-number="14.3.2">
 <h3 data-number="14.3.2" class="anchored" data-anchor-id="wave-based-parallelism"><span class="header-section-number">14.3.2</span> Wave-Based Parallelism</h3>
 <p>The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    W0["Wave 0: FOUNDATION&lt;br/&gt;No dependencies, fully parallel"]
-    W0A["Agent A: type definitions"]
-    W0B["Agent B: utility module"]
-    W0C["Agent C: configuration"]
+    W0["Wave 0: FOUNDATION"]
+    W0A["Types"]
+    W0B["Utilities"]
+    W0C["Config"]
     W0 --- W0A &amp; W0B &amp; W0C
-    CHECK0{"All complete,&lt;br/&gt;tests pass"}
+    CHECK0{"Tests pass"}
     W0A &amp; W0B &amp; W0C --&gt; CHECK0
-    W1["Wave 1: CORE CHANGES&lt;br/&gt;Depends on Wave 0"]
+    W1["Wave 1: CORE CHANGES"]
     CHECK0 --&gt; W1
-    W1D["Agent D: module migration&lt;br/&gt;(uses new types)"]
-    W1E["Agent E: API consolidation&lt;br/&gt;(uses new utilities)"]
-    W1F["Agent F: auth refactor"]
+    W1D["Migration"]
+    W1E["API"]
+    W1F["Auth"]
     W1 --- W1D &amp; W1E &amp; W1F
-    CHECK1{"All complete,&lt;br/&gt;tests pass"}
+    CHECK1{"Tests pass"}
     W1D &amp; W1E &amp; W1F --&gt; CHECK1
-    W2["Wave 2: INTEGRATION&lt;br/&gt;Depends on Wave 1"]
+    W2["Wave 2: INTEGRATION"]
     CHECK1 --&gt; W2
-    W2G["Agent G: wiring + imports"]
-    W2H["Agent H: test updates"]
+    W2G["Wiring"]
+    W2H["Tests"]
     W2 --- W2G &amp; W2H
 </pre>
 </div>
@@ -849,7 +849,7 @@ Fix any failures before reporting done.</code></pre>
 <p>Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.</p>
 <p>In the reference case study (PR #394, detailed in the <a href="../case-study-apm-overhaul.html">case study</a>), four waves plus one recovery wave handled 75 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. Meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.</p>
 <div class="landscape">
-<div class="cell" data-fig-width="8.5" data-layout-align="default">
+<div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -886,7 +886,7 @@ Fix any failures before reporting done.</code></pre>
 <section id="pipeline-parallelism" class="level3" data-number="14.3.3">
 <h3 data-number="14.3.3" class="anchored" data-anchor-id="pipeline-parallelism"><span class="header-section-number">14.3.3</span> Pipeline Parallelism</h3>
 <p>Some operations can run in parallel across workflow stages rather than across files. While execution agents work on Wave 1, review agents can start reviewing Wave 0’s output. While human review happens on one wave, test agents can run extended validation on a previous wave.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -1040,7 +1040,7 @@ Fix any failures before reporting done.</code></pre>
 <h3 data-number="14.7.1" class="anchored" data-anchor-id="session-isolation"><span class="header-section-number">14.7.1</span> Session Isolation</h3>
 <p>Each agent session is independent. Agent A cannot see Agent B’s conversation history, edits, or reasoning. This is a feature, not a limitation. Session isolation ensures that one agent’s context degradation does not propagate to others. If Agent A’s session becomes cluttered after a complex debugging sequence, Agent B starts fresh with a clean context.</p>
 <p>The implication: information flows between agents through committed artifacts, not through shared sessions. When Agent B needs to build on Agent A’s work, it reads the committed files — the same files that passed tests and were validated at the wave checkpoint. It does not read Agent A’s internal reasoning or discarded alternatives.</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -1093,21 +1093,21 @@ Fix any failures before reporting done.</code></pre>
 <section id="putting-it-together" class="level2" data-number="14.8">
 <h2 data-number="14.8" class="anchored" data-anchor-id="putting-it-together"><span class="header-section-number">14.8</span> Putting It Together</h2>
 <p>The patterns described in this chapter compose into a workflow:</p>
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    A1["1. ASSESS&lt;br/&gt;Scope: single-agent&lt;br/&gt;vs. multi-agent"] --&gt; A2["2. SPECIALIZE&lt;br/&gt;Choose team pattern"]
-    A2 --&gt; A3["3. PARTITION&lt;br/&gt;Files across agents&lt;br/&gt;(one file, one agent per wave)"]
-    A3 --&gt; A4["4. ORDER&lt;br/&gt;Waves by dependency"]
-    A4 --&gt; A5["5. DISPATCH&lt;br/&gt;Each wave in parallel"]
-    A5 --&gt; A6{"6. VALIDATE&lt;br/&gt;Test, commit,&lt;br/&gt;checkpoint"}
+    A1["1. ASSESS&lt;br/&gt;Scope decision"] --&gt; A2["2. SPECIALIZE&lt;br/&gt;Team pattern"]
+    A2 --&gt; A3["3. PARTITION&lt;br/&gt;File ownership"]
+    A3 --&gt; A4["4. ORDER&lt;br/&gt;Wave dependencies"]
+    A4 --&gt; A5["5. DISPATCH&lt;br/&gt;Parallel execution"]
+    A5 --&gt; A6{"6. VALIDATE&lt;br/&gt;Test &amp; checkpoint"}
     A6 --&gt;|"Pass"| A5
     A6 --&gt;|"Fail"| DX["DIAGNOSE"]
-    DX --&gt;|"L1/L2"| RETRY["Retry with&lt;br/&gt;refined prompt"]
-    DX --&gt;|"L3/L4"| HUMAN["Human decides,&lt;br/&gt;adapt plan"]
+    DX --&gt;|"L1/L2"| RETRY["Retry"]
+    DX --&gt;|"L3/L4"| HUMAN["Human decides"]
     RETRY --&gt; A5
     HUMAN --&gt; A4
 </pre>

@@ -555,28 +555,28 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>The Agent Layer</strong> is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy — from passive suggestion to autonomous task execution — but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.</p>
 <p><strong>The Platform Layer</strong> is the infrastructure that enables both humans and agents: source control, CI/CD pipelines, identity and access management, observability, artifact registries, and the APIs that connect them. This layer is often invisible in AI adoption conversations, which is precisely why adoption stalls. An agent that can generate code but cannot run tests, read build output, or access your dependency graph is an agent working blind.</p>
 <p>The layers are not independent. They form a stack where each depends on the one below it:</p>
-<div class="cell" data-fig-width="5.5" data-fig-height="4" data-layout-align="default">
+<div class="cell" data-fig-width="5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
-<pre class="mermaid mermaid-js">flowchart TB
+<pre class="mermaid mermaid-js">flowchart LR
     subgraph HUMAN ["HUMAN LAYER"]
         direction LR
         HR["Roles: Product, Architecture,&lt;br/&gt;Engineering, QA, Operations"]
-        HF["Functions: Decisions, Governance,&lt;br/&gt;Accountability, Strategy"]
+        HF["Functions: Decisions,&lt;br/&gt;Governance, Accountability"]
     end
 
     subgraph AGENT ["AGENT LAYER"]
         direction LR
-        AC["Capabilities: Generate, Analyze,&lt;br/&gt;Test, Review, Transform"]
+        AC["Capabilities: Generate,&lt;br/&gt;Analyze, Test, Review"]
         AB["Boundaries: Scoped authority,&lt;br/&gt;context-dependent, auditable"]
     end
 
     subgraph PLATFORM ["PLATFORM LAYER"]
         direction LR
-        PI["Infrastructure: SCM, CI/CD,&lt;br/&gt;Auth, Observability, Registries"]
-        PN["Integrations: APIs, Webhooks,&lt;br/&gt;Context Sources, Artifact Stores"]
+        PI["Infrastructure: SCM, CI/CD,&lt;br/&gt;Auth, Observability"]
+        PN["Integrations: APIs, Webhooks,&lt;br/&gt;Context Sources, Artifacts"]
     end
 
     HUMAN -- "sets constraints,&lt;br/&gt;delegates tasks" --&gt; AGENT
@@ -878,7 +878,7 @@ ul.task-list li input[type="checkbox"] {
 <h3 data-number="6.4.1" class="anchored" data-anchor-id="the-compounding-mechanism"><span class="header-section-number">6.4.1</span> The Compounding Mechanism</h3>
 <p>Structured context is not a one-time cost. It compounds.</p>
 <p>When an agent produces a code review using your team’s documented quality standards, that review generates structured feedback. When a developer resolves the feedback and updates a convention document, the convention becomes richer. When the next agent interaction loads that richer convention, the output improves. Each cycle reinforces the next:</p>
-<div class="cell" data-fig-width="6" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-context-flywheel" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

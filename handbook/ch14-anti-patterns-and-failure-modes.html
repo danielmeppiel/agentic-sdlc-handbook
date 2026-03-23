@@ -1389,29 +1389,28 @@ git commit -m "feat: auth module migration — core flows complete"</code></pre>
 <section id="the-failure-mode-decision-tree" class="level2" data-number="16.8">
 <h2 data-number="16.8" class="anchored" data-anchor-id="the-failure-mode-decision-tree"><span class="header-section-number">16.8</span> The Failure Mode Decision Tree</h2>
 <p>When something goes wrong, the first question is what kind of wrong:</p>
-<div class="landscape">
-<div class="cell" data-fig-width="7" data-layout-align="default">
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    START(["Something went wrong&lt;br/&gt;with agent output"]) --&gt; Q1{Code syntactically&lt;br/&gt;wrong?}
+    START(["Agent output&lt;br/&gt;issue?"]) --&gt; Q1{"Syntax error?"}
 
-    Q1 -- Yes --&gt; FIX1["Model capability&lt;br/&gt;Upgrade model or&lt;br/&gt;manual fallback"]
-    Q1 -- No --&gt; Q2{Tests fail?}
+    Q1 -- Yes --&gt; FIX1["Model issue&lt;br/&gt;Upgrade or manual"]
+    Q1 -- No --&gt; Q2{"Tests fail?"}
 
-    Q2 -- Yes --&gt; Q2a{Agent's code&lt;br/&gt;or pre-existing?}
-    Q2a -- "Agent's" --&gt; FIX2["Task too broad?&lt;br/&gt;Context stale?&lt;br/&gt;Constraint dropped?"]
-    Q2a -- Pre-existing --&gt; FIX2b["Separate issue&lt;br/&gt;Don't fix here"]
+    Q2 -- Yes --&gt; Q2a{"Agent's code&lt;br/&gt;or pre-existing?"}
+    Q2a -- "Agent's" --&gt; FIX2["Task/context issue&lt;br/&gt;Narrow scope"]
+    Q2a -- Pre-existing --&gt; FIX2b["Separate issue&lt;br/&gt;Skip"]
 
-    Q2 -- No --&gt; Q3{Follows your&lt;br/&gt;conventions?}
+    Q2 -- No --&gt; Q3{"Follows&lt;br/&gt;conventions?"}
 
-    Q3 -- No --&gt; FIX3["Primitive gap&lt;br/&gt;Rule missing or&lt;br/&gt;wrong scope?"]
-    Q3 -- Yes --&gt; Q4{Integrates correctly&lt;br/&gt;with system?}
+    Q3 -- No --&gt; FIX3["Primitive gap&lt;br/&gt;Add rule"]
+    Q3 -- Yes --&gt; Q4{"Integrates&lt;br/&gt;correctly?"}
 
-    Q4 -- No --&gt; FIX4["Architecture issue&lt;br/&gt;Wrong interfaces&lt;br/&gt;or boundaries?"]
-    Q4 -- Yes --&gt; FIX5["Probably fine&lt;br/&gt;Verify edge cases"]
+    Q4 -- No --&gt; FIX4["Architecture issue&lt;br/&gt;Fix boundaries"]
+    Q4 -- Yes --&gt; FIX5["Probably fine&lt;br/&gt;Check edges"]
 
     style FIX1 fill:#e63946,color:#fff
     style FIX2 fill:#e76f51,color:#fff
@@ -1422,7 +1421,6 @@ git commit -m "feat: auth module migration — core flows complete"</code></pre>
 </pre>
 </div>
 <p></p></figure><p></p>
-</div>
 </div>
 </div>
 </div>

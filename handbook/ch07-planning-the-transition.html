@@ -651,27 +651,27 @@ ul.task-list li input[type="checkbox"] {
 <h4 data-number="9.3.0.1" class="anchored" data-anchor-id="a-note-on-timelines"><span class="header-section-number">9.3.0.1</span> A note on timelines</h4>
 <p>The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.</p>
 <div class="landscape">
-<div class="cell" data-fig-width="8.5" data-layout-align="default">
+<div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TB
-    PRE["&lt;b&gt;Pre-Transition&lt;/b&gt;&lt;br/&gt;Readiness assessments&lt;br/&gt;Baseline metrics&lt;br/&gt;&lt;em&gt;Weeks 1–4&lt;/em&gt;"]
+    PRE["&lt;b&gt;Pre-Transition&lt;/b&gt;&lt;br/&gt;Weeks 1–4"]
 
-    P1["&lt;b&gt;Phase 1: Pilot&lt;/b&gt;&lt;br/&gt;1–2 teams, controlled scope&lt;br/&gt;Build minimum context layer&lt;br/&gt;&lt;em&gt;1–5 months&lt;/em&gt;"]
+    P1["&lt;b&gt;Phase 1: Pilot&lt;/b&gt;&lt;br/&gt;1–2 teams, 1–5 months"]
 
-    G1{"Exit signals met?&lt;br/&gt;Context layer works&lt;br/&gt;Review workflow trusted&lt;br/&gt;4+ weeks of metrics"}
+    G1{"Exit signals met?"}
 
-    P2["&lt;b&gt;Phase 2: Expand&lt;/b&gt;&lt;br/&gt;3–5 additional teams&lt;br/&gt;Shared context assets&lt;br/&gt;Governance at scale&lt;br/&gt;&lt;em&gt;3–9 months from start&lt;/em&gt;"]
+    P2["&lt;b&gt;Phase 2: Expand&lt;/b&gt;&lt;br/&gt;3–5 teams, 3–9 months"]
 
-    G2{"Exit signals met?&lt;br/&gt;Teams self-sufficient&lt;br/&gt;Shared assets owned&lt;br/&gt;Metrics show trend"}
+    G2{"Exit signals met?"}
 
-    P3["&lt;b&gt;Phase 3: Scale&lt;/b&gt;&lt;br/&gt;Remaining teams&lt;br/&gt;Self-service onboarding&lt;br/&gt;Continuous practice&lt;br/&gt;&lt;em&gt;6–24 months from start&lt;/em&gt;"]
+    P3["&lt;b&gt;Phase 3: Scale&lt;/b&gt;&lt;br/&gt;All teams, 6–24 months"]
 
-    RB1["ROLLBACK&lt;br/&gt;Rejection rate &gt; 60%&lt;br/&gt;Intervention not declining&lt;br/&gt;Satisfaction drops"]
+    RB1["ROLLBACK&lt;br/&gt;High rejection/intervention"]
 
-    RB2["ROLLBACK&lt;br/&gt;Coach dependency &gt; 4 wks&lt;br/&gt;Metrics diverge from pilot&lt;br/&gt;Coach burnout"]
+    RB2["ROLLBACK&lt;br/&gt;Coach dependency/divergence"]
 
     PRE --&gt; P1
     P1 --&gt; G1
