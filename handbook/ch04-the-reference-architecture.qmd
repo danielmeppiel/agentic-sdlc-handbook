@@ -18,10 +18,9 @@ At every phase of the software development lifecycle, work happens across three 
 
 The layers are not independent. They form a stack where each depends on the one below it:
 
-::: {.landscape}
-
 ```{mermaid}
-%%| fig-width: 8.5
+%%| fig-width: 5.5
+%%| fig-height: 4
 flowchart TB
     subgraph HUMAN ["HUMAN LAYER"]
         direction LR
@@ -50,8 +49,6 @@ flowchart TB
     style AGENT fill:#e67e22,color:#fff
     style PLATFORM fill:#2ecc71,color:#fff
 ```
-
-:::
 
 This structure is not a proposal. It is a description of what already exists in any organization using AI coding tools — whether they've designed it deliberately or not. The agent in your developer's editor is already operating across these three layers. The question is whether the boundaries, the context flow, and the governance are intentional.
 

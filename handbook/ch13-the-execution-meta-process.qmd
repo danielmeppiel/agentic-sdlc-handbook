@@ -54,7 +54,7 @@ Each phase has a specific purpose, a specific human decision, and a specific out
 
 A well-structured plan looks like this:
 
-```
+```yaml
 Scope
   Auth resolver deduplication, verbose coverage gaps,
   CommandLogger migration, unicode cleanup.
@@ -139,11 +139,12 @@ The wave structure is where planning becomes engineering. A poorly decomposed se
 
 Waves are ordered by dependency. Wave 0 contains tasks with no dependencies — foundational changes that other waves build on. Wave 1 contains tasks that depend on Wave 0 outputs. Wave 2 depends on Wave 1. The dependency is directional and strict: no task in wave N may depend on a task in wave N+1.
 
-```
-Wave 0: FOUNDATION    No dependencies, fully parallel
-Wave 1: CORE          Depends on Wave 0 outputs
-Wave 2: MIGRATION     Depends on Wave 1 patterns being stable
-Wave 3: POLISH        Depends on Wave 2 completeness
+```{mermaid}
+%%| fig-width: 4.5
+flowchart LR
+    W0["Wave 0<br/>FOUNDATION"] -->|"No deps"| W1["Wave 1<br/>CORE"]
+    W1 -->|"Wave 0 outputs"| W2["Wave 2<br/>MIGRATION"]
+    W2 -->|"Wave 1 stable"| W3["Wave 3<br/>POLISH"]
 ```
 
 The most common dependency pattern is foundation-before-migration. Type definitions, protocol changes, and method signatures go in Wave 0. Code that uses those new interfaces goes in Wave 1+. If you put both in the same wave, agents will try to both define and consume new APIs simultaneously — and the consumer agents will work against a file state that doesn't yet include the definitions.
@@ -243,11 +244,13 @@ Each checkpoint has four components:
 
 When a checkpoint fails — tests are red, an agent is stuck, a dependency was missed — the meta-process doesn't stop. It adapts.
 
-```
-DETECT   → test failure, agent stall, unexpected conflict
-DIAGNOSE → what broke, why, which wave/task/file
-ADJUST   → modify the plan: add tasks, split tasks, reorder waves
-EXECUTE  → re-run the adjusted wave
+```{mermaid}
+%%| fig-width: 4.5
+flowchart LR
+    D["DETECT<br/>Test failure, agent stall,<br/>unexpected conflict"] --> DG["DIAGNOSE<br/>What broke, why,<br/>which wave/task/file"]
+    DG --> A["ADJUST<br/>Modify plan: add tasks,<br/>split, reorder waves"]
+    A --> E["EXECUTE<br/>Re-run adjusted wave"]
+    E -.->|"If new issue"| D
 ```
 
 The ADAPT loop connects wave execution back to planning. It is not a fallback. It is a designed part of the process — the mechanism that handles the irreducible uncertainty of working with non-deterministic systems on complex codebases.
@@ -272,9 +275,11 @@ Long-running sessions degrade in two ways. First, instructions loaded at the beg
 
 For the wave execution model, session management is straightforward:
 
-- **Audit agents** run in isolated sessions. They have no state to carry forward.
-- **Wave agents** run in isolated sessions. Each receives the full context for its task — instructions, relevant code, constraints — without any history from previous waves.
-- **The orchestrating session** — the one that manages the plan, dispatches agents, and runs checkpoints — is the only long-running session. It accumulates state intentionally: task status, wave history, decision rationale.
+| Session Type | Isolation | State | Purpose |
+|---|---|---|---|
+| Audit agents | Fully isolated | No state carried forward | Read-only analysis |
+| Wave agents | Fully isolated | Full context per task, no history from previous waves | Scoped implementation |
+| Orchestrating session | Long-running | Accumulates state intentionally: task status, wave history, decision rationale | Plan management, agent dispatch, checkpoints |
 
 This separation is why the meta-process uses parallel isolated agents rather than a single agent executing tasks sequentially. Parallel agents don't just execute faster — they execute with cleaner context.
 

@@ -446,24 +446,24 @@ When something goes wrong, the first question is what kind of wrong:
 ::: {.landscape}
 
 ```{mermaid}
-%%| fig-width: 8.5
+%%| fig-width: 7.0
 flowchart TD
     START(["Something went wrong<br/>with agent output"]) --> Q1{Code syntactically<br/>wrong?}
 
-    Q1 -- Yes --> FIX1["Model capability issue<br/>Stronger model, better examples,<br/>or do it manually"]
+    Q1 -- Yes --> FIX1["Model capability<br/>Upgrade model or<br/>manual fallback"]
     Q1 -- No --> Q2{Tests fail?}
 
     Q2 -- Yes --> Q2a{Agent's code<br/>or pre-existing?}
-    Q2a -- "Agent's" --> FIX2["Check: task too broad?<br/>Context stale?<br/>Constraint dropped?"]
-    Q2a -- Pre-existing --> FIX2b["Separate issue<br/>Do not fix in this session"]
+    Q2a -- "Agent's" --> FIX2["Task too broad?<br/>Context stale?<br/>Constraint dropped?"]
+    Q2a -- Pre-existing --> FIX2b["Separate issue<br/>Don't fix here"]
 
     Q2 -- No --> Q3{Follows your<br/>conventions?}
 
-    Q3 -- No --> FIX3["Primitive issue<br/>Rule missing? Wrong scope?<br/>Too much context noise?"]
+    Q3 -- No --> FIX3["Primitive gap<br/>Rule missing or<br/>wrong scope?"]
     Q3 -- Yes --> Q4{Integrates correctly<br/>with system?}
 
-    Q4 -- No --> FIX4["Architectural issue<br/>Right interfaces visible?<br/>Module boundaries respected?"]
-    Q4 -- Yes --> FIX5["Probably fine<br/>Verify edge cases: error paths,<br/>null inputs, concurrency, auth"]
+    Q4 -- No --> FIX4["Architecture issue<br/>Wrong interfaces<br/>or boundaries?"]
+    Q4 -- Yes --> FIX5["Probably fine<br/>Verify edge cases"]
 
     style FIX1 fill:#e63946,color:#fff
     style FIX2 fill:#e76f51,color:#fff

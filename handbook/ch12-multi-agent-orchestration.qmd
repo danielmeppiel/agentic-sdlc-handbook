@@ -58,14 +58,12 @@ Three specialization patterns recur across most multi-agent workflows.
 
 The most common pattern separates code production from code validation. One agent writes the code. A second agent reviews it. A third writes or updates tests.
 
-```
-Writer agent ──→ Code changes
-                     │
-                     ▼
-Reviewer agent ──→ Findings (bugs, logic errors, security)
-                     │
-                     ▼
-Tester agent ──→ Test updates + verification
+```{mermaid}
+%%| fig-width: 5.5
+flowchart TD
+    W["Writer agent"] -->|"Code changes"| R["Reviewer agent"]
+    R -->|"Findings: bugs,<br/>logic errors, security"| T["Tester agent"]
+    T -->|"Test updates +<br/>verification"| Done["Verified output"]
 ```
 
 This pattern maps directly to the human workflow of author, reviewer, and QA — and for the same reason. The writer optimizes for correctness and completeness. The reviewer optimizes for catching what the writer missed. The tester optimizes for verifiable behavior. These are different cognitive tasks that benefit from different contexts.
@@ -76,22 +74,10 @@ In practice, the reviewer agent receives the diff plus the original source, not 
 
 For cross-cutting changes, organize agents by area of expertise rather than by workflow stage. Each team owns a concern and is responsible for all files related to that concern.
 
-```
-┌─────────────────────────┐  ┌─────────────────────────┐
-│   ARCHITECTURE TEAM     │  │   DOMAIN EXPERT TEAM    │
-│                         │  │                         │
-│   Loaded context:       │  │   Loaded context:       │
-│   - Type definitions    │  │   - Output conventions  │
-│   - Module boundaries   │  │   - Symbol dictionaries │
-│   - Pattern catalog     │  │   - UX guidelines       │
-│   - Dependency graph    │  │   - Migration patterns  │
-│                         │  │                         │
-│   Owns:                 │  │   Owns:                 │
-│   - Type safety fixes   │  │   - Verbose coverage    │
-│   - Dead code removal   │  │   - Logger migration    │
-│   - API consolidation   │  │   - Formatting cleanup  │
-└─────────────────────────┘  └─────────────────────────┘
-```
+| Aspect | Architecture Team | Domain Expert Team |
+|--------|-------------------|---------------------|
+| **Context loaded** | Type definitions, Module boundaries, Pattern catalog, Dependency graph | Output conventions, Symbol dictionaries, UX guidelines, Migration patterns |
+| **Owns** | Type safety fixes, Dead code removal, API consolidation | Verbose coverage, Logger migration, Formatting cleanup |
 
 In the reference case study ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in the [case study](../case-study-apm-overhaul.qmd) and summarized in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 75-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
 
@@ -105,14 +91,14 @@ Before dispatching, the orchestrator prepares three things: the instruction file
 
 **Instruction files loaded into context:**
 
-```
+```text
 .ai/instructions.md              # Project-wide conventions (always loaded)
 .ai/integrations/logging.md      # Logging-specific patterns and examples
 ```
 
 **The dispatch prompt:**
 
-```
+```text
 Migrate the following files from print-based output to the structured
 logger established in Wave 0. Use the LoggerFactory pattern from
 src/core/logger.py (committed and tested).
@@ -147,24 +133,13 @@ The orchestrator dispatches this prompt in a fresh session, monitors for complet
 
 For exploratory work where the scope is not fully known in advance, separate the agents that discover what needs to change from the agents that make the changes.
 
-```
-Audit agents (read-only)
-  │
-  │  Findings: files, severity, recommendations
-  ▼
-Planning (human decision)
-  │
-  │  Scoped tasks with file assignments
-  ▼
-Execution agents (read-write)
-  │
-  │  Code changes
-  ▼
-Validation agents (read-only)
-  │
-  │  Review findings, test results
-  ▼
-Ship
+```{mermaid}
+%%| fig-width: 4.5
+flowchart TD
+    A["Audit agents<br/>(read-only)"] -->|"Findings: files,<br/>severity, recommendations"| B["Planning<br/>(human decision)"]
+    B -->|"Scoped tasks with<br/>file assignments"| C["Execution agents<br/>(read-write)"]
+    C -->|"Code changes"| D["Validation agents<br/>(read-only)"]
+    D -->|"Review findings,<br/>test results"| E["Ship"]
 ```
 
 The critical property of this pattern is the separation between read-only and read-write operations. Audit agents explore the codebase without modifying it. This means you can dispatch multiple audit agents simultaneously with no risk of interference. They can examine the same files, look at overlapping concerns, and produce independent assessments.
@@ -185,17 +160,13 @@ Most agent tooling edits files using string matching — the agent specifies an 
 
 This is not a theoretical risk. It is the most common failure mode in parallel agent execution.
 
-```
-SAFE: Each agent owns distinct files
-  Agent A ──→ resolver.py, dependency_graph.py
-  Agent B ──→ install.py
-  Agent C ──→ cli.py, commands/init.py
-
-UNSAFE: Two agents edit the same file
-  Agent A ──→ install.py (lines 100-200)
-  Agent B ──→ install.py (lines 400-500)
-  ← CONFLICT: Agent B's line references are invalid after Agent A's edits
-```
+| Pattern | Agent | Files | Risk |
+|---------|-------|-------|------|
+| ✅ Safe | Agent A | resolver.py, dependency_graph.py | None — distinct files |
+| ✅ Safe | Agent B | install.py | None — distinct files |
+| ✅ Safe | Agent C | cli.py, commands/init.py | None — distinct files |
+| ❌ Unsafe | Agent A | install.py (lines 100–200) | **Conflict** — Agent B's line references invalidated |
+| ❌ Unsafe | Agent B | install.py (lines 400–500) | **Conflict** — after Agent A's edits |
 
 Enforcing this rule requires partitioning the file set before dispatch. If two concerns both need to modify the same file, those modifications go to a single agent that handles both, or they go to separate sequential waves.
 
@@ -203,22 +174,29 @@ Enforcing this rule requires partitioning the file set before dispatch. If two c
 
 The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.
 
-```
-Wave 0: FOUNDATION          ←  No dependencies, fully parallel
-  Agent A: type definitions
-  Agent B: utility module
-  Agent C: configuration
-       │
-       ▼  (all complete, tests pass)
-Wave 1: CORE CHANGES        ←  Depends on Wave 0
-  Agent D: module migration (uses new types from Wave 0)
-  Agent E: API consolidation (uses new utilities from Wave 0)
-  Agent F: auth refactor
-       │
-       ▼  (all complete, tests pass)
-Wave 2: INTEGRATION         ←  Depends on Wave 1
-  Agent G: wiring + imports
-  Agent H: test updates
+```{mermaid}
+%%| fig-width: 5.5
+flowchart TD
+    W0["Wave 0: FOUNDATION<br/>No dependencies, fully parallel"]
+    W0A["Agent A: type definitions"]
+    W0B["Agent B: utility module"]
+    W0C["Agent C: configuration"]
+    W0 --- W0A & W0B & W0C
+    CHECK0{"All complete,<br/>tests pass"}
+    W0A & W0B & W0C --> CHECK0
+    W1["Wave 1: CORE CHANGES<br/>Depends on Wave 0"]
+    CHECK0 --> W1
+    W1D["Agent D: module migration<br/>(uses new types)"]
+    W1E["Agent E: API consolidation<br/>(uses new utilities)"]
+    W1F["Agent F: auth refactor"]
+    W1 --- W1D & W1E & W1F
+    CHECK1{"All complete,<br/>tests pass"}
+    W1D & W1E & W1F --> CHECK1
+    W2["Wave 2: INTEGRATION<br/>Depends on Wave 1"]
+    CHECK1 --> W2
+    W2G["Agent G: wiring + imports"]
+    W2H["Agent H: test updates"]
+    W2 --- W2G & W2H
 ```
 
 The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0's output being committed and tested. Within a wave, agents are independent — they share no files and make no assumptions about each other's progress.
@@ -237,21 +215,21 @@ gantt
     axisFormat %s
 
     section Wave 0 — Foundation
-    Agent A (types)        :a, 0, 5
-    Agent B (utilities)    :b, 0, 4
-    Agent C (config)       :c, 0, 3
-    Test + commit          :crit, t0, 5, 7
+    Types              :a, 0, 5
+    Utilities          :b, 0, 4
+    Config             :c, 0, 3
+    Checkpoint         :crit, t0, 5, 7
 
     section Wave 1 — Core
-    Agent D (migration)    :d, 7, 12
-    Agent E (API)          :e, 7, 11
-    Agent F (auth)         :f, 7, 13
-    Test + commit          :crit, t1, 13, 15
+    Migration          :d, 7, 12
+    API                :e, 7, 11
+    Auth               :f, 7, 13
+    Checkpoint         :crit, t1, 13, 15
 
     section Wave 2 — Integration
-    Agent G (wiring)       :g, 15, 19
-    Agent H (tests)        :h, 15, 18
-    Test + commit          :crit, t2, 19, 21
+    Wiring             :g, 15, 19
+    Tests              :h, 15, 18
+    Checkpoint         :crit, t2, 19, 21
 ```
 
 :::
@@ -260,14 +238,19 @@ gantt
 
 Some operations can run in parallel across workflow stages rather than across files. While execution agents work on Wave 1, review agents can start reviewing Wave 0's output. While human review happens on one wave, test agents can run extended validation on a previous wave.
 
-```
-Time ──→
-
-Wave 0 agents:   [████████]
-Wave 0 review:              [████]
-Wave 0 tests:               [██████████]
-Wave 1 agents:                    [████████████]
-Wave 1 review:                                   [████]
+```{mermaid}
+%%| fig-width: 5.5
+gantt
+    title Pipeline Parallelism
+    dateFormat X
+    axisFormat %s
+    section Wave 0
+    Agents    :a0, 0, 8
+    Review    :r0, 8, 12
+    Tests     :t0, 8, 18
+    section Wave 1
+    Agents    :a1, 10, 22
+    Review    :r1, 22, 26
 ```
 
 This works when the review and test operations are read-only and the execution operations have no backward dependencies on review findings. If a review agent finds a problem in Wave 0, the fix goes into a later wave — it does not interrupt Wave 1, which was planned against the committed Wave 0 output.
@@ -397,20 +380,22 @@ Each agent session is independent. Agent A cannot see Agent B's conversation his
 
 The implication: information flows between agents through committed artifacts, not through shared sessions. When Agent B needs to build on Agent A's work, it reads the committed files — the same files that passed tests and were validated at the wave checkpoint. It does not read Agent A's internal reasoning or discarded alternatives.
 
-```
-Session A              Session B              Session C
-┌────────────┐        ┌────────────┐        ┌────────────┐
-│ Instructions│        │ Instructions│        │ Instructions│
-│ Source files│        │ Source files│        │ Source files│
-│ Conversation│        │ Conversation│        │ Conversation│
-│ (isolated)  │        │ (isolated)  │        │ (isolated)  │
-└──────┬─────┘        └──────┬─────┘        └──────┬─────┘
-       │                     │                     │
-       ▼                     ▼                     ▼
-  ┌─────────────────────────────────────────────────┐
-  │              Shared filesystem                   │
-  │   (committed files = ground truth between waves) │
-  └─────────────────────────────────────────────────┘
+```{mermaid}
+%%| fig-width: 5.5
+flowchart TD
+    subgraph A1["Agent 1"]
+        C1["Conversation<br/>(isolated)"]
+    end
+    subgraph A2["Agent 2"]
+        C2["Conversation<br/>(isolated)"]
+    end
+    subgraph A3["Agent 3"]
+        C3["Conversation<br/>(isolated)"]
+    end
+    FS["Shared filesystem<br/>(committed files = ground truth between waves)"]
+    C1 --> FS
+    C2 --> FS
+    C3 --> FS
 ```
 
 ### Session Lifetime
@@ -444,31 +429,20 @@ The agent sessions are stateless workers. The coordination layer is the stateful
 
 The patterns described in this chapter compose into a workflow:
 
-```
-1. ASSESS scope and decide single-agent vs. multi-agent
-       │
-       ▼
-2. SPECIALIZE: choose a team pattern
-   (writer/reviewer/tester, domain teams, or audit/execute/validate)
-       │
-       ▼
-3. PARTITION files across agents (one file, one agent per wave)
-       │
-       ▼
-4. ORDER into waves by dependency
-       │
-       ▼
-5. DISPATCH each wave in parallel
-       │
-       ▼
-6. VALIDATE: test, commit, checkpoint
-       │
-       ├─ pass ──→ next wave (go to 5)
-       │
-       └─ fail ──→ DIAGNOSE
-                      │
-                      ├─ L1/L2: retry with refined prompt
-                      └─ L3/L4: human decides, adapt plan
+```{mermaid}
+%%| fig-width: 5.5
+flowchart TD
+    A1["1. ASSESS<br/>Scope: single-agent<br/>vs. multi-agent"] --> A2["2. SPECIALIZE<br/>Choose team pattern"]
+    A2 --> A3["3. PARTITION<br/>Files across agents<br/>(one file, one agent per wave)"]
+    A3 --> A4["4. ORDER<br/>Waves by dependency"]
+    A4 --> A5["5. DISPATCH<br/>Each wave in parallel"]
+    A5 --> A6{"6. VALIDATE<br/>Test, commit,<br/>checkpoint"}
+    A6 -->|"Pass"| A5
+    A6 -->|"Fail"| DX["DIAGNOSE"]
+    DX -->|"L1/L2"| RETRY["Retry with<br/>refined prompt"]
+    DX -->|"L3/L4"| HUMAN["Human decides,<br/>adapt plan"]
+    RETRY --> A5
+    HUMAN --> A4
 ```
 
 This is not a rigid process. A small change might skip straight from step 1 to dispatching a single agent. A large change might iterate through steps 5-6 four or five times. The structure is a decision framework, not a ceremony.

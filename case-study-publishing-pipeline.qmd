@@ -47,6 +47,7 @@ A single general-purpose agent converted the entire manuscript in one wave:
 HTML render: 16 files, zero errors, 15 Mermaid diagrams confirmed. The site went live on the `gh-pages` branch within the same wave.
 
 ```{mermaid}
+%%| fig-width: 5.5
 flowchart LR
     A["15 Markdown<br/>chapters"] --> B["git mv .md → .qmd<br/>+ YAML frontmatter"]
     B --> C["_quarto.yml<br/>book config"]
@@ -64,6 +65,7 @@ flowchart LR
 What happened next is a textbook instance of **Anti-Pattern #15: The "Almost Done" Trap** — each fix revealed the next issue, creating a cascade where "one more fix" repeated five times.
 
 ```{mermaid}
+%%| fig-width: 5.5
 flowchart TD
     A["PDF renders ✓<br/>but text boxes<br/>too narrow"] -->|Fix: scrreprt +<br/>explicit geometry| B["Layout fixed ✓<br/>but Mermaid diagrams<br/>missing"]
     B -->|"Fix: convert all 15<br/>```mermaid → ```{mermaid}"| C["Diagrams render ✓<br/>but headings show<br/>duplicate numbers"]
@@ -101,6 +103,7 @@ The deployment pipeline went through its own iteration gauntlet:
 The final architecture splits rendering by environment:
 
 ```{mermaid}
+%%| fig-width: 5.5
 flowchart TB
     subgraph CI ["CI Pipeline (49 seconds)"]
         A1["Checkout"] --> A2["Install Quarto"]
@@ -143,6 +146,7 @@ Every iteration was a human design judgment. The agent executed each change in u
 A three-expert panel (IP Attorney, Publishing Strategist, Growth Hacker) evaluated licensing options. The recommendation was unanimous: **CC BY-NC-ND 4.0**.
 
 ```{mermaid}
+%%| fig-width: 5.5
 sequenceDiagram
     participant O as Orchestrator
     participant P as 3-Expert Panel

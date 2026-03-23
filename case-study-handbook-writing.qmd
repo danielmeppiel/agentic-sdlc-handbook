@@ -34,6 +34,7 @@ This case study maps the execution to the handbook's own vocabulary (Chapter 14)
 The orchestrator designed an 8-persona expert panel at project inception, then dynamically created 3 more as needs emerged during execution. The personas organized into four functional pods:
 
 ```{mermaid}
+%%| fig-width: 5.5
 graph TB
     subgraph Editorial["Editorial Pod"]
         CE[Chief Editor<br/>Cross-chapter coherence]
@@ -78,6 +79,7 @@ Each persona was a *primitive* — a composable instruction unit defined in a si
 The manuscript was produced in a phased pipeline: corpus audit → architecture → four writing waves → integration review → polish. Each wave followed checkpoint discipline: draft, review, revise, commit.
 
 ```{mermaid}
+%%| fig-width: 5.5
 gantt
     title Manuscript Production Pipeline
     dateFormat X
@@ -126,6 +128,7 @@ gantt
 Every chapter passed through an identical three-stage pipeline. This is the core quality loop the book describes in Chapter 13.
 
 ```{mermaid}
+%%| fig-width: 5.5
 sequenceDiagram
     participant O as Orchestrator
     participant D as Draft Agent<br/>(Domain Specialist)
@@ -162,6 +165,7 @@ In later waves, the orchestrator batched reviews by persona rather than by chapt
 Three of the eleven personas did not exist at project inception. They were created in response to gaps the process itself surfaced.
 
 ```{mermaid}
+%%| fig-width: 5.5
 flowchart TD
     A[Integration Review<br/>Chief Editor reads all 15 chapters] --> B{Visual anchors<br/>missing?}
     B -->|Yes| C[Create Illustrator Agent &#35;9<br/>Visual Strategist persona]

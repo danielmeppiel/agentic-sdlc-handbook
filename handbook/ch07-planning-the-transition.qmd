@@ -11,6 +11,7 @@ This is a common adoption trajectory we see repeatedly with agentic development 
 The problem is not the tools. The problem is that most organizations skip from "successful pilot" to "organization-wide rollout" without building the infrastructure that makes agentic development reliable at scale — the context engineering, the governance, the skill development, the measurement systems. The pilot succeeds *because* it's small: limited codebase, enthusiastic participants, greenfield scope. The rollout fails because none of those conditions hold for the rest of the organization.
 
 This chapter is the bridge between the strategic foundations of Chapters 2 through 6 and the implementation disciplines of Block 2. It answers the operational question: given everything you now understand about the landscape, the architecture, the context requirements, the organizational implications, and the governance needs — how do you actually roll this out?
+
 ---
 
 ## The Productivity Paradox
@@ -95,9 +96,9 @@ flowchart TB
 
     P3["<b>Phase 3: Scale</b><br/>Remaining teams<br/>Self-service onboarding<br/>Continuous practice<br/><em>6–24 months from start</em>"]
 
-    RB1["🔴 Rollback<br/>Rejection rate > 60%<br/>Intervention not declining<br/>Satisfaction drops"]
+    RB1["ROLLBACK<br/>Rejection rate > 60%<br/>Intervention not declining<br/>Satisfaction drops"]
 
-    RB2["🔴 Rollback<br/>Coach dependency > 4 wks<br/>Metrics diverge from pilot<br/>Coach burnout"]
+    RB2["ROLLBACK<br/>Coach dependency > 4 wks<br/>Metrics diverge from pilot<br/>Coach burnout"]
 
     PRE --> P1
     P1 --> G1

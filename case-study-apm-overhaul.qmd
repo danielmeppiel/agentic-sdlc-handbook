@@ -175,6 +175,7 @@ silently did nothing. No test caught it because the test suite never
 asserted on verbose output.
 
 ```{mermaid}
+%%| fig-width: 5.5
 sequenceDiagram
     participant User
     participant CLI as apm install --verbose
