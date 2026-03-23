@@ -7,8 +7,6 @@ book:
   title: "The Agentic SDLC Handbook"
   subtitle: "A Guide to AI-Native Software Development for Leaders and Practitioners"
   author: "Daniel Meppiel"
-  date: today
-  date-format: "MMMM YYYY"
   site-url: "https://danielmeppiel.github.io/apm-handbook/"
   repo-url: "https://github.com/danielmeppiel/apm-handbook"
   repo-actions: [issue]
