@@ -7,6 +7,7 @@ book:
   title: "The Agentic SDLC Handbook"
   subtitle: "A Guide to AI-Native Software Development for Leaders and Practitioners"
   author: "Daniel Meppiel"
+  favicon: favicon.ico
   site-url: "https://danielmeppiel.github.io/apm-handbook/"
   repo-url: "https://github.com/danielmeppiel/apm-handbook"
   repo-actions: [issue]
@@ -43,6 +44,8 @@ format:
   html:
     include-in-header:
       - text: |
+          <link rel="icon" type="image/svg+xml" href="/apm-handbook/favicon.svg">
+          <link rel="apple-touch-icon" href="/apm-handbook/apple-touch-icon.png">
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
           <script>
             window.dataLayer = window.dataLayer || [];
