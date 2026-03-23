@@ -594,7 +594,7 @@ ul.task-list li input[type="checkbox"] {
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-agent-decision-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-agent-decision">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+<pre class="mermaid mermaid-js" data-label="fig-agent-decision">%%{init: {'theme': 'neutral'}}%%
 flowchart TD
     START([Task arrives]) --&gt; Q1{Can you specify it clearly\nin under 2 minutes?}
 
@@ -610,11 +610,6 @@ flowchart TD
     Q3 -- Yes --&gt; SPLIT[SPLIT: bounded parts → agent\njudgment parts → you]
     Q3 -- No --&gt; MANUAL3[CODE IT YOURSELF]
 
-    style DELEGATE fill:#196f3d,stroke:#145a32,color:#fff
-    style SPLIT fill:#196f3d,stroke:#145a32,color:#fff
-    style MANUAL1 fill:#2874a6,stroke:#1a5276,color:#fff
-    style MANUAL2 fill:#2874a6,stroke:#1a5276,color:#fff
-    style MANUAL3 fill:#2874a6,stroke:#1a5276,color:#fff
 </pre>
 </div>
 </div>
