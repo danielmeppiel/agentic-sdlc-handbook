@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>10&nbsp; The Instrumented Codebase – The Agentic SDLC Handbook</title>
+<title>11&nbsp; The Instrumented Codebase – The Agentic SDLC Handbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -114,6 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<script defer="" data-domain="danielmeppiel.github.io/apm-handbook" src="https://plausible.io/js/script.js"></script>
 
 
 </head>
@@ -289,7 +290,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch09-the-instrumented-codebase.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch09-the-instrumented-codebase.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -308,25 +309,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
-      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="../The-Agentic-SDLC-Handbook.pdf">
-              <i class="bi bi-file-pdf pe-1"></i>
-            Download PDF
-            </a>
-          </li>
-          <li>
-            <a class="dropdown-item sidebar-tools-main-item" href="../The-Agentic-SDLC-Handbook.epub">
-              <i class="bi bi-journal pe-1"></i>
-            Download ePub
-            </a>
-          </li>
-      </ul>
-    </div>
-    <div class="dropdown">
-      <a href="" title="Share" id="quarto-navigation-tool-dropdown-1" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
-      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-1">
           <li>
             <a class="dropdown-item sidebar-tools-main-item" href="https://twitter.com/intent/tweet?url=|url|">
               <i class="bi bi-twitter pe-1"></i>
@@ -363,6 +347,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Preface</span></span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../download.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Download the Handbook</span></span></a>
+  </div>
+</li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
@@ -375,7 +365,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
   </div>
 </li>
       </ul>
@@ -392,37 +382,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
   </div>
 </li>
       </ul>
@@ -439,43 +429,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch09-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch10-the-prose-specification.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch11-context-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch12-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch13-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
   </div>
 </li>
       </ul>
@@ -492,7 +482,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../handbook/ch15-what-comes-next.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
   </div>
 </li>
       </ul>
@@ -507,31 +497,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#what-instrumentation-means" id="toc-what-instrumentation-means" class="nav-link active" data-scroll-target="#what-instrumentation-means"><span class="header-section-number">10.1</span> What Instrumentation Means</a></li>
-  <li><a href="#the-six-primitive-types" id="toc-the-six-primitive-types" class="nav-link" data-scroll-target="#the-six-primitive-types"><span class="header-section-number">10.2</span> The Six Primitive Types</a>
+  <li><a href="#what-instrumentation-means" id="toc-what-instrumentation-means" class="nav-link active" data-scroll-target="#what-instrumentation-means"><span class="header-section-number">11.1</span> What Instrumentation Means</a></li>
+  <li><a href="#the-six-primitive-types" id="toc-the-six-primitive-types" class="nav-link" data-scroll-target="#the-six-primitive-types"><span class="header-section-number">11.2</span> The Six Primitive Types</a>
   <ul class="collapse">
-  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions"><span class="header-section-number">10.2.1</span> Instructions</a></li>
-  <li><a href="#agents" id="toc-agents" class="nav-link" data-scroll-target="#agents"><span class="header-section-number">10.2.2</span> Agents</a></li>
-  <li><a href="#skills" id="toc-skills" class="nav-link" data-scroll-target="#skills"><span class="header-section-number">10.2.3</span> Skills</a></li>
-  <li><a href="#prompts" id="toc-prompts" class="nav-link" data-scroll-target="#prompts"><span class="header-section-number">10.2.4</span> Prompts</a></li>
-  <li><a href="#memory" id="toc-memory" class="nav-link" data-scroll-target="#memory"><span class="header-section-number">10.2.5</span> Memory</a></li>
-  <li><a href="#orchestration" id="toc-orchestration" class="nav-link" data-scroll-target="#orchestration"><span class="header-section-number">10.2.6</span> Orchestration</a></li>
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions"><span class="header-section-number">11.2.1</span> Instructions</a></li>
+  <li><a href="#agents" id="toc-agents" class="nav-link" data-scroll-target="#agents"><span class="header-section-number">11.2.2</span> Agents</a></li>
+  <li><a href="#skills" id="toc-skills" class="nav-link" data-scroll-target="#skills"><span class="header-section-number">11.2.3</span> Skills</a></li>
+  <li><a href="#prompts" id="toc-prompts" class="nav-link" data-scroll-target="#prompts"><span class="header-section-number">11.2.4</span> Prompts</a></li>
+  <li><a href="#memory" id="toc-memory" class="nav-link" data-scroll-target="#memory"><span class="header-section-number">11.2.5</span> Memory</a></li>
+  <li><a href="#orchestration" id="toc-orchestration" class="nav-link" data-scroll-target="#orchestration"><span class="header-section-number">11.2.6</span> Orchestration</a></li>
   </ul></li>
-  <li><a href="#tool-support-and-portability" id="toc-tool-support-and-portability" class="nav-link" data-scroll-target="#tool-support-and-portability"><span class="header-section-number">10.3</span> Tool Support and Portability</a>
+  <li><a href="#tool-support-and-portability" id="toc-tool-support-and-portability" class="nav-link" data-scroll-target="#tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</a>
   <ul class="collapse">
-  <li><a href="#what-happens-when-you-switch-tools" id="toc-what-happens-when-you-switch-tools" class="nav-link" data-scroll-target="#what-happens-when-you-switch-tools"><span class="header-section-number">10.3.1</span> What happens when you switch tools</a></li>
+  <li><a href="#what-happens-when-you-switch-tools" id="toc-what-happens-when-you-switch-tools" class="nav-link" data-scroll-target="#what-happens-when-you-switch-tools"><span class="header-section-number">11.3.1</span> What happens when you switch tools</a></li>
   </ul></li>
-  <li><a href="#directory-structure" id="toc-directory-structure" class="nav-link" data-scroll-target="#directory-structure"><span class="header-section-number">10.4</span> Directory Structure</a></li>
-  <li><a href="#how-primitives-compose" id="toc-how-primitives-compose" class="nav-link" data-scroll-target="#how-primitives-compose"><span class="header-section-number">10.5</span> How Primitives Compose</a></li>
-  <li><a href="#the-instrumentation-audit" id="toc-the-instrumentation-audit" class="nav-link" data-scroll-target="#the-instrumentation-audit"><span class="header-section-number">10.6</span> The Instrumentation Audit</a></li>
-  <li><a href="#before-and-after" id="toc-before-and-after" class="nav-link" data-scroll-target="#before-and-after"><span class="header-section-number">10.7</span> Before and After</a>
+  <li><a href="#directory-structure" id="toc-directory-structure" class="nav-link" data-scroll-target="#directory-structure"><span class="header-section-number">11.4</span> Directory Structure</a></li>
+  <li><a href="#how-primitives-compose" id="toc-how-primitives-compose" class="nav-link" data-scroll-target="#how-primitives-compose"><span class="header-section-number">11.5</span> How Primitives Compose</a></li>
+  <li><a href="#the-instrumentation-audit" id="toc-the-instrumentation-audit" class="nav-link" data-scroll-target="#the-instrumentation-audit"><span class="header-section-number">11.6</span> The Instrumentation Audit</a></li>
+  <li><a href="#before-and-after" id="toc-before-and-after" class="nav-link" data-scroll-target="#before-and-after"><span class="header-section-number">11.7</span> Before and After</a>
   <ul class="collapse">
-  <li><a href="#before-uninstrumented" id="toc-before-uninstrumented" class="nav-link" data-scroll-target="#before-uninstrumented"><span class="header-section-number">10.7.1</span> Before: uninstrumented</a></li>
-  <li><a href="#after-instrumented" id="toc-after-instrumented" class="nav-link" data-scroll-target="#after-instrumented"><span class="header-section-number">10.7.2</span> After: instrumented</a></li>
-  <li><a href="#what-the-numbers-look-like" id="toc-what-the-numbers-look-like" class="nav-link" data-scroll-target="#what-the-numbers-look-like"><span class="header-section-number">10.7.3</span> What the numbers look like</a></li>
+  <li><a href="#before-uninstrumented" id="toc-before-uninstrumented" class="nav-link" data-scroll-target="#before-uninstrumented"><span class="header-section-number">11.7.1</span> Before: uninstrumented</a></li>
+  <li><a href="#after-instrumented" id="toc-after-instrumented" class="nav-link" data-scroll-target="#after-instrumented"><span class="header-section-number">11.7.2</span> After: instrumented</a></li>
+  <li><a href="#what-the-numbers-look-like" id="toc-what-the-numbers-look-like" class="nav-link" data-scroll-target="#what-the-numbers-look-like"><span class="header-section-number">11.7.3</span> What the numbers look like</a></li>
   </ul></li>
-  <li><a href="#the-feedback-loop" id="toc-the-feedback-loop" class="nav-link" data-scroll-target="#the-feedback-loop"><span class="header-section-number">10.8</span> The Feedback Loop</a></li>
-  <li><a href="#starting-points" id="toc-starting-points" class="nav-link" data-scroll-target="#starting-points"><span class="header-section-number">10.9</span> Starting Points</a></li>
+  <li><a href="#the-feedback-loop" id="toc-the-feedback-loop" class="nav-link" data-scroll-target="#the-feedback-loop"><span class="header-section-number">11.8</span> The Feedback Loop</a></li>
+  <li><a href="#starting-points" id="toc-starting-points" class="nav-link" data-scroll-target="#starting-points"><span class="header-section-number">11.9</span> Starting Points</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -539,9 +529,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch09-the-instrumented-codebase.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch09-the-instrumented-codebase.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></h1>
+<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></h1>
 </div>
 
 
@@ -561,16 +551,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Open any repository that uses AI agents reliably and you’ll notice something before you read a single line of application code: the project is full of markdown files that aren’t documentation. They’re instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints — scattered through <code>.github/</code> directories and woven into the source tree. These files don’t ship to production. They don’t appear in the build output. But they determine whether an AI agent produces code that respects the project’s architecture or code that confidently violates it.</p>
 <p>This chapter catalogs those files. It defines six primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that’s ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?</p>
 <hr>
-<section id="what-instrumentation-means" class="level2" data-number="10.1">
-<h2 data-number="10.1" class="anchored" data-anchor-id="what-instrumentation-means"><span class="header-section-number">10.1</span> What Instrumentation Means</h2>
+<section id="what-instrumentation-means" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="what-instrumentation-means"><span class="header-section-number">11.1</span> What Instrumentation Means</h2>
 <p>An instrumented codebase is one that has externalized its tacit knowledge into machine-readable artifacts.</p>
 <p>Every mature project carries two kinds of knowledge. The first kind is in the code itself — types, function signatures, directory structure, test assertions. Any agent can read this. The second kind is in the team’s heads — which authentication pattern is current and which is deprecated, why the logging module uses a custom wrapper instead of the standard library, what “follows the BaseIntegrator pattern” means in practice, why that one directory has different import rules than every other. An agent cannot read this. It will guess, and it will guess wrong.</p>
 <p>Instrumentation is the practice of converting the second kind of knowledge into structured files that an agent loads as context. The files are markdown. They version-control alongside the code they describe. They’re reviewed in pull requests. And they create a feedback loop: when an agent makes a mistake, you don’t fix the generated code — you fix the primitive that failed to prevent the mistake.</p>
 <p>The term “primitive” is deliberate. These artifacts are the atomic units of agentic behavior. Like functions in code, they do one thing, they compose with other primitives, and they’re testable in isolation. Unlike prompts typed into a chat window and forgotten, primitives persist, accumulate value, and improve through iteration.</p>
 <hr>
 </section>
-<section id="the-six-primitive-types" class="level2" data-number="10.2">
-<h2 data-number="10.2" class="anchored" data-anchor-id="the-six-primitive-types"><span class="header-section-number">10.2</span> The Six Primitive Types</h2>
+<section id="the-six-primitive-types" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="the-six-primitive-types"><span class="header-section-number">11.2</span> The Six Primitive Types</h2>
 <p>Six categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what’s in the code and what an agent needs to know. Not every project needs all six on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
@@ -591,8 +581,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<section id="instructions" class="level3" data-number="10.2.1">
-<h3 data-number="10.2.1" class="anchored" data-anchor-id="instructions"><span class="header-section-number">10.2.1</span> Instructions</h3>
+<section id="instructions" class="level3" data-number="11.2.1">
+<h3 data-number="11.2.1" class="anchored" data-anchor-id="instructions"><span class="header-section-number">11.2.1</span> Instructions</h3>
 <p><strong>Purpose:</strong> Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular primitive — they tell an agent “when you touch code in this scope, follow these rules.”</p>
 <p><strong>File format:</strong> <code>.instructions.md</code> with frontmatter specifying scope.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
@@ -617,8 +607,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Design test:</strong> Can you state the scope in one <code>applyTo</code> pattern? Does every rule in the file apply to that scope? If you’re writing rules that apply to two unrelated domains, split the file. If you can’t express the scope as a glob, the knowledge probably belongs in an agent configuration or a skill instead.</p>
 <p><strong>What distinguishes a good instruction file from a bad one:</strong> length. If your instruction file exceeds 40-50 lines, it’s trying to do too much. The reason is mechanical — every line of instruction competes for attention with the source code the agent needs to read. A 200-line instruction file doesn’t give an agent more to work with. It gives it more to get lost in.</p>
 </section>
-<section id="agents" class="level3" data-number="10.2.2">
-<h3 data-number="10.2.2" class="anchored" data-anchor-id="agents"><span class="header-section-number">10.2.2</span> Agents</h3>
+<section id="agents" class="level3" data-number="11.2.2">
+<h3 data-number="11.2.2" class="anchored" data-anchor-id="agents"><span class="header-section-number">11.2.2</span> Agents</h3>
 <p><strong>Purpose:</strong> Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to “who should work on this?” — not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.</p>
 <p><strong>File format:</strong> <code>.chatmode.md</code> or <code>.agent.md</code> with frontmatter specifying the model, tools, and description.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
@@ -655,8 +645,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <p>Start with three to five agent configurations. An architect, a domain expert for your core business logic, and a documentation writer cover most tasks. Add configurations when you observe repeated corrections — that’s the signal that a new specialization has earned its place.</p>
 </section>
-<section id="skills" class="level3" data-number="10.2.3">
-<h3 data-number="10.2.3" class="anchored" data-anchor-id="skills"><span class="header-section-number">10.2.3</span> Skills</h3>
+<section id="skills" class="level3" data-number="11.2.3">
+<h3 data-number="11.2.3" class="anchored" data-anchor-id="skills"><span class="header-section-number">11.2.3</span> Skills</h3>
 <p><strong>Purpose:</strong> Package reusable decision frameworks that activate based on code patterns. A skill is more than a set of rules — it teaches an agent how to think about a specific domain.</p>
 <p><strong>File format:</strong> A directory containing a <code>SKILL.md</code> file, optionally with examples and supporting context.</p>
 <pre><code>.github/skills/
@@ -699,8 +689,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The design test for a skill is three criteria: Does this knowledge apply across multiple files? Does it require more than a few rules to express? Is it triggered by a detectable code pattern? If all three are yes, it’s a skill. If the knowledge applies to a single directory, it’s an instruction. If it’s a general disposition, it’s an agent configuration.</p>
 <p>Skills differ from instructions in an important way: they provide <em>decision frameworks</em>, not just rules. A rule says “use <code>_rich_warning()</code> for warnings.” A decision framework says “every warning must answer ‘what should the user do about this?’” The framework generalizes to situations the author didn’t anticipate. Rules cover known cases. Frameworks cover unknown ones.</p>
 </section>
-<section id="prompts" class="level3" data-number="10.2.4">
-<h3 data-number="10.2.4" class="anchored" data-anchor-id="prompts"><span class="header-section-number">10.2.4</span> Prompts</h3>
+<section id="prompts" class="level3" data-number="11.2.4">
+<h3 data-number="11.2.4" class="anchored" data-anchor-id="prompts"><span class="header-section-number">11.2.4</span> Prompts</h3>
 <p><strong>Purpose:</strong> Define reusable, parameterized workflows that orchestrate multi-step tasks. A prompt is a repeatable process — the agentic equivalent of a script or a makefile target.</p>
 <p><strong>File format:</strong> <code>.prompt.md</code> with frontmatter specifying execution mode and tools.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
@@ -737,8 +727,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>For each finding: file, line, what's wrong, what to do instead.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Prompts are the bridge between ad-hoc chat and systematic workflows. Without them, every time a developer wants an agent to perform a code review, they type a slightly different request and get slightly different quality. With a prompt file, the process is consistent — the same phases, the same checks, the same output format. Quality becomes reproducible.</p>
 </section>
-<section id="memory" class="level3" data-number="10.2.5">
-<h3 data-number="10.2.5" class="anchored" data-anchor-id="memory"><span class="header-section-number">10.2.5</span> Memory</h3>
+<section id="memory" class="level3" data-number="11.2.5">
+<h3 data-number="11.2.5" class="anchored" data-anchor-id="memory"><span class="header-section-number">11.2.5</span> Memory</h3>
 <p><strong>Purpose:</strong> Preserve knowledge across sessions. Agents are stateless — every conversation starts from zero. Memory files give them access to accumulated decisions, resolved trade-offs, and project history that would otherwise vanish between sessions.</p>
 <p><strong>File format:</strong> <code>.memory.md</code>, structured by domain.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Project Decisions</span></span>
@@ -764,8 +754,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Memory files capture the knowledge that doesn’t fit in instructions because it isn’t a rule — it’s context. The distinction matters: “use JWT for authentication” is a rule (instruction). “We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated” is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won’t.</p>
 <p>Memory files are the most likely primitive to drift from reality. Include dates. Review them quarterly. If a section hasn’t been updated in six months, verify that it’s still accurate or remove it.</p>
 </section>
-<section id="orchestration" class="level3" data-number="10.2.6">
-<h3 data-number="10.2.6" class="anchored" data-anchor-id="orchestration"><span class="header-section-number">10.2.6</span> Orchestration</h3>
+<section id="orchestration" class="level3" data-number="11.2.6">
+<h3 data-number="11.2.6" class="anchored" data-anchor-id="orchestration"><span class="header-section-number">11.2.6</span> Orchestration</h3>
 <p><strong>Purpose:</strong> Bridge planning and implementation by defining structured specifications that can be executed by humans or agents with the same precision. Orchestration primitives decompose large features into implementation-ready units.</p>
 <p><strong>File format:</strong> <code>.spec.md</code> for specifications, or workflow composition files that coordinate multiple primitives.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Feature: Rate Limiting for Public API</span></span>
@@ -799,8 +789,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 </section>
 </section>
-<section id="tool-support-and-portability" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="tool-support-and-portability"><span class="header-section-number">10.3</span> Tool Support and Portability</h2>
+<section id="tool-support-and-portability" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</h2>
 <p>The six primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
 <table class="caption-top table">
 <colgroup>
@@ -869,8 +859,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Instructions are the universal primitive.</strong> Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ — <code>applyTo</code> frontmatter, glob-based rule files, per-directory placement — but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.</p>
 <p><strong>Agent configurations are the least portable.</strong> Chat modes, model selection, and tool boundaries are defined differently in every tool and don’t transfer. The knowledge inside them — domain expertise, named patterns, anti-patterns — is just markdown and moves freely. The activation mechanism does not.</p>
 <p><strong>Most tools natively support two of six.</strong> Instructions (in some form) and memory (via root-level markdown). The remaining four — skills, prompts, orchestration specs, agent configurations — have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.</p>
-<section id="what-happens-when-you-switch-tools" class="level3" data-number="10.3.1">
-<h3 data-number="10.3.1" class="anchored" data-anchor-id="what-happens-when-you-switch-tools"><span class="header-section-number">10.3.1</span> What happens when you switch tools</h3>
+<section id="what-happens-when-you-switch-tools" class="level3" data-number="11.3.1">
+<h3 data-number="11.3.1" class="anchored" data-anchor-id="what-happens-when-you-switch-tools"><span class="header-section-number">11.3.1</span> What happens when you switch tools</h3>
 <p>If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your primitives in two tiers:</p>
 <p><strong>Portable tier</strong> (works everywhere with minor adaptation): - Instruction content — the rules themselves, as markdown prose - Memory files — decisions, deprecations, historical context - Orchestration specs — requirements, contracts, validation criteria - Skill knowledge — decision frameworks, anti-patterns, examples</p>
 <p><strong>Tool-specific tier</strong> (requires per-tool configuration): - Instruction scoping — how rules get matched to files (<code>applyTo</code> vs.&nbsp;glob frontmatter vs.&nbsp;directory placement) - Agent configurations — model selection, tool boundaries, persona activation - Prompt execution — how workflows are triggered and parameterized</p>
@@ -879,8 +869,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 </section>
 </section>
-<section id="directory-structure" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="directory-structure"><span class="header-section-number">10.4</span> Directory Structure</h2>
+<section id="directory-structure" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="directory-structure"><span class="header-section-number">11.4</span> Directory Structure</h2>
 <p>The six primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions — the most complete native implementation of all six primitive types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.</p>
 <pre><code>project/
 ├── .github/
@@ -926,8 +916,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>The structure is flat within each directory.</strong> Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you’re probably over-engineering — most projects need 8-12 instruction files.</p>
 <hr>
 </section>
-<section id="how-primitives-compose" class="level2" data-number="10.5">
-<h2 data-number="10.5" class="anchored" data-anchor-id="how-primitives-compose"><span class="header-section-number">10.5</span> How Primitives Compose</h2>
+<section id="how-primitives-compose" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="how-primitives-compose"><span class="header-section-number">11.5</span> How Primitives Compose</h2>
 <p>Primitives are not independent. They form a layered system where each type provides a different kind of guidance, and the agent’s effective context is the composition of all applicable primitives for the current task.</p>
 <p>The composition follows a hierarchy:</p>
 <pre><code>Global principles (copilot-instructions.md)
@@ -948,8 +938,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone’s head.</p>
 <hr>
 </section>
-<section id="the-instrumentation-audit" class="level2" data-number="10.6">
-<h2 data-number="10.6" class="anchored" data-anchor-id="the-instrumentation-audit"><span class="header-section-number">10.6</span> The Instrumentation Audit</h2>
+<section id="the-instrumentation-audit" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="the-instrumentation-audit"><span class="header-section-number">11.6</span> The Instrumentation Audit</h2>
 <p>Before you build any of this, you need to know what your codebase already has and what it’s missing. The instrumentation audit is a systematic inventory — not of your code, but of the knowledge your code depends on.</p>
 <p><strong>Step 1: List your conventions.</strong> Spend 30 minutes with your team. Write down every convention, pattern, and constraint that a new engineer would need to learn in their first two weeks. Don’t filter. Don’t organize.</p>
 <p>You’ll typically get 30-60 items. Examples:</p>
@@ -1044,11 +1034,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Step 5: Write your starter set.</strong> Begin with 3-5 primitives covering your critical items. Don’t aim for completeness — the feedback loop will guide you to what’s actually needed faster than upfront planning will.</p>
 <hr>
 </section>
-<section id="before-and-after" class="level2" data-number="10.7">
-<h2 data-number="10.7" class="anchored" data-anchor-id="before-and-after"><span class="header-section-number">10.7</span> Before and After</h2>
+<section id="before-and-after" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="before-and-after"><span class="header-section-number">11.7</span> Before and After</h2>
 <p>Consider a mid-size backend service — 80,000 lines of Python, a REST API, a message queue consumer, an authentication module with some technical debt, and a CLI for operations tasks. The team has five engineers who’ve been working on it for two years.</p>
-<section id="before-uninstrumented" class="level3" data-number="10.7.1">
-<h3 data-number="10.7.1" class="anchored" data-anchor-id="before-uninstrumented"><span class="header-section-number">10.7.1</span> Before: uninstrumented</h3>
+<section id="before-uninstrumented" class="level3" data-number="11.7.1">
+<h3 data-number="11.7.1" class="anchored" data-anchor-id="before-uninstrumented"><span class="header-section-number">11.7.1</span> Before: uninstrumented</h3>
 <pre><code>project/
 ├── .github/
 │   └── workflows/
@@ -1074,8 +1064,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>Everything compiles. Tests pass. The PR gets three review comments, all of the form “we don’t do it that way here.” The reviewer rewrites 60% of the code. The agent saved time on a first draft and cost time on corrections.</p>
 </section>
-<section id="after-instrumented" class="level3" data-number="10.7.2">
-<h3 data-number="10.7.2" class="anchored" data-anchor-id="after-instrumented"><span class="header-section-number">10.7.2</span> After: instrumented</h3>
+<section id="after-instrumented" class="level3" data-number="11.7.2">
+<h3 data-number="11.7.2" class="anchored" data-anchor-id="after-instrumented"><span class="header-section-number">11.7.2</span> After: instrumented</h3>
 <pre><code>project/
 ├── .github/
 │   ├── copilot-instructions.md
@@ -1127,8 +1117,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>The difference is not the model. The difference is 150 lines of markdown distributed across 8 files.</p>
 </section>
-<section id="what-the-numbers-look-like" class="level3" data-number="10.7.3">
-<h3 data-number="10.7.3" class="anchored" data-anchor-id="what-the-numbers-look-like"><span class="header-section-number">10.7.3</span> What the numbers look like</h3>
+<section id="what-the-numbers-look-like" class="level3" data-number="11.7.3">
+<h3 data-number="11.7.3" class="anchored" data-anchor-id="what-the-numbers-look-like"><span class="header-section-number">11.7.3</span> What the numbers look like</h3>
 <p>Based on projects that have undergone this transformation, including the reference case documented throughout this book:</p>
 <table class="caption-top table">
 <colgroup>
@@ -1170,8 +1160,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <hr>
 </section>
 </section>
-<section id="the-feedback-loop" class="level2" data-number="10.8">
-<h2 data-number="10.8" class="anchored" data-anchor-id="the-feedback-loop"><span class="header-section-number">10.8</span> The Feedback Loop</h2>
+<section id="the-feedback-loop" class="level2" data-number="11.8">
+<h2 data-number="11.8" class="anchored" data-anchor-id="the-feedback-loop"><span class="header-section-number">11.8</span> The Feedback Loop</h2>
 <p>Instrumentation is not a one-time setup. It is a continuous practice, like testing.</p>
 <p>When an agent produces incorrect output, the diagnosis follows a consistent pattern:</p>
 <pre><code>Failure observed
@@ -1225,8 +1215,8 @@ Root cause: which primitive failed?
 <p>This feedback loop is how primitive quality compounds over time. Every failure you diagnose and fix is a failure that never recurs. After 20-30 iterations, your primitive set covers the conventions that actually matter — not the ones you theorized about, but the ones agents actually violate. That practical grounding is what makes an instrumented codebase effective.</p>
 <hr>
 </section>
-<section id="starting-points" class="level2" data-number="10.9">
-<h2 data-number="10.9" class="anchored" data-anchor-id="starting-points"><span class="header-section-number">10.9</span> Starting Points</h2>
+<section id="starting-points" class="level2" data-number="11.9">
+<h2 data-number="11.9" class="anchored" data-anchor-id="starting-points"><span class="header-section-number">11.9</span> Starting Points</h2>
 <p>The six primitives and the full directory structure represent a mature instrumented codebase. You don’t need to build all of it at once. Start where the leverage is highest.</p>
 <p><strong>Week one.</strong> Write three files: 1. Global instructions (10-15 lines) — your non-negotiable principles 2. One scoped instruction file for your most-edited module 3. One agent configuration for the task agents perform most often</p>
 <p><strong>Week two.</strong> Use these primitives on real work. When the agent violates a convention not covered by your files, add it. When it does something right that surprised you, check whether your primitives contributed. Update the memory file with the decisions and trade-offs you resolved this week.</p>
@@ -1660,18 +1650,23 @@ Root cause: which primitive failed?
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../handbook/ch08-the-practitioners-mindset.html" class="pagination-link" aria-label="The Practitioner's Mindset">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../handbook/ch10-the-prose-specification.html" class="pagination-link" aria-label="The PROSE Specification">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+  <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">[*] Get PROSE framework updates and new chapters</p>
+  <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">~2 updates/month. No spam. Unsubscribe anytime.</p>
+  <a href="download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Subscribe for Updates</a>
+</div>
 
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer></body></html>
+</body></html>
