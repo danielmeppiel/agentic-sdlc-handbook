@@ -12,7 +12,7 @@ Agentic development does not eliminate engineering roles. It restructures how te
 
 Before redrawing org charts, understand what actually changes about daily engineering work. Agent adoption shifts the *proportion* of time spent on different activities. It does not change which activities require human judgment.
 
-The most useful way to see this is through time allocation. The table below draws on published results from early enterprise adopters and patterns observed across teams adopting AI-assisted development. It represents typical patterns, not universal truths — your distribution will vary by team maturity, codebase complexity, and adoption depth.
+The most useful way to see this is through time allocation. The table below draws on published results from early enterprise adopters and patterns observed across teams adopting AI-assisted development. It represents typical patterns, not universal truths — your distribution will vary by team maturity, codebase complexity, and adoption depth.[^ch6-time]
 
 | Activity | Pre-Agentic | With Agentic Tools | Direction |
 |---|---|---|---|
@@ -191,7 +191,7 @@ Two retention risks emerge during the transition.
 
 ## Staffing Models
 
-Team size and composition change under agentic development. The direction is consistent: smaller teams that are more senior in composition, with higher leverage per person.
+Team size and composition change under agentic development. The direction is consistent: smaller teams that are more senior in composition, with higher leverage per person.[^ch6-teams]
 
 | Team profile | Pre-Agentic | Agentic (Mature) | Notes |
 |---|---|---|---|
@@ -252,3 +252,7 @@ The worksheet is not a one-time exercise. Reassess quarterly during your first y
 The structural changes described in this chapter take time. They are not a reorganization to announce on Monday. They are a set of shifts to design for, measure against, and adjust as your team learns what works in your context.
 
 Chapter 7 takes these structural insights and builds the operational plan — the phased transition from pilot to full adoption, with concrete criteria for each stage and honest metrics for tracking progress.
+
+[^ch6-time]: Pre-agentic ranges are composites drawn from multiple industry surveys (2019–2023); no single source produces this exact breakdown. The closest empirical data: Tidelift/New Stack (2019, n≈400) found 32% of time on writing/improving code, 19% on maintenance, 12% on testing. Meyer et al. at Microsoft Research (2019, n=5,971) confirmed developers "spend little time on development." Agentic-era projections are based on early adopter reports and the author's observations. See [thenewstack.io](https://thenewstack.io/how-much-time-do-developers-spend-actually-writing-code/) and [Microsoft Research](https://www.microsoft.com/en-us/research/publication/today-was-a-good-day-the-daily-life-of-software-developers/).
+
+[^ch6-teams]: Pre-agentic team size norms reflect common industry patterns. Forsgren, Humble, and Kim (2018) in *Accelerate* demonstrate that small, autonomous teams with strong CI/CD practices outperform. Amazon's "two-pizza team" rule targets ~6–8 people per team. Agentic-era projections are based on early adopter reports. See [IT Revolution](https://itrevolution.com/product/accelerate/) and [AWS Whitepaper](https://docs.aws.amazon.com/whitepapers/latest/introduction-devops-aws/two-pizza-teams.html).

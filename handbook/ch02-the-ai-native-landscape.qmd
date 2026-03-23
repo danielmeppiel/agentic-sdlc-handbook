@@ -95,7 +95,7 @@ The mistake most organizations make: evaluating platform decisions with coding-t
 
 A feature comparison grid is the most natural thing to produce and the least useful thing to read. Every vendor has one. They all look favorable to the vendor that made them. The table below attempts something different: an honest snapshot of where each tool actually is, what it can't do by design, and — critically — which capabilities you should care about first.
 
-The maturity tiers: **Now** = available and shipping in production. **Emerging** = available but limited, or in public preview. **Directional** = announced, demonstrated in research, or on a public roadmap but not yet usable at production scale. **N/A** = not applicable — the tool's architecture doesn't target this capability, and that's a design choice, not a gap.
+The maturity tiers: **Now** = available and shipping in production. **Emerging** = available but limited, or in public preview. **Directional** = announced, demonstrated in research, or on a public roadmap but not yet usable at production scale. **N/A** = not applicable — the tool's architecture doesn't target this capability, and that's a design choice, not a gap.[^ch2-matrix]
 
 | Capability | GitHub Copilot | Cursor | Claude Code | Windsurf | Amazon Q Developer | JetBrains AI |
 |---|---|---|---|---|---|---|
@@ -182,7 +182,7 @@ Fill in the checkboxes for your organization. The pattern of checks tells you wh
 
 The most dangerous position in the current market is "wait and see." It feels like prudence. It is actually a decision — to let your developers self-select tools, to defer governance until a breach forces the conversation, and to fall behind organizations that are building the structured context that makes AI tools reliable. Here is what "wait and see" costs:
 
-**Talent risk.** Developers increasingly expect AI tooling as a workplace standard. A 2024 GitHub survey found that 92% of U.S.-based developers report using AI coding tools at work. Offering no supported AI tools — or restricting them to basic autocomplete — makes your organization less attractive to the engineers you're competing to hire and retain.
+**Talent risk.** Developers increasingly expect AI tooling as a workplace standard. A 2023 GitHub-commissioned survey (Wakefield Research, n=500, U.S. enterprise developers at companies with 1,000+ employees) found that 92% report using AI coding tools at work or personally.[^ch2-github-survey] Offering no supported AI tools — or restricting them to basic autocomplete — makes your organization less attractive to the engineers you're competing to hire and retain.
 
 **Shadow IT risk.** Every month without a sanctioned tool is a month where developers find their own solutions. Each unsanctioned tool introduces data residency questions, IP exposure, and compliance gaps that compound over time. The remediation cost of unwinding six months of shadow AI usage is nontrivial.
 
@@ -208,3 +208,7 @@ The first two rows require no budget, no procurement, and no organizational chan
 The market is moving. Your developers are moving with it. The question this chapter should have settled is not *what* to buy — that requires the business case in Chapter 3 and the reference architecture in Chapter 4. The question is whether you're making deliberate decisions about a shift that is already happening inside your organization, or whether you're discovering it after the fact.
 
 Chapter 3 builds the honest business case: what AI-assisted development actually costs, what it actually delivers, and how to measure value without inflating the numbers.
+
+[^ch2-matrix]: Ratings reflect the author's assessment as of early 2025, based on official vendor documentation and hands-on evaluation. Capabilities evolve rapidly; consult vendor documentation for current status. Sources: [GitHub Copilot features](https://docs.github.com/en/copilot/about-github-copilot/github-copilot-features), [Cursor features](https://www.cursor.com/features), [Amazon Q Developer](https://aws.amazon.com/q/developer/), [Windsurf](https://codeium.com/windsurf).
+
+[^ch2-github-survey]: GitHub, "Survey Reveals AI's Impact on the Developer Experience," June 2023. Survey conducted by Wakefield Research among 500 U.S.-based developers at companies with 1,000+ employees. See [github.blog](https://github.blog/news-insights/research/survey-reveals-ais-impact-on-the-developer-experience/).
