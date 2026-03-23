@@ -82,23 +82,23 @@ The durations below are ranges, not fixed schedules. Two factors dominate how lo
 ::: {.landscape}
 
 ```{mermaid}
-%%| fig-width: 8.5
+%%| fig-width: 6.5
 flowchart TB
-    PRE["<b>Pre-Transition</b><br/>Readiness assessments<br/>Baseline metrics<br/><em>Weeks 1–4</em>"]
+    PRE["<b>Pre-Transition</b><br/>Weeks 1–4"]
 
-    P1["<b>Phase 1: Pilot</b><br/>1–2 teams, controlled scope<br/>Build minimum context layer<br/><em>1–5 months</em>"]
+    P1["<b>Phase 1: Pilot</b><br/>1–2 teams, 1–5 months"]
 
-    G1{"Exit signals met?<br/>Context layer works<br/>Review workflow trusted<br/>4+ weeks of metrics"}
+    G1{"Exit signals met?"}
 
-    P2["<b>Phase 2: Expand</b><br/>3–5 additional teams<br/>Shared context assets<br/>Governance at scale<br/><em>3–9 months from start</em>"]
+    P2["<b>Phase 2: Expand</b><br/>3–5 teams, 3–9 months"]
 
-    G2{"Exit signals met?<br/>Teams self-sufficient<br/>Shared assets owned<br/>Metrics show trend"}
+    G2{"Exit signals met?"}
 
-    P3["<b>Phase 3: Scale</b><br/>Remaining teams<br/>Self-service onboarding<br/>Continuous practice<br/><em>6–24 months from start</em>"]
+    P3["<b>Phase 3: Scale</b><br/>All teams, 6–24 months"]
 
-    RB1["ROLLBACK<br/>Rejection rate > 60%<br/>Intervention not declining<br/>Satisfaction drops"]
+    RB1["ROLLBACK<br/>High rejection/intervention"]
 
-    RB2["ROLLBACK<br/>Coach dependency > 4 wks<br/>Metrics diverge from pilot<br/>Coach burnout"]
+    RB2["ROLLBACK<br/>Coach dependency/divergence"]
 
     PRE --> P1
     P1 --> G1

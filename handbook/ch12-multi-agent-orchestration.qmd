@@ -59,7 +59,7 @@ Three specialization patterns recur across most multi-agent workflows.
 The most common pattern separates code production from code validation. One agent writes the code. A second agent reviews it. A third writes or updates tests.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart TD
     W["Writer agent"] -->|"Code changes"| R["Reviewer agent"]
     R -->|"Findings: bugs,<br/>logic errors, security"| T["Tester agent"]
@@ -175,27 +175,27 @@ Enforcing this rule requires partitioning the file set before dispatch. If two c
 The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart TD
-    W0["Wave 0: FOUNDATION<br/>No dependencies, fully parallel"]
-    W0A["Agent A: type definitions"]
-    W0B["Agent B: utility module"]
-    W0C["Agent C: configuration"]
+    W0["Wave 0: FOUNDATION"]
+    W0A["Types"]
+    W0B["Utilities"]
+    W0C["Config"]
     W0 --- W0A & W0B & W0C
-    CHECK0{"All complete,<br/>tests pass"}
+    CHECK0{"Tests pass"}
     W0A & W0B & W0C --> CHECK0
-    W1["Wave 1: CORE CHANGES<br/>Depends on Wave 0"]
+    W1["Wave 1: CORE CHANGES"]
     CHECK0 --> W1
-    W1D["Agent D: module migration<br/>(uses new types)"]
-    W1E["Agent E: API consolidation<br/>(uses new utilities)"]
-    W1F["Agent F: auth refactor"]
+    W1D["Migration"]
+    W1E["API"]
+    W1F["Auth"]
     W1 --- W1D & W1E & W1F
-    CHECK1{"All complete,<br/>tests pass"}
+    CHECK1{"Tests pass"}
     W1D & W1E & W1F --> CHECK1
-    W2["Wave 2: INTEGRATION<br/>Depends on Wave 1"]
+    W2["Wave 2: INTEGRATION"]
     CHECK1 --> W2
-    W2G["Agent G: wiring + imports"]
-    W2H["Agent H: test updates"]
+    W2G["Wiring"]
+    W2H["Tests"]
     W2 --- W2G & W2H
 ```
 
@@ -208,7 +208,7 @@ In the reference case study (PR #394, detailed in the [case study](../case-study
 ::: {.landscape}
 
 ```{mermaid}
-%%| fig-width: 8.5
+%%| fig-width: 6.5
 gantt
     title Wave Execution Timeline
     dateFormat X
@@ -239,7 +239,7 @@ gantt
 Some operations can run in parallel across workflow stages rather than across files. While execution agents work on Wave 1, review agents can start reviewing Wave 0's output. While human review happens on one wave, test agents can run extended validation on a previous wave.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 gantt
     title Pipeline Parallelism
     dateFormat X
@@ -381,7 +381,7 @@ Each agent session is independent. Agent A cannot see Agent B's conversation his
 The implication: information flows between agents through committed artifacts, not through shared sessions. When Agent B needs to build on Agent A's work, it reads the committed files — the same files that passed tests and were validated at the wave checkpoint. It does not read Agent A's internal reasoning or discarded alternatives.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart TD
     subgraph A1["Agent 1"]
         C1["Conversation<br/>(isolated)"]
@@ -430,17 +430,17 @@ The agent sessions are stateless workers. The coordination layer is the stateful
 The patterns described in this chapter compose into a workflow:
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart TD
-    A1["1. ASSESS<br/>Scope: single-agent<br/>vs. multi-agent"] --> A2["2. SPECIALIZE<br/>Choose team pattern"]
-    A2 --> A3["3. PARTITION<br/>Files across agents<br/>(one file, one agent per wave)"]
-    A3 --> A4["4. ORDER<br/>Waves by dependency"]
-    A4 --> A5["5. DISPATCH<br/>Each wave in parallel"]
-    A5 --> A6{"6. VALIDATE<br/>Test, commit,<br/>checkpoint"}
+    A1["1. ASSESS<br/>Scope decision"] --> A2["2. SPECIALIZE<br/>Team pattern"]
+    A2 --> A3["3. PARTITION<br/>File ownership"]
+    A3 --> A4["4. ORDER<br/>Wave dependencies"]
+    A4 --> A5["5. DISPATCH<br/>Parallel execution"]
+    A5 --> A6{"6. VALIDATE<br/>Test & checkpoint"}
     A6 -->|"Pass"| A5
     A6 -->|"Fail"| DX["DIAGNOSE"]
-    DX -->|"L1/L2"| RETRY["Retry with<br/>refined prompt"]
-    DX -->|"L3/L4"| HUMAN["Human decides,<br/>adapt plan"]
+    DX -->|"L1/L2"| RETRY["Retry"]
+    DX -->|"L3/L4"| HUMAN["Human decides"]
     RETRY --> A5
     HUMAN --> A4
 ```

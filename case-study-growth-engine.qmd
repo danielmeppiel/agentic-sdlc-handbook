@@ -32,7 +32,7 @@ The interesting story is not that these things got built. It is *how many times 
 Expert panels were the primary decision-making mechanism. Each panel assembled domain-specific personas, ran parallel deliberation, and produced a synthesized recommendation through a moderator agent. Across six phases, the orchestrator convened seven distinct panels with fifteen unique personas.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 graph TB
     subgraph "Phase 1: Strategy"
         P1[Publishing Strategist]
@@ -95,7 +95,7 @@ This is the Architect role from Chapter 13 — scope correction when agent outpu
 ## Timeline
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 gantt
     title Growth Engine Build Phases
     dateFormat X
@@ -137,7 +137,7 @@ gantt
 The most instructive failure sequence was the Kit email platform automation — three distinct approaches, each hitting a different wall.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 sequenceDiagram
     participant O as Orchestrator
     participant PW as Playwright Scripts
@@ -184,7 +184,7 @@ It also surfaced **Anti-Pattern #7 — The Trust Fall**. The authority profile h
 The security phase demonstrated the value of parallel agent dispatch with explicit failure handling.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart LR
     subgraph "Dispatch — 4 Parallel Agents"
         A1[Agent 1: career/]

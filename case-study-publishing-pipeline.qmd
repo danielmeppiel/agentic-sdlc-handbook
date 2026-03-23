@@ -47,7 +47,7 @@ A single general-purpose agent converted the entire manuscript in one wave:
 HTML render: 16 files, zero errors, 15 Mermaid diagrams confirmed. The site went live on the `gh-pages` branch within the same wave.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart LR
     A["15 Markdown<br/>chapters"] --> B["git mv .md → .qmd<br/>+ YAML frontmatter"]
     B --> C["_quarto.yml<br/>book config"]
@@ -65,13 +65,13 @@ flowchart LR
 What happened next is a textbook instance of **Anti-Pattern #15: The "Almost Done" Trap** — each fix revealed the next issue, creating a cascade where "one more fix" repeated five times.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart TD
-    A["PDF renders ✓<br/>but text boxes<br/>too narrow"] -->|Fix: scrreprt +<br/>explicit geometry| B["Layout fixed ✓<br/>but Mermaid diagrams<br/>missing"]
-    B -->|"Fix: convert all 15<br/>```mermaid → ```{mermaid}"| C["Diagrams render ✓<br/>but headings show<br/>duplicate numbers"]
-    C -->|Fix: strip manual<br/>numbers from<br/>25 headings| D["Headings clean ✓<br/>but diagrams and<br/>code overflow margins"]
-    D -->|Fix: fig-width 6.5<br/>+ code-overflow wrap| E["Overflow fixed ✓<br/>but fig-width exceeds<br/>6.3 in usable width"]
-    E -->|Fix: reduce to 5.5<br/>+ preamble.tex| F["PDF clean ✓<br/>686KB → 3.8MB"]
+    A["PDF renders ✓<br/>text too narrow"] -->|scrreprt class| B["Layout fixed ✓<br/>Mermaid missing"]
+    B -->|syntax fix| C["Diagrams render ✓<br/>duplicate numbers"]
+    C -->|strip numbers| D["Headings clean ✓<br/>margins overflow"]
+    D -->|fig-width+wrap| E["Overflow fixed ✓<br/>fig-width too wide"]
+    E -->|5.5 + preamble| F["PDF clean ✓<br/>686KB → 3.8MB"]
 
     style A fill:#fee,stroke:#c33
     style F fill:#efe,stroke:#3c3
@@ -102,8 +102,10 @@ The deployment pipeline went through its own iteration gauntlet:
 
 The final architecture splits rendering by environment:
 
+::: {.landscape}
+
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 6.5
 flowchart TB
     subgraph CI ["CI Pipeline (49 seconds)"]
         A1["Checkout"] --> A2["Install Quarto"]
@@ -125,6 +127,8 @@ flowchart TB
     style Local fill:#e8e8f4,stroke:#44a
 ```
 
+:::
+
 The 15-minute local render is a direct consequence of **context window exhaustion applied to CI** — Chromium-based Mermaid rendering is too heavy for a fast feedback loop. The architecture makes this explicit: CI optimizes for speed (HTML-only, 49 seconds), local optimizes for completeness (all formats).
 
 ## Download UX: Seven Iterations of Human Refinement
@@ -145,22 +149,26 @@ Every iteration was a human design judgment. The agent executed each change in u
 
 A three-expert panel (IP Attorney, Publishing Strategist, Growth Hacker) evaluated licensing options. The recommendation was unanimous: **CC BY-NC-ND 4.0**.
 
+::: {.landscape}
+
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 6.5
 sequenceDiagram
     participant O as Orchestrator
-    participant P as 3-Expert Panel
-    participant H as Human Author
+    participant P as Expert Panel
+    participant H as Author
 
-    O->>P: Evaluate licensing for free tech book<br/>with commercial author brand
-    P->>P: IP Attorney: CC BY-NC-ND protects<br/>canonical version
-    P->>P: Publishing Strategist: invites sharing,<br/>requires attribution
-    P->>P: Growth Hacker: maximizes reach<br/>while protecting monetization
+    O->>P: Evaluate licensing<br/>for free tech book
+    P->>P: IP Attorney: protects<br/>canonical version
+    P->>P: Strategist: sharing<br/>+ attribution
+    P->>P: Growth: max reach,<br/>protect monetization
     P->>O: Unanimous: CC BY-NC-ND 4.0
     O->>H: Recommendation + rationale
     H->>O: Approved
-    O->>O: Apply to LICENSE, README,<br/>index.qmd, _quarto.yml footer
+    O->>O: Apply to LICENSE, README,<br/>index, _quarto.yml
 ```
+
+:::
 
 The rationale maps to four properties: invites sharing (reach), requires attribution (authorship), prohibits commercial use (author's brand), prohibits derivatives (one canonical version). Implementation touched four files — `LICENSE`, `README.md`, `index.qmd`, and the `_quarto.yml` footer.
 

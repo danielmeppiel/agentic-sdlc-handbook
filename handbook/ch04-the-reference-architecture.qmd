@@ -19,25 +19,24 @@ At every phase of the software development lifecycle, work happens across three 
 The layers are not independent. They form a stack where each depends on the one below it:
 
 ```{mermaid}
-%%| fig-width: 5.5
-%%| fig-height: 4
-flowchart TB
+%%| fig-width: 5.0
+flowchart LR
     subgraph HUMAN ["HUMAN LAYER"]
         direction LR
         HR["Roles: Product, Architecture,<br/>Engineering, QA, Operations"]
-        HF["Functions: Decisions, Governance,<br/>Accountability, Strategy"]
+        HF["Functions: Decisions,<br/>Governance, Accountability"]
     end
 
     subgraph AGENT ["AGENT LAYER"]
         direction LR
-        AC["Capabilities: Generate, Analyze,<br/>Test, Review, Transform"]
+        AC["Capabilities: Generate,<br/>Analyze, Test, Review"]
         AB["Boundaries: Scoped authority,<br/>context-dependent, auditable"]
     end
 
     subgraph PLATFORM ["PLATFORM LAYER"]
         direction LR
-        PI["Infrastructure: SCM, CI/CD,<br/>Auth, Observability, Registries"]
-        PN["Integrations: APIs, Webhooks,<br/>Context Sources, Artifact Stores"]
+        PI["Infrastructure: SCM, CI/CD,<br/>Auth, Observability"]
+        PN["Integrations: APIs, Webhooks,<br/>Context Sources, Artifacts"]
     end
 
     HUMAN -- "sets constraints,<br/>delegates tasks" --> AGENT
@@ -170,7 +169,7 @@ Structured context is not a one-time cost. It compounds.
 When an agent produces a code review using your team's documented quality standards, that review generates structured feedback. When a developer resolves the feedback and updates a convention document, the convention becomes richer. When the next agent interaction loads that richer convention, the output improves. Each cycle reinforces the next:
 
 ```{mermaid}
-%%| fig-width: 6
+%%| fig-width: 4.5
 %%| label: fig-context-flywheel
 %%| fig-cap: "The context compounding flywheel"
 graph LR

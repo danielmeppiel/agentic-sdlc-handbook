@@ -127,7 +127,7 @@ Every adoption plan that shows a smooth upward curve is lying. Real adoption fol
 The timeline varies by organization. Teams with well-documented codebases enter the valley shallower and exit it faster. Teams with heavy undocumented tribal knowledge spend longer in the valley — but the context engineering they do during that period has value independent of AI tools.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 ---
 config:
     xyChart:

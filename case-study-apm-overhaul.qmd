@@ -175,19 +175,19 @@ silently did nothing. No test caught it because the test suite never
 asserted on verbose output.
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 sequenceDiagram
     participant User
-    participant CLI as apm install --verbose
-    participant VL as verbose_log lambda
-    participant RE as _rich_echo (NOT IMPORTED)
+    participant CLI as CLI (--verbose)
+    participant VL as verbose_log
+    participant RE as _rich_echo
 
     User->>CLI: apm install pkg --verbose
-    CLI->>VL: verbose_log("Resolving pkg...")
-    VL->>RE: _rich_echo("Resolving pkg...")
-    RE-->>VL: NameError: _rich_echo not defined
-    VL-->>CLI: Exception caught by try/except → silently swallowed
-    CLI->>User: (no verbose output, no error)
+    CLI->>VL: verbose_log("Resolving...")
+    VL->>RE: _rich_echo("Resolving...")
+    RE-->>VL: NameError: not defined
+    VL-->>CLI: Exception silently swallowed
+    CLI->>User: (silent failure)
 ```
 
 This is why **checkpoint discipline** matters (Ch12) — and why it must

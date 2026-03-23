@@ -443,27 +443,25 @@ Total recovery cost: three focused dispatches instead of an open-ended retry loo
 
 When something goes wrong, the first question is what kind of wrong:
 
-::: {.landscape}
-
 ```{mermaid}
-%%| fig-width: 7.0
+%%| fig-width: 4.5
 flowchart TD
-    START(["Something went wrong<br/>with agent output"]) --> Q1{Code syntactically<br/>wrong?}
+    START(["Agent output<br/>issue?"]) --> Q1{"Syntax error?"}
 
-    Q1 -- Yes --> FIX1["Model capability<br/>Upgrade model or<br/>manual fallback"]
-    Q1 -- No --> Q2{Tests fail?}
+    Q1 -- Yes --> FIX1["Model issue<br/>Upgrade or manual"]
+    Q1 -- No --> Q2{"Tests fail?"}
 
-    Q2 -- Yes --> Q2a{Agent's code<br/>or pre-existing?}
-    Q2a -- "Agent's" --> FIX2["Task too broad?<br/>Context stale?<br/>Constraint dropped?"]
-    Q2a -- Pre-existing --> FIX2b["Separate issue<br/>Don't fix here"]
+    Q2 -- Yes --> Q2a{"Agent's code<br/>or pre-existing?"}
+    Q2a -- "Agent's" --> FIX2["Task/context issue<br/>Narrow scope"]
+    Q2a -- Pre-existing --> FIX2b["Separate issue<br/>Skip"]
 
-    Q2 -- No --> Q3{Follows your<br/>conventions?}
+    Q2 -- No --> Q3{"Follows<br/>conventions?"}
 
-    Q3 -- No --> FIX3["Primitive gap<br/>Rule missing or<br/>wrong scope?"]
-    Q3 -- Yes --> Q4{Integrates correctly<br/>with system?}
+    Q3 -- No --> FIX3["Primitive gap<br/>Add rule"]
+    Q3 -- Yes --> Q4{"Integrates<br/>correctly?"}
 
-    Q4 -- No --> FIX4["Architecture issue<br/>Wrong interfaces<br/>or boundaries?"]
-    Q4 -- Yes --> FIX5["Probably fine<br/>Verify edge cases"]
+    Q4 -- No --> FIX4["Architecture issue<br/>Fix boundaries"]
+    Q4 -- Yes --> FIX5["Probably fine<br/>Check edges"]
 
     style FIX1 fill:#e63946,color:#fff
     style FIX2 fill:#e76f51,color:#fff
@@ -472,8 +470,6 @@ flowchart TD
     style FIX5 fill:#2d6a4f,color:#fff
     style FIX2b fill:#6c757d,color:#fff
 ```
-
-:::
 
 ---
 

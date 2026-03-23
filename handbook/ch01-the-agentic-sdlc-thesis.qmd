@@ -83,7 +83,7 @@ The constraints in this book are concrete enough that they can be — and have b
 How the five constraints relate:
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart LR
     subgraph " "
         direction TB

@@ -15,14 +15,14 @@ The methodology is a five-phase meta-process. It works regardless of which AI co
 Every large change follows these phases, in order:
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 flowchart LR
-    AUDIT["AUDIT<br/>(understand)"] --> PLAN["PLAN<br/>(scope, waves,<br/>teams)"]
-    PLAN --> WAVE["WAVE [0..N]<br/>(parallel agents)"]
-    WAVE --> VALIDATE["VALIDATE<br/>(test, spot-check)"]
-    VALIDATE -->|All waves done| SHIP["SHIP<br/>(commit, push,<br/>merge)"]
+    AUDIT["AUDIT"] --> PLAN["PLAN"]
+    PLAN --> WAVE["WAVE"]
+    WAVE --> VALIDATE["VALIDATE"]
+    VALIDATE -->|All waves done| SHIP["SHIP"]
     VALIDATE -->|Next wave| WAVE
-    VALIDATE -->|Failure| ADAPT["ADAPT<br/>(diagnose, adjust)"]
+    VALIDATE -->|Failure| ADAPT["ADAPT"]
     ADAPT --> PLAN
 ```
 
@@ -142,9 +142,9 @@ Waves are ordered by dependency. Wave 0 contains tasks with no dependencies — 
 ```{mermaid}
 %%| fig-width: 4.5
 flowchart LR
-    W0["Wave 0<br/>FOUNDATION"] -->|"No deps"| W1["Wave 1<br/>CORE"]
-    W1 -->|"Wave 0 outputs"| W2["Wave 2<br/>MIGRATION"]
-    W2 -->|"Wave 1 stable"| W3["Wave 3<br/>POLISH"]
+    W0["Wave 0"] -->|"No deps"| W1["Wave 1"]
+    W1 -->|"Wave 0 outputs"| W2["Wave 2"]
+    W2 -->|"Wave 1 stable"| W3["Wave 3"]
 ```
 
 The most common dependency pattern is foundation-before-migration. Type definitions, protocol changes, and method signatures go in Wave 0. Code that uses those new interfaces goes in Wave 1+. If you put both in the same wave, agents will try to both define and consume new APIs simultaneously — and the consumer agents will work against a file state that doesn't yet include the definitions.
@@ -245,11 +245,11 @@ Each checkpoint has four components:
 When a checkpoint fails — tests are red, an agent is stuck, a dependency was missed — the meta-process doesn't stop. It adapts.
 
 ```{mermaid}
-%%| fig-width: 4.5
+%%| fig-width: 4.0
 flowchart LR
-    D["DETECT<br/>Test failure, agent stall,<br/>unexpected conflict"] --> DG["DIAGNOSE<br/>What broke, why,<br/>which wave/task/file"]
-    DG --> A["ADJUST<br/>Modify plan: add tasks,<br/>split, reorder waves"]
-    A --> E["EXECUTE<br/>Re-run adjusted wave"]
+    D["DETECT<br/>Failure or stall"] --> DG["DIAGNOSE<br/>Root cause"]
+    DG --> A["ADJUST<br/>Modify plan"]
+    A --> E["EXECUTE<br/>Re-run wave"]
     E -.->|"If new issue"| D
 ```
 

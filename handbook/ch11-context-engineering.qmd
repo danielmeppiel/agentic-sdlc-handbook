@@ -13,7 +13,7 @@ Every AI interaction operates within a fixed capacity. A context window is not a
 A typical agent session divides its context roughly as follows:
 
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 4.5
 pie title Context Window Budget (128K tokens)
     "System prompt (~8K)" : 6
     "Instructions & rules (~20K)" : 16
