@@ -36,15 +36,15 @@ book:
         - handbook/ch12-multi-agent-orchestration.qmd
         - handbook/ch13-the-execution-meta-process.qmd
         - handbook/ch14-anti-patterns-and-failure-modes.qmd
-    - part: "Closing"
-      chapters:
-        - handbook/ch15-what-comes-next.qmd
     - part: "Part IV: Case Studies"
       chapters:
         - case-study-apm-overhaul.qmd
         - case-study-handbook-writing.qmd
         - case-study-publishing-pipeline.qmd
         - case-study-growth-engine.qmd
+    - part: "Closing"
+      chapters:
+        - handbook/ch15-what-comes-next.qmd
 
 format:
   html:
