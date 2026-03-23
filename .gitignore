@@ -11,3 +11,20 @@ _freeze/
 **/*.quarto_ipynb
 *_files/
 *.aux\n*.log\n*.toc\nindex.tex
+
+# Private strategy & career documents
+career/
+
+# Internal audit files (contain NDA-covered source references)
+handbook/architecture.md
+handbook/architecture-part1.md
+handbook/architecture-part2.md
+handbook/audit-csuite-strategist.md
+handbook/audit-platform-strategist.md
+handbook/audit-synthesis.md
+handbook/reviews/publishing-strategy.md
+handbook/reviews/monetization-reassessment.md
+handbook/reviews/apm-audit-publishing.md
+
+# Local backups of redacted files
+.private-backup/
