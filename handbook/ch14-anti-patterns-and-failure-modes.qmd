@@ -453,3 +453,9 @@ This is not exhaustive. New failure modes will emerge as agent capabilities evol
 If you encounter a failure not in this chapter, add it using the same format: symptom, root cause, constraint violated, prevention, recovery. The taxonomy is a living document.
 
 These 19 patterns represent the collective scar tissue of early agentic development practice — the failures that wasted the most time, burned the most tokens, and eroded the most trust. Learn from them, and you skip the most expensive part of the learning curve.
+
+---
+
+::: {.callout-tip appearance="simple" icon=false}
+**Spotting new anti-patterns regularly.** Subscribe for updates as new failure modes are documented. [Subscribe -->](../download.qmd)
+:::

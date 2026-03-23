@@ -5,11 +5,18 @@ number-sections: false
 ---
 
 ::: {.callout-note appearance="minimal" icon=false}
-**Free to read online. Free to download.**
-
-[Download PDF](The-Agentic-SDLC-Handbook.pdf){.btn .btn-primary .btn-lg role="button" style="margin-right: 10px;"}
-[Download EPUB](The-Agentic-SDLC-Handbook.epub){.btn .btn-outline-primary .btn-lg role="button"}
+**Free to read online.** Want the formatted PDF or EPUB? [Get it delivered to your inbox -->](download.qmd)
 :::
+
+## Why This Book Exists
+
+Every engineering organization is adopting AI coding agents. Almost none of them have a methodology for it.
+
+Teams are configuring Copilot with a single instructions file and calling it "AI-native development." Leaders are measuring success by lines-of-code generated. Individual developers are discovering that AI-assisted code needs more rework, not less -- because the underlying approach is wrong.
+
+This book provides what's missing: a systematic methodology for building software with AI agents, from organizational strategy to the individual keystrokes. It introduces the **PROSE framework** -- five architectural constraints that make AI agent output reliable, verifiable, and maintainable -- and shows how to implement it with real tools and real workflows.
+
+The methodology in this book produced the book itself, and it powers [APM](https://github.com/microsoft/apm), an open-source agent package manager with 700+ GitHub stars.
 
 ## Who This Book Is For
 
@@ -25,15 +32,29 @@ Part I provides the foundational thesis that both audiences share. The closing c
 
 You don't need to read sequentially. Start with whichever part matches your role:
 
-- **Part I** (Chapter 1): The thesis — why the current approach fails and what replaces it
-- **Part II** (Chapters 2–7): The business case, reference architecture, governance, team structures, and transition planning
-- **Part III** (Chapters 8–14): The practitioner's mindset, instrumented codebase, PROSE specification, context engineering, multi-agent orchestration, execution meta-process, and anti-patterns
+- **Part I** (Chapter 1): The thesis -- why the current approach fails and what replaces it
+- **Part II** (Chapters 2-7): The business case, reference architecture, governance, team structures, and transition planning
+- **Part III** (Chapters 8-14): The practitioner's mindset, instrumented codebase, PROSE specification, context engineering, multi-agent orchestration, execution meta-process, and anti-patterns
 - **Closing** (Chapter 15): What comes next
 
 ## About the Author
 
-Daniel Meppiel works at Microsoft and created [APM](https://github.com/microsoft/apm) (Agent Package Manager), an open-source tool for managing AI agent configurations. This handbook was produced using the same methodology and tooling it describes.
+Daniel Meppiel is a software engineer at **Microsoft** and the creator of [APM (Agent Package Manager)](https://github.com/microsoft/apm), an open-source tool for managing AI agent configurations across codebases -- 700+ GitHub stars and growing. He designed the **PROSE framework**, a specification methodology for making AI coding agents reliable in professional software delivery.
 
-## License & Updates
+Before Microsoft, Daniel worked at **GitHub** on developer tooling and at **CERN** on data acquisition systems for particle physics experiments. His career arc -- from physics instrumentation to developer platforms to AI-native engineering -- gives him an unusual vantage point on how software development is changing.
 
-This book is free. Share it, link to it, learn from it. Updates are published continuously — check back or watch the [repository](https://github.com/danielmeppiel/apm-handbook) for changes.
+This handbook was produced using the same methodology and tooling it describes.
+
+## Stay Updated
+
+This is a living document. New chapters, case studies, and PROSE refinements are published continuously.
+
+::: {.callout-tip appearance="simple" icon=false}
+**Get notified when new content drops.** [Subscribe for updates -->](download.qmd)
+
+No spam. ~2 updates/month. Unsubscribe anytime.
+:::
+
+## License
+
+This book is free. Share it, link to it, learn from it. Watch the [repository](https://github.com/danielmeppiel/apm-handbook) for changes.

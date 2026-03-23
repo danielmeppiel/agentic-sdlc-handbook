@@ -167,3 +167,9 @@ You don't need to read both blocks. Start with whichever matches your role. But 
 The Vibe Coding Cliff is real, and every team scaling AI-assisted development will hit it. The question is whether you hit it with nothing but a more powerful model and a longer prompt — or with an architectural style designed to make human-AI collaboration reliable.
 
 The constraints are the point. Let's see what they produce.
+
+---
+
+::: {.callout-tip appearance="simple" icon=false}
+**Found this useful?** Get notified when new case studies and PROSE framework updates drop. [Subscribe -->](../download.qmd)
+:::

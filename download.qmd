@@ -1,0 +1,22 @@
+---
+title: "Download the Handbook"
+title-block-style: none
+number-sections: false
+sidebar: false
+---
+
+## Get the PDF & EPUB
+
+The complete handbook is free to read online. For the formatted **PDF** and **EPUB** versions -- optimized for offline reading, printing, and annotation -- enter your email below. You'll receive the download links instantly.
+
+::: {.callout-tip appearance="simple" icon=false}
+**What you'll also get**: A short welcome sequence (4 emails over 8 days) with the best insights from the book, plus occasional updates on the PROSE framework and APM. Unsubscribe anytime.
+:::
+
+<div id="kit-form-container">
+<script async data-uid="6bee764071" src="https://the-ai-native-mind.kit.com/6bee764071/index.js"></script>
+</div>
+
+::: {.callout-note appearance="minimal" icon=false}
+Prefer to read online? [Start with the thesis -->](handbook/ch01-the-agentic-sdlc-thesis.qmd)
+:::

@@ -13,10 +13,9 @@ book:
   repo-actions: [issue]
   sharing: [twitter, linkedin]
   reader-mode: true
-  downloads: [pdf, epub]
-
   chapters:
     - index.qmd
+    - download.qmd
     - part: "Part I: The Foundation"
       chapters:
         - handbook/ch01-the-agentic-sdlc-thesis.qmd
@@ -43,6 +42,16 @@ book:
 
 format:
   html:
+    include-in-header:
+      - text: |
+          <script defer data-domain="danielmeppiel.github.io/apm-handbook" src="https://plausible.io/js/script.js"></script>
+    include-after-body:
+      - text: |
+          <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+            <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">[*] Get PROSE framework updates and new chapters</p>
+            <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">~2 updates/month. No spam. Unsubscribe anytime.</p>
+            <a href="download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Subscribe for Updates</a>
+          </div>
     theme:
       light: cosmo
       dark: darkly
