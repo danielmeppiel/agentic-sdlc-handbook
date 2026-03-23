@@ -507,7 +507,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#what-instrumentation-means" id="toc-what-instrumentation-means" class="nav-link active" data-scroll-target="#what-instrumentation-means"><span class="header-section-number">11.1</span> What Instrumentation Means</a></li>
-  <li><a href="#the-six-primitive-types" id="toc-the-six-primitive-types" class="nav-link" data-scroll-target="#the-six-primitive-types"><span class="header-section-number">11.2</span> The Six Primitive Types</a>
+  <li><a href="#the-seven-primitive-types" id="toc-the-seven-primitive-types" class="nav-link" data-scroll-target="#the-seven-primitive-types"><span class="header-section-number">11.2</span> The Seven Primitive Types</a>
   <ul class="collapse">
   <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions"><span class="header-section-number">11.2.1</span> Instructions</a></li>
   <li><a href="#agents" id="toc-agents" class="nav-link" data-scroll-target="#agents"><span class="header-section-number">11.2.2</span> Agents</a></li>
@@ -515,6 +515,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#prompts" id="toc-prompts" class="nav-link" data-scroll-target="#prompts"><span class="header-section-number">11.2.4</span> Prompts</a></li>
   <li><a href="#memory" id="toc-memory" class="nav-link" data-scroll-target="#memory"><span class="header-section-number">11.2.5</span> Memory</a></li>
   <li><a href="#orchestration" id="toc-orchestration" class="nav-link" data-scroll-target="#orchestration"><span class="header-section-number">11.2.6</span> Orchestration</a></li>
+  <li><a href="#hooks" id="toc-hooks" class="nav-link" data-scroll-target="#hooks"><span class="header-section-number">11.2.7</span> Hooks</a></li>
   </ul></li>
   <li><a href="#tool-support-and-portability" id="toc-tool-support-and-portability" class="nav-link" data-scroll-target="#tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</a>
   <ul class="collapse">
@@ -558,7 +559,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>Open any repository that uses AI agents reliably and you’ll notice something before you read a single line of application code: the project is full of markdown files that aren’t documentation. They’re instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints — scattered through <code>.github/</code> directories and woven into the source tree. These files don’t ship to production. They don’t appear in the build output. But they determine whether an AI agent produces code that respects the project’s architecture or code that confidently violates it.</p>
-<p>This chapter catalogs those files. It defines six primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that’s ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?</p>
+<p>This chapter catalogs those files. It defines seven primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that’s ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?</p>
 <hr>
 <section id="what-instrumentation-means" class="level2" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="what-instrumentation-means"><span class="header-section-number">11.1</span> What Instrumentation Means</h2>
@@ -568,22 +569,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The term “primitive” is deliberate. These artifacts are the atomic units of agentic behavior. Like functions in code, they do one thing, they compose with other primitives, and they’re testable in isolation. Unlike prompts typed into a chat window and forgotten, primitives persist, accumulate value, and improve through iteration.</p>
 <hr>
 </section>
-<section id="the-six-primitive-types" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="the-six-primitive-types"><span class="header-section-number">11.2</span> The Six Primitive Types</h2>
-<p>Six categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what’s in the code and what an agent needs to know. Not every project needs all six on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.</p>
+<section id="the-seven-primitive-types" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="the-seven-primitive-types"><span class="header-section-number">11.2</span> The Seven Primitive Types</h2>
+<p>Seven categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what’s in the code and what an agent needs to know. Not every project needs all seven on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">block-beta
-    columns 3
-    A["Instructions\n.instructions.md\n─\nScoped conventions\nper file/directory"]:1
-    B["Agents\n.chatmode.md\n─\nSpecialist personas\nwith tool boundaries"]:1
-    C["Skills\nSKILL.md\n─\nReusable decision\nframeworks"]:1
-    D["Prompts\n.prompt.md\n─\nRepeatable\nworkflows"]:1
-    E["Memory\n.memory.md\n─\nCross-session\nknowledge"]:1
-    F["Orchestration\n.spec.md\n─\nExecution-ready\nspecifications"]:1
+    columns 4
+    A["Instructions&lt;br/&gt;.instructions.md&lt;br/&gt;─&lt;br/&gt;Scoped conventions&lt;br/&gt;per file/directory"]:1
+    B["Agents&lt;br/&gt;.agent.md&lt;br/&gt;─&lt;br/&gt;Specialist personas&lt;br/&gt;with tool boundaries"]:1
+    C["Skills&lt;br/&gt;SKILL.md&lt;br/&gt;─&lt;br/&gt;Reusable decision&lt;br/&gt;frameworks"]:1
+    D["Prompts&lt;br/&gt;.prompt.md&lt;br/&gt;─&lt;br/&gt;Repeatable&lt;br/&gt;workflows"]:1
+    E["Memory&lt;br/&gt;.memory.md&lt;br/&gt;─&lt;br/&gt;Cross-session&lt;br/&gt;knowledge"]:1
+    F["Orchestration&lt;br/&gt;.spec.md&lt;br/&gt;─&lt;br/&gt;Execution-ready&lt;br/&gt;specifications"]:1
+    G["Hooks&lt;br/&gt;event-driven&lt;br/&gt;─&lt;br/&gt;Automated actions&lt;br/&gt;on dev events"]:1
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -619,7 +621,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="agents" class="level3" data-number="11.2.2">
 <h3 data-number="11.2.2" class="anchored" data-anchor-id="agents"><span class="header-section-number">11.2.2</span> Agents</h3>
 <p><strong>Purpose:</strong> Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to “who should work on this?” — not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.</p>
-<p><strong>File format:</strong> <code>.chatmode.md</code> or <code>.agent.md</code> with frontmatter specifying the model, tools, and description.</p>
+<p><strong>File format:</strong> <code>.agent.md</code> with frontmatter specifying the model, tools, and description.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Backend architecture specialist for Python services"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tools</span><span class="kw">:</span><span class="at"> </span><span class="kw">[</span><span class="st">"changes"</span><span class="kw">,</span><span class="at"> </span><span class="st">"codebase"</span><span class="kw">,</span><span class="at"> </span><span class="st">"editFiles"</span><span class="kw">,</span><span class="at"> </span><span class="st">"runCommands"</span><span class="kw">,</span></span>
@@ -762,6 +764,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  longer queries must use the async search endpoint.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Memory files capture the knowledge that doesn’t fit in instructions because it isn’t a rule — it’s context. The distinction matters: “use JWT for authentication” is a rule (instruction). “We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated” is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won’t.</p>
 <p>Memory files are the most likely primitive to drift from reality. Include dates. Review them quarterly. If a section hasn’t been updated in six months, verify that it’s still accurate or remove it.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Memory Storage Varies by Tool
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>While this chapter describes memory as markdown files for portability, some tools implement memory as structured databases. GitHub Copilot, for example, stores memory in a database system rather than flat files. The principles are the same — persistence, discoverability, and staleness management — regardless of the storage mechanism.</p>
+</div>
+</div>
 </section>
 <section id="orchestration" class="level3" data-number="11.2.6">
 <h3 data-number="11.2.6" class="anchored" data-anchor-id="orchestration"><span class="header-section-number">11.2.6</span> Orchestration</h3>
@@ -795,12 +810,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Unit tests &gt; 90% coverage on counter logic</span>
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="va">[ ]</span> Load test: 10K requests/second without limiter degradation</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Specification files matter because they make the “Reduced Scope” constraint operational. Instead of telling an agent “implement rate limiting” and hoping it figures out the approach, the spec defines scope, components, contracts, and success criteria upfront. The agent implements against a specification, not a wish.</p>
+</section>
+<section id="hooks" class="level3" data-number="11.2.7">
+<h3 data-number="11.2.7" class="anchored" data-anchor-id="hooks"><span class="header-section-number">11.2.7</span> Hooks</h3>
+<p><strong>Purpose:</strong> Define automated actions triggered by development events. Hooks bridge the gap between passive context (instructions, memory) and active behavior — making the instrumented codebase reactive rather than waiting to be queried.</p>
+<p><strong>File format:</strong> Configured via tool-specific hook mechanisms (e.g., VS Code tasks, GitHub Actions triggers, copilot hooks configuration) rather than a single portable file format.</p>
+<p><strong>Examples of what hooks automate:</strong></p>
+<ul>
+<li>Auto-run linting on save to catch convention violations before commit</li>
+<li>Trigger test generation when a new source file is created</li>
+<li>Auto-update memory files after a successful PR merge</li>
+<li>Run a security-reviewer agent on every change to <code>src/auth/</code></li>
+</ul>
+<p>Hooks complete the instrumentation model. Without them, every primitive is passive — it waits for an agent to be invoked and for the right context to load. With hooks, the context layer responds to events: a file save triggers a check, a new file triggers scaffolding, a merged PR triggers a memory update. The instrumented codebase stops being a library of reference material and starts behaving like an active participant in the development workflow.</p>
+<p>Start with one or two hooks — a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.</p>
 <hr>
 </section>
 </section>
 <section id="tool-support-and-portability" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</h2>
-<p>The six primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
+<p>The seven primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
 <div data-tbl-colwidths="[16,28,18,20,18]">
 <table class="caption-top table">
 <colgroup>
@@ -829,7 +858,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td><strong>Agents</strong></td>
-<td><code>.chatmode.md</code> with model + tools</td>
+<td><code>.agent.md</code> with model + tools</td>
 <td>—</td>
 <td>—</td>
 <td>—</td>
@@ -862,6 +891,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Loaded as context</td>
 <td>Loaded as context</td>
 </tr>
+<tr class="odd">
+<td><strong>Hooks</strong></td>
+<td>Copilot hooks config; VS Code tasks</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -869,7 +905,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Three observations.</p>
 <p><strong>Instructions are the universal primitive.</strong> Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ — <code>applyTo</code> frontmatter, glob-based rule files, per-directory placement — but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.</p>
 <p><strong>Agent configurations are the least portable.</strong> Chat modes, model selection, and tool boundaries are defined differently in every tool and don’t transfer. The knowledge inside them — domain expertise, named patterns, anti-patterns — is just markdown and moves freely. The activation mechanism does not.</p>
-<p><strong>Most tools natively support two of six.</strong> Instructions (in some form) and memory (via root-level markdown). The remaining four — skills, prompts, orchestration specs, agent configurations — have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.</p>
+<p><strong>Most tools natively support two of seven.</strong> Instructions (in some form) and memory (via root-level markdown). The remaining five — skills, prompts, orchestration specs, agent configurations, and hooks — have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.</p>
 <section id="what-happens-when-you-switch-tools" class="level3" data-number="11.3.1">
 <h3 data-number="11.3.1" class="anchored" data-anchor-id="what-happens-when-you-switch-tools"><span class="header-section-number">11.3.1</span> What happens when you switch tools</h3>
 <p>If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your primitives in two tiers:</p>
@@ -882,7 +918,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="directory-structure" class="level2" data-number="11.4">
 <h2 data-number="11.4" class="anchored" data-anchor-id="directory-structure"><span class="header-section-number">11.4</span> Directory Structure</h2>
-<p>The six primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions — the most complete native implementation of all six primitive types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.</p>
+<p>The seven primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions — the most complete native implementation of all seven primitive types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.</p>
 <pre><code>project/
 ├── .github/
 │   ├── copilot-instructions.md          # Global project principles
@@ -892,11 +928,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 │   │   ├── frontend.instructions.md     # applyTo: "src/ui/**/*.tsx"
 │   │   ├── testing.instructions.md      # applyTo: "**/test/**"
 │   │   └── database.instructions.md     # applyTo: "src/db/**"
-│   ├── chatmodes/
-│   │   ├── architect.chatmode.md        # Structure, patterns, trade-offs
-│   │   ├── backend-dev.chatmode.md      # API implementation, business logic
-│   │   ├── security-reviewer.chatmode.md # Injection, traversal, credentials
-│   │   └── doc-writer.chatmode.md       # Documentation consistency
+│   ├── agents/
+│   │   ├── architect.agent.md        # Structure, patterns, trade-offs
+│   │   ├── backend-dev.agent.md      # API implementation, business logic
+│   │   ├── security-reviewer.agent.md # Injection, traversal, credentials
+│   │   └── doc-writer.agent.md       # Documentation consistency
 │   ├── skills/
 │   │   ├── cli-logging-ux/
 │   │   │   ├── SKILL.md
@@ -923,7 +959,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 └── ...</code></pre>
 <p>Three observations about this structure.</p>
 <p><strong>Primitives live in <code>.github/</code></strong>, not scattered through the source tree. This centralizes the knowledge layer — a developer looking for the project’s AI configuration finds it in one place. The exceptions are <code>AGENTS.md</code> files, which live in the directories they describe, because they’re part of a discovery hierarchy (Chapter 11 explains this in detail).</p>
-<p><strong>Each primitive type has its own directory.</strong> Instructions, agents, skills, prompts, and specs don’t mix. This makes it straightforward to audit what you have: how many instruction files exist, what domains they cover, which skills are defined. Mixed directories make this accounting harder than it needs to be.</p>
+<p><strong>Each primitive type has its own directory.</strong> Instructions, agents, skills, prompts, specs, and hooks don’t mix. This makes it straightforward to audit what you have: how many instruction files exist, what domains they cover, which skills are defined. Mixed directories make this accounting harder than it needs to be.</p>
 <p><strong>The structure is flat within each directory.</strong> Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you’re probably over-engineering — most projects need 8-12 instruction files.</p>
 <hr>
 </section>
@@ -936,7 +972,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       └─ Skills (activated by code patterns in the current task)
           └─ Agent configuration (persona, model, tool boundaries)
               └─ Prompt or spec (the specific workflow being executed)
-                  └─ Memory (accumulated project context)</code></pre>
+                  └─ Memory (accumulated project context)
+                      └─ Hooks (event-driven triggers, operating across all layers)</code></pre>
 <p>When an agent is asked to modify <code>src/api/users.py</code>, the effective context assembles from:</p>
 <ol type="1">
 <li><strong>Global principles</strong> — error handling, security, testing rules that apply everywhere</li>
@@ -946,7 +983,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>Memory</strong> — the API versioning decisions, the deprecated authentication class, the rate limit timeout choice</li>
 </ol>
 <p>Each layer adds specificity. None contradicts the layer above — more specific primitives refine general guidance, they don’t override it. If a conflict exists, it indicates a design error in the primitives, not a resolution the agent should attempt.</p>
-<p>This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone’s head.</p>
+<p>This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone’s head.</p>
 <hr>
 </section>
 <section id="the-instrumentation-audit" class="level2" data-number="11.6">
@@ -1040,6 +1077,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Specifies a feature with components and success criteria</td>
 <td>A specification</td>
 </tr>
+<tr class="odd">
+<td>Defines an automated response to a development event</td>
+<td>A hook</td>
+</tr>
 </tbody>
 </table>
 <p><strong>Step 5: Write your starter set.</strong> Begin with 3-5 primitives covering your critical items. Don’t aim for completeness — the feedback loop will guide you to what’s actually needed faster than upfront planning will.</p>
@@ -1085,9 +1126,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 │   │   ├── auth.instructions.md
 │   │   ├── testing.instructions.md
 │   │   └── cli.instructions.md
-│   ├── chatmodes/
-│   │   ├── backend-dev.chatmode.md
-│   │   └── doc-writer.chatmode.md
+│   ├── agents/
+│   │   ├── backend-dev.agent.md
+│   │   └── doc-writer.agent.md
 │   ├── skills/
 │   │   └── api-middleware/
 │   │       └── SKILL.md
@@ -1228,7 +1269,7 @@ Root cause: which primitive failed?
 </section>
 <section id="starting-points" class="level2" data-number="11.9">
 <h2 data-number="11.9" class="anchored" data-anchor-id="starting-points"><span class="header-section-number">11.9</span> Starting Points</h2>
-<p>The six primitives and the full directory structure represent a mature instrumented codebase. You don’t need to build all of it at once. Start where the leverage is highest.</p>
+<p>The seven primitives and the full directory structure represent a mature instrumented codebase. You don’t need to build all of it at once. Start where the leverage is highest.</p>
 <p><strong>Week one.</strong> Write three files: 1. Global instructions (10-15 lines) — your non-negotiable principles 2. One scoped instruction file for your most-edited module 3. One agent configuration for the task agents perform most often</p>
 <p><strong>Week two.</strong> Use these primitives on real work. When the agent violates a convention not covered by your files, add it. When it does something right that surprised you, check whether your primitives contributed. Update the memory file with the decisions and trade-offs you resolved this week.</p>
 <p><strong>Week three.</strong> Extract the first skill. You’ll know it’s time because you’ve written the same guidance in two different instruction files. Package the shared knowledge as a skill with a decision framework. Create your first prompt file for a task you’ve now asked an agent to do three or more times.</p>

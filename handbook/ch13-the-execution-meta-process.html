@@ -541,18 +541,18 @@ ul.task-list li input[type="checkbox"] {
 <section id="the-five-phases" class="level2" data-number="15.1">
 <h2 data-number="15.1" class="anchored" data-anchor-id="the-five-phases"><span class="header-section-number">15.1</span> The Five Phases</h2>
 <p>Every large change follows these phases, in order:</p>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    AUDIT["AUDIT\n(understand)"] --&gt; PLAN["PLAN\n(scope, waves,\nteams)"]
-    PLAN --&gt; WAVE["WAVE [0..N]\n(parallel agents)"]
-    WAVE --&gt; VALIDATE["VALIDATE\n(test, spot-check)"]
-    VALIDATE --&gt;|All waves done| SHIP["SHIP\n(commit, push,\nmerge)"]
+    AUDIT["AUDIT&lt;br/&gt;(understand)"] --&gt; PLAN["PLAN&lt;br/&gt;(scope, waves,&lt;br/&gt;teams)"]
+    PLAN --&gt; WAVE["WAVE [0..N]&lt;br/&gt;(parallel agents)"]
+    WAVE --&gt; VALIDATE["VALIDATE&lt;br/&gt;(test, spot-check)"]
+    VALIDATE --&gt;|All waves done| SHIP["SHIP&lt;br/&gt;(commit, push,&lt;br/&gt;merge)"]
     VALIDATE --&gt;|Next wave| WAVE
-    VALIDATE --&gt;|Failure| ADAPT["ADAPT\n(diagnose, adjust)"]
+    VALIDATE --&gt;|Failure| ADAPT["ADAPT&lt;br/&gt;(diagnose, adjust)"]
     ADAPT --&gt; PLAN
 </pre>
 </div>
