@@ -19,7 +19,7 @@ Every large change follows these phases, in order:
 %%| fig-cap: "The five execution phases with adaptation loop"
 %%| fig-alt: "Left-to-right flowchart showing five phases: Audit flows to Plan, Plan flows to Wave, Wave flows to Validate. From Validate, three paths branch: All waves done leads to Ship, Next wave loops back to Wave, and Failure leads to Adapt which loops back to Plan for replanning. This creates two feedback loops: a normal wave iteration loop and a failure adaptation loop."
 %%| label: fig-five-phases
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'neutral'}}%%
 flowchart LR
     AUDIT["AUDIT"] --> PLAN["PLAN"]
     PLAN --> WAVE["WAVE"]
@@ -148,7 +148,7 @@ Waves are ordered by dependency. Wave 0 contains tasks with no dependencies — 
 %%| fig-cap: "Wave dependency chain: Foundation → Core → Migration → Polish"
 %%| fig-alt: "Left-to-right flowchart showing a linear dependency chain of four waves: Wave 0 connects to Wave 1 labeled No deps, Wave 1 connects to Wave 2 labeled Wave 0 outputs, and Wave 2 connects to Wave 3 labeled Wave 1 stable. Each wave depends on the completion and tested stability of the previous wave."
 %%| label: fig-wave-deps
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'neutral'}}%%
 flowchart LR
     W0["Wave 0"] -->|"No deps"| W1["Wave 1"]
     W1 -->|"Wave 0 outputs"| W2["Wave 2"]
@@ -257,7 +257,7 @@ When a checkpoint fails — tests are red, an agent is stuck, a dependency was m
 %%| fig-cap: "The ADAPT loop for mid-execution recovery"
 %%| fig-alt: "Left-to-right flowchart showing a four-step recovery cycle: Detect (Failure or stall) flows to Diagnose (Root cause), then to Adjust (Modify plan), then to Execute (Re-run wave). A dashed arrow from Execute loops back to Detect labeled If new issue, forming a continuous recovery cycle that repeats until the wave succeeds."
 %%| label: fig-adapt-loop
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'neutral'}}%%
 flowchart LR
     D["DETECT<br/>Failure or stall"] --> DG["DIAGNOSE<br/>Root cause"]
     DG --> A["ADJUST<br/>Modify plan"]
