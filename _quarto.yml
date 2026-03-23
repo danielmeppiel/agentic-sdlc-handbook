@@ -44,7 +44,13 @@ format:
   html:
     include-in-header:
       - text: |
-          <script defer data-domain="danielmeppiel.github.io/apm-handbook" src="https://plausible.io/js/script.js"></script>
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-2DPKEV68VR');
+          </script>
     include-after-body:
       - text: |
           <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
