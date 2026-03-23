@@ -1,7 +1,18 @@
-% Reduce font size in tables so wide tables fit within margins
+% Better table column handling
+\usepackage{array}
 \usepackage{etoolbox}
-\AtBeginEnvironment{longtable}{\small}
+
+% Reduce font size and column padding in tables so wide tables fit
+\AtBeginEnvironment{longtable}{\small\setlength{\tabcolsep}{4pt}}
+
+% Landscape page support (used by Quarto ::: {.landscape} blocks)
+\usepackage{pdflscape}
 
 % Ensure figures don't overflow
 \usepackage{float}
 \floatplacement{figure}{H}
+
+% Prevent figures from exceeding text width
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\makeatother
