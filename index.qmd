@@ -57,23 +57,7 @@ With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise 
 
 This handbook was produced using the same methodology and tooling it describes.
 
-## Get the Download
-
 This is a living document. New chapters, case studies, and PROSE refinements are published continuously.
-
-::: {.content-visible when-format="html"}
-::: {.callout-tip appearance="simple" icon=false}
-**Want the formatted version?** [📕 Get the PDF & EPUB -->](download.qmd)
-
-Free download. ~1 update/month max. Unsubscribe anytime.
-:::
-:::
-
-::: {.content-hidden when-format="html"}
-::: {.callout-tip appearance="simple" icon=false}
-**Stay current:** Read the latest version at [danielmeppiel.github.io/apm-handbook](https://danielmeppiel.github.io/apm-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
-:::
-:::
 
 ## License
 
