@@ -10,7 +10,7 @@ number-sections: false
 
 ::: {.content-visible when-format="html"}
 ::: {.callout-note appearance="minimal" icon=false}
-**Free to read online.** Want the formatted version? **[📕 Get the PDF & EPUB -->](download.qmd)**
+**Also available as a free PDF & EPUB.** [📕 Download -->](download.qmd)
 :::
 :::
 
