@@ -5,7 +5,7 @@ number-sections: false
 ---
 
 ::: {.callout-note appearance="minimal" icon=false}
-**Free to read online.** Want the formatted PDF or EPUB? [Get it delivered to your inbox -->](download.qmd)
+**Free to read online.** Want the formatted version? **[📕 Get the PDF & EPUB -->](download.qmd)**
 :::
 
 ## Why This Book Exists
