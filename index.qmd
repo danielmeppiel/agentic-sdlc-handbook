@@ -57,4 +57,6 @@ Free download. ~1 update/month max. Unsubscribe anytime.
 
 ## License
 
-This book is free. Share it, link to it, learn from it. Watch the [repository](https://github.com/danielmeppiel/apm-handbook) for changes.
+This book is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/). Free to read and share with attribution. For commercial use, translations, or adaptations, [reach out](https://www.linkedin.com/in/danielmeppiel/).
+
+© 2025-2026 Daniel Meppiel. All rights reserved.

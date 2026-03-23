@@ -1,22 +1,26 @@
 # The Agentic SDLC Handbook
 
-A dual-audience guide for C-suite leaders and practitioners on building with AI agents across the software development lifecycle.
+A comprehensive guide to AI-native software development for engineering leaders and practitioners.
+
+**[Read online](https://danielmeppiel.github.io/apm-handbook/)** | **[Download PDF/EPUB](https://danielmeppiel.github.io/apm-handbook/download.html)**
+
+By [Daniel Meppiel](https://www.linkedin.com/in/danielmeppiel/) — Global Black Belt at Microsoft, creator of [APM](https://github.com/microsoft/apm).
 
 ## Structure
 
 ```
-Block 0: The Shift (shared foundation)
-Block 1: For Leaders (C-suite strategy, ROI, competitive landscape)
-Block 2: For Practitioners (techniques, workflows, tooling, patterns)
-Block 3: What's Next (shared closing)
+Part I:   The Foundation (the agentic SDLC thesis)
+Part II:  For Leaders (strategy, ROI, governance, team structures)
+Part III: For Practitioners (techniques, workflows, tooling, patterns)
+Closing:  What Comes Next
 ```
 
-## Development
+## License
 
-This handbook is built using APM-managed expert agents:
+The content of this book (prose, diagrams, images) is licensed under
+[CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/).
+You are free to share it with attribution.
 
-```bash
-apm install          # Installs the handbook-agents panel
-```
+Build tooling and scripts are MIT licensed.
 
-The agent team includes 8 specialist personas orchestrated via the `handbook-panel` skill. See the [handbook-agents](https://github.com/danielmeppiel/handbook-agents) package for details.
+For commercial use, translations, or adaptations, please [reach out](https://www.linkedin.com/in/danielmeppiel/).
