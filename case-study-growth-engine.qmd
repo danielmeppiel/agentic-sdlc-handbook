@@ -129,7 +129,7 @@ Four parallel agents scanned the repository for sensitive data. Three completed 
 %%| fig-cap: "PII audit pipeline for email template review"
 %%| fig-alt: "Flowchart showing the PII audit pipeline. Four parallel agents are dispatched: Agent 1 scans career directory, Agent 2 scans reviews directory, Agent 3 scans audits and agents directories, and Agent 4 scans config files. Agent 1 refuses due to safety guardrails and is replaced by manual grep analysis. Agents 2, 3, and 4 produce findings that feed into a Remediation Plan. The manual grep analysis also feeds into the Remediation Plan. The Remediation Plan leads to a git-filter-repo history scrub, which produces clean history with originals preserved locally."
 %%| label: fig-cs-pii-audit
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart LR
     subgraph "Dispatch -- 4 Parallel Agents"
         A1[Agent 1: career/]

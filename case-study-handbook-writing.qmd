@@ -34,7 +34,7 @@ The orchestrator designed an 8-persona expert panel at project inception, then d
 %%| fig-cap: "Agent team topology: 11 personas organized in four pods"
 %%| fig-alt: "Diagram showing four pods. The Editorial Pod contains Chief Editor (cross-chapter coherence) and Thought Leadership Advisor (positioning and differentiation). The Domain Expert Pod contains C-Suite Strategist (executive lens, ROI framing), Practitioner Authority (engineering credibility), Market Analyst (competitive landscape), and Platform Strategist (architecture patterns). The Review Pod contains CTO Proxy (would I buy this for my team?) and Dev Lead Proxy (would my engineers use this?). The Audit Pod, dynamically created, contains Illustrator (visual strategist), Fact-Ref-Checker (claims auditor), and Publishing Advisor (distribution strategy). Chief Editor connects to CTO Proxy, Dev Lead Proxy, Illustrator, and Fact-Ref-Checker."
 %%| label: fig-cs-team-topology
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 graph TB
     subgraph Editorial["Editorial Pod"]
         CE[Chief Editor<br/>Cross-chapter coherence]
@@ -65,8 +65,8 @@ graph TB
     CE --> FC
 
     style Editorial fill:#2c3e50,stroke:#34495e,color:#ecf0f1
-    style Domain fill:#27ae60,stroke:#1e8449,color:#fff
-    style Review fill:#f39c12,stroke:#e67e22,color:#fff
+    style Domain fill:#196f3d,stroke:#145a32,color:#fff
+    style Review fill:#f39c12,stroke:#e67e22,color:#1a1a1a
     style Audit fill:#8e44ad,stroke:#6c3483,color:#fff
 ```
 
@@ -181,7 +181,7 @@ Three of the eleven personas did not exist at project inception. They were creat
 %%| fig-cap: "Dynamic persona creation in response to process gaps"
 %%| fig-alt: "Flowchart showing three process gaps that triggered dynamic persona creation. First path: Integration Review where editor reads all 15 chapters leads to a decision node asking if visual anchors are missing. Yes leads to creating the Illustrator Agent (Visual Strategist persona), which produces a fleet of 2 agents finding 40 visual opportunities and embedding 15 Mermaid diagrams. Second path: Integration Review leads to a decision node asking if inconsistent statistics exist across chapters. Yes leads to creating the Fact-Ref-Checker (Claims Auditor persona), which produces a fleet of 2 agents finding 75 flags including 5 critical ones. Third path: The question 'How to publish?' leads to a decision node asking if publishing expertise is needed. Yes leads to creating the Publishing Advisor, which evaluates 5 paths and recommends Open Core plus Premium model."
 %%| label: fig-cs-dynamic-personas
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     A[Integration Review<br/>Editor reads all 15 chapters] --> B{Visual anchors<br/>missing?}
     B -->|Yes| C[Create Illustrator Agent<br/>Visual Strategist persona]
