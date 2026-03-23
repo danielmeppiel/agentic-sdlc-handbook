@@ -1,6 +1,7 @@
 project:
   type: book
   output-dir: _book
+  pre-render: scripts/stamp-version.sh
 
 book:
   title: "The Agentic SDLC Handbook"

@@ -8,6 +8,10 @@ number-sections: false
 **Free to read online.** Want the formatted version? **[📕 Get the PDF & EPUB -->](download.qmd)**
 :::
 
+::: {style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;"}
+**Version {{< var version >}}** · {{< var build-date >}}
+:::
+
 ## Why This Book Exists
 
 Every engineering organization is adopting AI coding agents. Almost none of them have a methodology for it.
