@@ -1390,7 +1390,7 @@ git commit -m "feat: auth module migration — core flows complete"</code></pre>
 <h2 data-number="16.8" class="anchored" data-anchor-id="the-failure-mode-decision-tree"><span class="header-section-number">16.8</span> The Failure Mode Decision Tree</h2>
 <p>When something goes wrong, the first question is what kind of wrong:</p>
 <div class="landscape">
-<div class="cell" data-fig-width="8.5" data-layout-align="default">
+<div class="cell" data-fig-width="7" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -1398,20 +1398,20 @@ git commit -m "feat: auth module migration — core flows complete"</code></pre>
 <pre class="mermaid mermaid-js">flowchart TD
     START(["Something went wrong&lt;br/&gt;with agent output"]) --&gt; Q1{Code syntactically&lt;br/&gt;wrong?}
 
-    Q1 -- Yes --&gt; FIX1["Model capability issue&lt;br/&gt;Stronger model, better examples,&lt;br/&gt;or do it manually"]
+    Q1 -- Yes --&gt; FIX1["Model capability&lt;br/&gt;Upgrade model or&lt;br/&gt;manual fallback"]
     Q1 -- No --&gt; Q2{Tests fail?}
 
     Q2 -- Yes --&gt; Q2a{Agent's code&lt;br/&gt;or pre-existing?}
-    Q2a -- "Agent's" --&gt; FIX2["Check: task too broad?&lt;br/&gt;Context stale?&lt;br/&gt;Constraint dropped?"]
-    Q2a -- Pre-existing --&gt; FIX2b["Separate issue&lt;br/&gt;Do not fix in this session"]
+    Q2a -- "Agent's" --&gt; FIX2["Task too broad?&lt;br/&gt;Context stale?&lt;br/&gt;Constraint dropped?"]
+    Q2a -- Pre-existing --&gt; FIX2b["Separate issue&lt;br/&gt;Don't fix here"]
 
     Q2 -- No --&gt; Q3{Follows your&lt;br/&gt;conventions?}
 
-    Q3 -- No --&gt; FIX3["Primitive issue&lt;br/&gt;Rule missing? Wrong scope?&lt;br/&gt;Too much context noise?"]
+    Q3 -- No --&gt; FIX3["Primitive gap&lt;br/&gt;Rule missing or&lt;br/&gt;wrong scope?"]
     Q3 -- Yes --&gt; Q4{Integrates correctly&lt;br/&gt;with system?}
 
-    Q4 -- No --&gt; FIX4["Architectural issue&lt;br/&gt;Right interfaces visible?&lt;br/&gt;Module boundaries respected?"]
-    Q4 -- Yes --&gt; FIX5["Probably fine&lt;br/&gt;Verify edge cases: error paths,&lt;br/&gt;null inputs, concurrency, auth"]
+    Q4 -- No --&gt; FIX4["Architecture issue&lt;br/&gt;Wrong interfaces&lt;br/&gt;or boundaries?"]
+    Q4 -- Yes --&gt; FIX5["Probably fine&lt;br/&gt;Verify edge cases"]
 
     style FIX1 fill:#e63946,color:#fff
     style FIX2 fill:#e76f51,color:#fff

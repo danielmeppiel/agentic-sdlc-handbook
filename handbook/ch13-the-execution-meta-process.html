@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -612,34 +647,34 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>Purpose.</strong> Transform audit findings into an executable specification: what changes, in what order, by which agents, with what constraints.</p>
 <p><strong>How it works.</strong> You define the scope (what’s in, what’s out, what’s deferred), the agent teams (which personas own which concerns), and the wave structure (dependency-ordered batches of work). The plan includes principles — priority-ordered values that anchor every decision when trade-offs arise — and constraints — what must not change.</p>
 <p>A well-structured plan looks like this:</p>
-<pre><code>Scope
-  Auth resolver deduplication, verbose coverage gaps,
-  CommandLogger migration, unicode cleanup.
-  Out of scope: New auth providers, CLI help text changes.
-
-Teams
-  Architecture: python-architect leads.
-    Owns: type safety, separation of concerns, dead code.
-  Logging/UX: cli-logging-expert leads.
-    Owns: verbose coverage, CommandLogger, symbols.
-
-Waves
-  Wave 0 (foundation): Protocol types, method moves — fully parallel.
-  Wave 1 (core): Verbose coverage — depends on Wave 0 APIs.
-  Wave 2 (migration): CommandLogger migration — depends on Wave 1 patterns.
-  Wave 3 (polish): Unicode cleanup — depends on Wave 2 completeness.
-
-Principles (priority order)
-  1. SECURITY — no token leaks, no path traversal.
-  2. CORRECTNESS — tests pass, behavior preserved.
-  3. UX — world-class developer experience in every message.
-  4. KISS — simplest correct solution.
-  5. SHIP SPEED — favor shipping over perfection.
-
-Constraints
-  Do NOT modify test infrastructure.
-  Do NOT change CLI command signatures.
-  Do NOT alter public API return types.</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">Scope</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  Auth resolver deduplication, verbose coverage gaps,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="at">  CommandLogger migration, unicode cleanup.</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">Out of scope</span><span class="kw">:</span><span class="at"> New auth providers, CLI help text changes.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="at">Teams</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">Architecture</span><span class="kw">:</span><span class="at"> python-architect leads.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">Owns</span><span class="kw">:</span><span class="at"> type safety, separation of concerns, dead code.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">Logging/UX</span><span class="kw">:</span><span class="at"> cli-logging-expert leads.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="fu">Owns</span><span class="kw">:</span><span class="at"> verbose coverage, CommandLogger, symbols.</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="at">Waves</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">Wave 0 (foundation)</span><span class="kw">:</span><span class="at"> Protocol types, method moves — fully parallel.</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">Wave 1 (core)</span><span class="kw">:</span><span class="at"> Verbose coverage — depends on Wave 0 APIs.</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">Wave 2 (migration)</span><span class="kw">:</span><span class="at"> CommandLogger migration — depends on Wave 1 patterns.</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">Wave 3 (polish)</span><span class="kw">:</span><span class="at"> Unicode cleanup — depends on Wave 2 completeness.</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="at">Principles (priority order)</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="at">  1. SECURITY — no token leaks, no path traversal.</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="at">  2. CORRECTNESS — tests pass, behavior preserved.</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="at">  3. UX — world-class developer experience in every message.</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="at">  4. KISS — simplest correct solution.</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="at">  5. SHIP SPEED — favor shipping over perfection.</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="at">Constraints</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="at">  Do NOT modify test infrastructure.</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="at">  Do NOT change CLI command signatures.</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="at">  Do NOT alter public API return types.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>The human decision.</strong> You approve the plan. This is the highest-leverage moment in the entire process. A mediocre plan with perfect execution produces mediocre software. A great plan with imperfect execution produces great software — because the test gates catch the imperfections. Take your time here. Review the wave dependencies. Question whether the scope is right. Ask whether the wave structure accounts for the files that will change in multiple phases.</p>
 <p><strong>Key rule.</strong> No implementation starts until you approve the plan. This is the single most important gate.</p>
 <p><strong>Enabling capabilities.</strong> Background exploration agents to validate planning assumptions — mapping dependency graphs, tracing call chains, verifying that the wave structure accounts for shared files. The planning itself is human judgment; the agents accelerate the information gathering that informs it.</p>
@@ -677,10 +712,21 @@ Constraints
 <section id="the-dependency-graph" class="level3" data-number="15.2.1">
 <h3 data-number="15.2.1" class="anchored" data-anchor-id="the-dependency-graph"><span class="header-section-number">15.2.1</span> The Dependency Graph</h3>
 <p>Waves are ordered by dependency. Wave 0 contains tasks with no dependencies — foundational changes that other waves build on. Wave 1 contains tasks that depend on Wave 0 outputs. Wave 2 depends on Wave 1. The dependency is directional and strict: no task in wave N may depend on a task in wave N+1.</p>
-<pre><code>Wave 0: FOUNDATION    No dependencies, fully parallel
-Wave 1: CORE          Depends on Wave 0 outputs
-Wave 2: MIGRATION     Depends on Wave 1 patterns being stable
-Wave 3: POLISH        Depends on Wave 2 completeness</code></pre>
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    W0["Wave 0&lt;br/&gt;FOUNDATION"] --&gt;|"No deps"| W1["Wave 1&lt;br/&gt;CORE"]
+    W1 --&gt;|"Wave 0 outputs"| W2["Wave 2&lt;br/&gt;MIGRATION"]
+    W2 --&gt;|"Wave 1 stable"| W3["Wave 3&lt;br/&gt;POLISH"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p>The most common dependency pattern is foundation-before-migration. Type definitions, protocol changes, and method signatures go in Wave 0. Code that uses those new interfaces goes in Wave 1+. If you put both in the same wave, agents will try to both define and consume new APIs simultaneously — and the consumer agents will work against a file state that doesn’t yet include the definitions.</p>
 </section>
 <section id="the-one-file-one-agent-rule" class="level3" data-number="15.2.2">
@@ -877,10 +923,22 @@ Wave 3: POLISH        Depends on Wave 2 completeness</code></pre>
 <section id="the-adapt-loop" class="level3" data-number="15.4.3">
 <h3 data-number="15.4.3" class="anchored" data-anchor-id="the-adapt-loop"><span class="header-section-number">15.4.3</span> The ADAPT Loop</h3>
 <p>When a checkpoint fails — tests are red, an agent is stuck, a dependency was missed — the meta-process doesn’t stop. It adapts.</p>
-<pre><code>DETECT   → test failure, agent stall, unexpected conflict
-DIAGNOSE → what broke, why, which wave/task/file
-ADJUST   → modify the plan: add tasks, split tasks, reorder waves
-EXECUTE  → re-run the adjusted wave</code></pre>
+<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    D["DETECT&lt;br/&gt;Test failure, agent stall,&lt;br/&gt;unexpected conflict"] --&gt; DG["DIAGNOSE&lt;br/&gt;What broke, why,&lt;br/&gt;which wave/task/file"]
+    DG --&gt; A["ADJUST&lt;br/&gt;Modify plan: add tasks,&lt;br/&gt;split, reorder waves"]
+    A --&gt; E["EXECUTE&lt;br/&gt;Re-run adjusted wave"]
+    E -.-&gt;|"If new issue"| D
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p>The ADAPT loop connects wave execution back to planning. It is not a fallback. It is a designed part of the process — the mechanism that handles the irreducible uncertainty of working with non-deterministic systems on complex codebases.</p>
 <p>In the PR #394 case, the ADAPT loop fired once during wave execution: during Wave 2, when an agent stalled on install.py (58 call sites). The diagnosis was that the file was too large for a single agent session. The adjustment was to split the remaining work across two agents. The re-execution completed successfully. Total cost: 7 minutes. The <a href="../case-study-apm-overhaul.html">case study</a> documents additional escalation events caught during checkpoint verification.</p>
 <p>The key discipline: adaptation is conservative. You add tasks, split tasks, reorder waves. You do not skip validation. You do not merge unvalidated work. The checkpoint discipline holds even — especially — when things go wrong.</p>
@@ -898,11 +956,42 @@ EXECUTE  → re-run the adjusted wave</code></pre>
 <section id="session-boundaries-in-practice" class="level3" data-number="15.5.2">
 <h3 data-number="15.5.2" class="anchored" data-anchor-id="session-boundaries-in-practice"><span class="header-section-number">15.5.2</span> Session Boundaries in Practice</h3>
 <p>For the wave execution model, session management is straightforward:</p>
-<ul>
-<li><strong>Audit agents</strong> run in isolated sessions. They have no state to carry forward.</li>
-<li><strong>Wave agents</strong> run in isolated sessions. Each receives the full context for its task — instructions, relevant code, constraints — without any history from previous waves.</li>
-<li><strong>The orchestrating session</strong> — the one that manages the plan, dispatches agents, and runs checkpoints — is the only long-running session. It accumulates state intentionally: task status, wave history, decision rationale.</li>
-</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Session Type</th>
+<th>Isolation</th>
+<th>State</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Audit agents</td>
+<td>Fully isolated</td>
+<td>No state carried forward</td>
+<td>Read-only analysis</td>
+</tr>
+<tr class="even">
+<td>Wave agents</td>
+<td>Fully isolated</td>
+<td>Full context per task, no history from previous waves</td>
+<td>Scoped implementation</td>
+</tr>
+<tr class="odd">
+<td>Orchestrating session</td>
+<td>Long-running</td>
+<td>Accumulates state intentionally: task status, wave history, decision rationale</td>
+<td>Plan management, agent dispatch, checkpoints</td>
+</tr>
+</tbody>
+</table>
 <p>This separation is why the meta-process uses parallel isolated agents rather than a single agent executing tasks sequentially. Parallel agents don’t just execute faster — they execute with cleaner context.</p>
 <hr>
 </section>
