@@ -63,7 +63,7 @@ The most common pattern separates code production from code validation. One agen
 %%| fig-cap: "Writer, Reviewer, Tester pattern"
 %%| fig-alt: "Flowchart showing a three-stage pipeline: Writer agent produces code changes, which flow to Reviewer agent that identifies bugs, logic errors, and security issues, which then flow to Tester agent that produces test updates and verification, ending at Verified output."
 %%| label: fig-writer-reviewer-tester
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     W["Writer agent"] -->|"Code changes"| R["Reviewer agent"]
     R -->|"Findings: bugs,<br/>logic errors, security"| T["Tester agent"]
@@ -142,7 +142,7 @@ For exploratory work where the scope is not fully known in advance, separate the
 %%| fig-cap: "Audit, Execute, Validate pattern"
 %%| fig-alt: "Flowchart showing a four-stage pipeline: Audit agents (read-only) produce findings with files, severity, and recommendations, which flow to Planning (human decision), then to Execution agents (read-write) with scoped tasks and file assignments producing code changes, then to Validation agents (read-only) producing review findings and test results, ending at Ship."
 %%| label: fig-audit-execute-validate
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     A["Audit agents<br/>(read-only)"] -->|"Findings: files,<br/>severity, recommendations"| B["Planning<br/>(human decision)"]
     B -->|"Scoped tasks with<br/>file assignments"| C["Execution agents<br/>(read-write)"]
@@ -187,7 +187,7 @@ The wave model structures execution as a sequence of batches, where each batch r
 %%| fig-cap: "Wave-based parallelism with dependency ordering"
 %%| fig-alt: "Flowchart showing three waves of parallel agent execution: Wave 0 (Foundation) runs Types, Utilities, and Config agents in parallel, followed by a Tests pass checkpoint; Wave 1 (Core Changes) runs Migration, API, and Auth agents in parallel, followed by another Tests pass checkpoint; Wave 2 (Integration) runs Wiring and Tests agents in parallel. Each wave completes and passes tests before the next wave begins."
 %%| label: fig-wave-parallelism
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     W0["Wave 0: FOUNDATION"]
     W0A["Types"]
@@ -413,7 +413,7 @@ The implication: information flows between agents through committed artifacts, n
 %%| fig-cap: "Session isolation: agents share filesystem, not conversation state"
 %%| fig-alt: "Flowchart showing three agents, each in its own isolated subgraph: Agent 1 with its own isolated Conversation, Agent 2 with its own isolated Conversation, and Agent 3 with its own isolated Conversation. All three agents connect downward to a single shared Shared filesystem node labeled committed files equals ground truth between waves. Agents do not connect to each other, only to the shared filesystem."
 %%| label: fig-session-isolation
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     subgraph A1["Agent 1"]
         C1["Conversation<br/>(isolated)"]
@@ -466,7 +466,7 @@ The patterns described in this chapter compose into a workflow:
 %%| fig-cap: "Complete multi-agent orchestration workflow"
 %%| fig-alt: "Flowchart showing a six-step orchestration workflow: step 1 Assess (Scope decision) flows to step 2 Specialize (Team pattern), then to step 3 Partition (File ownership), then to step 4 Order (Wave dependencies), then to step 5 Dispatch (Parallel execution), then to step 6 Validate (Test and checkpoint). From Validate, Pass loops back to Dispatch for the next wave, and Fail goes to Diagnose. From Diagnose, L1 or L2 issues go to Retry which returns to Dispatch, while L3 or L4 issues go to Human decides which returns to Order for replanning."
 %%| label: fig-orchestration-workflow
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     A1["1. ASSESS<br/>Scope decision"] --> A2["2. SPECIALIZE<br/>Team pattern"]
     A2 --> A3["3. PARTITION<br/>File ownership"]

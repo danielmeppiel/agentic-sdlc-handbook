@@ -85,7 +85,7 @@ The decision is not intuitive at first, so here is the flowchart. When a task ar
 %%| label: fig-agent-decision
 %%| fig-cap: "Decision framework: when to use agents and when to code manually"
 %%| fig-alt: "Top-down decision tree flowchart. A task arrives at the first question: 'Can you specify it clearly in under 2 minutes?' Yes leads to 'Is the spec shorter than the code?' which if Yes leads to 'Is the scope bounded?' — Yes results in 'DELEGATE to agent' (green, success). If the spec is not shorter, outcome is 'CODE IT YOURSELF' (neutral). If scope is not bounded, outcome is 'CODE IT YOURSELF' (neutral). If you cannot specify clearly, the question 'Can you split it into agent plus manual parts?' appears — Yes leads to 'SPLIT: bounded parts to agent, judgment parts to you' (green, success); No leads to 'CODE IT YOURSELF' (neutral). Three manual outcomes and two agent outcomes total."
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     START([Task arrives]) --> Q1{Can you specify it clearly\nin under 2 minutes?}
 
@@ -101,11 +101,11 @@ flowchart TD
     Q3 -- Yes --> SPLIT[SPLIT: bounded parts → agent\njudgment parts → you]
     Q3 -- No --> MANUAL3[CODE IT YOURSELF]
 
-    style DELEGATE fill:#27ae60,stroke:#1e8449,color:#fff
-    style SPLIT fill:#27ae60,stroke:#1e8449,color:#fff
-    style MANUAL1 fill:#3498db,stroke:#2980b9,color:#fff
-    style MANUAL2 fill:#3498db,stroke:#2980b9,color:#fff
-    style MANUAL3 fill:#3498db,stroke:#2980b9,color:#fff
+    style DELEGATE fill:#196f3d,stroke:#145a32,color:#fff
+    style SPLIT fill:#196f3d,stroke:#145a32,color:#fff
+    style MANUAL1 fill:#2874a6,stroke:#1a5276,color:#fff
+    style MANUAL2 fill:#2874a6,stroke:#1a5276,color:#fff
+    style MANUAL3 fill:#2874a6,stroke:#1a5276,color:#fff
 ```
 
 The two-minute test is the entry point. If you could explain the task to a new team member in two minutes and they could complete it with access to the right files and a style guide, an agent can do it. If explaining it would require a thirty-minute whiteboard session with a senior engineer, you've reached a "NO" — code it yourself, or at least isolate the judgment-heavy core for manual work.

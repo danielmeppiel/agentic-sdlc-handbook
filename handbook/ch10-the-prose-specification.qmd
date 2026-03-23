@@ -385,7 +385,7 @@ The general pattern: each constraint addresses one failure mode, and each partne
 %%| label: fig-prose-constraints
 %%| fig-cap: "Relationships between the five PROSE constraints"
 %%| fig-alt: "Graph showing five interconnected nodes representing the PROSE constraints: P (Progressive Disclosure), R (Reduced Scope), O (Orchestrated Composition), S (Safety Boundaries), and E (Explicit Hierarchy). Bidirectional edges connect: P and E with 'controls attention within scope', R and S with 'constrains what safety must cover', O and R with 'single source of truth across tasks', P and R with 'loads only what fits in scope', E and S with 'hierarchy defines boundary scope', and O and P with 'composable units enable disclosure'. Each pair reinforces the other to cover distinct failure modes."
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 graph TD
     P["P<br/>Progressive<br/>Disclosure"] <-- "controls attention<br/>within scope" --> E["E<br/>Explicit<br/>Hierarchy"]
     R["R<br/>Reduced<br/>Scope"] <-- "constrains what<br/>safety must cover" --> S["S<br/>Safety<br/>Boundaries"]

@@ -86,7 +86,7 @@ The durations below are ranges, not fixed schedules. Two factors dominate how lo
 %%| label: fig-transition-roadmap
 %%| fig-cap: "Three-phase transition roadmap with exit signals and rollback triggers"
 %%| fig-alt: "Top-to-bottom flowchart showing a three-phase agentic transition roadmap. Pre-Transition (Weeks 1-4) flows down to Phase 1 Pilot (1-2 teams, 1-5 months), which reaches a decision diamond 'Exit signals met?'. Yes leads to Phase 2 Expand (3-5 teams, 3-9 months); No leads to Rollback node 'High rejection/intervention' which loops back to Phase 1 via 'fix and retry'. Phase 2 reaches a second decision diamond 'Exit signals met?'. Yes leads to Phase 3 Scale (All teams, 6-24 months); No leads to Rollback node 'Coach dependency/divergence' which loops back to Phase 2 via 'shrink and reinforce'. Rollback nodes are red, phases progress from blue to orange to green."
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TB
     PRE["<b>Pre-Transition</b><br/>Weeks 1–4"]
 
@@ -114,10 +114,10 @@ flowchart TB
     G2 -->|"No"| RB2
     RB2 -->|"shrink & reinforce"| P2
 
-    style PRE fill:#3498db,stroke:#2980b9,color:#fff
+    style PRE fill:#2874a6,stroke:#1a5276,color:#fff
     style P1 fill:#2c3e50,stroke:#34495e,color:#fff
-    style P2 fill:#f39c12,stroke:#e67e22,color:#fff
-    style P3 fill:#27ae60,stroke:#1e8449,color:#fff
+    style P2 fill:#f39c12,stroke:#e67e22,color:#1a1a1a
+    style P3 fill:#196f3d,stroke:#145a32,color:#fff
     style G1 fill:#fff,stroke:#333
     style G2 fill:#fff,stroke:#333
     style RB1 fill:#c0392b,stroke:#922b21,color:#fff

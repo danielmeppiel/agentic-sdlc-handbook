@@ -17,7 +17,7 @@ A typical agent session divides its context roughly as follows:
 %%| fig-cap: "Context window budget allocation for a typical 128K-token agent session"
 %%| fig-alt: "Pie chart showing context window budget: Code context is the largest segment at 47% (~60K tokens), followed by Conversation history at 23% (~30K tokens), Instructions and rules at 16% (~20K tokens), Working memory at 8% (~10K tokens), and System prompt at 6% (~8K tokens)."
 %%| label: fig-context-budget
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 pie title Context Window Budget (128K tokens)
     "System prompt (~8K)" : 6
     "Instructions & rules (~20K)" : 16
