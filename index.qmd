@@ -45,14 +45,14 @@ With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise 
 
 This handbook was produced using the same methodology and tooling it describes.
 
-## Stay Updated
+## Get the Download
 
 This is a living document. New chapters, case studies, and PROSE refinements are published continuously.
 
 ::: {.callout-tip appearance="simple" icon=false}
-**Get notified when new content drops.** [Subscribe for updates -->](download.qmd)
+**Want the formatted version?** [📕 Get the PDF & EPUB -->](download.qmd)
 
-No spam. ~2 updates/month. Unsubscribe anytime.
+Free download. ~1 update/month max. Unsubscribe anytime.
 :::
 
 ## License

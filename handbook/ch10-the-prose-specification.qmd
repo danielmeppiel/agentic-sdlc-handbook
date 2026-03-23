@@ -546,5 +546,5 @@ The five constraints are the specification. The chapters that follow — context
 ::: {.callout-tip appearance="simple" icon=false}
 **Deploy PROSE in your repo now**: `pip install apm-cli && apm init` -- [APM on GitHub](https://github.com/microsoft/apm)
 
-Get PROSE methodology refinements as they happen. [Subscribe -->](../download.qmd)
+Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../download.qmd)
 :::

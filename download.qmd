@@ -10,7 +10,7 @@ sidebar: false
 The complete handbook is free to read online. For the formatted **PDF** and **EPUB** versions -- optimized for offline reading, printing, and annotation -- enter your email below. You'll receive the download links instantly.
 
 ::: {.callout-tip appearance="simple" icon=false}
-**What you'll also get**: A short welcome sequence (4 emails over 8 days) with the best insights from the book, plus occasional updates on the PROSE framework and APM. Unsubscribe anytime.
+**What you'll also get**: A short series with the strongest ideas from the book, plus ~1 monthly update on the PROSE framework and APM. Unsubscribe anytime.
 :::
 
 <div id="kit-form-container">

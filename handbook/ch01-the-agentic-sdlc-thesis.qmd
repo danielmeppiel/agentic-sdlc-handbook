@@ -171,5 +171,5 @@ The constraints are the point. Let's see what they produce.
 ---
 
 ::: {.callout-tip appearance="simple" icon=false}
-**Found this useful?** Get notified when new case studies and PROSE framework updates drop. [Subscribe -->](../download.qmd)
+**Found this useful?** Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../download.qmd)
 :::
