@@ -506,7 +506,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#how-copilot-cli-orchestrated-a-52-file-architecture-change-across-25-agents" id="toc-how-copilot-cli-orchestrated-a-52-file-architecture-change-across-25-agents" class="nav-link active" data-scroll-target="#how-copilot-cli-orchestrated-a-52-file-architecture-change-across-25-agents">How Copilot CLI Orchestrated a 52-File Architecture Change Across 25 Agents</a></li>
+  <li><a href="#how-copilot-cli-orchestrated-a-75-file-architecture-change-across-25-agents" id="toc-how-copilot-cli-orchestrated-a-75-file-architecture-change-across-25-agents" class="nav-link active" data-scroll-target="#how-copilot-cli-orchestrated-a-75-file-architecture-change-across-25-agents">How Copilot CLI Orchestrated a 75-File Architecture Change Across 25 Agents</a></li>
   <li><a href="#the-problem" id="toc-the-problem" class="nav-link" data-scroll-target="#the-problem">The Problem</a></li>
   <li><a href="#expert-panel-and-plan-evolution" id="toc-expert-panel-and-plan-evolution" class="nav-link" data-scroll-target="#expert-panel-and-plan-evolution">Expert Panel and Plan Evolution</a>
   <ul class="collapse">
@@ -550,8 +550,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 <hr>
-<section id="how-copilot-cli-orchestrated-a-52-file-architecture-change-across-25-agents" class="level2">
-<h2 class="anchored" data-anchor-id="how-copilot-cli-orchestrated-a-52-file-architecture-change-across-25-agents">How Copilot CLI Orchestrated a 52-File Architecture Change Across 25 Agents</h2>
+<section id="how-copilot-cli-orchestrated-a-75-file-architecture-change-across-25-agents" class="level2">
+<h2 class="anchored" data-anchor-id="how-copilot-cli-orchestrated-a-75-file-architecture-change-across-25-agents">How Copilot CLI Orchestrated a 75-File Architecture Change Across 25 Agents</h2>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -594,7 +594,7 @@ Note
 <li><strong>Auth fragmentation.</strong> Four inconsistent auth implementations were scattered across install, download, copilot, and operations modules.</li>
 <li><strong>Observability gap.</strong> 766 ad-hoc <code>_rich_*</code> logging calls across 27 files with no shared abstraction. When verbose logging silently failed (a <code>NameError</code> caught by an outer <code>try/except</code>), there was no way to know.</li>
 </ol>
-<p>A point fix would have patched <code>_validate_package_exists()</code>. The structural fix required centralised auth resolution, a command-logger abstraction, and diagnostic collection — touching 52 files.</p>
+<p>A point fix would have patched <code>_validate_package_exists()</code>. The structural fix required centralised auth resolution, a command-logger abstraction, and diagnostic collection — touching 75 files.</p>
 <hr>
 </section>
 <section id="expert-panel-and-plan-evolution" class="level2">
@@ -796,6 +796,26 @@ Note
 </div>
 <p>This is why <strong>checkpoint discipline</strong> matters (Ch12) — and why it must include <em>behavioural</em> assertions, not just “tests pass.” The test suite had 2,829 passing tests and none verified that verbose mode actually produced output.</p>
 <hr>
+<div class="callout callout-style-default callout-tip callout-titled" title="Mapping to the Three Practitioner Roles (Chapter 8)">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Mapping to the Three Practitioner Roles (Chapter 8)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Of the five escalation events, three required direct human judgment calls — mapping to the three practitioner roles introduced in Chapter 8:</p>
+<ul>
+<li><strong>Architect</strong> — Escalation #4 (PAT 403): decided to pivot validation from <code>git ls-remote</code> to a single REST API code path, reshaping the architecture rather than adding token-type branches.</li>
+<li><strong>Escalation Handler</strong> — Escalation #1 (install.py): diagnosed agent stall, split remaining work across two replacement agents.</li>
+<li><strong>Reviewer</strong> — Escalation #5 (Silent NameError): traced the failure from test output to a missing import, directed a targeted fix.</li>
+</ul>
+<p>The remaining two escalations (#2 unicode persistence, #3 token type correction) were caught during checkpoint verification and resolved by the orchestrator without role-switching. Chapter 13 summarises the timeline; this case study provides the full escalation log.</p>
+</div>
+</div>
+<hr>
 </section>
 </section>
 <section id="anti-pattern-mapping" class="level2">
@@ -863,7 +883,7 @@ Note
 <p><strong>“Output will remain probabilistic.”</strong> The unicode agent reported success on changes it never persisted. The same prompt, re-dispatched, might have worked. Reliability was architectured through <strong>checkpoint discipline</strong> and file-state verification — not by trusting any single execution.</p>
 <p><strong>“Human judgment will remain the bottleneck and the differentiator.”</strong> The user’s v7 escalation — demanding all commands be covered, not just install — was the highest-leverage decision in the session. No agent suggested it. The 8 plan iterations were not wasted work; they were the mechanism through which human judgment shaped the architecture.</p>
 <hr>
-<p>The lessons from the TL;DR at the top were earned here. The full evidence chain — from a single confusing error message to a 52-file architecture overhaul — is inspectable at <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>.</p>
+<p>The lessons from the TL;DR at the top were earned here. The full evidence chain — from a single confusing error message to a 75-file architecture overhaul — is inspectable at <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Metrics">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -874,7 +894,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>52 files changed · 2,829 → 2,897 tests (+68) · 6 audit agents · 25 implementation agents · 8 plan iterations · 5 escalations (1×L2, 2×L3, 2×L4) · 9 waves</p>
+<p>75 files changed · +7,832/−1,074 lines · 2,829 → 2,897 tests (+68) · 6 audit agents · 25 implementation agents · 8 plan iterations · 5 escalations (1×L2, 2×L3, 2×L4) · 9 waves</p>
 </div>
 </div>
 

@@ -669,7 +669,7 @@ Tester agent ──→ Test updates + verification</code></pre>
 │   - Dead code removal   │  │   - Logger migration    │
 │   - API consolidation   │  │   - Formatting cleanup  │
 └─────────────────────────┘  └─────────────────────────┘</code></pre>
-<p>In the reference case study (<a href="https://github.com/microsoft/apm/pull/394">PR #394</a>, detailed in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 70-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other’s context, and both produced output consistent with their specialization.</p>
+<p>In the reference case study (<a href="https://github.com/microsoft/apm/pull/394">PR #394</a>, detailed in the <a href="../case-study-apm-overhaul.html">case study</a> and summarized in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 75-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other’s context, and both produced output consistent with their specialization.</p>
 <p>This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.</p>
 <section id="concrete-dispatch-what-it-actually-looks-like" class="level4" data-number="14.2.2.1">
 <h4 data-number="14.2.2.1" class="anchored" data-anchor-id="concrete-dispatch-what-it-actually-looks-like"><span class="header-section-number">14.2.2.1</span> Concrete Dispatch: What It Actually Looks Like</h4>
@@ -772,8 +772,9 @@ Wave 2: INTEGRATION         ←  Depends on Wave 1
   Agent H: test updates</code></pre>
 <p>The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0’s output being committed and tested. Within a wave, agents are independent — they share no files and make no assumptions about each other’s progress.</p>
 <p>Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.</p>
-<p>In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. Meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.</p>
-<div class="cell" data-fig-width="7.5" data-layout-align="default">
+<p>In the reference case study (PR #394, detailed in the <a href="../case-study-apm-overhaul.html">case study</a>), four waves plus one recovery wave handled 75 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. Meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.</p>
+<div class="landscape">
+<div class="cell" data-fig-width="8.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -802,6 +803,7 @@ Wave 2: INTEGRATION         ←  Depends on Wave 1
 </pre>
 </div>
 <p></p></figure><p></p>
+</div>
 </div>
 </div>
 </div>
@@ -855,7 +857,7 @@ Wave 1 review:                                   [████]</code></pre>
 <h3 data-number="14.4.3" class="anchored" data-anchor-id="design-conflicts"><span class="header-section-number">14.4.3</span> Design Conflicts</h3>
 <p>Two agents, each following their specialization’s best practices, produce output that reflects genuinely different design philosophies. The architecture agent consolidates error handling into a central module. The domain agent keeps error handling local to each command because the domain’s UX conventions require command-specific error messages.</p>
 <p><strong>Resolution.</strong> This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan’s priority-ordered principles resolve most of them mechanically — if UX is prioritized above structural purity, the domain agent’s approach wins. When the principles don’t resolve the conflict, the human decides and documents the rationale.</p>
-<p>The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed across 15 agent dispatches — one was a scope decision during planning, one was an agent recovery during Wave 2, and one was test triage after the recovery wave (Wave 2b); see Chapter 13 for details. None were design conflicts between agents; all were judgment calls that the plan could not automate. A rate of roughly 15–20% human intervention is typical for well-planned multi-agent work. If you are intervening on more than 30%, the plan’s principles are insufficiently specific. If you are intervening on less than 5%, you are either lucky or not checking carefully enough.</p>
+<p>The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed during wave execution across ~25 agent dispatches — one was a scope decision during planning, one was an agent recovery during Wave 2, and one was test triage after the recovery wave (Wave 2b); see the <a href="../case-study-apm-overhaul.html">case study</a> for the full escalation log. None were design conflicts between agents; all were judgment calls that the plan could not automate. A rate of roughly 15–20% human intervention is typical for well-planned multi-agent work. If you are intervening on more than 30%, the plan’s principles are insufficiently specific. If you are intervening on less than 5%, you are either lucky or not checking carefully enough.</p>
 <hr>
 </section>
 </section>
@@ -917,15 +919,15 @@ Wave 1 review:                                   [████]</code></pre>
 </table>
 </div>
 <p>The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.</p>
-<p>In the reference case study (Chapter 13), the distribution across all decision points within the 15 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions out of fifteen dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.</p>
+<p>In the reference case study (<a href="../case-study-apm-overhaul.html">case study</a>), the distribution across all decision points within the ~25 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions during wave execution out of ~25 dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.</p>
 <hr>
 </section>
 </section>
 <section id="the-coordination-tax-honest-numbers" class="level2" data-number="14.6">
 <h2 data-number="14.6" class="anchored" data-anchor-id="the-coordination-tax-honest-numbers"><span class="header-section-number">14.6</span> The Coordination Tax: Honest Numbers</h2>
-<p>Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the reference case study detailed in Chapter 13.</p>
-<p>In the PR #394 case, the human time in a well-planned multi-agent execution broke down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). In the PR #394 case, total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.</p>
-<p>The same 70-file change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts on changes of this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.</p>
+<p>Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the reference case study (<a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a>).</p>
+<p>In the PR #394 case, the human time in a well-planned multi-agent execution broke down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). Total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.</p>
+<p>The same 75-file change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts on changes of this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.</p>
 <p>The multi-agent approach did not save total elapsed time on this change. It traded human planning time for agent quality. The 45 minutes the orchestrator spent coordinating replaced the 30-45 minutes they would have spent debugging context-degraded output — with better results.</p>
 <section id="the-sweet-spot" class="level3" data-number="14.6.1">
 <h3 data-number="14.6.1" class="anchored" data-anchor-id="the-sweet-spot"><span class="header-section-number">14.6.1</span> The Sweet Spot</h3>
@@ -1015,7 +1017,7 @@ Wave 1 review:                                   [████]</code></pre>
                       └─ L3/L4: human decides, adapt plan</code></pre>
 <p>This is not a rigid process. A small change might skip straight from step 1 to dispatching a single agent. A large change might iterate through steps 5-6 four or five times. The structure is a decision framework, not a ceremony.</p>
 <p>What matters is the discipline behind it: agents are specialized so their context is concentrated, files are partitioned so agents don’t conflict, waves are ordered so dependencies are satisfied, and the human makes the decisions that require judgment rather than the decisions that require typing.</p>
-<p>The next chapter puts this framework into practice. It walks through the full five-phase meta-process — Audit, Plan, Wave, Validate, Ship — with exact numbers from a 70-file execution that used every pattern described here.</p>
+<p>The next chapter puts this framework into practice. It walks through the full five-phase meta-process — Audit, Plan, Wave, Validate, Ship — with exact numbers from a 75-file execution that used every pattern described here.</p>
 
 
 </section>

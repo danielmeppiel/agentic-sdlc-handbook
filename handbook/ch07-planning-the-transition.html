@@ -576,15 +576,27 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="9.3" class="anchored" data-anchor-id="team-readiness-assessment"><span class="header-section-number">9.3</span> Team Readiness Assessment</h2>
 <p>Not every team is equally ready for agentic development, and not every team should start at the same time. A readiness assessment prevents the common mistake of rolling out uniformly across an organization where conditions vary dramatically.</p>
 <p>Four dimensions determine readiness. Assess each on a three-point scale: not ready, partially ready, ready.</p>
-<p><strong>Codebase readiness</strong> — How much of the team’s working knowledge is explicit versus implicit? If architectural decisions live in people’s heads, if coding conventions are enforced through review comments rather than documentation, if the build system requires tribal knowledge to operate — the codebase is not ready for agents. Agents work with explicit context. Chapters 4 and 8 cover what “explicit” means in practice.</p>
-<p>Assessment questions: Is there a written architecture document a new hire could use? Are coding standards documented or only enforced in review? Can someone unfamiliar with the project run the build and tests from documentation alone?</p>
-<p><strong>Process readiness</strong> — Does the team have structured workflows that can accommodate AI-generated code? This means code review processes that handle higher volume, CI/CD pipelines that catch the kinds of defects agents introduce (pattern violations, not just compilation errors), and branching strategies that isolate agent-generated changes until they pass review. Chapter 5 covers governance in detail.</p>
-<p>Assessment questions: Does the team have automated quality gates beyond compilation? Is code review structured or ad hoc? How long does a typical PR take from submission to merge?</p>
-<p><strong>Skill readiness</strong> — Does the team include developers who can evaluate agent output critically? This is not about AI expertise — it is about engineering judgment. A senior developer who understands the codebase can evaluate whether agent-generated code fits the architecture and handles edge cases. A team of junior developers without senior oversight will accept plausible-looking output that violates invariants they don’t yet understand. Chapter 6 addressed this compositional dynamic.</p>
-<p>Assessment questions: What is the ratio of senior to junior developers? Can reviewers articulate <em>why</em> code is wrong, not just that it looks wrong? Has the team onboarded a new hire using written documentation in the past year?</p>
-<p><strong>Cultural readiness</strong> — Does the team view AI tools as assistants or replacements? Teams that feel threatened will resist in ways that no mandate can overcome — subtle non-adoption, blame-shifting when things go wrong, refusal to invest in context engineering because “the tools should just work.” Teams that view AI as an amplifier adopt faster and more sustainably.</p>
-<p>Assessment questions: How did the team respond to the last significant tooling change? Do developers experiment voluntarily, or only when mandated? Is there psychological safety around admitting that a tool-assisted approach failed?</p>
+<section id="codebase-readiness" class="level4" data-number="9.3.0.1">
+<h4 data-number="9.3.0.1" class="anchored" data-anchor-id="codebase-readiness"><span class="header-section-number">9.3.0.1</span> Codebase readiness</h4>
+<p>How much of the team’s working knowledge is explicit versus implicit? If architectural decisions live in people’s heads, if coding conventions are enforced through review comments rather than documentation, if the build system requires tribal knowledge to operate — the codebase is not ready for agents. Agents work with explicit context. Chapters 4 and 8 cover what “explicit” means in practice.</p>
+<p><em>Assessment questions:</em> Is there a written architecture document a new hire could use? Are coding standards documented or only enforced in review? Can someone unfamiliar with the project run the build and tests from documentation alone?</p>
+</section>
+<section id="process-readiness" class="level4" data-number="9.3.0.2">
+<h4 data-number="9.3.0.2" class="anchored" data-anchor-id="process-readiness"><span class="header-section-number">9.3.0.2</span> Process readiness</h4>
+<p>Does the team have structured workflows that can accommodate AI-generated code? This means code review processes that handle higher volume, CI/CD pipelines that catch the kinds of defects agents introduce (pattern violations, not just compilation errors), and branching strategies that isolate agent-generated changes until they pass review. Chapter 5 covers governance in detail.</p>
+<p><em>Assessment questions:</em> Does the team have automated quality gates beyond compilation? Is code review structured or ad hoc? How long does a typical PR take from submission to merge?</p>
+</section>
+<section id="skill-readiness" class="level4" data-number="9.3.0.3">
+<h4 data-number="9.3.0.3" class="anchored" data-anchor-id="skill-readiness"><span class="header-section-number">9.3.0.3</span> Skill readiness</h4>
+<p>Does the team include developers who can evaluate agent output critically? This is not about AI expertise — it is about engineering judgment. A senior developer who understands the codebase can evaluate whether agent-generated code fits the architecture and handles edge cases. A team of junior developers without senior oversight will accept plausible-looking output that violates invariants they don’t yet understand. Chapter 6 addressed this compositional dynamic.</p>
+<p><em>Assessment questions:</em> What is the ratio of senior to junior developers? Can reviewers articulate <em>why</em> code is wrong, not just that it looks wrong? Has the team onboarded a new hire using written documentation in the past year?</p>
+</section>
+<section id="cultural-readiness" class="level4" data-number="9.3.0.4">
+<h4 data-number="9.3.0.4" class="anchored" data-anchor-id="cultural-readiness"><span class="header-section-number">9.3.0.4</span> Cultural readiness</h4>
+<p>Does the team view AI tools as assistants or replacements? Teams that feel threatened will resist in ways that no mandate can overcome — subtle non-adoption, blame-shifting when things go wrong, refusal to invest in context engineering because “the tools should just work.” Teams that view AI as an amplifier adopt faster and more sustainably.</p>
+<p><em>Assessment questions:</em> How did the team respond to the last significant tooling change? Do developers experiment voluntarily, or only when mandated? Is there psychological safety around admitting that a tool-assisted approach failed?</p>
 <p>The assessment is not a gate — it is a sequencing tool. Teams scoring “ready” across all four dimensions are your pilot candidates. Teams “partially ready” in one or two dimensions need targeted investment before they join. Teams “not ready” in codebase or skill readiness need the most preparation and should start last.</p>
+</section>
 <section id="readiness-matrix" class="level3" data-number="9.3.1">
 <h3 data-number="9.3.1" class="anchored" data-anchor-id="readiness-matrix"><span class="header-section-number">9.3.1</span> Readiness Matrix</h3>
 <div data-tbl-colwidths="[12,28,30,30]">
@@ -637,8 +649,11 @@ ul.task-list li input[type="checkbox"] {
 <section id="phased-adoption" class="level2" data-number="9.4">
 <h2 data-number="9.4" class="anchored" data-anchor-id="phased-adoption"><span class="header-section-number">9.4</span> Phased Adoption</h2>
 <p>The transition from pilot to full adoption follows three phases. Each phase has entry criteria, activities, expected duration, exit signals, and rollback criteria. Moving to the next phase before the exit signals are present is the single most common adoption mistake. Ignoring rollback signals is the second.</p>
-<p><strong>A note on timelines.</strong> The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.</p>
-<div class="cell" data-fig-width="7" data-layout-align="default">
+<section id="a-note-on-timelines" class="level4" data-number="9.4.0.1">
+<h4 data-number="9.4.0.1" class="anchored" data-anchor-id="a-note-on-timelines"><span class="header-section-number">9.4.0.1</span> A note on timelines</h4>
+<p>The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.</p>
+<div class="landscape">
+<div class="cell" data-fig-width="8.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -684,9 +699,11 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </div>
+</div>
 <blockquote class="blockquote">
 <p><em>Each phase has explicit exit signals and rollback criteria. Moving forward without meeting exit signals is the single most common adoption mistake.</em></p>
 </blockquote>
+</section>
 <section id="phase-1-pilot-15-months" class="level3" data-number="9.4.1">
 <h3 data-number="9.4.1" class="anchored" data-anchor-id="phase-1-pilot-15-months"><span class="header-section-number">9.4.1</span> Phase 1: Pilot (1–5 months)</h3>
 <p><em>Typical duration: 1–3 months for orgs under 200 engineers; 3–5 months for 200–1,000; 4–6 months for 1,000+.</em></p>

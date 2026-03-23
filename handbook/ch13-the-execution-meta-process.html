@@ -524,7 +524,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#pr-394-the-worked-example" id="toc-pr-394-the-worked-example" class="nav-link" data-scroll-target="#pr-394-the-worked-example"><span class="header-section-number">15.3</span> PR #394: The Worked Example</a>
   <ul class="collapse">
   <li><a href="#timeline" id="toc-timeline" class="nav-link" data-scroll-target="#timeline"><span class="header-section-number">15.3.1</span> Timeline</a></li>
-  <li><a href="#the-three-human-interventions" id="toc-the-three-human-interventions" class="nav-link" data-scroll-target="#the-three-human-interventions"><span class="header-section-number">15.3.2</span> The Three Human Interventions</a></li>
+  <li><a href="#the-three-practitioner-roles-in-action" id="toc-the-three-practitioner-roles-in-action" class="nav-link" data-scroll-target="#the-three-practitioner-roles-in-action"><span class="header-section-number">15.3.2</span> The Three Practitioner Roles in Action</a></li>
   </ul></li>
   <li><a href="#checkpoint-discipline" id="toc-checkpoint-discipline" class="nav-link" data-scroll-target="#checkpoint-discipline"><span class="header-section-number">15.4</span> Checkpoint Discipline</a>
   <ul class="collapse">
@@ -570,13 +570,13 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>Here is what nobody tells you about using AI agents on a real codebase: the agent is the easy part. The hard part is knowing what to ask, in what order, and when to stop asking and start verifying.</p>
-<p>Chapters 10 through 12 gave you the building blocks — PROSE constraints to design by (Chapter 10), context engineering to feed agents accurately (Chapter 11), and multi-agent orchestration to coordinate at scale (Chapter 12). This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from “I need to change 70 files” to “the PR is merged with zero regressions” — and what happens at every decision point in between.</p>
+<p>Chapters 10 through 12 gave you the building blocks — PROSE constraints to design by (Chapter 10), context engineering to feed agents accurately (Chapter 11), and multi-agent orchestration to coordinate at scale (Chapter 12). This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from “I need to change 75 files” to “the PR is merged with zero regressions” — and what happens at every decision point in between.</p>
 <p>The methodology is a five-phase meta-process. It works regardless of which AI coding tool you use, because it operates at a level above any specific tool’s mechanics. The tool dispatches agents, runs tests, and manages files. You manage the process.</p>
 <hr>
 <section id="the-five-phases" class="level2" data-number="15.1">
 <h2 data-number="15.1" class="anchored" data-anchor-id="the-five-phases"><span class="header-section-number">15.1</span> The Five Phases</h2>
 <p>Every large change follows these phases, in order:</p>
-<div class="cell" data-fig-width="6.5" data-layout-align="default">
+<div class="cell" data-fig-width="5.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -737,10 +737,8 @@ Wave 3: POLISH        Depends on Wave 2 completeness</code></pre>
 </section>
 <section id="pr-394-the-worked-example" class="level2" data-number="15.3">
 <h2 data-number="15.3" class="anchored" data-anchor-id="pr-394-the-worked-example"><span class="header-section-number">15.3</span> <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>: The Worked Example</h2>
-<p>The meta-process is abstract until you see it execute. This section walks through a specific PR — an auth and logging architecture overhaul on a real codebase — with exact numbers.</p>
-<p>The codebase is APM, an open-source agent package manager — the author’s implementation of the distribution layer described in Chapters 9 and 10. The instruction files, skills, and agent configurations referenced below are real artifacts, available for inspection in the project’s repository. This handbook was itself produced using PROSE conventions and APM-managed agent configurations — the same methodology and tooling described in these chapters.</p>
-<p><strong>Scope.</strong> 5 cross-cutting concerns: auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage. The changes touched 70 files across the entire source tree.</p>
-<p><strong>Final metrics.</strong></p>
+<p>The meta-process is abstract until you see it execute. This section summarizes a real PR — an auth and logging architecture overhaul on APM, an open-source agent package manager (the author’s implementation of the distribution layer described in Chapters 9 and 10). The full execution log — including 5 escalation events, 8 plan iterations, and anti-pattern mappings — is in <a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a> case study in Part IV.</p>
+<p><strong>Scope.</strong> 5 cross-cutting concerns — auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage — touching 75 files across the entire source tree.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -755,57 +753,107 @@ Wave 3: POLISH        Depends on Wave 2 completeness</code></pre>
 <tbody>
 <tr class="odd">
 <td>Files changed</td>
-<td>70</td>
+<td>75</td>
 </tr>
 <tr class="even">
 <td>Lines added / removed</td>
-<td>+5,886 / −1,030</td>
+<td>+7,832 / −1,074</td>
 </tr>
 <tr class="odd">
-<td>Commits</td>
-<td>30 (one per agent task plus wave-level checkpoint commits)</td>
+<td>Tests</td>
+<td>2,829 → 2,897 (+68 added during session)</td>
 </tr>
 <tr class="even">
-<td>Tests passing</td>
-<td>2,874</td>
-</tr>
-<tr class="odd">
 <td>Agents dispatched</td>
-<td>15 (2 audit + 2 in Wave 0 + 2 in Wave 1 + 3 in Wave 2 + 2 in Wave 2b + 4 in Wave 3)</td>
+<td>~25 implementation + 6 audit</td>
+</tr>
+<tr class="odd">
+<td>Human interventions</td>
+<td>3 during wave execution (5 total across session)</td>
 </tr>
 <tr class="even">
-<td>Human interventions</td>
-<td>3</td>
+<td>Plan iterations</td>
+<td>8 (v1 → v8 before execution began)</td>
 </tr>
 <tr class="odd">
 <td>Wall-clock time</td>
-<td>~90 minutes (audit through merge)</td>
-</tr>
-<tr class="even">
-<td>Regressions detected</td>
-<td>0 (by the test suite)</td>
+<td>~90 minutes (wave execution phase)</td>
 </tr>
 </tbody>
 </table>
-<p>That last number deserves honesty: “zero regressions” means “zero regressions detected by the test suite.” The test suite had 2,874 tests, which is substantial coverage, but it is not proof of correctness — it is proof that no tested behavior changed. The distinction matters. The confidence you can place in the process is bounded by the quality of your tests.</p>
-<p><strong>A note on timing.</strong> The 90-minute figure reflects an experienced practitioner working on a codebase with mature primitives — battle-tested instruction files, established agent personas, and a team whose conventions were already externalized into the codebase instrumentation described in Chapter 9. Your first time through this process will take roughly 3×. The audit phase is slower because you’re simultaneously learning what your codebase looks like through an agent’s eyes. The planning phase is slower because you haven’t yet developed intuition for wave decomposition. And you’ll hit more ADAPT loops because your primitives haven’t been refined by prior failures. Budget for it. The first run is an investment in the infrastructure that makes every subsequent run faster. By the third or fourth execution, the times above become realistic.</p>
+<p><strong>A note on timing.</strong> The 90-minute figure reflects an experienced practitioner working with mature primitives — battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.</p>
 <section id="timeline" class="level3" data-number="15.3.1">
 <h3 data-number="15.3.1" class="anchored" data-anchor-id="timeline"><span class="header-section-number">15.3.1</span> Timeline</h3>
-<p><strong>Audit (3 minutes).</strong> Two explore agents dispatched in parallel: an architecture expert and a logging/UX expert. Each analyzed the codebase through its own lens and produced severity-ranked findings with file-and-line citations. The architecture audit identified resolver duplication, type safety gaps, and dead code. The logging audit identified verbose coverage gaps, inconsistent symbol usage, and CommandLogger migration opportunities.</p>
-<p><strong>Planning (5 minutes).</strong> Review of audit findings. All findings included in scope — nothing deferred. Two teams defined: architecture (led by the python-architect persona) and logging/UX (led by the cli-logging-expert persona). Four waves structured by dependency. Plan approved.</p>
-<p><strong>Wave 0 — Foundation (5 minutes).</strong> Two parallel agents. The architecture agent handled resolver deduplication and method moves. The logging agent handled traffic-light compliance and symbol definitions. No dependencies between them. Tests green. Committed.</p>
-<p><strong>Waves 1 and 2 — Core and Migration (8 minutes).</strong> Five parallel agents covering verbose logging coverage (Wave 1) and CommandLogger migration (Wave 2). These waves were launched as a sequence after Wave 0 — Wave 1 completed, tests passed, committed; then Wave 2 launched immediately. The agents consumed the APIs and patterns established in Wave 0.</p>
-<p><strong>Wave 2b — Recovery (7 minutes).</strong> This is where the process proved its value. One agent in Wave 2 got stuck — it was migrating 58 function calls in a large file and either hit a context limit or a connection failure (the root cause was ambiguous). This was the first human intervention: diagnosing that the agent had stalled, inspecting what it had completed, and deciding to have a fresh agent take over the remaining work. The replacement agents — two of them, splitting the remaining work by file section — completed the migration. Tests green. Committed.</p>
-<p><strong>Wave 3 — Polish (4 minutes).</strong> One agent handling unicode arrow symbol cleanup across the codebase. Low risk, fully parallel with nothing. Tests green. Committed.</p>
-<p><strong>Validation and Ship (2 minutes).</strong> Spot-checked the highest-risk changes (install.py, the largest file affected). Reviewed the changelog. Full test suite green. Pushed. CI passed. Merged.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 29%">
+<col style="width: 23%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Phase</th>
+<th>Duration</th>
+<th>Agents</th>
+<th>Outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Audit</td>
+<td>3 min</td>
+<td>2 parallel (architecture + logging/UX)</td>
+<td>Severity-ranked findings with file-line citations</td>
+</tr>
+<tr class="even">
+<td>Planning</td>
+<td>5 min</td>
+<td>—</td>
+<td>8 iterations; all findings in scope; 2 teams defined</td>
+</tr>
+<tr class="odd">
+<td>Wave 0 — Foundation</td>
+<td>5 min</td>
+<td>2 parallel</td>
+<td>Resolver dedup + symbol definitions. Tests green.</td>
+</tr>
+<tr class="even">
+<td>Waves 1–2 — Core</td>
+<td>8 min</td>
+<td>5 parallel</td>
+<td>Verbose logging + CommandLogger migration. Tests green.</td>
+</tr>
+<tr class="odd">
+<td>Wave 2b — Recovery</td>
+<td>7 min</td>
+<td>2 replacement</td>
+<td>install.py agent stalled (context exhaustion). Split + re-dispatch.</td>
+</tr>
+<tr class="even">
+<td>Wave 3 — Polish</td>
+<td>4 min</td>
+<td>1</td>
+<td>Unicode symbol cleanup. Tests green.</td>
+</tr>
+<tr class="odd">
+<td>Ship</td>
+<td>2 min</td>
+<td>—</td>
+<td>Spot-check, full suite green, CI passed, merged.</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="the-three-human-interventions" class="level3" data-number="15.3.2">
-<h3 data-number="15.3.2" class="anchored" data-anchor-id="the-three-human-interventions"><span class="header-section-number">15.3.2</span> The Three Human Interventions</h3>
-<p>Across 90 minutes and 15 agent dispatches, the human intervened exactly three times. Each intervention illustrates a different category of human judgment that the process cannot automate — and each maps directly to one of the three practitioner roles introduced in Chapter 8.</p>
-<p><strong>Intervention 1: Scope decision — the Architect role (during planning).</strong> The audit produced findings at four severity levels. The human decided to include all findings in scope — none deferred. This was a judgment call. A more conservative approach would have limited scope to CRITICAL and HIGH findings. The decision to include everything was based on the assessment that the changes were low-risk individually and that deferring MODERATE findings would create follow-up work that cost more than addressing them now. This is the Architect role in action: decomposing work, defining scope, sequencing dependencies. An agent cannot make this decision because it requires understanding the team’s priorities, the release timeline, and the cost of context-switching back to this area later.</p>
-<p><strong>Intervention 2: Agent recovery — the Escalation Handler role (during Wave 2).</strong> An agent stopped making progress. The human diagnosed the situation — inspected which edits had been applied and which remained — and decided to split the remaining work across two replacement agents rather than retrying the original. This required judgment about the failure mode (was it a transient error or a fundamental context problem?) and the recovery strategy (retry vs.&nbsp;split vs.&nbsp;manual completion). This is the Escalation Handler role: resolving ambiguity that the specification didn’t cover, making real-time recovery decisions, and updating the plan when the unexpected happens. The decision to split was based on the assessment that the file was too large for a single agent session to handle reliably.</p>
-<p><strong>Intervention 3: Test triage — the Reviewer role (during Wave 2b).</strong> After the replacement agents completed their work, one test failed. The human examined the failure, determined it was caused by an ordering issue in the migration (a function call was migrated but its setup code wasn’t), and directed an agent to fix the specific issue. This is the Reviewer role: evaluating agent output against intended behavior, catching failures that require understanding beyond the immediate code, and ensuring the result fits with the rest of the system. The diagnostic chain — reading the test failure, understanding the assertion, tracing the cause to a specific incomplete migration — is one that current agents can perform in some cases but not reliably when the failure spans multiple files and waves.</p>
-<p>Three interventions in 90 minutes. The rest was autonomous execution within the plan. The interventions were not random — they fell at predictable points that correspond to the three roles from Chapter 8: Architect (scope and decomposition decisions), Escalation Handler (recovery when agents hit limits), and Reviewer (validating output and diagnosing failures). These are the categories of human judgment that the meta-process is designed to surface, not eliminate. Understanding which role you are in at each intervention point — and why it matters — is what Chapter 8 prepares you for.</p>
+<section id="the-three-practitioner-roles-in-action" class="level3" data-number="15.3.2">
+<h3 data-number="15.3.2" class="anchored" data-anchor-id="the-three-practitioner-roles-in-action"><span class="header-section-number">15.3.2</span> The Three Practitioner Roles in Action</h3>
+<p>Across wave execution, the human intervened exactly three times — each mapping to one of the three practitioner roles from Chapter 8:</p>
+<ol type="1">
+<li><strong>Architect</strong> (during planning): decided to include all severity levels in scope rather than deferring moderate findings. This required judgment about priorities, release timeline, and the cost of context-switching back later.</li>
+<li><strong>Escalation Handler</strong> (during Wave 2): diagnosed an agent stall on install.py (58 call sites exhausted the context window), decided to split remaining work across two replacement agents rather than retrying.</li>
+<li><strong>Reviewer</strong> (during Wave 2b): triaged a test failure caused by an ordering issue in the migration — a function call was migrated but its setup code wasn’t — and directed a targeted fix.</li>
+</ol>
+<p>Three interventions, three roles, no overlap. These are the categories of human judgment that the meta-process surfaces, not eliminates. The <a href="../case-study-apm-overhaul.html">case study</a> documents two additional escalation events — a token type correction and a silent NameError — that were caught during checkpoint verification and mapped to anti-patterns in Chapter 14.</p>
 <hr>
 </section>
 </section>
@@ -816,7 +864,7 @@ Wave 3: POLISH        Depends on Wave 2 completeness</code></pre>
 <h3 data-number="15.4.1" class="anchored" data-anchor-id="why-test-after-every-wave"><span class="header-section-number">15.4.1</span> Why Test After Every Wave</h3>
 <p>The alternative — executing all waves and testing at the end — is faster in the best case and catastrophic in the worst case. If wave 3 introduces a regression, and you haven’t tested since wave 0, you don’t know whether the regression was introduced in wave 1, 2, or 3. You can’t bisect. You can’t revert a single wave. You’re debugging a composite changeset that spans the entire execution.</p>
 <p>Testing after every wave makes each wave an independently verifiable unit. If wave 2 breaks a test, you know the regression was introduced in wave 2. You can inspect the wave 2 diff, identify the cause, fix it, and continue — without touching waves 0 or 1.</p>
-<p>The cost is real: a full test suite run after every wave. In the PR #394 case, that was 2,874 tests taking approximately 2 minutes per run, across 5 checkpoints (4 waves + final validation) — roughly 10 minutes of testing total. The alternative — debugging a 70-file composite changeset without bisection points — would have cost hours.</p>
+<p>The cost is real: a full test suite run after every wave. In the PR #394 case, that was ~2,850 tests taking approximately 2 minutes per run, across 5 checkpoints (4 waves + final validation) — roughly 10 minutes of testing total. The alternative — debugging a 75-file composite changeset without bisection points — would have cost hours.</p>
 </section>
 <section id="what-happens-at-a-checkpoint" class="level3" data-number="15.4.2">
 <h3 data-number="15.4.2" class="anchored" data-anchor-id="what-happens-at-a-checkpoint"><span class="header-section-number">15.4.2</span> What Happens at a Checkpoint</h3>
@@ -834,7 +882,7 @@ DIAGNOSE → what broke, why, which wave/task/file
 ADJUST   → modify the plan: add tasks, split tasks, reorder waves
 EXECUTE  → re-run the adjusted wave</code></pre>
 <p>The ADAPT loop connects wave execution back to planning. It is not a fallback. It is a designed part of the process — the mechanism that handles the irreducible uncertainty of working with non-deterministic systems on complex codebases.</p>
-<p>In the PR #394 case, the ADAPT loop fired once: during Wave 2, when an agent stalled. The diagnosis was that the file was too large for a single agent session. The adjustment was to split the remaining work across two agents. The re-execution completed successfully. Total cost of the adaptation: 7 minutes, including diagnosis, plan adjustment, agent dispatch, and re-validation.</p>
+<p>In the PR #394 case, the ADAPT loop fired once during wave execution: during Wave 2, when an agent stalled on install.py (58 call sites). The diagnosis was that the file was too large for a single agent session. The adjustment was to split the remaining work across two agents. The re-execution completed successfully. Total cost: 7 minutes. The <a href="../case-study-apm-overhaul.html">case study</a> documents additional escalation events caught during checkpoint verification.</p>
 <p>The key discipline: adaptation is conservative. You add tasks, split tasks, reorder waves. You do not skip validation. You do not merge unvalidated work. The checkpoint discipline holds even — especially — when things go wrong.</p>
 <hr>
 </section>
@@ -861,7 +909,7 @@ EXECUTE  → re-run the adjusted wave</code></pre>
 </section>
 <section id="adapting-the-meta-process" class="level2" data-number="15.6">
 <h2 data-number="15.6" class="anchored" data-anchor-id="adapting-the-meta-process"><span class="header-section-number">15.6</span> Adapting the Meta-Process</h2>
-<p>The PR #394 case involved 70 files and 15 agents across 4 waves. Not every change is that large. The meta-process scales in both directions.</p>
+<p>The PR #394 case involved 75 files and ~25 agents across 5 waves (including one recovery wave). Not every change is that large. The meta-process scales in both directions.</p>
 <section id="small-changes-fewer-than-10-files" class="level3" data-number="15.6.1">
 <h3 data-number="15.6.1" class="anchored" data-anchor-id="small-changes-fewer-than-10-files"><span class="header-section-number">15.6.1</span> Small Changes (fewer than 10 files)</h3>
 <p>For focused changes within a single concern — fixing a bug, adding a feature to one module, refactoring a small subsystem — the full wave structure is overhead. The meta-process compresses:</p>
@@ -892,7 +940,7 @@ EXECUTE  → re-run the adjusted wave</code></pre>
 <p><strong>Bisectable history.</strong> Every wave is a separate commit with passing tests. If a bug surfaces after merge, you can bisect to the exact wave that introduced it. This is not possible with the typical “one giant commit per feature” or “squash everything” approaches.</p>
 <p><strong>Auditable decisions.</strong> The plan documents what was decided and why. The checkpoint records document what happened at each validation point. The escalation records document what required human judgment and what the judgment was. A reviewer reading the PR has a complete record of the decision chain — not just the final code.</p>
 <p><strong>Reproducible process.</strong> The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same primitives, and the same plan, would produce substantially similar output. The non-determinism of AI agents is bounded by the determinism of the process around them.</p>
-<p><strong>Proportional cost.</strong> The time spent is proportional to the change, not the codebase. A 70-file change took 90 minutes regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.</p>
+<p><strong>Proportional cost.</strong> The time spent is proportional to the change, not the codebase. A 75-file change took 90 minutes regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.</p>
 <hr>
 <p>The meta-process is the operational core of everything this book teaches. PROSE provides the constraints. Context engineering provides the information. Agent primitives encode the knowledge. The meta-process is how they combine into shipped code.</p>
 <p>But following a process correctly is only half the challenge. The other half is recognizing when it’s going wrong — when an anti-pattern is forming, when a failure mode is emerging, when the process is producing output that looks correct and isn’t. The next chapter documents what those failures look like and how to prevent them.</p>
