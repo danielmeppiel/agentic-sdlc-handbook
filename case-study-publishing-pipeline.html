@@ -590,7 +590,7 @@ ul.task-list li input[type="checkbox"] {
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-conversion-wave-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-conversion-wave">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+<pre class="mermaid mermaid-js" data-label="fig-cs-conversion-wave">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart LR
     A["15 Markdown&lt;br/&gt;chapters"] --&gt; B["git mv .md → .qmd&lt;br/&gt;+ YAML frontmatter"]
     B --&gt; C["_quarto.yml&lt;br/&gt;book config"]
@@ -621,7 +621,7 @@ Figure&nbsp;19.1: Publishing conversion pipeline: Markdown to HTML, PDF, and EPU
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-almost-done-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-almost-done">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+<pre class="mermaid mermaid-js" data-label="fig-cs-almost-done">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     A["PDF renders ✓&lt;br/&gt;text too narrow"] --&gt;|scrreprt class| B["Layout fixed ✓&lt;br/&gt;Mermaid missing"]
     B --&gt;|syntax fix| C["Diagrams render ✓&lt;br/&gt;duplicate numbers"]
@@ -630,7 +630,7 @@ flowchart TD
     E --&gt;|5.5 + preamble| F["PDF clean ✓&lt;br/&gt;686KB → 3.8MB"]
 
     style A fill:#c0392b,stroke:#922b21,color:#fff
-    style F fill:#27ae60,stroke:#1e8449,color:#fff
+    style F fill:#196f3d,stroke:#145a32,color:#fff
 </pre>
 </div>
 </div>
@@ -715,7 +715,7 @@ Figure&nbsp;19.2: The ‘Almost Done’ trap: cascading PDF rendering fixes
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-cicd-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-cicd-architecture">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
+<pre class="mermaid mermaid-js" data-label="fig-cs-cicd-architecture">%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#2874a6', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TB
     subgraph CI ["CI Pipeline (49 seconds)"]
         A1["Checkout"] --&gt; A2["Install Quarto"]
@@ -733,8 +733,8 @@ flowchart TB
         B6 --&gt; B7["quarto publish&lt;br/&gt;--no-render"]
     end
 
-    style CI fill:#27ae60,stroke:#1e8449,color:#fff
-    style Local fill:#3498db,stroke:#2980b9,color:#fff
+    style CI fill:#196f3d,stroke:#145a32,color:#fff
+    style Local fill:#2874a6,stroke:#1a5276,color:#fff
 </pre>
 </div>
 </div>

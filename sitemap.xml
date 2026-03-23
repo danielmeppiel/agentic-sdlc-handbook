@@ -2,86 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/index.html</loc>
-    <lastmod>2026-03-23T23:02:55.778Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.691Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/download.html</loc>
-    <lastmod>2026-03-23T23:02:55.771Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.684Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch01-the-agentic-sdlc-thesis.html</loc>
-    <lastmod>2026-03-23T23:02:55.771Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.685Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch02-the-ai-native-landscape.html</loc>
-    <lastmod>2026-03-23T23:02:55.772Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.685Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch03-the-business-case.html</loc>
-    <lastmod>2026-03-23T23:02:55.772Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.685Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch04-the-reference-architecture.html</loc>
-    <lastmod>2026-03-23T23:02:55.772Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.686Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch05-governance-for-ai-assisted-delivery.html</loc>
-    <lastmod>2026-03-23T23:02:55.772Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.686Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch06-team-structures.html</loc>
-    <lastmod>2026-03-23T23:02:55.772Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.686Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch07-planning-the-transition.html</loc>
-    <lastmod>2026-03-23T23:02:55.773Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.686Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch08-the-practitioners-mindset.html</loc>
-    <lastmod>2026-03-23T23:02:55.773Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.687Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch09-the-instrumented-codebase.html</loc>
-    <lastmod>2026-03-23T23:02:55.773Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.687Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch10-the-prose-specification.html</loc>
-    <lastmod>2026-03-23T23:02:55.773Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.687Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch11-context-engineering.html</loc>
-    <lastmod>2026-03-23T23:02:55.773Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.687Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch12-multi-agent-orchestration.html</loc>
-    <lastmod>2026-03-23T23:02:55.774Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.687Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch13-the-execution-meta-process.html</loc>
-    <lastmod>2026-03-23T23:02:55.774Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.688Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch14-anti-patterns-and-failure-modes.html</loc>
-    <lastmod>2026-03-23T23:02:55.774Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.688Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/case-study-apm-overhaul.html</loc>
-    <lastmod>2026-03-23T23:02:55.770Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.683Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/case-study-handbook-writing.html</loc>
-    <lastmod>2026-03-23T23:02:55.771Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.684Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/case-study-publishing-pipeline.html</loc>
-    <lastmod>2026-03-23T23:02:55.771Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.684Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/case-study-growth-engine.html</loc>
-    <lastmod>2026-03-23T23:02:55.770Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.683Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/apm-handbook/handbook/ch15-what-comes-next.html</loc>
-    <lastmod>2026-03-23T23:02:55.774Z</lastmod>
+    <lastmod>2026-03-23T23:21:18.688Z</lastmod>
   </url>
 </urlset>
