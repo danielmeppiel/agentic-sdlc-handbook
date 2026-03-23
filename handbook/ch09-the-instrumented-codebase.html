@@ -801,13 +801,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="tool-support-and-portability" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</h2>
 <p>The six primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
+<div data-tbl-colwidths="[16,28,18,20,18]">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
-<col style="width: 38%">
-<col style="width: 11%">
-<col style="width: 19%">
-<col style="width: 14%">
+<col style="width: 28%">
+<col style="width: 18%">
+<col style="width: 20%">
+<col style="width: 18%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -863,6 +864,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+</div>
 <p>“—” means the tool has no native format for that primitive type. The knowledge is still usable — you embed it in whatever instruction format the tool does support — but automatic activation and scoping are lost.</p>
 <p>Three observations.</p>
 <p><strong>Instructions are the universal primitive.</strong> Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ — <code>applyTo</code> frontmatter, glob-based rule files, per-directory placement — but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.</p>

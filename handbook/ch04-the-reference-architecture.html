@@ -520,7 +520,7 @@ ul.task-list li input[type="checkbox"] {
 <p><strong>The Agent Layer</strong> is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy — from passive suggestion to autonomous task execution — but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.</p>
 <p><strong>The Platform Layer</strong> is the infrastructure that enables both humans and agents: source control, CI/CD pipelines, identity and access management, observability, artifact registries, and the APIs that connect them. This layer is often invisible in AI adoption conversations, which is precisely why adoption stalls. An agent that can generate code but cannot run tests, read build output, or access your dependency graph is an agent working blind.</p>
 <p>The layers are not independent. They form a stack where each depends on the one below it:</p>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-fig-width="7" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -565,17 +565,19 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="6.2" class="anchored" data-anchor-id="mapping-the-layers-across-the-lifecycle"><span class="header-section-number">6.2</span> Mapping the Layers Across the Lifecycle</h2>
 <p>The three layers apply at every phase of software delivery. The table below maps what each layer does in each phase — and, critically, which capabilities are available today versus emerging or directional.</p>
 <p>Maturity tiers: <strong>Now</strong> = available across two or more vendors. <strong>Emerging</strong> = available in one or two tools, or in limited preview. <strong>Directional</strong> = announced, demonstrated, or on public roadmaps but not production-ready.</p>
+<div class="landscape">
+<div data-tbl-colwidths="[9,11,13,13,14,12,12,9,7]">
 <table class="caption-top table">
 <colgroup>
+<col style="width: 9%">
 <col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
-<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 14%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 9%">
+<col style="width: 7%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -648,6 +650,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
+</div>
 <p>Executives do not need to think in eight phases. They need three buckets that map to planning cadences, budget lines, and organizational accountability:</p>
 <p><strong>Intent</strong> (Ideate + Plan) answers “what are we building and why?” Agent assistance here is mostly emerging. Research agents that surface prior art, planning agents that draft architecture decision records and decompose epics into tasks — these exist in early forms, but no tool reliably automates the judgment calls that make planning valuable.</p>
 <p><strong>Build</strong> (Code + Build + Test + Review) answers “how do we turn intent into verified software?” This is where agent capabilities are most mature. Code generation, build diagnostics, test generation, and automated code review all have production-ready implementations across multiple vendors. This is also where most organizations start, and where the Vibe Coding Cliff from Chapter 1 hits hardest if context is not structured.</p>
@@ -656,12 +660,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="three-tier-honesty" class="level3" data-number="6.2.1">
 <h3 data-number="6.2.1" class="anchored" data-anchor-id="three-tier-honesty"><span class="header-section-number">6.2.1</span> Three-Tier Honesty</h3>
 <p>Vendor presentations tend to show the full architecture as if it were all available today. It is not. Presenting the vision as current reality is what vendor whitepapers do. This book tags every capability honestly.</p>
+<div data-tbl-colwidths="[10,30,12,48]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 10%">
+<col style="width: 30%">
+<col style="width: 12%">
+<col style="width: 48%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -722,6 +727,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>The pattern is clear. Build-phase capabilities are mature. Intent-phase and Operate-phase capabilities are early. If a vendor tells you they have end-to-end lifecycle automation today, ask which cells in this table they would tag as Now, and how they define the term. The honest answer will tell you more about the vendor than any feature demo.</p>
 <hr>
 </section>
@@ -729,12 +735,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="what-changes-about-roles" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="what-changes-about-roles"><span class="header-section-number">6.3</span> What Changes About Roles</h2>
 <p>The three-layer model clarifies what happens to human roles when agents enter the lifecycle. The answer is not that roles disappear. The answer is that the <em>proportion</em> of activities within each role shifts.</p>
+<div data-tbl-colwidths="[14,30,32,24]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 14%">
+<col style="width: 30%">
+<col style="width: 32%">
+<col style="width: 24%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -777,6 +784,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the structural properties of language models described in Chapter 1 — they process and generate; they do not decide or bear responsibility.</p>
 <p>Chapter 6 covers the organizational design implications in detail: team structures, the junior pipeline, and new hiring profiles. Here, the point is architectural: the Human Layer does not shrink. It concentrates on the activities that require human judgment, and those activities become more visible and more important.</p>
 <hr>
@@ -832,13 +840,14 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="6.5" class="anchored" data-anchor-id="the-architecture-decision-matrix"><span class="header-section-number">6.5</span> The Architecture Decision Matrix</h2>
 <p>The reference architecture is an adoption map, not a prerequisite checklist. Any phase can run as a single agent-assisted loop — or expand into governed, multi-agent workflows as maturity grows. The question for leaders is where to start and how to expand.</p>
 <p>The matrix below maps adoption decisions across two dimensions: the lifecycle phase and the investment required. Use it to scope your first pilot and plan the expansion path.</p>
+<div data-tbl-colwidths="[8,24,24,28,16]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 8%">
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 28%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -908,6 +917,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>Three observations from the matrix:</p>
 <p><strong>Start where the tooling is mature and the payoff is immediate.</strong> Code, Review, and Test have production-ready agent capabilities across multiple vendors. They are also the phases where structured context produces the most measurable improvement. Most organizations should start here.</p>
 <p><strong>Invest in context before investing in agents.</strong> Every row in the matrix lists a maturity prerequisite — and most of those prerequisites are documentation, structure, and tooling that should exist regardless of AI adoption. If your conventions are not documented, your tests are not reliable, and your CI pipeline does not produce structured output, no agent tool will compensate. Fix the foundation first.</p>
@@ -917,12 +927,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="build-buy-or-compose" class="level2" data-number="6.6">
 <h2 data-number="6.6" class="anchored" data-anchor-id="build-buy-or-compose"><span class="header-section-number">6.6</span> Build, Buy, or Compose</h2>
 <p>For each context domain, leaders face a decision: build internal tooling, buy from a platform vendor, or compose solutions from multiple sources.</p>
+<div data-tbl-colwidths="[15,28,28,29]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 15%">
+<col style="width: 28%">
+<col style="width: 28%">
+<col style="width: 28%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -953,6 +964,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>The pattern: work and data context often require building or composing because they are organization-specific. Code context is the most composable because the formats are increasingly standardized — custom instructions in GitHub Copilot, rule files in Cursor, <code>CLAUDE.md</code> in Claude Code — and community-shared configurations can provide a starting point that teams customize.</p>
 <p>No single vendor covers all three context domains comprehensively today. This is a structural observation, not a criticism — the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.</p>
 <hr>

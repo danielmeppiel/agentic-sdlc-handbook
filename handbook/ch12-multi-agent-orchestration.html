@@ -738,7 +738,7 @@ Wave 2: INTEGRATION         ←  Depends on Wave 1
 <p>The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0’s output being committed and tested. Within a wave, agents are independent — they share no files and make no assumptions about each other’s progress.</p>
 <p>Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.</p>
 <p>In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. Meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.</p>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-fig-width="7.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -837,12 +837,13 @@ Wave 1 review:                                   [████]</code></pre>
 <section id="the-escalation-protocol" class="level3" data-number="14.5.2">
 <h3 data-number="14.5.2" class="anchored" data-anchor-id="the-escalation-protocol"><span class="header-section-number">14.5.2</span> The Escalation Protocol</h3>
 <p>Not every problem requires human attention. A well-designed orchestration system handles most failures automatically. The four-level escalation protocol:</p>
+<div data-tbl-colwidths="[10,28,30,32]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 10%">
+<col style="width: 28%">
+<col style="width: 30%">
+<col style="width: 32%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -879,6 +880,7 @@ Wave 1 review:                                   [████]</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
 <p>The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.</p>
 <p>In the reference case study (Chapter 13), the distribution across all decision points within the 15 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions out of fifteen dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.</p>
 <hr>

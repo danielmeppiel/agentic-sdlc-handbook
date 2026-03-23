@@ -552,12 +552,13 @@ ul.task-list li input[type="checkbox"] {
 <p>The assessment is not a gate — it is a sequencing tool. Teams scoring “ready” across all four dimensions are your pilot candidates. Teams “partially ready” in one or two dimensions need targeted investment before they join. Teams “not ready” in codebase or skill readiness need the most preparation and should start last.</p>
 <section id="readiness-matrix" class="level3" data-number="9.3.1">
 <h3 data-number="9.3.1" class="anchored" data-anchor-id="readiness-matrix"><span class="header-section-number">9.3.1</span> Readiness Matrix</h3>
+<div data-tbl-colwidths="[12,28,30,30]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 12%">
+<col style="width: 28%">
+<col style="width: 30%">
+<col style="width: 30%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -594,6 +595,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <hr>
 </section>
 </section>
@@ -601,7 +603,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="9.4" class="anchored" data-anchor-id="phased-adoption"><span class="header-section-number">9.4</span> Phased Adoption</h2>
 <p>The transition from pilot to full adoption follows three phases. Each phase has entry criteria, activities, expected duration, exit signals, and rollback criteria. Moving to the next phase before the exit signals are present is the single most common adoption mistake. Ignoring rollback signals is the second.</p>
 <p><strong>A note on timelines.</strong> The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.</p>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-fig-width="7" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -699,12 +701,13 @@ ul.task-list li input[type="checkbox"] {
 <section id="metrics-that-matter" class="level2" data-number="9.6">
 <h2 data-number="9.6" class="anchored" data-anchor-id="metrics-that-matter"><span class="header-section-number">9.6</span> Metrics That Matter</h2>
 <p>Measure what predicts long-term value, not what flatters short-term adoption.</p>
+<div data-tbl-colwidths="[10,25,35,30]">
 <table class="caption-top table">
 <colgroup>
+<col style="width: 10%">
 <col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 35%">
+<col style="width: 30%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -759,6 +762,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>Start with the DORA metrics as your shared language. They are well-understood, widely adopted, and provide a baseline that predates your agentic adoption. Then add the agent-specific metrics — intervention rate, rejection rate, rework rate — as leading indicators of whether the tools are producing genuine value or shifting effort between phases.</p>
 <p>The single most important metric is one that most organizations do not track: the ratio of time spent <em>generating</em> code with agents to time spent <em>reviewing and correcting</em> agent-generated code. If that ratio is improving — less time reviewing per unit of generation — the tools are working. If it is flat or worsening, you have a context quality problem, a skill problem, or both.</p>
 <section id="instrumenting-the-generation-to-review-ratio" class="level3" data-number="9.6.1">

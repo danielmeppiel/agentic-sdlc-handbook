@@ -552,13 +552,14 @@ ul.task-list li input[type="checkbox"] {
 <blockquote class="blockquote">
 <p><em>Each phase increases both capability and risk. Most organisations evaluate Phase 1–2 while their developers already operate at Phase 3.</em></p>
 </blockquote>
+<div data-tbl-colwidths="[15,25,25,20,15]">
 <table class="caption-top table">
 <colgroup>
+<col style="width: 15%">
+<col style="width: 25%">
+<col style="width: 25%">
 <col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
-<col style="width: 20%">
+<col style="width: 15%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -600,6 +601,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>Most organizations are evaluating Phase 1-2 tools while their developers are already using Phase 3. This gap between what leadership is evaluating and what teams are actually doing is itself a risk.</p>
 <hr>
 </section>
@@ -663,15 +665,17 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="4.4" class="anchored" data-anchor-id="the-landscape-today-capabilities-that-actually-matter"><span class="header-section-number">4.4</span> The Landscape Today: Capabilities That Actually Matter</h2>
 <p>A feature comparison grid is the most natural thing to produce and the least useful thing to read. Every vendor has one. They all look favorable to the vendor that made them. The table below attempts something different: an honest snapshot of where each tool actually is, what it can’t do by design, and — critically — which capabilities you should care about first.</p>
 <p>The maturity tiers: <strong>Now</strong> = available and shipping in production. <strong>Emerging</strong> = available but limited, or in public preview. <strong>Directional</strong> = announced, demonstrated in research, or on a public roadmap but not yet usable at production scale. <strong>N/A</strong> = not applicable — the tool’s architecture doesn’t target this capability, and that’s a design choice, not a gap.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="landscape">
+<div data-tbl-colwidths="[22,13,13,13,13,13,13]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 14%">
+<col style="width: 22%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 13%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -786,6 +790,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
+</div>
 <p><strong>Where to look first.</strong> Not every row matters equally. If you’re a CTO deciding where to invest evaluation time, three capabilities separate “we have a coding tool” from “we have a strategy”:</p>
 <ol type="1">
 <li><strong>Custom instructions / rules.</strong> This is the mechanism that addresses the Vibe Coding Cliff. Without it, every agent interaction starts from zero context. With it, your architectural decisions, conventions, and constraints are loaded automatically. This is the row that determines whether AI tools get more reliable over time or stay permanently mediocre. All major tools support this now, but the implementations differ: GitHub Copilot uses custom instructions and <code>.github/copilot-instructions.md</code>, Cursor uses <code>.cursor/rules</code>, Claude Code uses <code>CLAUDE.md</code>. The methodology in this book is portable across all of them.</li>
@@ -817,12 +823,13 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="4.7" class="anchored" data-anchor-id="the-8-phase-evaluation-framework"><span class="header-section-number">4.7</span> The 8-Phase Evaluation Framework</h2>
 <p>Most AI tool evaluations focus on the coding phase. This is like evaluating a car by testing only the engine — you learn something, but you miss everything that determines whether the thing actually gets you where you’re going. Software delivery spans eight phases. If you’re only measuring AI’s impact on one of them, you’re not evaluating — you’re guessing.</p>
 <p><strong>The insight most organizations miss: code generation is the <em>most mature</em> phase — the one with the most capable tooling and the highest adoption. Plan, Test, and Review are where the next wave of high-value AI assistance will land — and where structured context (the kind this book teaches you to build) makes the difference between useful automation and expensive noise.</strong></p>
+<div data-tbl-colwidths="[12,30,30,28]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 12%">
+<col style="width: 30%">
+<col style="width: 30%">
+<col style="width: 28%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -883,6 +890,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>These eight phases group into three buckets that map to how leaders plan and budget:</p>
 <ul>
 <li><strong>Intent</strong> (Ideate + Plan): what are we building and why?</li>

@@ -573,12 +573,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You control two of these segments directly: instructions and code context. You influence a third — conversation history — through session discipline. The system prompt and working memory are largely fixed by the tool. This means your leverage is concentrated: what instructions load, which code is visible, and how long the session runs before you reset.</p>
 <p>The budget model produces a simple decision rule. Before adding anything to an agent’s context, ask: does this earn its space? Every instruction that loads is a line of code that doesn’t. Every file that’s visible is one that could have been more relevant. Context is not free, and attention within the window is not uniform — information at the beginning and end gets more weight; content in the middle degrades. This is not a theoretical concern. It is why a 40-line instruction file outperforms a 400-line one that covers the same material with less focus.</p>
 <p>Make this concrete. On a 128K-to-200K-token window — common in current frontier models — the budget translates to real numbers:</p>
+<div data-tbl-colwidths="[18,8,12,62]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 18%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 62%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -621,6 +622,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
+</div>
 <p>Those 20K instruction tokens are approximately 800 lines of typical prose markdown. If your global instructions alone consume 400 of those lines, you’ve spent half your instruction budget before a single scoped rule loads. And the 60K for code context sounds generous until you realize a single mid-sized module — types, implementation, tests — can easily consume 15K tokens. At scale, every line of instruction competes directly with a line of source code the agent could have seen instead.</p>
 <p>Two practical implications follow. First, shorter sessions produce better results than longer ones, because conversation history consumes progressively more of the budget. When a session has been running for 30 turns, the instructions you set at the beginning are competing with pages of accumulated dialogue. Second, loading instructions that aren’t relevant to the current task is not neutral — it actively degrades performance on the task that matters.</p>
 </section>

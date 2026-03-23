@@ -541,11 +541,12 @@ ul.task-list li input[type="checkbox"] {
 <p>REST didn’t immediately replace SOAP or RPC. It didn’t prescribe a technology stack. It defined an architectural style — a coherent set of constraints that, applied to the problem of distributed systems, induced properties that individual tools and protocols couldn’t guarantee on their own.</p>
 <p><strong>PROSE</strong> occupies the same position for AI-native development. It defines five architectural constraints for human-AI collaboration that, applied together, address the structural failures described above. It is not a tool, not a file format, not a prompting technique. It is an architectural style.</p>
 <p>The five constraints, and the failure modes each addresses:</p>
+<div data-tbl-colwidths="[15,15,45,25]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 45%">
 <col style="width: 25%">
 </colgroup>
 <thead>
@@ -589,13 +590,14 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
 <p>Each constraint is necessary to address its failure mode. Together, they form a minimal sufficient set.</p>
 <p>These constraints sound abstract. Later in this book, we trace a single pull request — <a href="https://github.com/microsoft/apm/pull/394">70 files changed, 2,874 tests passing, 3 human interventions, roughly 90 minutes of wall-clock time</a> — that demonstrates what they produce in practice. That case study shows both what worked and what required human escalation. It is evidence, not a sales pitch.</p>
 <p><strong>The REST parallel is specific, not decorative.</strong> REST’s statelessness constraint meant servers didn’t maintain session state between requests — which seemed limiting, but induced scalability. PROSE’s Reduced Scope constraint means complex work is decomposed into tasks sized to fit available context — which seems slower, but induces consistent quality. REST’s uniform interface meant all resources were accessed the same way — which seemed rigid, but induced independent evolution. PROSE’s Explicit Hierarchy means instructions form a global-to-local tree — which seems bureaucratic, but induces domain adaptation without context pollution.</p>
 <p>In both cases, the constraints feel like restrictions until you see the properties they produce at scale. And in both cases, the constraints are independent of implementation — REST didn’t require Apache, and PROSE doesn’t require any particular IDE or AI provider.</p>
 <p>The constraints in this book are concrete enough that they can be — and have been — implemented as packageable, distributable artifacts with formal schemas.</p>
 <p>How the five constraints relate:</p>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>

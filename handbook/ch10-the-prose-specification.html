@@ -767,12 +767,13 @@ User: And can you add the new /logout endpoint?</code></pre>
 <section id="standard-role-boundaries" class="level3" data-number="12.5.1">
 <h3 data-number="12.5.1" class="anchored" data-anchor-id="standard-role-boundaries"><span class="header-section-number">12.5.1</span> Standard role boundaries</h3>
 <p>The table below defines four common agent roles with concrete capability, knowledge, and authority boundaries. Adapt these for your team — the specific tools will vary by platform, but the <em>shape</em> of each boundary should not.</p>
+<div data-tbl-colwidths="[12,28,28,32]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 12%">
+<col style="width: 28%">
+<col style="width: 28%">
+<col style="width: 32%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -809,6 +810,7 @@ User: And can you add the new /logout endpoint?</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
 <p>A planning agent (architect chatmode) is a special case: it gets <code>readFiles</code> and <code>search</code> only — no write tools at all. Its output is a plan, not code. The implementation agent consumes that plan in a separate session.</p>
 </section>
 <section id="implementation-patterns-3" class="level3" data-number="12.5.2">
@@ -910,7 +912,7 @@ User: And can you add the new /logout endpoint?</code></pre>
 <p><strong>The team with reduced scope but no composition.</strong> A platform team was disciplined about task sizing — every agent session had a single, focused objective, fresh context, clean scope. Textbook Reduced Scope. But they had no composition layer. Each task carried its own copy of the coding standards, the error-handling patterns, and the testing requirements — pasted into the prompt, not referenced from shared primitives. When the team updated their error format from string messages to structured error objects, they updated the canonical doc but missed the pasted copies in four prompt templates. For two weeks, agents working on different services produced two different error formats depending on which prompt they received. The scope constraint kept each task reliable in isolation. Without composition, there was no single source of truth to keep them consistent with each other.</p>
 <p><strong>The team with safety boundaries but no reduced scope.</strong> An enterprise team enforced strict boundaries — tool whitelists per agent, mandatory approval gates for security-sensitive files, knowledge scoping via <code>applyTo</code>. Textbook Safety Boundaries. But they routinely dispatched broad tasks: “implement the full OAuth2 integration,” spanning token exchange, PKCE flow, session management, and error handling in one session. The agent operated within its tool boundaries but accumulated so much context over the long session that its attention degraded. Late in the session, it generated a refresh-token endpoint that stored tokens in a client-accessible cookie — a pattern explicitly forbidden by the security instructions loaded at session start, now buried under 40,000 tokens of accumulated implementation context. The safety boundaries constrained what the agent <em>could</em> do. Without reduced scope, they could not ensure the agent still <em>remembered</em> what it should not do.</p>
 <p>The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.</p>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-fig-width="6" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
@@ -1019,12 +1021,13 @@ User: And can you add the new /logout endpoint?</code></pre>
 <section id="the-task-decomposition" class="level3" data-number="12.8.3">
 <h3 data-number="12.8.3" class="anchored" data-anchor-id="the-task-decomposition"><span class="header-section-number">12.8.3</span> The task decomposition</h3>
 <p>The work decomposes into five sessions. Each gets a fresh context window:</p>
+<div data-tbl-colwidths="[10,25,38,27]">
 <table class="caption-top table">
 <colgroup>
+<col style="width: 10%">
 <col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 38%">
+<col style="width: 27%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1067,6 +1070,7 @@ User: And can you add the new /logout endpoint?</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
 <p>Session 5 uses a different agent (frontend developer) with different instructions, different tools, and no access to <code>src/auth/</code> internals. It receives only the API contract — endpoint URLs, request/response shapes — not the implementation details.</p>
 </section>
 <section id="where-a-constraint-prevented-a-failure" class="level3" data-number="12.8.4">
@@ -1079,12 +1083,13 @@ User: And can you add the new /logout endpoint?</code></pre>
 <section id="compliance-checklist" class="level2" data-number="12.9">
 <h2 data-number="12.9" class="anchored" data-anchor-id="compliance-checklist"><span class="header-section-number">12.9</span> Compliance Checklist</h2>
 <p>Use this checklist to evaluate whether your current setup satisfies PROSE constraints. Each question is specific enough to answer with a definitive yes or no.</p>
+<div data-tbl-colwidths="[5,18,70,7]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
+<col style="width: 5%">
+<col style="width: 18%">
+<col style="width: 70%">
+<col style="width: 7%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1163,6 +1168,7 @@ User: And can you add the new /logout endpoint?</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
 <p><strong>If you fail S1, S2, or S3</strong> — start there regardless of your total score. Safety gaps have the highest blast radius and are the fastest to close (one YAML change per agent).</p>
 <p><strong>If you fail E1 or E2</strong> — address these next. Hierarchy is the fastest structural change to implement (create two scoped files and you have three levels).</p>
 <p><strong>If you fail P1, P2, R1, R2, O1, or O2</strong> — these are discipline and refactoring issues. Prioritize whichever constraint maps to the failure mode you are currently experiencing. Scope creep? Fix R1/R2. Context dilution? Fix P1/P2. Debugging nightmares? Fix O1/O2.</p>
