@@ -49,12 +49,16 @@ The assessment is not a gate — it is a sequencing tool. Teams scoring "ready" 
 
 ### Readiness Matrix
 
+::: {tbl-colwidths="[12,28,30,30]"}
+
 | Dimension | Not Ready | Partially Ready | Ready |
 |---|---|---|---|
 | Codebase | Conventions are oral tradition; no architecture docs | Some documentation exists but is incomplete or stale | Architecture, conventions, and patterns are documented and current |
 | Process | Ad hoc review; manual testing only | Structured review exists; CI covers basics | Automated quality gates, structured review, fast PR cycles |
 | Skill | Mostly junior team; limited review depth | Mixed seniority; reviewers can catch obvious issues | Strong senior presence; reviewers can evaluate architectural fit |
 | Cultural | Resistance to tooling change; blame culture | Cautious but open; some voluntary experimentation | Active experimentation; healthy relationship with tooling change |
+
+:::
 
 ---
 
@@ -65,6 +69,7 @@ The transition from pilot to full adoption follows three phases. Each phase has 
 **A note on timelines.** The durations below are ranges, not fixed schedules. Two factors dominate how long each phase actually takes: organization size and documentation maturity. A 50-person startup with a well-documented codebase moves through Phase 1 in weeks. A 2,000-engineer enterprise with an oral-tradition codebase may need months for the same phase. The ranges below include scale guidance. Use your readiness assessment to calibrate.
 
 ```{mermaid}
+%%| fig-width: 7
 flowchart TB
     PRE["<b>Pre-Transition</b><br/>Readiness assessments<br/>Baseline metrics<br/><em>Weeks 1–4</em>"]
 
@@ -203,6 +208,8 @@ Different roles need different skills. A one-size-fits-all training program wast
 
 Measure what predicts long-term value, not what flatters short-term adoption.
 
+::: {tbl-colwidths="[10,25,35,30]"}
+
 | Category | Metric | What It Tells You | What It Doesn't |
 |---|---|---|---|
 | Quality | Review rejection rate for agent-generated PRs | Whether agents are producing code your team trusts | Whether the accepted code has latent defects |
@@ -212,6 +219,8 @@ Measure what predicts long-term value, not what flatters short-term adoption.
 | Adoption | Context asset coverage | What percentage of your codebase has structured context | Whether that context is good (coverage without quality is noise) |
 | Adoption | Active usage rate vs. license count | Whether people who have the tools are using them | Whether they're using them well |
 | DORA | Deployment frequency, lead time, change failure rate, MTTR | Baseline delivery performance and trends | Causation — many factors affect DORA metrics simultaneously |
+
+:::
 
 Start with the DORA metrics as your shared language. They are well-understood, widely adopted, and provide a baseline that predates your agentic adoption. Then add the agent-specific metrics — intervention rate, rejection rate, rework rate — as leading indicators of whether the tools are producing genuine value or shifting effort between phases.
 

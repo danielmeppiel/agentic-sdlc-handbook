@@ -30,6 +30,8 @@ None of this means agents are ungovernable. It means your existing governance fr
 
 Governance for AI-assisted delivery spans six capability areas. Each exists on a maturity spectrum. The checklist below is designed for self-assessment — locate your organization on each row, then prioritize the gaps that carry the most risk in your context.
 
+::: {tbl-colwidths="[3,12,25,28,32]"}
+
 | # | Capability | None | Basic | Enterprise |
 |---|---|---|---|---|
 | 1 | **Audit trails** | No record of which code was agent-generated. Commits attributed to the prompting developer with no distinction. | Agent contributions tagged in commit metadata or PR labels. Prompt history retained for a defined period. | Full provenance chain: instruction given, context consumed, output produced, human review decision, and rationale — all queryable and linked to compliance artifacts. |
@@ -38,6 +40,8 @@ Governance for AI-assisted delivery spans six capability areas. Each exists on a
 | 4 | **Data boundary enforcement** | No controls on what data agents can access during code generation. Proprietary code, secrets, and customer data may enter agent context. | Agents restricted from accessing production data and secrets. Code sent to external models reviewed against data classification policy. | Data loss prevention integrated into agent workflows. Context filters prevent classified data from entering model prompts. Residency requirements enforced per jurisdiction. |
 | 5 | **Cost controls** | No visibility into agent-related compute or API spend. Costs absorbed into general cloud bills. | Per-team or per-project token budgets. Alerts on unusual consumption. Monthly cost reporting. | Real-time cost attribution per agent task. Automated circuit breakers on runaway sessions. Cost-per-feature tracking integrated into project planning. |
 | 6 | **Compliance reporting** | Cannot demonstrate to an auditor how agent-generated code is governed. Compliance posture unknown. | Periodic manual reports on agent usage, access scope, and review rates. Policies documented but enforcement is process-dependent. | Automated compliance dashboards. Agent governance artifacts generated alongside code. Audit-ready evidence exportable on demand. Policy enforcement is systemic, not procedural. |
+
+:::
 
 Most organizations operating at Phase 3 (agentic coding, as described in Chapter 2) will find themselves in the "None" or "Basic" column for at least four of these six areas. That is expected. The purpose of the checklist is not to achieve "Enterprise" everywhere — it is to ensure you are not at "None" in any area that carries material risk for your business.
 
@@ -67,6 +71,10 @@ flowchart TD
 
 A checklist without regulatory context is a conversation starter, not a decision tool. The matrix below maps each capability row to the compliance frameworks where it is critical. Use it to prioritize: find your regulatory scope in the columns, then focus on the rows marked as critical for that scope.
 
+::: {.landscape}
+
+::: {tbl-colwidths="[3,15,17,17,16,16,16]"}
+
 | # | Capability | SOC 2 | ISO 27001 | PCI DSS | HIPAA | EU AI Act |
 |---|---|---|---|---|---|---|
 | 1 | Audit trails | **Critical** — CC8.1 (change management), CC7.2 (monitoring) | **Critical** — A.12.4 (logging and monitoring) | **Critical** — Req. 10 (track and monitor access) | **Critical** — §164.312(b) (audit controls) | **Critical** — Art. 12 (record-keeping) |
@@ -75,6 +83,10 @@ A checklist without regulatory context is a conversation starter, not a decision
 | 4 | Data boundary enforcement | **Critical** — CC6.7 (data transmission), C1.1 (confidentiality) | **Critical** — A.13.2 (information transfer) | **Critical** — Req. 3, Req. 4 (protect stored data, encrypt transmission) | **Critical** — §164.312(e) (transmission security) | Relevant — Art. 10 (data governance) |
 | 5 | Cost controls | Relevant — CC3.1 (risk assessment) | Relevant — A.12.1 (operational planning) | Not directly scoped | Not directly scoped | Not directly scoped |
 | 6 | Compliance reporting | **Critical** — CC4.1 (monitoring activities) | **Critical** — A.18.2 (compliance review) | **Critical** — Req. 12 (security policy) | **Critical** — §164.308(a)(8) (evaluation) | **Critical** — Art. 13 (transparency) |
+
+:::
+
+:::
 
 **How to read this.** If you are SOC 2-scoped, rows 1, 2, 3, 4, and 6 are critical — you will face audit findings if any of these are at "None." If you handle payment data under PCI DSS, rows 1, 2, 3, and 4 are your floor. If you ship to EU markets and your product touches high-risk categories, the EU AI Act makes rows 1, 3, and 6 non-negotiable. Start where your regulatory exposure intersects with your lowest maturity.
 
@@ -92,10 +104,14 @@ When an agent generates code, it consumes context — your source code, your doc
 
 **Inbound.** Agent-generated code may reproduce patterns from training data in ways that create licensing ambiguity. If an agent produces a function that closely mirrors a copyleft-licensed implementation from its training set, the IP implications depend on your jurisdiction, the specific license, and how closely the output matches the source. This is an unsettled area of law. Organizations with significant IP exposure — those whose codebase is a competitive asset — should treat agent-generated code with the same license review discipline they apply to third-party dependencies.
 
+::: {tbl-colwidths="[12,30,38,20]"}
+
 | Risk | Example | Mitigation | Owner |
 |---|---|---|---|
 | Proprietary code sent to external model | Agent context includes authentication module source. Developer uses cloud-hosted model without enterprise data agreement. | Enforce enterprise-tier agreements with training opt-out. Deploy context filters. Maintain a data classification policy that explicitly covers agent workflows. | Security / Legal |
 | Training data reproduced in output | Agent generates a sorting algorithm that is a near-exact copy of a GPL-licensed implementation. Merged without review. | Integrate license-scanning tools into CI. Flag agent-generated code for IP review in sensitive components. Establish policy for handling flagged matches. | Legal / Engineering |
+
+:::
 
 ### Quality degradation
 
@@ -109,10 +125,14 @@ Agent-generated code introduces quality risks that are qualitatively different f
 
 **Convention drift.** An agent that generates code without access to your team's conventions will produce code that works but doesn't belong. Inconsistent error handling, non-standard logging, creative-but-wrong module structure. Each instance is minor. At scale, convention drift degrades codebase coherence — the property that lets your team navigate and modify code confidently.
 
+::: {tbl-colwidths="[12,30,38,20]"}
+
 | Risk | Example | Mitigation | Owner |
 |---|---|---|---|
 | Plausible incorrectness | Agent implements a data pipeline that passes all tests but silently drops null values the business logic depends on. | Require property-based or invariant tests for agent-generated code in critical paths. Review agent output against architectural decision records. | Engineering leads |
 | Convention drift | Fifty agent-generated files use three different error-handling patterns. None match the team standard. | Encode conventions as machine-readable context (instruction files, linters, architectural rules) that agents consume during generation. This is the core practice Block 2 teaches. | Tech leads / Architects |
+
+:::
 
 ### Dependency and concentration risk
 
@@ -124,10 +144,14 @@ Most organizations adopting agentic development rely on one or two model provide
 
 **API and pricing instability.** Model API pricing has changed frequently and will continue doing so. Without cost monitoring, the variance is invisible until the bill arrives.
 
+::: {tbl-colwidths="[12,30,38,20]"}
+
 | Risk | Example | Mitigation | Owner |
 |---|---|---|---|
 | Model outage | Primary model provider has a 4-hour outage during a release sprint. Team cannot complete agent-assisted tasks. | Maintain fallback model configurations. Ensure critical workflows can degrade gracefully to human-only execution. Test fallback quarterly. | Platform / Engineering |
 | Vendor lock-in | Organization has 2,000 tool-specific instruction files. Switching tools requires rewriting all of them. | Use portable, vendor-neutral formats for context artifacts where possible. Separate content (what the instruction says) from format (how the tool consumes it). | Architecture / Platform |
+
+:::
 
 ### Knowledge atrophy
 
@@ -143,10 +167,14 @@ In software development, the specific atrophy risks are:
 
 Knowledge atrophy does not produce failures in the short term. It produces an organization that cannot recover when agent assistance is unavailable, cannot evaluate whether agent output is correct in novel situations, and cannot train the next generation of engineers. The mitigation is not to avoid agents — it is to design deliberate practice into your development process, the way aviation designs manual-flying requirements into pilot training.
 
+::: {tbl-colwidths="[12,30,38,20]"}
+
 | Risk | Example | Mitigation | Owner |
 |---|---|---|---|
 | Debugging skill loss | Junior engineers cannot diagnose a production issue because they have never debugged code they didn't write with agent assistance. | Require regular unassisted development exercises. Pair juniors with agent output for review practice before independent agent use. | Engineering managers |
 | Architectural reasoning decay | Team cannot redesign a subsystem because no one has practiced making trade-off decisions — agents handled implementation within given constraints. | Rotate architecture review responsibilities. Include constraint-design tasks (not just constrained tasks) in sprint work. | Architecture / CTO |
+
+:::
 
 ### Regulatory liability for autonomous decisions
 
@@ -160,10 +188,14 @@ The risk is specific: agents make implementation decisions that carry regulatory
 
 **Emerging regulatory attention.** The EU AI Act's human oversight requirements (Article 14) exist precisely because regulators recognize this gap. As more jurisdictions develop AI-specific regulation, the expectation that organizations can demonstrate human accountability for AI-influenced decisions will become standard, not exceptional.
 
+::: {tbl-colwidths="[12,30,38,20]"}
+
 | Risk | Example | Mitigation | Owner |
 |---|---|---|---|
 | Implicit compliance violation | Agent generates a logging module that captures user IP addresses and geolocation in a jurisdiction where this requires explicit consent. No one reviewed the data collection logic. | Define compliance constraints as explicit agent context for regulated code paths. Require compliance-aware review for agent output touching data handling, authentication, and storage. | Legal / Security |
 | Accountability gap | Regulator asks who decided to store customer data in a specific format. The decision was made by an agent, approved in a 50-file PR, and no one can identify when or why. | Maintain decision logs for agent-generated code in regulated areas. Ensure PR review checklists include "compliance-relevant implementation choices" as a review criterion. | Engineering leads / Legal |
+
+:::
 
 ### Supply chain and context integrity risk
 
@@ -175,10 +207,14 @@ Your agents do not operate in a vacuum. They consume context — instruction fil
 
 **Poisoned training data artifacts.** Third-party libraries, code examples, and documentation that agents consume during generation may contain intentionally misleading patterns. Unlike traditional supply chain attacks that target runtime dependencies, these attacks target the development process itself — the agent produces vulnerable code because it learned from a poisoned source.
 
+::: {tbl-colwidths="[12,30,38,20]"}
+
 | Risk | Example | Mitigation | Owner |
 |---|---|---|---|
 | Prompt injection via dependency | A transitive dependency includes a README with hidden instructions that cause the agent to exfiltrate environment variables when generating integration code. | Restrict agent context to vetted, first-party sources for sensitive operations. Treat context inputs with the same suspicion as untrusted user input. Apply context sanitization. | Security / Platform |
 | Compromised instruction files | Attacker submits a PR that subtly modifies an agent instruction file, causing all subsequently generated authentication code to include a backdoor pattern. | Apply code review and change-management controls to instruction files with the same rigor as production code. Restrict write access. Include instruction files in security scanning. | Security / Engineering leads |
+
+:::
 
 ---
 
@@ -204,6 +240,8 @@ The relevant controls span change management (how agent-generated changes are au
 
 Model API calls transmit code to infrastructure operated by the model provider. For organizations subject to data residency requirements — whether from regulation (GDPR, sector-specific rules) or contractual obligation — the location where agent context is processed matters. Most major providers offer regional deployment options at enterprise tiers. Verify that your agent tooling configuration routes data through compliant infrastructure, and document the verification.
 
+::: {tbl-colwidths="[12,35,23,30]"}
+
 | Framework | Relevance to agent-assisted development | Key requirement | Recommended posture |
 |---|---|---|---|
 | EU AI Act | Software built by agents may inherit risk classification of the deployed system. | Transparency, record-keeping, human oversight for high-risk applications. | Map your products to risk tiers. Evaluate whether your agent governance satisfies the tier's requirements. |
@@ -211,6 +249,8 @@ Model API calls transmit code to infrastructure operated by the model provider. 
 | GDPR / Data residency | Agent context may be transmitted to model provider infrastructure in different jurisdictions. | Data processing must comply with residency and transfer requirements. | Verify model API routing. Use enterprise agreements with data processing addenda. Document compliance. |
 | PCI DSS | Agents generating code that handles payment data must operate within PCI scope. | Restrict agent access to cardholder data environments. Log all agent interactions with payment systems. | Include agent access in your PCI scope assessment. Apply the same controls as human developer access. |
 | HIPAA | Agents generating code for health data systems must comply with PHI protections. | Agent context must not include protected health information unless compliant safeguards are in place. | Exclude PHI from agent context. Use on-premises or BAA-covered model deployments for health data systems. |
+
+:::
 
 ---
 
@@ -221,6 +261,8 @@ Leaders need to communicate AI agent adoption status to executive and board audi
 A status snapshot is a status email. A governance artifact shows where you are, where you are going, and whether you are on track. The template includes targets and trends for every metric row — without them, the board cannot distinguish progress from noise.
 
 **AI-Assisted Development — Quarterly Status**
+
+::: {tbl-colwidths="[12,25,28,18,17]"}
 
 | Section | Metric | Current | Target | Trend |
 |---|---|---|---|---|
@@ -239,6 +281,8 @@ A status snapshot is a status email. A governance artifact shows where you are, 
 | | Data boundary compliance | *e.g., Compliant* | *Maintain* | *→ stable* |
 | | Insurance / liability coverage | *e.g., E&O and cyber reviewed; agent clause pending* | *Agent-specific coverage confirmed* | *In progress* |
 | **Decisions needed** | | *Budget approval for next quarter. Data classification policy update requiring board awareness. Vendor contract renewal. Risk acceptance for identified gaps.* | | |
+
+:::
 
 The template is deliberately brief. Board reporting should communicate status and surface decisions, not educate the audience on how agents work. The trend column is the most important — it tells the board whether the investment is producing directional progress or whether intervention is needed.
 

@@ -14,6 +14,8 @@ The uncomfortable truth: AI failures don't crash. They produce plausible wrong o
 
 Every anti-pattern maps to a PROSE constraint. This isn't a taxonomy imposed after the fact — it's why the constraints exist. Each constraint was articulated because a class of failures kept recurring, and ad-hoc fixes weren't enough.
 
+::: {tbl-colwidths="[5,20,20,55]"}
+
 | # | Anti-Pattern | Constraint Violated | Summary |
 |---|---|---|---|
 | 1 | Monolithic Prompt | Orchestrated Composition | All instructions in one block; small changes cause unpredictable cascades |
@@ -35,6 +37,8 @@ Every anti-pattern maps to a PROSE constraint. This isn't a taxonomy imposed aft
 | 17 | Persona Drift | Explicit Hierarchy | Agent shifts role mid-session, applying wrong domain expertise |
 | 18 | Cross-Wave Merge Conflicts | Orchestrated Composition | Structural conflicts between waves that pass individually but break together |
 | 19 | Prompt Injection via Dependencies | Safety Boundaries | External content in context hijacks agent behavior |
+
+:::
 
 Patterns 1–5 are the foundational anti-patterns from Chapter 1. Patterns 6–10 emerge from multi-agent execution mechanics. Patterns 11–19 are session-level and resource-level failure modes identified through systematic audit of early agentic practice. All nineteen are real. All nineteen have cost teams real time, money, and trust.
 
@@ -404,6 +408,7 @@ Total recovery cost: three focused dispatches instead of an open-ended retry loo
 When something goes wrong, the first question is what kind of wrong:
 
 ```{mermaid}
+%%| fig-width: 7.5
 flowchart TD
     START(["Something went wrong\nwith agent output"]) --> Q1{Code syntactically\nwrong?}
 

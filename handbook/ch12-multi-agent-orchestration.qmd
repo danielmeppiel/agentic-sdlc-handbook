@@ -228,6 +228,7 @@ Wave sizing matters. A wave with 2-3 agents completes in the time it takes the s
 In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. Meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.
 
 ```{mermaid}
+%%| fig-width: 7.5
 gantt
     title Wave Execution Timeline
     dateFormat X
@@ -340,12 +341,16 @@ This is not a passive role. It is a different kind of active.
 
 Not every problem requires human attention. A well-designed orchestration system handles most failures automatically. The four-level escalation protocol:
 
+::: {tbl-colwidths="[10,28,30,32]"}
+
 | Level | Trigger | Response | Example |
 |---|---|---|---|
 | L1: Self-heal | Agent hits a test failure it can debug | Agent fixes and continues | Type error in generated code |
 | L2: Retry | Agent produces incomplete output | Re-dispatch with refined prompt | Agent missed 3 of 12 files in scope |
 | L3: Human decides | Trade-off between competing principles | Human makes design call | UX convention vs. architectural purity |
 | L4: Scope change | Finding requires work outside the current plan | Human creates follow-up task | Discovery of a pre-existing bug unrelated to the change |
+
+:::
 
 The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.
 

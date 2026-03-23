@@ -228,12 +228,16 @@ This works until it does not. When the agent produces incorrect output, which in
 
 The table below defines four common agent roles with concrete capability, knowledge, and authority boundaries. Adapt these for your team — the specific tools will vary by platform, but the *shape* of each boundary should not.
 
+::: {tbl-colwidths="[12,28,28,32]"}
+
 | Role | Tools (capability) | Knowledge (scope) | Authority (approval gates) |
 |---|---|---|---|
 | **Code writer** | `editFiles`, `runCommands`, `search`, `readFiles`, `testRunner` | Files matching its domain (`applyTo` or directory scope). Cannot see infra config, CI/CD, or deploy scripts. | Must **STOP** before: modifying public API signatures, changing database schemas, touching auth logic. |
 | **Reviewer** | `readFiles`, `search`, `runCommands` (read-only: lint, test, type-check) | Full repository read access. No write tools. | No approval gates — reviewer cannot change anything. Output is commentary only. |
 | **Test runner** | `runCommands`, `readFiles`, `testRunner` | Test files + source files under test. No access to deploy config, secrets, or CI definitions. | Must **STOP** before: deleting test fixtures, modifying shared test infrastructure, skipping tests. |
 | **Deployer** | `runCommands` (deploy scripts only), `readFiles` | Deployment manifests, environment config, release notes. No source code write access. | Must **STOP** before: every deployment action. Human approves each environment promotion. |
+
+:::
 
 A planning agent (architect chatmode) is a special case: it gets `readFiles` and `search` only — no write tools at all. Its output is a plan, not code. The implementation agent consumes that plan in a separate session.
 
@@ -377,6 +381,7 @@ The five constraints are defined independently but produce their strongest effec
 The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.
 
 ```{mermaid}
+%%| fig-width: 6
 graph TD
     P["P\nProgressive\nDisclosure"] <-- "controls attention\nwithin scope" --> E["E\nExplicit\nHierarchy"]
     R["R\nReduced\nScope"] <-- "constrains what\nsafety must cover" --> S["S\nSafety\nBoundaries"]
@@ -495,6 +500,8 @@ You implement backend authentication features in `src/auth/`.
 
 The work decomposes into five sessions. Each gets a fresh context window:
 
+::: {tbl-colwidths="[10,25,38,27]"}
+
 | Session | Task | Key context loaded | Deliverable |
 |---|---|---|---|
 | 1 | Design token schema and Zod validation types | Auth instructions, existing user model, JWT library docs | `src/auth/schemas.ts` |
@@ -502,6 +509,8 @@ The work decomposes into five sessions. Each gets a fresh context window:
 | 3 | Build refresh endpoint with token rotation | Auth instructions, token schemas, session service reference | `src/auth/routes/refresh.ts` |
 | 4 | Write integration tests for auth flow | Auth instructions, test conventions, all auth source files | `tests/auth/` test suite |
 | 5 | Update login form to use new auth endpoints | Frontend instructions (different agent), API contract from Sessions 2–3 | `src/components/LoginForm.tsx` |
+
+:::
 
 Session 5 uses a different agent (frontend developer) with different instructions, different tools, and no access to `src/auth/` internals. It receives only the API contract — endpoint URLs, request/response shapes — not the implementation details.
 
@@ -517,6 +526,8 @@ Without the boundary, the backend agent would have modified the API client using
 
 Use this checklist to evaluate whether your current setup satisfies PROSE constraints. Each question is specific enough to answer with a definitive yes or no.
 
+::: {tbl-colwidths="[5,18,70,7]"}
+
 | # | Constraint | Question | Pass |
 |---|---|---|---|
 | P1 | Progressive Disclosure | Does every instruction file over 100 lines use links (not inline content) for subsidiary topics? | |
@@ -530,6 +541,8 @@ Use this checklist to evaluate whether your current setup satisfies PROSE constr
 | S3 | Safety Boundaries | Does every agent have a file-path boundary (explicit list of directories it may modify)? | |
 | E1 | Explicit Hierarchy | Do instructions exist at three or more specificity levels (e.g., root → domain → module)? | |
 | E2 | Explicit Hierarchy | Can you add module-specific rules without editing any file above that module's scope? | |
+
+:::
 
 **If you fail S1, S2, or S3** — start there regardless of your total score. Safety gaps have the highest blast radius and are the fastest to close (one YAML change per agent).
 

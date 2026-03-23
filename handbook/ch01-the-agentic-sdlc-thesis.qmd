@@ -58,6 +58,8 @@ REST didn't immediately replace SOAP or RPC. It didn't prescribe a technology st
 
 The five constraints, and the failure modes each addresses:
 
+::: {tbl-colwidths="[15,15,45,25]"}
+
 | Constraint | Principle | Addresses | Induced Property |
 |---|---|---|---|
 | **P**rogressive Disclosure | Context arrives just-in-time, not just-in-case | Context overload — loading everything upfront wastes capacity and dilutes attention | Efficient context utilization |
@@ -65,6 +67,8 @@ The five constraints, and the failure modes each addresses:
 | **O**rchestrated Composition | Simple things compose; complex things collapse | Monolithic collapse — single mega-prompts that become unpredictable and impossible to debug | Flexibility and reusability |
 | **S**afety Boundaries | Autonomy within guardrails | Unbounded autonomy — non-deterministic systems with unlimited authority | Reliability and verifiability |
 | **E**xplicit Hierarchy | Specificity increases as scope narrows | Flat guidance — global instructions that pollute every context regardless of relevance | Modularity and domain adaptation |
+
+:::
 
 Each constraint is necessary to address its failure mode. Together, they form a minimal sufficient set.
 
@@ -79,6 +83,7 @@ The constraints in this book are concrete enough that they can be — and have b
 How the five constraints relate:
 
 ```{mermaid}
+%%| fig-width: 6.5
 flowchart LR
     subgraph " "
         direction TB

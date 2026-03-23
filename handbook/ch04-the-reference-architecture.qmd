@@ -19,6 +19,7 @@ At every phase of the software development lifecycle, work happens across three 
 The layers are not independent. They form a stack where each depends on the one below it:
 
 ```{mermaid}
+%%| fig-width: 7
 flowchart TB
     subgraph HUMAN ["🧑 HUMAN LAYER"]
         direction LR
@@ -58,6 +59,10 @@ The three layers apply at every phase of software delivery. The table below maps
 
 Maturity tiers: **Now** = available across two or more vendors. **Emerging** = available in one or two tools, or in limited preview. **Directional** = announced, demonstrated, or on public roadmaps but not production-ready.
 
+::: {.landscape}
+
+::: {tbl-colwidths="[9,11,13,13,14,12,12,9,7]"}
+
 |  | Ideate | Plan | Code | Build | Test | Review | Release | Operate |
 |---|---|---|---|---|---|---|---|---|
 | | *INTENT* | | *BUILD* | | | | *OPERATE* | |
@@ -65,6 +70,10 @@ Maturity tiers: **Now** = available across two or more vendors. **Emerging** = a
 | **Agent** | Research prior art, surface conflicts | Draft ADRs, decompose tasks | Multi-file code generation | Diagnose build failures | Generate tests, find coverage gaps | Automated review, catch defects | Draft changelogs, flag breaking changes | Correlate alerts, suggest actions |
 | **Platform** | Knowledge bases, collaboration tools | Issue trackers, project management | IDE, SCM, context APIs | CI/CD pipelines, dependency management | Test frameworks, infrastructure | Pull request APIs, policy engines | Deployment pipelines, gates | Monitoring, alerting, log systems |
 | **Maturity** | Emerging | Emerging | Now | Now | Emerging | Now | Emerging | Directional |
+
+:::
+
+:::
 
 Executives do not need to think in eight phases. They need three buckets that map to planning cadences, budget lines, and organizational accountability:
 
@@ -80,6 +89,8 @@ The practical implication: based on vendor maturity and published adoption patte
 
 Vendor presentations tend to show the full architecture as if it were all available today. It is not. Presenting the vision as current reality is what vendor whitepapers do. This book tags every capability honestly.
 
+::: {tbl-colwidths="[10,30,12,48]"}
+
 | Phase | Agent capability | Maturity | Justification |
 |---|---|---|---|
 | **Ideate** | Research synthesis, prior-art surfacing | Emerging | Available in conversational tools; no reliable autonomous implementation |
@@ -91,6 +102,8 @@ Vendor presentations tend to show the full architecture as if it were all availa
 | **Release** | Changelog drafting, breaking-change detection | Emerging | Partial implementations in CI tools; end-to-end release automation is not production-ready |
 | **Operate** | Alert correlation, incident timeline drafting | Directional | Research demos and early integrations; no vendor ships reliable autonomous incident response |
 
+:::
+
 The pattern is clear. Build-phase capabilities are mature. Intent-phase and Operate-phase capabilities are early. If a vendor tells you they have end-to-end lifecycle automation today, ask which cells in this table they would tag as Now, and how they define the term. The honest answer will tell you more about the vendor than any feature demo.
 
 ---
@@ -99,6 +112,8 @@ The pattern is clear. Build-phase capabilities are mature. Intent-phase and Oper
 
 The three-layer model clarifies what happens to human roles when agents enter the lifecycle. The answer is not that roles disappear. The answer is that the *proportion* of activities within each role shifts.
 
+::: {tbl-colwidths="[14,30,32,24]"}
+
 | Human role | What stays human | What agents handle | What shifts |
 |---|---|---|---|
 | Product Manager | Strategic prioritization, stakeholder alignment, go/no-go decisions | Research synthesis, competitive analysis, requirement drafting from rough notes | More time on judgment, less on information gathering |
@@ -106,6 +121,8 @@ The three-layer model clarifies what happens to human roles when agents enter th
 | Developer | Code review, architectural compliance, complex problem-solving | Routine implementation, boilerplate, test generation, refactoring | More time specifying intent, less time typing code |
 | QA Engineer | Test strategy, edge case identification, exploratory testing | Test generation, coverage analysis, regression detection | More time on test design, less on test writing |
 | SRE / Ops | Incident ownership, capacity planning, reliability decisions | Alert correlation, runbook execution, incident timeline drafting | More time on system understanding, less on routine response |
+
+:::
 
 The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the structural properties of language models described in Chapter 1 — they process and generate; they do not decide or bear responsibility.
 
@@ -186,6 +203,8 @@ The reference architecture is an adoption map, not a prerequisite checklist. Any
 
 The matrix below maps adoption decisions across two dimensions: the lifecycle phase and the investment required. Use it to scope your first pilot and plan the expansion path.
 
+::: {tbl-colwidths="[8,24,24,28,16]"}
+
 | Phase | Start here if... | First investment | Maturity prerequisite | Expected timeline |
 |---|---|---|---|---|
 | **Code** | Your developers already use AI tools | Custom instructions encoding your conventions | Linter, test suite, CI pipeline | 2-4 weeks |
@@ -196,6 +215,8 @@ The matrix below maps adoption decisions across two dimensions: the lifecycle ph
 | **Release** | Release process is manual and error-prone | Agent-drafted changelogs and breaking-change detection | Semantic versioning, structured commit history | 8-12 weeks |
 | **Ideate** | Research and discovery are ad hoc | Agent-assisted research synthesis and prior-art surfacing | Knowledge base, searchable decision history | 12-18 weeks |
 | **Operate** | Incident response is slow to diagnose | Agent-assisted alert correlation and timeline drafting | Observability stack, structured runbooks | 12-18 weeks |
+
+:::
 
 Three observations from the matrix:
 
@@ -211,11 +232,15 @@ Three observations from the matrix:
 
 For each context domain, leaders face a decision: build internal tooling, buy from a platform vendor, or compose solutions from multiple sources.
 
+::: {tbl-colwidths="[15,28,28,29]"}
+
 | Context domain | Build | Buy | Compose |
 |---|---|---|---|
 | **Work context** | Internal knowledge base, custom ADR tooling | Platform-integrated wikis (Notion, Confluence, GitHub Wikis) | API connectors bridging collaboration tools to agent context |
 | **Data context** | Custom domain model documentation, internal ontologies | Data catalog platforms (Collibra, Alation, dbt) | Federation layers that expose data definitions to coding agents |
 | **Code context** | Instruction files, custom rules, agent configurations | IDE-integrated context from platform vendors | Open-source primitive packages, shared community configurations |
+
+:::
 
 The pattern: work and data context often require building or composing because they are organization-specific. Code context is the most composable because the formats are increasingly standardized — custom instructions in GitHub Copilot, rule files in Cursor, `CLAUDE.md` in Claude Code — and community-shared configurations can provide a starting point that teams customize.
 

@@ -27,6 +27,8 @@ The budget model produces a simple decision rule. Before adding anything to an a
 
 Make this concrete. On a 128K-to-200K-token window — common in current frontier models — the budget translates to real numbers:
 
+::: {tbl-colwidths="[18,8,12,62]"}
+
 | Segment | % | ≈ Tokens | What fills it |
 |---|---|---|---|
 | System prompt | ~6% | ~8K | Model behavior, safety, base tool definitions |
@@ -34,6 +36,8 @@ Make this concrete. On a 128K-to-200K-token window — common in current frontie
 | Code context | ~47% | ~60K | Source files, type definitions, dependencies |
 | Conversation history | ~23% | ~30K | Prior turns, tool output, agent reasoning |
 | Working memory | ~8% | ~10K | The agent's space to think and produce output |
+
+:::
 
 Those 20K instruction tokens are approximately 800 lines of typical prose markdown. If your global instructions alone consume 400 of those lines, you've spent half your instruction budget before a single scoped rule loads. And the 60K for code context sounds generous until you realize a single mid-sized module — types, implementation, tests — can easily consume 15K tokens. At scale, every line of instruction competes directly with a line of source code the agent could have seen instead.
 

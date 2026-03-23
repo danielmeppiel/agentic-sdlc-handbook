@@ -286,6 +286,8 @@ Specification files matter because they make the "Reduced Scope" constraint oper
 
 The six primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.
 
+::: {tbl-colwidths="[16,28,18,20,18]"}
+
 | Primitive | GitHub Copilot (VS Code) | Cursor | Claude Code | Windsurf |
 |-----------|--------------------------|--------|-------------|----------|
 | **Instructions** | `.instructions.md` with `applyTo` frontmatter; `copilot-instructions.md` global | `.cursor/rules/*.mdc` with glob frontmatter | `CLAUDE.md` per directory | `.windsurfrules`; cascade rules |
@@ -294,6 +296,8 @@ The six primitives are conceptual categories, not file format specifications. Ho
 | **Prompts** | `.prompt.md` with execution mode | — | — | Flows (different model) |
 | **Memory** | `.memory.md` referenced in context | In rules or notepads | In `CLAUDE.md` sections | In rules |
 | **Orchestration** | `.spec.md` loaded as context | Loaded as context | Loaded as context | Loaded as context |
+
+:::
 
 "—" means the tool has no native format for that primitive type. The knowledge is still usable — you embed it in whatever instruction format the tool does support — but automatic activation and scoping are lost.
 

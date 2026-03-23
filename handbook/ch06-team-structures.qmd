@@ -14,6 +14,8 @@ Before redrawing org charts, understand what actually changes about daily engine
 
 The most useful way to see this is through time allocation. The table below draws on published results from early enterprise adopters and patterns observed across teams adopting AI-assisted development. It represents typical patterns, not universal truths — your distribution will vary by team maturity, codebase complexity, and adoption depth.[^ch6-time]
 
+::: {tbl-colwidths="[22,14,32,32]"}
+
 | Activity | Pre-Agentic | With Agentic Tools (Projected) | Direction |
 |---|---|---|---|
 | Writing new code | 30–35% | 10–15% | Sharply down — agents handle first-draft generation |
@@ -23,6 +25,8 @@ The most useful way to see this is through time allocation. The table below draw
 | Debugging and incident response | 15–20% | 10–15% | Slightly down, but the bugs that remain are subtler |
 | Context engineering | 0% | 10–15% | New — building and maintaining the context layer |
 | Meetings and coordination | 10–15% | 10–15% | Roughly unchanged |
+
+:::
 
 ```{mermaid}
 ---
@@ -157,6 +161,8 @@ No model is sufficient alone. Model A builds judgment. Model B builds critical e
 
 The skills that differentiate engineers are shifting. This has hiring, retention, and development implications.
 
+::: {tbl-colwidths="[18,18,22,42]"}
+
 | Skill | Pre-Agentic Value | Agentic Value | Direction |
 |---|---|---|---|
 | Syntax and language fluency | High — daily necessity | Low — agents handle this | Declining |
@@ -168,6 +174,8 @@ The skills that differentiate engineers are shifting. This has hiring, retention
 | Debugging and root cause analysis | High | High — agent-generated bugs are subtler | Stable, but harder |
 | Domain knowledge | High | Very high — agents cannot learn what is not documented | Increasing |
 | Collaboration and communication | Medium | High — coordination with agents adds a new dimension | Increasing |
+
+:::
 
 ### Hiring Implications
 
@@ -193,12 +201,16 @@ Two retention risks emerge during the transition.
 
 Team size and composition change under agentic development. The direction is consistent: smaller teams that are more senior in composition, with higher leverage per person.[^ch6-teams]
 
+::: {tbl-colwidths="[22,18,22,38]"}
+
 | Team profile | Pre-Agentic | Agentic (Mature) | Notes |
 |---|---|---|---|
 | Typical team size | 6–10 engineers | 4–7 engineers | Fewer people, higher output per person |
 | Senior-to-junior ratio | 1:2 to 1:3 | 1:1 to 2:1 | More senior judgment required for review and context |
 | Context engineering allocation | 0% | 10–20% of team capacity | Ongoing investment, not a one-time cost |
 | Review time allocation | 15–20% of team capacity | 25–35% of team capacity | Agent output requires more review, not less |
+
+:::
 
 Two caveats.
 
@@ -224,6 +236,8 @@ Most organizations will combine all three. The key is to be deliberate: track yo
 
 Use this worksheet to evaluate your current team structure against the patterns described in this chapter. Score each dimension honestly. The purpose is to identify specific gaps that need attention, not to generate an overall grade.
 
+::: {tbl-colwidths="[16,42,10,32]"}
+
 | Dimension | Question | Score (1-5) | Notes |
 |---|---|---|---|
 | **Knowledge explicitness** | What percentage of your team's working knowledge is documented vs. tribal? | ___ | 1 = almost all tribal; 5 = comprehensive docs |
@@ -234,6 +248,8 @@ Use this worksheet to evaluate your current team structure against the patterns 
 | **Context ownership** | Is someone accountable for the quality of your team's context layer — the instructions, conventions, and agent configurations? | ___ | 1 = nobody; 5 = explicit ownership with maintenance |
 | **Feedback loops** | Does your team systematically capture agent failures and feed corrections back into the context layer? | ___ | 1 = no feedback loop; 5 = weekly context improvement cycle |
 | **Psychological safety** | Can team members admit when agent-assisted work fails without blame? | ___ | 1 = blame culture; 5 = learning culture |
+
+:::
 
 ### Interpreting Results
 

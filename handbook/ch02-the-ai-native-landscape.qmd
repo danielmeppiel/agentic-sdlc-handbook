@@ -55,12 +55,16 @@ flowchart LR
 
 > *Each phase increases both capability and risk. Most organisations evaluate Phase 1–2 while their developers already operate at Phase 3.*
 
+::: {tbl-colwidths="[15,25,25,20,15]"}
+
 | Phase | Interaction model | Primary value | Key risk | Maturity |
 |---|---|---|---|---|
 | Code completion | Passive suggestion | Speed on known tasks | Low — easy to reject | Available now |
 | Conversational assistance | Active Q&A | Exploration, boilerplate | Medium — harder to verify | Available now |
 | Agentic coding | Goal-directed execution | Multi-file, multi-step tasks | High — confident errors at scale | Available now |
 | Orchestrated SDLC | Autonomous lifecycle participation | Cross-phase automation | Very high — governance gap | Emerging |
+
+:::
 
 Most organizations are evaluating Phase 1-2 tools while their developers are already using Phase 3. This gap between what leadership is evaluating and what teams are actually doing is itself a risk.
 
@@ -97,6 +101,10 @@ A feature comparison grid is the most natural thing to produce and the least use
 
 The maturity tiers: **Now** = available and shipping in production. **Emerging** = available but limited, or in public preview. **Directional** = announced, demonstrated in research, or on a public roadmap but not yet usable at production scale. **N/A** = not applicable — the tool's architecture doesn't target this capability, and that's a design choice, not a gap.[^ch2-matrix]
 
+::: {.landscape}
+
+::: {tbl-colwidths="[22,13,13,13,13,13,13]"}
+
 | Capability | GitHub Copilot | Cursor | Claude Code | Windsurf | Amazon Q Developer | JetBrains AI |
 |---|---|---|---|---|---|---|
 | Code completion | Now | Now | N/A | Now | Now | Now |
@@ -110,6 +118,10 @@ The maturity tiers: **Now** = available and shipping in production. **Emerging**
 | Custom instructions / rules | Now | Now | Now | Now | Emerging | Emerging |
 | Enterprise governance | Now | Emerging | Emerging | Emerging | Now | Emerging |
 | Full SDLC platform | Now | Directional | N/A | N/A | Emerging | N/A |
+
+:::
+
+:::
 
 **Where to look first.** Not every row matters equally. If you're a CTO deciding where to invest evaluation time, three capabilities separate "we have a coding tool" from "we have a strategy":
 
@@ -155,6 +167,8 @@ Most AI tool evaluations focus on the coding phase. This is like evaluating a ca
 
 **The insight most organizations miss: code generation is the *most mature* phase — the one with the most capable tooling and the highest adoption. Plan, Test, and Review are where the next wave of high-value AI assistance will land — and where structured context (the kind this book teaches you to build) makes the difference between useful automation and expensive noise.**
 
+::: {tbl-colwidths="[12,30,30,28]"}
+
 | Phase | What happens | What "good" looks like | Your current state |
 |---|---|---|---|
 | **Ideate** | Requirements gathering, research, exploration | Agents surface prior art, draft specs from rough notes, and flag conflicting requirements before a human commits to a direction. | ☐ Automated ☐ Assisted ☐ Manual |
@@ -165,6 +179,8 @@ Most AI tool evaluations focus on the coding phase. This is like evaluating a ca
 | **Review** | Code review, security review, standards checks | Agents catch real issues — not style nits — and produce review comments specific enough that the author can act on them without a follow-up conversation. | ☐ Automated ☐ Assisted ☐ Manual |
 | **Release** | Deployment, release management, changelog | Agents draft changelogs from commit history, flag breaking changes, and automate the mechanical parts of release so humans focus on go/no-go decisions. | ☐ Automated ☐ Assisted ☐ Manual |
 | **Operate** | Monitoring, incident response, observability | Agents correlate alerts to recent deployments, draft incident timelines, and suggest rollback actions — reducing mean-time-to-diagnose, not replacing on-call judgment. | ☐ Automated ☐ Assisted ☐ Manual |
+
+:::
 
 These eight phases group into three buckets that map to how leaders plan and budget:
 
