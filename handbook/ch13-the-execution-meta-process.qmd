@@ -172,7 +172,7 @@ Tasks that fail the self-sufficiency test are the primary source of mid-wave esc
 
 ---
 
-## PR #394: The Worked Example
+## [PR #394](https://github.com/microsoft/apm/pull/394): The Worked Example
 
 The meta-process is abstract until you see it execute. This section walks through a specific PR — an auth and logging architecture overhaul on a real codebase — with exact numbers.
 

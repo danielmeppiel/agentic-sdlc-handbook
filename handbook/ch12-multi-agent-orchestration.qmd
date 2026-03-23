@@ -93,7 +93,7 @@ For cross-cutting changes, organize agents by area of expertise rather than by w
 └─────────────────────────┘  └─────────────────────────┘
 ```
 
-In the reference case study (PR #394, detailed in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 70-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
+In the reference case study ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 70-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
 
 This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.
 
