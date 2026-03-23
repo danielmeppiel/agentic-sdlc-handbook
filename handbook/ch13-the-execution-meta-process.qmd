@@ -186,9 +186,9 @@ The codebase is APM, an open-source agent package manager — the author's imple
 |---|---|
 | Files changed | 70 |
 | Lines added / removed | +5,886 / −1,030 |
-| Commits | 30 |
+| Commits | 30 (one per agent task plus wave-level checkpoint commits) |
 | Tests passing | 2,874 |
-| Agents dispatched | 15 (across 4 waves + 2 audit agents) |
+| Agents dispatched | 15 (2 audit + 2 in Wave 0 + 2 in Wave 1 + 3 in Wave 2 + 2 in Wave 2b + 4 in Wave 3) |
 | Human interventions | 3 |
 | Wall-clock time | ~90 minutes (audit through merge) |
 | Regressions detected | 0 (by the test suite) |

@@ -8,7 +8,7 @@ An AI agent on your team just merged a pull request that touches your payment pr
 
 ## The Governance Gap
 
-Software governance has always assumed human actors at every decision point. Code review policies name individuals. Access controls map to employee identities. Audit trails trace decisions to people who can explain their reasoning in a meeting. Compliance frameworks — SOC 2, ISO 27001, PCI DSS — require demonstrating that authorized humans made deliberate choices about what code runs in production.
+Software governance has always assumed human actors at every decision point. Code review policies name individuals. Access controls map to employee identities. Audit trails trace decisions to people who can explain their reasoning in a meeting. Compliance frameworks — SOC 2, ISO 27001:2013 (and its 2022 revision), PCI DSS — require demonstrating that authorized individuals made deliberate choices about what code runs in production.
 
 AI agents break this assumption.
 
@@ -226,7 +226,7 @@ A status snapshot is a status email. A governance artifact shows where you are, 
 |---|---|---|---|---|
 | **Adoption** | Developers using agent tools | *e.g., 120 of 400 (30%)* | *80% by Q4* | *↑ from 18% last quarter* |
 | | PRs with agent-generated code | *e.g., 22%* | *40% by Q4* | *↑ from 12%* |
-| | Phase maturity | *e.g., Phase 3 (agentic)* | *Phase 4 by year-end* | *Advanced from Phase 2 in Q1* |
+| | Phase maturity | *e.g., Phase 2 (conversational)* | *Phase 3 (agentic) by year-end* | *Advanced from Phase 1 in Q1* |
 | **Value** | Cycle time (agent-assisted vs. baseline) | *e.g., −18% on eligible tasks* | *−25%* | *↑ improving (was −11%)* |
 | | Deployment frequency | *e.g., 3.2/week* | *4/week* | *→ flat* |
 | | Developer satisfaction (survey) | *e.g., 7.4/10* | *≥7.5* | *↑ from 6.8* |
