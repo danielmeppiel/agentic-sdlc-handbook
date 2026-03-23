@@ -445,6 +445,10 @@ When something goes wrong, the first question is what kind of wrong:
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "Failure mode decision tree for diagnosing agent output issues"
+%%| fig-alt: "Top-down decision tree flowchart for diagnosing agent output issues. Starting from Agent output issue, the first question is Syntax error: Yes leads to Model issue — Upgrade or manual (red, error). No leads to Tests fail: Yes branches to Agent's code or pre-existing — Agent's leads to Task/context issue — Narrow scope (orange, warning), Pre-existing leads to Separate issue — Skip (neutral blue). If Tests don't fail, the next question is Follows conventions: No leads to Primitive gap — Add rule (orange, warning). Yes leads to Integrates correctly: No leads to Architecture issue — Fix boundaries (orange, warning), Yes leads to Probably fine — Check edges (green, success)."
+%%| label: fig-failure-decision-tree
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     START(["Agent output<br/>issue?"]) --> Q1{"Syntax error?"}
 
@@ -463,12 +467,12 @@ flowchart TD
     Q4 -- No --> FIX4["Architecture issue<br/>Fix boundaries"]
     Q4 -- Yes --> FIX5["Probably fine<br/>Check edges"]
 
-    style FIX1 fill:#e63946,color:#fff
-    style FIX2 fill:#e76f51,color:#fff
-    style FIX3 fill:#f4a261,color:#000
-    style FIX4 fill:#e9c46a,color:#000
-    style FIX5 fill:#2d6a4f,color:#fff
-    style FIX2b fill:#6c757d,color:#fff
+    style FIX1 fill:#c0392b,color:#fff
+    style FIX2 fill:#f39c12,color:#fff
+    style FIX3 fill:#f39c12,color:#000
+    style FIX4 fill:#f39c12,color:#000
+    style FIX5 fill:#27ae60,color:#fff
+    style FIX2b fill:#3498db,color:#fff
 ```
 
 ---

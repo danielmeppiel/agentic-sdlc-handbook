@@ -40,6 +40,10 @@ The market's evolution follows a clear progression, and understanding where you 
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "Four phases of AI-assisted development evolution"
+%%| fig-alt: "A left-to-right flowchart showing four phases of AI evolution connected by arrows labeled 'risk up'. Phase 1 is Code Completion (2021–2023, passive suggestion). Phase 2 is Conversational (2023–2024, active Q&A). Phase 3 is Agentic Coding (2024–2025, goal-directed execution). Phase 4 is Orchestrated SDLC (emerging, autonomous lifecycle). Phases progress from low risk in green through medium in blue and high in orange to very high risk in red."
+%%| label: fig-ai-evolution
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart LR
     P1["<b>Phase 1</b><br/>Code Completion<br/><em>2021–2023</em><br/>Passive suggestion"]
     P2["<b>Phase 2</b><br/>Conversational<br/><em>2023–2024</em><br/>Active Q&A"]
@@ -48,10 +52,10 @@ flowchart LR
 
     P1 -->|"risk ↑"| P2 -->|"risk ↑"| P3 -->|"risk ↑"| P4
 
-    style P1 fill:#2ecc71,color:#fff
-    style P2 fill:#3498db,color:#fff
-    style P3 fill:#e67e22,color:#fff
-    style P4 fill:#e74c3c,color:#fff
+    style P1 fill:#27ae60,stroke:#1e8449,color:#fff
+    style P2 fill:#3498db,stroke:#2980b9,color:#fff
+    style P3 fill:#f39c12,stroke:#e67e22,color:#fff
+    style P4 fill:#c0392b,stroke:#922b21,color:#fff
 ```
 
 > *Each phase increases both capability and risk. Most organisations evaluate Phase 1–2 while their developers already operate at Phase 3.*

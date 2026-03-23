@@ -50,6 +50,11 @@ Most organizations operating at Phase 3 (agentic coding, as described in Chapter
 **Where to start.** Audit trails and agent access controls are the two capabilities that unblock everything else. Without knowing what agents did and limiting what they can do, the other four capabilities have no foundation. If your assessment shows "None" in these areas, start here.
 
 ```{mermaid}
+%%| fig-width: 4.5
+%%| fig-cap: "Governance capability quick-start assessment"
+%%| fig-alt: "A top-down decision flowchart for governance assessment. Starting at 'Assess 6 governance capabilities', it flows to a decision diamond: 'Any capability at None?' If Yes, go to 'Start here: Audit Trails + Access Controls' (red, indicating urgency). If No, check 'All at Basic or above?' If Yes, go to 'Safe to expand agent adoption' (green, indicating success), then to 'Invest toward Enterprise per regulatory scope' (blue). If No at the second decision, also go to the Audit Trails step. From Audit Trails, flow to 'Reassess quarterly', which loops back to the initial assessment."
+%%| label: fig-governance-assessment
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     START["Assess 6<br/>governance capabilities"] --> Q1{"Any capability<br/>at 'None'?"}
     Q1 -->|Yes| FIX["Start here:<br/>Audit Trails +<br/>Access Controls"]
@@ -60,9 +65,11 @@ flowchart TD
     EXPAND --> MATURE["Invest toward<br/>'Enterprise' per<br/>regulatory scope"]
     REASSESS --> Q1
 
-    style FIX fill:#e74c3c,color:#fff
-    style EXPAND fill:#2ecc71,color:#fff
-    style MATURE fill:#3498db,color:#fff
+    style Q1 fill:#2c3e50,stroke:#ecf0f1,color:#ecf0f1
+    style Q2 fill:#2c3e50,stroke:#ecf0f1,color:#ecf0f1
+    style FIX fill:#c0392b,stroke:#922b21,color:#fff
+    style EXPAND fill:#27ae60,stroke:#1e8449,color:#fff
+    style MATURE fill:#3498db,stroke:#2980b9,color:#fff
 ```
 
 > *The governance floor: no capability at "None" before expanding agent adoption. Start with audit trails and access controls — they unblock everything else.*

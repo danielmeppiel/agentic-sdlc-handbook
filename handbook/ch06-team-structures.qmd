@@ -30,6 +30,9 @@ The most useful way to see this is through time allocation. The table below draw
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| label: fig-time-allocation
+%%| fig-cap: "Developer time allocation across activities"
+%%| fig-alt: "Bar chart comparing developer time allocation before and after agentic tools across seven activities: Write Code drops from 32% to 12%, Read Code from 22% to 17%, Review rises from 12% to 22%, Spec and Design rises from 12% to 22%, Debug drops from 17% to 12%, Context Engineering is new at 0% to 12%, and Meetings remain steady at 12%. Blue bars represent pre-agentic allocation; orange bars represent allocation with agentic tools."
 ---
 config:
     xyChart:

@@ -128,6 +128,9 @@ The timeline varies by organization. Teams with well-documented codebases enter 
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "Cost-benefit trajectory over a 12-month adoption period"
+%%| fig-alt: "An XY chart titled 'Adoption J-Curve: Expect the Valley' showing net productivity impact over 12 months. The line starts at 0 in month 0, dips to negative 25 around month 2 representing the investment valley, crosses back to positive around month 5, then steadily climbs to approximately 52 by month 12 as context compounds and returns accelerate."
+%%| label: fig-adoption-curve
 ---
 config:
     xyChart:

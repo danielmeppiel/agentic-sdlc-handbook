@@ -20,6 +20,10 @@ The layers are not independent. They form a stack where each depends on the one 
 
 ```{mermaid}
 %%| fig-width: 5.0
+%%| fig-cap: "The three-layer reference architecture: Human, Agent, Platform"
+%%| fig-alt: "A left-to-right flowchart showing three layers of the reference architecture. The Human Layer contains Roles (Product, Architecture, Engineering, QA, Operations) and Functions (Decisions, Governance, Accountability). The Agent Layer contains Capabilities (Generate, Analyze, Test, Review) and Boundaries (Scoped authority, context-dependent, auditable). The Platform Layer contains Infrastructure (SCM, CI/CD, Auth, Observability) and Integrations (APIs, Webhooks, Context Sources, Artifacts). Bidirectional arrows show: Human sets constraints and delegates tasks to Agent, Agent sends escalations, approvals, and results back to Human, Agent invokes tools and reads context from Platform, and Platform returns build results, test output, and telemetry to Agent."
+%%| label: fig-three-layers
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart LR
     subgraph HUMAN ["HUMAN LAYER"]
         direction LR
@@ -44,9 +48,9 @@ flowchart LR
     AGENT -- "invokes tools,<br/>reads context" --> PLATFORM
     PLATFORM -- "build results,<br/>test output, telemetry" --> AGENT
 
-    style HUMAN fill:#3498db,color:#fff
-    style AGENT fill:#e67e22,color:#fff
-    style PLATFORM fill:#2ecc71,color:#fff
+    style HUMAN fill:#3498db,stroke:#2980b9,color:#fff
+    style AGENT fill:#f39c12,stroke:#e67e22,color:#fff
+    style PLATFORM fill:#27ae60,stroke:#1e8449,color:#fff
 ```
 
 This structure is not a proposal. It is a description of what already exists in any organization using AI coding tools — whether they've designed it deliberately or not. The agent in your developer's editor is already operating across these three layers. The question is whether the boundaries, the context flow, and the governance are intentional.
@@ -172,6 +176,8 @@ When an agent produces a code review using your team's documented quality standa
 %%| fig-width: 4.5
 %%| label: fig-context-flywheel
 %%| fig-cap: "The context compounding flywheel"
+%%| fig-alt: "A circular flywheel showing three stages: structured context leads to better agent output, which produces richer artifacts, which feed back into structured context"
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 graph LR
     A["Structured<br/>context"] --> B["Better agent<br/>output"]
     B --> C["Richer<br/>artifacts"]

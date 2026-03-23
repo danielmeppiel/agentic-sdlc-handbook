@@ -36,6 +36,14 @@ Early implementations already exist. Open-source tools provide manifest-based de
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "Three-horizon technology timeline"
+%%| fig-alt: "Gantt chart showing three technology horizons: Near-Term (0 to 12 months, 2025 to 2026) includes Tool-using agents become standard and Multi-agent orchestration ships, both marked as active; Medium-Term (1 to 3 years, 2026 to 2028) includes Agent governance as a discipline and Specification replaces implementation; Long-Term (3 to 5 years, 2028 to 2030) includes Full lifecycle agent participation and Context infrastructure as foundational as CI/CD."
+%%| label: fig-three-horizons
+---
+config:
+  gantt:
+    fontSize: 12
+---
 gantt
     title Three-Horizon Timeline
     dateFormat YYYY

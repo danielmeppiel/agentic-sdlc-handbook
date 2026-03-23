@@ -28,6 +28,14 @@ Expert panels drove the strategic decisions. Across six phases, the orchestrator
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "Growth engine implementation timeline"
+%%| fig-alt: "Gantt chart showing four phases of growth engine implementation. Strategy phase: Expert panels plus user override spanning units 0 to 3. Kit Automation phase: Playwright scripts (critical, units 3 to 5), Playwright MCP server (critical, units 5 to 6), Kit API (critical, units 6 to 7), and Human escalation (done, units 7 to 8). Implementation phase: Landing page plus email infrastructure (done, units 8 to 11) and Bio correction via user override (critical, units 11 to 12). Security and Launch phase: PII audit with 4 parallel agents (done, units 12 to 14) and History scrub plus remediation (done, units 14 to 15)."
+%%| label: fig-cs-growth-timeline
+---
+config:
+  gantt:
+    fontSize: 12
+---
 gantt
     title Growth Engine Build Phases
     dateFormat X
@@ -57,6 +65,10 @@ The most instructive failure sequence was the Kit email platform automation -- t
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "Kit email automation escalation sequence"
+%%| fig-alt: "Sequence diagram showing three failed automation attempts followed by human escalation. The Orchestrator first tries Playwright Scripts: login, tags, and form creation succeed, but React textarea manipulation fails with .fill(), Meta+a, and JS setter, and the React combobox is not a native select. The Orchestrator then tries Playwright MCP: navigate, click, and snapshot work, but browser_run_code throws SyntaxError on all inputs and still cannot solve the React combobox. The Orchestrator then tries the Kit V3 API: listing forms and tags succeeds, but /v3/automations returns 404 as it is not exposed. Finally, the Orchestrator escalates to the Human with a 3-step manual checklist, which the Human completes in 2 minutes."
+%%| label: fig-cs-kit-escalation
+%%{init: {'theme': 'base', 'themeVariables': {'actorBkg': '#2c3e50', 'actorTextColor': '#ecf0f1', 'actorBorder': '#34495e', 'signalColor': '#2c3e50', 'signalTextColor': '#2c3e50', 'labelBoxBkgColor': '#ecf0f1', 'labelTextColor': '#2c3e50', 'noteBkgColor': '#f1c40f', 'noteTextColor': '#2c3e50', 'fontSize': '14px'}}}%%
 sequenceDiagram
     participant O as Orchestrator
     participant PW as Playwright Scripts
@@ -114,6 +126,10 @@ Four parallel agents scanned the repository for sensitive data. Three completed 
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "PII audit pipeline for email template review"
+%%| fig-alt: "Flowchart showing the PII audit pipeline. Four parallel agents are dispatched: Agent 1 scans career directory, Agent 2 scans reviews directory, Agent 3 scans audits and agents directories, and Agent 4 scans config files. Agent 1 refuses due to safety guardrails and is replaced by manual grep analysis. Agents 2, 3, and 4 produce findings that feed into a Remediation Plan. The manual grep analysis also feeds into the Remediation Plan. The Remediation Plan leads to a git-filter-repo history scrub, which produces clean history with originals preserved locally."
+%%| label: fig-cs-pii-audit
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart LR
     subgraph "Dispatch -- 4 Parallel Agents"
         A1[Agent 1: career/]

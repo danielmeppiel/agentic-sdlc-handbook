@@ -84,6 +84,10 @@ How the five constraints relate:
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "The five PROSE specification principles and their relationships"
+%%| fig-alt: "A flowchart showing five PROSE principles arranged in a hierarchy. Explicit Hierarchy filters rules into Progressive Disclosure, which fills Reduced Scope, which decomposes into Orchestrated Composition. Safety Boundaries constrains all execution of Orchestrated Composition and limits the scope of Reduced Scope. The flow is left to right with Safety Boundaries acting as a cross-cutting constraint on the other four principles."
+%%| label: fig-prose-principles
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart LR
     subgraph " "
         direction TB
@@ -100,11 +104,7 @@ flowchart LR
     SB -- "constrains<br/>all execution" --> OC
     SB -- "limits scope<br/>of" --> RS
 
-    style EH fill:#4a9eff,color:#fff
-    style PD fill:#4a9eff,color:#fff
-    style RS fill:#4a9eff,color:#fff
-    style OC fill:#4a9eff,color:#fff
-    style SB fill:#e74c3c,color:#fff
+    style SB fill:#c0392b,stroke:#922b21,color:#fff
 ```
 
 When these constraints are followed, systems exhibit reliability (consistent results from non-deterministic systems), scalability (same patterns work from scripts to large codebases), portability (works across any LLM-based agent platform), and transparency (agent behavior is inspectable and explainable).

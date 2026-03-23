@@ -44,6 +44,10 @@ HTML render: 16 files, zero errors, 15 Mermaid diagrams confirmed. The site went
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "Publishing conversion pipeline: Markdown to HTML, PDF, and EPUB"
+%%| fig-alt: "Flowchart showing the publishing conversion pipeline from left to right. 15 Markdown chapters are converted via git mv from .md to .qmd with YAML frontmatter added. This feeds into the _quarto.yml book config, which feeds into quarto render. Quarto render produces three outputs: HTML for web, PDF via LaTeX, and EPUB. The HTML output goes to GitHub Pages CI deploy. The PDF and EPUB outputs both go to local render plus copy to site."
+%%| label: fig-cs-conversion-wave
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart LR
     A["15 Markdown<br/>chapters"] --> B["git mv .md → .qmd<br/>+ YAML frontmatter"]
     B --> C["_quarto.yml<br/>book config"]
@@ -62,6 +66,10 @@ What happened next is a textbook instance of **Anti-Pattern #15: The "Almost Don
 
 ```{mermaid}
 %%| fig-width: 4.5
+%%| fig-cap: "The 'Almost Done' trap: cascading PDF rendering fixes"
+%%| fig-alt: "Flowchart showing a cascade of five PDF rendering fixes. Step 1: PDF renders but text is too narrow, fixed by switching to scrreprt class. Step 2: Layout is fixed but Mermaid diagrams are missing, fixed by syntax correction. Step 3: Diagrams render but duplicate heading numbers appear, fixed by stripping manual numbers. Step 4: Headings are clean but margins overflow, fixed by adjusting fig-width and adding code wrap. Step 5: Overflow is fixed but fig-width is still too wide, fixed by reducing to 5.5 inches and adding preamble. Final result: PDF is clean, growing from 686KB to 3.8MB with rendered diagrams."
+%%| label: fig-cs-almost-done
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TD
     A["PDF renders ✓<br/>text too narrow"] -->|scrreprt class| B["Layout fixed ✓<br/>Mermaid missing"]
     B -->|syntax fix| C["Diagrams render ✓<br/>duplicate numbers"]
@@ -69,8 +77,8 @@ flowchart TD
     D -->|fig-width+wrap| E["Overflow fixed ✓<br/>fig-width too wide"]
     E -->|5.5 + preamble| F["PDF clean ✓<br/>686KB → 3.8MB"]
 
-    style A fill:#fee,stroke:#c33
-    style F fill:#efe,stroke:#3c3
+    style A fill:#c0392b,stroke:#922b21,color:#fff
+    style F fill:#27ae60,stroke:#1e8449,color:#fff
 ```
 
 **Issue 1 — Narrow text.** The `scrbook` document class has wide binding margins designed for physical books. Fix: switch to `scrreprt` with explicit geometry (25mm left/right, 30mm top/bottom).
@@ -113,6 +121,10 @@ The final architecture splits rendering by environment:
 
 ```{mermaid}
 %%| fig-width: 6.5
+%%| fig-cap: "Final CI/CD architecture: CI pipeline and local render workflow"
+%%| fig-alt: "Flowchart showing two parallel subgraphs. The CI Pipeline (49 seconds) subgraph contains five sequential steps: Checkout, Install Quarto, quarto render to html, Restore PDF and EPUB from gh-pages, and quarto publish with no-render flag. The Local Render (15 minutes) subgraph contains seven sequential steps: quarto render to pdf, Save PDF, quarto render to epub, Save EPUB, quarto render to html, Copy PDF and EPUB into _book directory, and quarto publish with no-render flag. CI optimizes for speed with HTML only while Local optimizes for completeness with all formats."
+%%| label: fig-cs-cicd-architecture
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#2c3e50', 'primaryTextColor': '#ecf0f1', 'primaryBorderColor': '#34495e', 'lineColor': '#7f8c8d', 'secondaryColor': '#3498db', 'tertiaryColor': '#ecf0f1', 'fontSize': '14px'}}}%%
 flowchart TB
     subgraph CI ["CI Pipeline (49 seconds)"]
         A1["Checkout"] --> A2["Install Quarto"]
@@ -130,8 +142,8 @@ flowchart TB
         B6 --> B7["quarto publish<br/>--no-render"]
     end
 
-    style CI fill:#e8f4e8,stroke:#4a4
-    style Local fill:#e8e8f4,stroke:#44a
+    style CI fill:#27ae60,stroke:#1e8449,color:#fff
+    style Local fill:#3498db,stroke:#2980b9,color:#fff
 ```
 
 :::
