@@ -573,7 +573,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Every technique in this book was born from a failure. The wave execution model exists because a developer tried to run 15 agents at once and got a merge conflict graveyard. The checkpoint discipline exists because someone skipped testing after wave 2 and spent three hours debugging a cascade that started in wave 1. The escalation protocol exists because an agent claimed a file was updated when it wasn’t, and no one checked until the PR review.</p>
+<p>Every technique in this book was born from a failure. In our early experiments, the wave execution model emerged because a developer tried to run 15 agents at once and got a merge conflict graveyard. The checkpoint discipline exists because someone skipped testing after wave 2 and spent three hours debugging a cascade that started in wave 1. The escalation protocol exists because an agent claimed a file was updated when it wasn’t, and no one checked until the PR review.</p>
 <p>This chapter documents 19 distinct ways AI-native development goes wrong, why each failure happens, which PROSE constraint it violates, and how to prevent or recover.</p>
 <p>The uncomfortable truth: AI failures don’t crash. They produce plausible wrong output. An agent that silently violates your architecture or ignores a security boundary produces code that compiles, might pass tests, and enters your codebase as technical debt you don’t know you have. Learning to see these failures before they ship is the skill that separates effective AI-native development from expensive AI-assisted typing.</p>
 <hr>

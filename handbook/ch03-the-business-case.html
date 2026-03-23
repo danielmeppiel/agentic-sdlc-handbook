@@ -576,12 +576,12 @@ ul.task-list li input[type="checkbox"] {
 <p>The total cost of ownership for agentic development has six components. The first is the only one your vendor will mention.</p>
 <section id="tool-licenses" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="tool-licenses"><span class="header-section-number">5.2.1</span> Tool licenses</h3>
-<p>The visible cost. Per-seat subscriptions for AI coding tools range from $10–40/month per developer for individual tiers; enterprise tiers with SSO, audit logs, and data residency controls run 2–3× higher. If you’re evaluating platform-level tools (not just editor plugins), add platform licensing. Budget $200–600 per developer per year for tooling. This is the easy part.</p>
+<p>The visible cost. Per-seat subscriptions for AI coding tools range from $10–40/month per developer for individual tiers; enterprise tiers with SSO, audit logs, and data residency controls run 2–3× higher. If you’re evaluating platform-level tools (not just editor plugins), add platform licensing. Budget $200–600 per developer per year for team tiers; enterprise agreements typically run $500–1,500. This is the easy part.</p>
 </section>
 <section id="context-engineering-investment" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="context-engineering-investment"><span class="header-section-number">5.2.2</span> Context engineering investment</h3>
 <p>The largest hidden cost, and the one that determines whether the tool investment pays off. Context engineering — the practice of structuring your team’s knowledge so AI agents can use it reliably — requires upfront work: documenting architectural decisions, writing machine-readable conventions, building instruction hierarchies, and curating the artifacts that make agents effective on your specific codebase.</p>
-<p>For a team of 10–15 developers, expect 2–4 weeks of engineering time for initial context architecture. This is not optional overhead. Without it, you’ve purchased tools that will generate plausible code that violates your conventions and requires extensive rework. With it, agent output improves over time as context compounds. Chapter 4 covers this investment in detail.</p>
+<p>For a team of 10–15 developers, in our experience with teams adopting this methodology, expect 2–4 weeks of engineering time for initial context architecture. This is not optional overhead. Without it, you’ve purchased tools that will generate plausible code that violates your conventions and requires extensive rework. With it, agent output improves over time as context compounds. Chapter 4 covers this investment in detail.</p>
 </section>
 <section id="token-and-compute-costs" class="level3" data-number="5.2.3">
 <h3 data-number="5.2.3" class="anchored" data-anchor-id="token-and-compute-costs"><span class="header-section-number">5.2.3</span> Token and compute costs</h3>
@@ -610,7 +610,7 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th>Cost component</th>
-<th>Typical range (team of 10, year 1)</th>
+<th>Illustrative range (team of 10, year 1)</th>
 <th>What’s often missed</th>
 </tr>
 </thead>
@@ -661,7 +661,7 @@ ul.task-list li input[type="checkbox"] {
 <p>If the cost side is underestimated, the value side is measured wrong. Most business cases for AI coding tools claim value in “developer productivity” — a term so vague it can mean anything and therefore means nothing. Here is where measurable value actually appears when agentic development works.</p>
 <p><strong>Cycle time compression.</strong> The most defensible metric. Time from issue opened to code merged and deployed. When agents handle implementation of well-specified tasks — generating code, writing tests, updating documentation — the human developer’s role shifts from author to reviewer. For tasks within the agent’s reliable capability range, this can compress task completion time by 25–55%<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> — though end-to-end cycle time improvement depends on non-coding bottlenecks such as code review and deployment processes. Note the qualifier: <em>within the agent’s reliable capability range.</em> Not all tasks. Not even most tasks, initially. The tasks where agents are reliable expands as your context engineering matures.</p>
 <p><strong>Defect reduction.</strong> Counterintuitive, because agents introduce defects too. But structured context — explicit conventions, required patterns, documented boundaries — catches errors that human developers miss through familiarity blindness. When the linter, the test suite, and the agent’s instructions all encode the same standards, violations surface earlier. Teams with mature context engineering report fewer convention-violation defects in code review, not because the agent is smarter than a human, but because the standards are enforced consistently rather than recalled from memory.</p>
-<p><strong>Knowledge retention.</strong> The most undervalued benefit, and the one with the longest payback period. Every instruction file, every documented convention, every machine-readable architecture decision is an organizational asset that survives employee turnover. When a senior engineer leaves, their knowledge of “how we do things here” typically walks out the door with them. When that knowledge is encoded in context artifacts, it persists — usable by both human developers and AI agents. This doesn’t show up in a quarterly report. It shows up when onboarding a new hire takes two weeks instead of two months because the codebase is self-documenting.</p>
+<p><strong>Knowledge retention.</strong> The most undervalued benefit, and the one with the longest payback period. Every instruction file, every documented convention, every machine-readable architecture decision is an organizational asset that survives employee turnover. When a senior engineer leaves, their knowledge of “how we do things here” typically walks out the door with them. When that knowledge is encoded in context artifacts, it persists — usable by both human developers and AI agents. This doesn’t show up in a quarterly report. It shows up when onboarding a new hire can take weeks instead of months because the codebase is self-documenting.</p>
 <p><strong>Attention reallocation.</strong> Not “developers do more work” but “developers do different work.” When routine implementation is delegated, developer attention shifts to design decisions, architecture, code review, and the complex problems that humans still do better than any model. The value is not more output — it is higher-quality attention on the problems that matter most. This is hard to quantify and easy to feel. Teams that adopt agentic development well report higher job satisfaction not because the work is easier, but because it is more interesting.</p>
 <table class="caption-top table">
 <colgroup>
@@ -705,6 +705,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+<p><em>These timelines reflect patterns observed across early-adoption teams; your experience will vary.</em></p>
 <hr>
 </section>
 <section id="the-adoption-timeline" class="level2" data-number="5.4">
@@ -849,7 +850,7 @@ Break-even: Year-1 cost ÷ Monthly value run-rate (at steady state, months 6+)</
 <section id="worked-example-a-50-person-team" class="level3" data-number="5.5.5">
 <h3 data-number="5.5.5" class="anchored" data-anchor-id="worked-example-a-50-person-team"><span class="header-section-number">5.5.5</span> Worked example: a 50-person team</h3>
 <p>The formula above is a template. Here is what it looks like with numbers.</p>
-<p><strong>Assumptions</strong> (moderate scenario): - 50 engineers, fully loaded cost $200,000/year each - Cycle time improvement: 25% (midpoint of moderate range) - Current defect remediation: $500,000/year (rework, incident response, post-deploy fixes) - Expected defect reduction: 20% - Current onboarding cost: $15,000 per new hire; 10 hires/year; 30% reduction expected</p>
+<p><strong>Assumptions</strong> (moderate scenario): - 50 engineers, fully loaded cost $200,000/year each (US market, senior engineers) - Cycle time improvement: 25% (midpoint of moderate range) - Current defect remediation: $500,000/year (rework, incident response, post-deploy fixes) - Expected defect reduction: 20% - Current onboarding cost: $15,000 per new hire; 10 hires/year; 30% reduction expected</p>
 <pre><code>Total annual developer investment (A)        = 50 × $200,000 = $10,000,000
 
 Cycle time improvement: 25%
@@ -942,7 +943,7 @@ from project start, depending on cost position and adoption speed.</code></pre>
 <p>Every business case has an implicit comparison: the investment versus the status quo. Most business cases for agentic development model the investment side. Few price the alternative.</p>
 <p>Chapter 2 made the strategic argument: inaction is itself a decision, with consequences for talent, shadow IT, context accumulation, and competitive position. Here, we put a number on it.</p>
 <p><strong>The context gap compounds in reverse.</strong> The same flywheel that rewards early context investment penalizes delay. While your team debates whether AI tools are worth it, competitors who started six months earlier have accumulated six months of machine-readable conventions, structured architecture decisions, and documented patterns. Their agents improve with every sprint. Yours, when you eventually adopt, start from zero. The gap is not six months of calendar time — it is six months of compounding context quality that you must build from scratch while the early adopter’s agents are already leveraging it.</p>
-<p>A rough estimate: for a 50-person team, a 12-month delay in structured adoption represents $1.5–2.5M in forgone throughput improvement (using the moderate scenario from the worked example above) plus the unquantified but real costs of competitive position and hiring friction. “Wait and see” is itself a decision with a price. Your board will ask “what if we wait a year?” This section is the answer.</p>
+<p>Using the moderate scenario modeled above, a 12-month delay for a 50-person team could represent $1.5–2.5M in forgone throughput improvement — acknowledging that this depends entirely on the model’s assumptions — plus the unquantified but real costs of competitive position and hiring friction. “Wait and see” is itself a decision with a price. Your board will ask “what if we wait a year?” This section is the answer.</p>
 <hr>
 </section>
 <section id="the-honest-version" class="level2" data-number="5.7">

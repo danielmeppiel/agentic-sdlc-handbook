@@ -737,7 +737,7 @@ Wave 2: INTEGRATION         ←  Depends on Wave 1
   Agent H: test updates</code></pre>
 <p>The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0’s output being committed and tested. Within a wave, agents are independent — they share no files and make no assumptions about each other’s progress.</p>
 <p>Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.</p>
-<p>In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.</p>
+<p>In the reference case study (PR #394, detailed in Chapter 13), four waves plus one recovery wave handled 70 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. Meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -880,14 +880,14 @@ Wave 1 review:                                   [████]</code></pre>
 </tbody>
 </table>
 <p>The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.</p>
-<p>In the reference case study (Chapter 13), the distribution across 15 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions out of fifteen dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.</p>
+<p>In the reference case study (Chapter 13), the distribution across all decision points within the 15 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions out of fifteen dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.</p>
 <hr>
 </section>
 </section>
 <section id="the-coordination-tax-honest-numbers" class="level2" data-number="14.6">
 <h2 data-number="14.6" class="anchored" data-anchor-id="the-coordination-tax-honest-numbers"><span class="header-section-number">14.6</span> The Coordination Tax: Honest Numbers</h2>
 <p>Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the reference case study detailed in Chapter 13.</p>
-<p>The human time in a well-planned multi-agent execution breaks down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). In the PR #394 case, total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.</p>
+<p>In the PR #394 case, the human time in a well-planned multi-agent execution broke down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). In the PR #394 case, total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.</p>
 <p>The same 70-file change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts on changes of this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.</p>
 <p>The multi-agent approach did not save total elapsed time on this change. It traded human planning time for agent quality. The 45 minutes the orchestrator spent coordinating replaced the 30-45 minutes they would have spent debugging context-degraded output — with better results.</p>
 <section id="the-sweet-spot" class="level3" data-number="14.6.1">
