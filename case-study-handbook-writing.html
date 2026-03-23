@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -518,9 +553,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#user-vetoed-apm-compile" id="toc-user-vetoed-apm-compile" class="nav-link" data-scroll-target="#user-vetoed-apm-compile">3. User Vetoed <code>apm compile</code></a></li>
   <li><a href="#panel-disagreement-on-apm-prominence" id="toc-panel-disagreement-on-apm-prominence" class="nav-link" data-scroll-target="#panel-disagreement-on-apm-prominence">4. Panel Disagreement on APM Prominence</a></li>
   </ul></li>
-  <li><a href="#the-apm-zero-mentions-embarrassment" id="toc-the-apm-zero-mentions-embarrassment" class="nav-link" data-scroll-target="#the-apm-zero-mentions-embarrassment">The APM Zero-Mentions Embarrassment</a></li>
   <li><a href="#what-held-true-regardless-of-the-model" id="toc-what-held-true-regardless-of-the-model" class="nav-link" data-scroll-target="#what-held-true-regardless-of-the-model">What Held True Regardless of the Model</a></li>
-  <li><a href="#what-this-proves" id="toc-what-this-proves" class="nav-link" data-scroll-target="#what-this-proves">What This Proves</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -565,19 +598,6 @@ ul.task-list li input[type="checkbox"] {
 <li>When agents unanimously agree, a single human override can still be the correct call (the <code>apm compile</code> veto).</li>
 <li>Composition is load-bearing: 15 chapters required 50+ dispatches, 4 waves, and 2 integration passes. No single agent could hold the full manuscript.</li>
 </ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This session used GitHub Copilot CLI as the orchestrator, but the patterns apply to any agent-capable environment.</p>
 </div>
 </div>
 <hr>
@@ -765,6 +785,31 @@ Note
 </div>
 </div>
 <p>This validates the handbook’s claim that primitives should be created and iterated throughout a project, not frozen at inception. Anti-pattern #10 (<em>Not Fixing the Primitives</em>) warns against correcting symptoms manually instead of updating the instruction set. Each dynamic persona was the fix — a new primitive that addressed a structural gap rather than a one-off patch.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Try This: Dynamic Persona Creation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try This: Dynamic Persona Creation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When the process surfaces a gap, create a new persona rather than patching with ad-hoc prompts. Here is the pattern used for the Fact-Ref-Checker:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/agents/fact-ref-checker.agent.md</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> Fact-Ref-Checker</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">role</span><span class="kw">:</span><span class="at"> Claims Auditor</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">You audit manuscripts for factual accuracy. For every claim</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">1. Is it sourced? Flag unsourced statistics.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">2. Is it consistent? Cross-reference numbers across chapters.</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">3. Is it falsifiable? Flag unfalsifiable superlatives.</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">Output</span><span class="kw">:</span><span class="at"> severity-ranked findings (CRITICAL / HIGH / MEDIUM).</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The key: define the persona’s scope and output format explicitly. Generic “review this” dispatches produce generic output.</p>
+</div>
+</div>
 <hr>
 </section>
 <section id="escalation-events-and-anti-pattern-mapping" class="level2">
@@ -780,76 +825,30 @@ Note
 <section id="chief-editor-synthesis-scope" class="level3">
 <h3 class="anchored" data-anchor-id="chief-editor-synthesis-scope">2. Chief Editor Synthesis Scope</h3>
 <p><strong>What happened:</strong> After four corpus audit specialists completed their parallel scans, their outputs needed cross-cutting synthesis that no individual specialist could produce — each had domain-specific findings but none had the full picture.</p>
-<p><strong>Anti-pattern:</strong> #1 (<em>Monolithic Prompt</em>) — the temptation was to dump all four outputs into one specialist agent. Instead, the orchestrator escalated to the Chief Editor persona, whose explicit role was cross-chapter coherence.</p>
+<p><strong>Anti-pattern:</strong> #2 (<em>Context Dumping</em>) — the temptation was to dump all four audit outputs into one agent’s context window. Instead, the orchestrator escalated to the Chief Editor persona, whose explicit role was cross-chapter coherence.</p>
 <p><strong>Resolution:</strong> Chief Editor ran as synthesizer, producing 7 consensus themes, 6 resolved tensions, 10 cuts, and 9 identified gaps. The persona’s scope matched the task.</p>
 <p><strong>What held true:</strong> <em>Composition will remain necessary.</em> Complex analysis required coordination across specialists and structured integration of results.</p>
 </section>
 <section id="user-vetoed-apm-compile" class="level3">
 <h3 class="anchored" data-anchor-id="user-vetoed-apm-compile">3. User Vetoed <code>apm compile</code></h3>
 <p><strong>What happened:</strong> During the APM strategic insertion phase, the orchestrator prepared six surgical insertions. The human author intervened: “Do not mention <code>apm compile</code> — niche feature.” All six insertions were adapted to respect the constraint.</p>
-<p><strong>Anti-pattern:</strong> #17 (<em>Persona Drift</em>) — without the human override, the agents would have promoted a technical feature that violated the book’s editorial stance. The author’s judgment caught what no reviewer persona was calibrated to flag.</p>
+<p>This was not persona drift or agent failure — every agent was following its persona correctly. The user exercised editorial authority, overriding correct-but-misaligned agent output. This is the Architect role in practice: human judgment as the final arbiter of what the book should and should not say.</p>
 <p><strong>What held true:</strong> <em>Human judgment remains the bottleneck and the differentiator.</em> The scarce resource was not token generation but the ability to decide what the book should and should not say.</p>
 </section>
 <section id="panel-disagreement-on-apm-prominence" class="level3">
 <h3 class="anchored" data-anchor-id="panel-disagreement-on-apm-prominence">4. Panel Disagreement on APM Prominence</h3>
 <p><strong>What happened:</strong> After the “zero APM mentions in 62,500 words” discovery, the Market Analyst wanted more visibility; the Thought Leadership Advisor wanted less. The panel genuinely disagreed.</p>
-<p><strong>Anti-pattern:</strong> #15 (<em>The “Almost Done” Trap</em>) — the temptation was to skip the synthesis step and let one voice dominate. Instead, the Chief Editor resolved with a governing principle: <em>“The book is 100% useful without APM. APM appears as proof, not prerequisite.”</em></p>
+<p>This demonstrated the value of explicit governing principles as tie-breakers. The Chief Editor resolved the disagreement with a single principle: <em>“The book is 100% useful without APM. APM appears as proof, not prerequisite.”</em> Once articulated, the principle made every subsequent decision mechanical.</p>
 <p><strong>Resolution:</strong> 6 surgical insertions, 5 name-mentions, approximately 475 words across 5 chapters. The lightest possible touch.</p>
 <p><strong>What held true:</strong> <em>Explicit knowledge is more valuable than implicit knowledge.</em> The governing principle, once articulated, made every subsequent decision mechanical.</p>
 <hr>
-</section>
-</section>
-<section id="the-apm-zero-mentions-embarrassment" class="level2">
-<h2 class="anchored" data-anchor-id="the-apm-zero-mentions-embarrassment">The APM Zero-Mentions Embarrassment</h2>
-<p>A book about AI-native software development, written by APM’s creator, using APM’s orchestration infrastructure, contained zero mentions of APM across 62,500 words.</p>
-<p>This was not a bug. It was the methodology working correctly. Each agent was dispatched with chapter-specific source material and audience-appropriate scope. No agent had “promote the author’s project” in its persona. The absence proved the review process was honest — and prompted a four-wave strategic assessment:</p>
-<ol type="1">
-<li><strong>Wave 1:</strong> 4 specialist audits (Market Analyst, Platform Strategist, Practitioner Authority, Publishing Advisor)</li>
-<li><strong>Wave 2:</strong> Chief Editor + Thought Leadership Advisor synthesis</li>
-<li><strong>Wave 3:</strong> CTO Proxy + Dev Lead Proxy validation</li>
-<li><strong>Wave 4:</strong> Final consolidated report</li>
-</ol>
-<p>The result was surgical rather than promotional. Credibility comes from restraint.</p>
+<p>A book about AI-native software development, written by APM’s creator, using APM’s orchestration infrastructure, contained zero mentions of APM across 62,500 words. This was not a bug — it was the methodology working correctly. Each agent was dispatched with chapter-specific scope; no agent had “promote the author’s project” in its persona. The absence proved the review process was honest and prompted the four-wave strategic assessment that produced the surgical insertions above.</p>
 <hr>
+</section>
 </section>
 <section id="what-held-true-regardless-of-the-model" class="level2">
 <h2 class="anchored" data-anchor-id="what-held-true-regardless-of-the-model">What Held True Regardless of the Model</h2>
-<p>Chapter 15 identifies five properties that hold regardless of model improvement. This project tested all five under real conditions:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Property</th>
-<th>How This Project Tested It</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Context will remain finite and fragile</strong></td>
-<td>Architecture agent failed at monolithic scope. Every wave was sized to context budget.</td>
-</tr>
-<tr class="even">
-<td><strong>Output will remain probabilistic</strong></td>
-<td>Three-reviewer pipeline caught inconsistencies no single review pass would find. Fact-checker found 75 flags.</td>
-</tr>
-<tr class="odd">
-<td><strong>Explicit knowledge &gt; implicit knowledge</strong></td>
-<td>“Proof, not prerequisite” principle — once articulated — resolved all APM insertion decisions mechanically.</td>
-</tr>
-<tr class="even">
-<td><strong>Human judgment remains bottleneck and differentiator</strong></td>
-<td>User vetoed <code>apm compile</code>, overriding all 11 agent personas. Correct call that no agent was positioned to make.</td>
-</tr>
-<tr class="odd">
-<td><strong>Composition will remain necessary</strong></td>
-<td>15 chapters required 50+ dispatches, 4 waves, 3 dynamically created personas, and 2 integration review passes. No single agent could hold the full manuscript in focus.</td>
-</tr>
-</tbody>
-</table>
-<p>The constraints are not training wheels. They are load-bearing architecture.</p>
+<p>The five structural properties from Chapter 15 held under editorial conditions (see the APM Overhaul case study for the full table). The novel test here: <strong>composition scales to non-code domains</strong>. 15 chapters required 50+ dispatches, 4 waves, 3 dynamically created personas, and 2 integration review passes. Code orchestration patterns — wave ordering, checkpoint discipline, context budgeting — transferred directly to editorial orchestration without modification.</p>
 <hr>
 <div class="callout callout-style-default callout-note callout-titled" title="Metrics">
 <div class="callout-header d-flex align-content-center">
@@ -861,14 +860,9 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>62,510 words · 15 chapters · 11 personas (8 + 3 dynamic) · ~50+ dispatches · 4 writing waves + integration + polish · 15 Mermaid diagrams · 75 fact-check flags (5 critical) · 40 visual opportunities · 5 APM mentions (~475 words) · 4 anti-patterns encountered · 5/5 structural properties tested</p>
+<p>~62,500 words · 15 chapters · 11 personas (8 + 3 dynamic) · ~50+ dispatches · 4 writing waves + integration + polish · 15 Mermaid diagrams · 75 fact-check flags (5 critical) · 40 visual opportunities · 5 APM mentions (~475 words) · 4 escalation events · 5/5 structural properties tested</p>
 </div>
 </div>
-<hr>
-</section>
-<section id="what-this-proves" class="level2">
-<h2 class="anchored" data-anchor-id="what-this-proves">What This Proves</h2>
-<p>The Agentic SDLC methodology generalizes beyond code — the same primitives, discipline, and composition patterns that manage multi-agent code changes managed a multi-chapter editorial workflow. The methodology survived contact with its own subject matter. See the TL;DR at the top for the distilled lessons.</p>
 
 
 </section>

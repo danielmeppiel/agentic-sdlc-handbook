@@ -560,19 +560,6 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This session used GitHub Copilot CLI as the orchestrator, but the patterns apply to any agent-capable environment.</p>
-</div>
-</div>
 <hr>
 <section id="the-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-problem">The Problem</h2>
@@ -643,11 +630,31 @@ Note
 </div>
 </div>
 <p><strong>Issue 1 — Narrow text.</strong> The <code>scrbook</code> document class has wide binding margins designed for physical books. Fix: switch to <code>scrreprt</code> with explicit geometry (25mm left/right, 30mm top/bottom).</p>
-<p><strong>Issue 2 — Missing Mermaid diagrams.</strong> All 15 chapters used GitHub-flavored <code>```mermaid</code> fences. Quarto requires <code>```{mermaid}</code> for PDF rendering via headless Chromium. This was <strong>Anti-Pattern #10: Not Fixing the Primitives</strong> — the syntax was wrong at the source level across every chapter. A bulk <code>sed</code> conversion fixed all 15 blocks; the PDF grew from 686KB to 3.7MB as rendered diagram PNGs appeared.</p>
+<p><strong>Issue 2 — Missing Mermaid diagrams.</strong> All 15 chapters used GitHub-flavored <code>```mermaid</code> fences. Quarto requires <code>```{mermaid}</code> for PDF rendering via headless Chromium. This was <strong>Anti-Pattern #10: Not Fixing the Primitives</strong> — the syntax was wrong at the source level across every chapter. A bulk <code>sed</code> conversion fixed all 15 blocks; the PDF grew from 686KB to 3.8MB as rendered diagram PNGs appeared.</p>
 <p><strong>Issue 3 — Duplicate heading numbers.</strong> Manual numbers in headings (<code>### 1. The Monolithic Prompt</code>) clashed with Quarto’s auto-numbering, producing <code>15.2.1 1.</code> in the PDF. Stripped manual numbers from 25 headings across two chapters.</p>
 <p><strong>Issue 4 — Margin overflow.</strong> Diagrams and code blocks exceeded the text area. Added <code>fig-width: 6.5</code>, <code>code-overflow: wrap</code>, and LaTeX packages (<code>fvextra</code>, <code>float</code>). Then discovered 6.5 inches exceeded the 6.3-inch usable width — reduced to 5.5 and created <code>preamble.tex</code> with <code>\small</code> font for long table environments.</p>
 <p><strong>Issue 5 — ASCII art table.</strong> Chapter 4 contained a complex ASCII art SDLC phases table that rendered as a code block in PDF. Converted to a proper 9-column markdown pipe table.</p>
-<p>Each fix was technically correct. The trap is that correctness at one layer exposes incorrectness at the next. The orchestrator treated each as a new micro-wave with its own checkpoint — never batching speculative fixes.</p>
+<p>Each fix was technically correct. The trap is that correctness at one layer exposes incorrectness at the next. The orchestrator treated each as a new micro-wave with its own checkpoint – never batching speculative fixes.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Try This: Micro-Wave Checkpoints for Cascade Fixes">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try This: Micro-Wave Checkpoints for Cascade Fixes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When each fix reveals the next issue (the “Almost Done” cascade), treat each fix as its own wave:</p>
+<ol type="1">
+<li>Make one fix</li>
+<li>Render/build to see the result</li>
+<li>Commit before touching anything else</li>
+<li>Only then investigate the next issue</li>
+</ol>
+<p>This prevents speculative batching – fixing three things at once when you don’t yet know if fix #1 changes the landscape for fixes #2 and #3.</p>
+</div>
+</div>
 </section>
 <section id="cicd-four-iterations-to-stability" class="level2">
 <h2 class="anchored" data-anchor-id="cicd-four-iterations-to-stability">CI/CD: Four Iterations to Stability</h2>
@@ -721,52 +728,22 @@ Note
 </div>
 </div>
 </div>
-<p>The 15-minute local render is a direct consequence of <strong>context window exhaustion applied to CI</strong> — Chromium-based Mermaid rendering is too heavy for a fast feedback loop. The architecture makes this explicit: CI optimizes for speed (HTML-only, 49 seconds), local optimizes for completeness (all formats).</p>
+<p>The 15-minute local render is a practical constraint – Chromium-based Mermaid rendering is too heavy for a fast CI feedback loop. The architecture makes this explicit: CI optimizes for speed (HTML-only, 49 seconds), local optimizes for completeness (all formats).</p>
 </section>
 <section id="download-ux-seven-iterations-of-human-refinement" class="level2">
 <h2 class="anchored" data-anchor-id="download-ux-seven-iterations-of-human-refinement">Download UX: Seven Iterations of Human Refinement</h2>
-<p>The download experience went through seven rounds — all driven by the human author:</p>
+<p>The download experience went through seven rounds – all driven by the human author:</p>
 <ol type="1">
-<li>Quarto’s built-in <code>downloads: [pdf, epub]</code> — toolbar icon too small</li>
-<li>Large Bootstrap buttons in a preface callout box — concept approved</li>
-<li>Fixed duplicate title (manual H1 overlapping Quarto-generated H1)</li>
-<li>Fixed “0.1” section numbering in preface — set <code>number-sections: false</code></li>
-<li>Fixed subtitle to address both audiences (leaders and practitioners)</li>
-<li>Removed redundant intro text (subtitle and body repeated the same message)</li>
+<li>Quarto’s built-in <code>downloads: [pdf, epub]</code> – toolbar icon too small, easily missed</li>
+<li>Fixed duplicate titles and “0.1” section numbering clashes between manual and Quarto-generated headings</li>
 <li>Simplified to: <em>“Free to read online. Free to download.”</em></li>
 </ol>
-<p>Every iteration was a human design judgment. The agent executed each change in under a minute. This is the collaboration pattern at its clearest: <strong>the human refines intent; the agent refines implementation</strong>.</p>
+<p>The middle four iterations were variations on the same theme: the human spotted a UX friction, the agent fixed it in under a minute. This is the collaboration pattern at its clearest: <strong>the human refines intent; the agent refines implementation</strong>.</p>
 </section>
 <section id="licensing-expert-panel-deliberation" class="level2">
 <h2 class="anchored" data-anchor-id="licensing-expert-panel-deliberation">Licensing: Expert Panel Deliberation</h2>
 <p>A three-expert panel (IP Attorney, Publishing Strategist, Growth Hacker) evaluated licensing options. The recommendation was unanimous: <strong>CC BY-NC-ND 4.0</strong>.</p>
-<div class="landscape">
-<div class="cell" data-fig-width="6.5" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">sequenceDiagram
-    participant O as Orchestrator
-    participant P as Expert Panel
-    participant H as Author
-
-    O-&gt;&gt;P: Evaluate licensing&lt;br/&gt;for free tech book
-    P-&gt;&gt;P: IP Attorney: protects&lt;br/&gt;canonical version
-    P-&gt;&gt;P: Strategist: sharing&lt;br/&gt;+ attribution
-    P-&gt;&gt;P: Growth: max reach,&lt;br/&gt;protect monetization
-    P-&gt;&gt;O: Unanimous: CC BY-NC-ND 4.0
-    O-&gt;&gt;H: Recommendation + rationale
-    H-&gt;&gt;O: Approved
-    O-&gt;&gt;O: Apply to LICENSE, README,&lt;br/&gt;index, _quarto.yml
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-</div>
-<p>The rationale maps to four properties: invites sharing (reach), requires attribution (authorship), prohibits commercial use (author’s brand), prohibits derivatives (one canonical version). Implementation touched four files — <code>LICENSE</code>, <code>README.md</code>, <code>index.qmd</code>, and the <code>_quarto.yml</code> footer.</p>
+<p>The rationale maps to four properties: invites sharing (reach), requires attribution (authorship), prohibits commercial use (author’s brand), prohibits derivatives (one canonical version). Implementation touched four files – <code>LICENSE</code>, <code>README.md</code>, <code>index.qmd</code>, and the <code>_quarto.yml</code> footer.</p>
 </section>
 <section id="the-authenticity-question" class="level2">
 <h2 class="anchored" data-anchor-id="the-authenticity-question">The Authenticity Question</h2>
@@ -774,7 +751,7 @@ Note
 <blockquote class="blockquote">
 <p><em>“Could this person have written a credible book without AI? If yes, AI reads as methodology demonstration.”</em></p>
 </blockquote>
-<p>The framing rule: <em>“built using the same methodology it teaches”</em> — never <em>“AI-written.”</em> Expected risk: roughly 15–20% drive-by dismissal, but engaged readers find the transparency more impressive than the alternative.</p>
+<p>The framing rule: <em>“built using the same methodology it teaches”</em> – never <em>“AI-written.”</em> Expected risk: some initial skepticism from readers who dismiss anything AI-assisted, but engaged readers find the transparency more impressive than the alternative.</p>
 <p>The README was rewritten to showcase the pipeline: an 11-agent team table, a 5-stage pipeline diagram, and links to review artifacts. <strong>Explicit knowledge over implicit knowledge</strong> — a property that held true here too. Hiding the process would contradict the book’s thesis.</p>
 </section>
 <section id="what-this-case-study-shows" class="level2">
@@ -793,7 +770,7 @@ Note
 <p>3 output formats (HTML, PDF, EPUB) · 15 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy</p>
 </div>
 </div>
-<p>The division of labor was consistent: every design decision was human; every technical execution was agent. See the TL;DR at the top for the distilled lessons.</p>
+<p>The division of labor was consistent: every design decision was human; every technical execution was agent.</p>
 <hr>
 <p><em>This case study documents the publishing pipeline for <a href="https://danielmeppiel.github.io/apm-handbook/">The Agentic SDLC Handbook</a>. The book, the pipeline, and this case study were all produced using the methodology described in Chapters 12–15.</em></p>
 

@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -796,23 +831,21 @@ Note
 </div>
 <p>This is why <strong>checkpoint discipline</strong> matters (Ch12) — and why it must include <em>behavioural</em> assertions, not just “tests pass.” The test suite had 2,829 passing tests and none verified that verbose mode actually produced output.</p>
 <hr>
-<div class="callout callout-style-default callout-tip callout-titled" title="Mapping to the Three Practitioner Roles (Chapter 8)">
+<div class="callout callout-style-default callout-tip callout-titled" title="Try This: Filesystem Verification After Agent Dispatch">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Mapping to the Three Practitioner Roles (Chapter 8)
+<span class="screen-reader-only">Tip</span>Try This: Filesystem Verification After Agent Dispatch
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Of the five escalation events, three required direct human judgment calls — mapping to the three practitioner roles introduced in Chapter 8:</p>
-<ul>
-<li><strong>Architect</strong> — Escalation #4 (PAT 403): decided to pivot validation from <code>git ls-remote</code> to a single REST API code path, reshaping the architecture rather than adding token-type branches.</li>
-<li><strong>Escalation Handler</strong> — Escalation #1 (install.py): diagnosed agent stall, split remaining work across two replacement agents.</li>
-<li><strong>Reviewer</strong> — Escalation #5 (Silent NameError): traced the failure from test output to a missing import, directed a targeted fix.</li>
-</ul>
-<p>The remaining two escalations (#2 unicode persistence, #3 token type correction) were caught during checkpoint verification and resolved by the orchestrator without role-switching. Chapter 13 summarises the timeline; this case study provides the full escalation log.</p>
+<p>After any agent reports success, verify filesystem state directly — never trust self-reports:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># After agent claims "all unicode replacements complete":</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> diff <span class="at">--stat</span>           <span class="co"># Did any files actually change?</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-rn</span> <span class="st">"✓\|✗\|⚠"</span> src/  <span class="co"># Are the old characters still there?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Agent success messages are probabilistic output. The <code>diff</code> command is deterministic. Build this check into every checkpoint.</p>
 </div>
 </div>
 <hr>
@@ -868,9 +901,9 @@ Note
 </tr>
 <tr class="even">
 <td>Silent NameError</td>
-<td>#9 Skipping Checkpoints</td>
+<td>#11 Ignoring Partial Results</td>
 <td>Safety Boundaries</td>
-<td>Add behavioural assertions to checkpoint</td>
+<td>Assert on observable behaviour, not just pass/fail</td>
 </tr>
 </tbody>
 </table>
@@ -883,7 +916,7 @@ Note
 <p><strong>“Output will remain probabilistic.”</strong> The unicode agent reported success on changes it never persisted. The same prompt, re-dispatched, might have worked. Reliability was architectured through <strong>checkpoint discipline</strong> and file-state verification — not by trusting any single execution.</p>
 <p><strong>“Human judgment will remain the bottleneck and the differentiator.”</strong> The user’s v7 escalation — demanding all commands be covered, not just install — was the highest-leverage decision in the session. No agent suggested it. The 8 plan iterations were not wasted work; they were the mechanism through which human judgment shaped the architecture.</p>
 <hr>
-<p>The lessons from the TL;DR at the top were earned here. The full evidence chain — from a single confusing error message to a 75-file architecture overhaul — is inspectable at <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>.</p>
+<p>The evidence chain is inspectable at <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>. The five escalations above are the full log.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Metrics">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -895,6 +928,7 @@ Note
 </div>
 <div class="callout-body-container callout-body">
 <p>75 files changed · +7,832/−1,074 lines · 2,829 → 2,897 tests (+68) · 6 audit agents · 25 implementation agents · 8 plan iterations · 5 escalations (1×L2, 2×L3, 2×L4) · 9 waves</p>
+<p>Approximate effort: 2 full sessions (~16 hours wall-clock). A senior engineer doing this manually would likely have spent 3-5 days on the auth consolidation alone.</p>
 </div>
 </div>
 

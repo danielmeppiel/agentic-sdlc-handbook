@@ -507,18 +507,13 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#what-was-built" id="toc-what-was-built" class="nav-link active" data-scroll-target="#what-was-built">What Was Built</a></li>
-  <li><a href="#panel-topology" id="toc-panel-topology" class="nav-link" data-scroll-target="#panel-topology">Panel Topology</a>
-  <ul class="collapse">
-  <li><a href="#how-panels-worked" id="toc-how-panels-worked" class="nav-link" data-scroll-target="#how-panels-worked">How Panels Worked</a></li>
-  </ul></li>
+  <li><a href="#panel-strategy" id="toc-panel-strategy" class="nav-link" data-scroll-target="#panel-strategy">Panel Strategy</a></li>
   <li><a href="#timeline" id="toc-timeline" class="nav-link" data-scroll-target="#timeline">Timeline</a></li>
   <li><a href="#the-kit-automation-escalation" id="toc-the-kit-automation-escalation" class="nav-link" data-scroll-target="#the-kit-automation-escalation">The Kit Automation Escalation</a></li>
   <li><a href="#the-persona-drift-correction" id="toc-the-persona-drift-correction" class="nav-link" data-scroll-target="#the-persona-drift-correction">The Persona Drift Correction</a></li>
   <li><a href="#the-pii-audit-pipeline" id="toc-the-pii-audit-pipeline" class="nav-link" data-scroll-target="#the-pii-audit-pipeline">The PII Audit Pipeline</a></li>
-  <li><a href="#the-landing-page-context-problem" id="toc-the-landing-page-context-problem" class="nav-link" data-scroll-target="#the-landing-page-context-problem">The Landing Page Context Problem</a></li>
   <li><a href="#constraint-discovery" id="toc-constraint-discovery" class="nav-link" data-scroll-target="#constraint-discovery">Constraint Discovery</a></li>
-  <li><a href="#what-the-panels-got-right-and-wrong" id="toc-what-the-panels-got-right-and-wrong" class="nav-link" data-scroll-target="#what-the-panels-got-right-and-wrong">What the Panels Got Right and Wrong</a></li>
-  <li><a href="#what-held-true-regardless-of-the-model" id="toc-what-held-true-regardless-of-the-model" class="nav-link" data-scroll-target="#what-held-true-regardless-of-the-model">What Held True Regardless of the Model</a></li>
+  <li><a href="#what-held-true" id="toc-what-held-true" class="nav-link" data-scroll-target="#what-held-true">What Held True</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -545,114 +540,35 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><strong>Scope:</strong> Checkpoints 014–019 · 6 phases · 15+ expert personas · 18 implementation tasks<br>
+<p><strong>Scope:</strong> Checkpoints 014-019 – 6 phases – 18 implementation tasks<br>
 <strong>Duration:</strong> ~8 hours wall-clock across multiple sessions<br>
-<strong>Theme:</strong> Pivots — strategic, tooling, and factual — and how orchestrated composition absorbs them</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Key Takeaways — The TL;DR">
+<strong>Theme:</strong> What happens when PROSE methodology meets non-engineering domains – and the pivots, platform limitations, and policy constraints that emerge</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Key Takeaways">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Key Takeaways — The TL;DR
+<span class="screen-reader-only">Tip</span>Key Takeaways
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Expert panels provide strategic leverage — fifteen perspectives compressed into hours — but drift toward the generic without specific artifacts in context.</li>
-<li>When three automated approaches each hit a genuine platform limitation, escalating to a human with a precise checklist is the correct move, not a failure.</li>
-<li>A single factual error (wrong job title) cascades into every downstream deliverable — catch persona drift early.</li>
-<li>Pivots are normal: the plan changed repeatedly, and the orchestration protocol absorbed each one (detect → diagnose → adjust → execute → checkpoint).</li>
+<li>When three automated approaches each hit a genuine platform limitation, escalating to a human with a precise checklist is the correct move – not a fourth attempt.</li>
+<li>A single factual error (wrong job title) cascades into every downstream deliverable – catch persona drift early.</li>
 <li>Organizational policy awareness lives nowhere in training data; human judgment remains the irreplaceable input.</li>
+<li>Pivots are normal: the plan changed repeatedly, and the orchestration protocol absorbed each one.</li>
 </ul>
-</div>
-</div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>This session used GitHub Copilot CLI as the orchestrator, but the patterns apply to any agent-capable environment.</p>
 </div>
 </div>
 <hr>
 <section id="what-was-built" class="level2">
 <h2 class="anchored" data-anchor-id="what-was-built">What Was Built</h2>
-<p>A complete growth engine for a free technical book: email capture with soft gating, a credential-stacked landing page, DNS and email infrastructure, analytics, a LinkedIn optimization strategy, a full PII audit with git history scrubbing, and launch preparation. This was the most panel-heavy phase of the entire project — six deliberation rounds with specialized expert personas, three browser automation approaches, and four parallel security audit agents.</p>
-<p>The interesting story is not that these things got built. It is <em>how many times the plan changed</em> and how the orchestrator absorbed each pivot without losing momentum.</p>
+<p>A growth engine for a free technical book – email capture, landing page, DNS and email infrastructure, PII audit, and launch preparation. The interesting story is not what got built, but how many times the plan changed and where the methodology hit its limits.</p>
 </section>
-<section id="panel-topology" class="level2">
-<h2 class="anchored" data-anchor-id="panel-topology">Panel Topology</h2>
-<p>Expert panels were the primary decision-making mechanism. Each panel assembled domain-specific personas, ran parallel deliberation, and produced a synthesized recommendation through a moderator agent. Across six phases, the orchestrator convened seven distinct panels with fifteen unique personas.</p>
-<div class="cell" data-fig-width="4.5" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class="figure"><p></p>
-<div>
-<pre class="mermaid mermaid-js">graph TB
-    subgraph "Phase 1: Strategy"
-        P1[Publishing Strategist]
-        P2[Personal Brand Expert]
-        P3[Growth Hacker]
-        M1((Moderator))
-        P1 &amp; P2 &amp; P3 --&gt; M1
-    end
-
-    subgraph "Phase 2: Tactical Playbook"
-        P4[Growth Hacker v2]
-        P5[Content Strategist]
-        P6[Newsletter Expert]
-        P7[LinkedIn Expert]
-        M2((Moderator))
-        P4 &amp; P5 &amp; P6 &amp; P7 --&gt; M2
-    end
-
-    subgraph "Phase 4: Landing Page"
-        P8[Branding Expert]
-        P9[Growth Expert]
-        P10[Communications Expert]
-        M3((Moderator))
-        P8 &amp; P9 &amp; P10 --&gt; M3
-    end
-
-    subgraph "Phase 5: LinkedIn"
-        P11[LinkedIn Branding]
-        P12[Executive Recruiter]
-        P13[Thought Leadership]
-        M4((Moderator))
-        P11 &amp; P12 &amp; P13 --&gt; M4
-    end
-
-    subgraph "Phase 6: Audit &amp; Launch"
-        P14a[AI Authenticity — 3 experts]
-        P14b[PII Audit — 4 parallel agents]
-        M5((Orchestrator))
-        P14a &amp; P14b --&gt; M5
-    end
-
-    M1 --&gt;|"6 disagreements resolved"| M2
-    M2 --&gt;|"18-task plan"| M3
-    M3 --&gt;|"15 fields rewritten"| M4
-    M4 --&gt;|"headline finalized"| M5
-</pre>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
-</div>
-<section id="how-panels-worked" class="level3">
-<h3 class="anchored" data-anchor-id="how-panels-worked">How Panels Worked</h3>
-<p>Each panel followed the same protocol: the orchestrator framed the question, dispatched parallel expert agents with distinct personas, collected their independent recommendations, then ran a moderator agent to synthesize disagreements into a single actionable output.</p>
-<p><strong>Round 1 (Strategy Panel)</strong> produced three competing visions. The Publishing Strategist argued for a 14-day distribution blitz with zero content gating. The Growth Hacker wanted email capture on everything. The Brand Expert pushed for three LinkedIn posts per week. The moderator resolved six disagreements — the Growth Hacker won on domain strategy (point theainativemind.com at the book) and email tooling (Kit, already set up), while the Brand Expert’s posting frequency was reduced to 2x/week. A hard constraint emerged: 3 hours per week maximum on brand work.</p>
-<p><strong>Round 2</strong> resolved seven open questions about governance, European market positioning, and metrics. Then the user intervened.</p>
-<p><strong>User Override #1:</strong> The panel had over-indexed on career coaching. The redirect was specific: <em>“Focus on the growth engine — brand, followers, industry gravitas, tactical distribution.”</em> The orchestrator reframed the brief and convened a new four-expert Growth Engine Panel that produced a 471-line tactical playbook and an 18-task implementation plan.</p>
-<p>This is the Architect role from Chapter 13 — scope correction when agent output drifts from the actual objective.</p>
-</section>
+<section id="panel-strategy" class="level2">
+<h2 class="anchored" data-anchor-id="panel-strategy">Panel Strategy</h2>
+<p>Expert panels drove the strategic decisions. Across six phases, the orchestrator convened panels with fifteen domain-specific personas (publishing strategy, growth, branding, LinkedIn, security) that produced synthesized recommendations through moderator agents. Early panels over-indexed on career coaching, prompting a user override: <em>“Focus on the growth engine – brand, followers, industry gravitas, tactical distribution.”</em> The orchestrator reframed the brief and produced an 18-task implementation plan. This is the Architect role from Chapter 13 – scope correction when agent output drifts from the actual objective.</p>
 </section>
 <section id="timeline" class="level2">
 <h2 class="anchored" data-anchor-id="timeline">Timeline</h2>
@@ -667,34 +583,21 @@ Note
     axisFormat %s
 
     section Strategy
-    Expert Panel — 3 personas, 2 rounds     :done, s1, 0, 2
-    User Override — refocus on growth        :crit, s2, 2, 3
-
-    section Tactical
-    Growth Panel — 4 personas               :done, t1, 3, 4
-    18-task plan produced                    :done, t2, 4, 5
-    5 parallel code agents                   :done, t3, 5, 6
+    Expert panels + user override    :done, s1, 0, 3
 
     section Kit Automation
-    Playwright scripts                       :crit, k1, 6, 8
-    Playwright MCP server                    :crit, k2, 8, 9
-    Kit API                                  :crit, k3, 9, 10
-    Human escalation                         :done, k4, 10, 11
+    Playwright scripts               :crit, k1, 3, 5
+    Playwright MCP server            :crit, k2, 5, 6
+    Kit API                          :crit, k3, 6, 7
+    Human escalation                 :done, k4, 7, 8
 
-    section Landing Page
-    Landing Page Panel — 3 personas          :done, l1, 11, 13
-    Email infrastructure setup               :done, l2, 13, 14
-    Bio correction — User Override #2        :crit, l3, 14, 15
-
-    section LinkedIn
-    LinkedIn Panel — 3 personas              :done, li1, 15, 16
-    Headline iteration                       :done, li2, 16, 17
+    section Implementation
+    Landing page + email infra       :done, l1, 8, 11
+    Bio correction (user override)   :crit, l2, 11, 12
 
     section Security &amp; Launch
-    PII Audit — 4 parallel agents            :done, a1, 17, 19
-    History scrub + remediation              :done, a2, 19, 20
-    Favicon design — 2 rounds               :done, a3, 20, 21
-    AI Authenticity Panel                    :done, a4, 21, 22
+    PII audit (4 parallel agents)    :done, a1, 12, 14
+    History scrub + remediation      :done, a2, 14, 15
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -704,7 +607,7 @@ Note
 </section>
 <section id="the-kit-automation-escalation" class="level2">
 <h2 class="anchored" data-anchor-id="the-kit-automation-escalation">The Kit Automation Escalation</h2>
-<p>The most instructive failure sequence was the Kit email platform automation — three distinct approaches, each hitting a different wall.</p>
+<p>The most instructive failure sequence was the Kit email platform automation – three distinct approaches, each hitting a different wall.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
@@ -718,143 +621,97 @@ Note
     participant H as Human
 
     O-&gt;&gt;PW: Automate form creation + tagging
-    PW--&gt;&gt;O: ✅ Login, tags, form creation succeeded
-    PW--&gt;&gt;O: ❌ React textarea — .fill(), Meta+a, JS setter all fail
-    PW--&gt;&gt;O: ❌ React combobox — not a native select
+    PW--&gt;&gt;O: Login, tags, form creation succeeded
+    PW--&gt;&gt;O: FAIL: React textarea -- .fill(), Meta+a, JS setter all fail
+    PW--&gt;&gt;O: FAIL: React combobox -- not a native select
 
     O-&gt;&gt;MCP: Try MCP browser control
-    MCP--&gt;&gt;O: ✅ navigate, click, snapshot work
-    MCP--&gt;&gt;O: ❌ browser_run_code — SyntaxError on all inputs
-    MCP--&gt;&gt;O: ❌ Still can't solve React combobox
+    MCP--&gt;&gt;O: navigate, click, snapshot work
+    MCP--&gt;&gt;O: FAIL: browser_run_code -- SyntaxError on all inputs
+    MCP--&gt;&gt;O: FAIL: Still cannot solve React combobox
 
     O-&gt;&gt;API: Try Kit REST API directly
-    API--&gt;&gt;O: ✅ List forms and tags
-    API--&gt;&gt;O: ❌ /v3/automations → 404 (not exposed)
+    API--&gt;&gt;O: List forms and tags succeeded
+    API--&gt;&gt;O: FAIL: /v3/automations returns 404 (not exposed)
 
     O-&gt;&gt;H: Escalate with 3-step manual checklist
-    H--&gt;&gt;O: ✅ Completed in 2 minutes
+    H--&gt;&gt;O: Completed in 2 minutes
 </pre>
 </div>
 <p></p></figure><p></p>
 </div>
 </div>
 </div>
-<p><strong>What happened:</strong> Playwright scripts handled login, tag creation, form creation, and even form publishing. But Kit’s form builder uses React-controlled components — the textarea and combobox dropdowns are not native HTML elements. Standard DOM manipulation (<code>element.fill()</code>, keyboard shortcuts, JavaScript value setters) all failed because React reconciles its virtual DOM and discards external mutations.</p>
-<p>The MCP server added <code>browser_snapshot</code> and <code>browser_take_screenshot</code> capabilities but couldn’t solve the fundamental React internals problem. The Kit V3 API could read forms and tags but returned 404 on automation rule endpoints — they simply aren’t exposed.</p>
-<p><strong>The correct resolution:</strong> The orchestrator produced a clear 3-step manual checklist. The human completed it in two minutes. This is <strong>not</strong> a failure of the agentic approach — it is the approach working correctly. When three automated strategies each expose a genuine platform limitation, escalation to human with a precise scope is the right move.</p>
-<p><strong>Anti-pattern mapping:</strong> This is <strong>Anti-Pattern #15 — The “Almost Done” Trap</strong>. Each approach completed 80–90% of the automation. Playwright <em>almost</em> worked — you could see the form, the tags existed, the page was loaded. The temptation was to keep trying DOM hacks. The discipline was recognizing that the last 10% was hitting React framework internals, not application logic, and no amount of prompt refinement would change that.</p>
+<p><strong>What happened:</strong> Playwright scripts handled login, tag creation, form creation, and even form publishing. But Kit’s form builder uses React-controlled components – the textarea and combobox dropdowns are not native HTML elements. Standard DOM manipulation (<code>element.fill()</code>, keyboard shortcuts, JavaScript value setters) all failed because React reconciles its virtual DOM and discards external mutations.</p>
+<p>The MCP server added <code>browser_snapshot</code> and <code>browser_take_screenshot</code> capabilities but couldn’t solve the fundamental React internals problem. The Kit V3 API could read forms and tags but returned 404 on automation rule endpoints – they simply aren’t exposed.</p>
+<p><strong>The automation failed.</strong> Three approaches, three walls. The orchestrator produced a 3-step manual checklist and the human completed it in two minutes. The methodology’s value was not in automating this task – it was in recognizing when to stop trying. Each approach was trusted to work based on partial success before validating the fundamental constraint: React’s virtual DOM rejects external mutations. The discipline was stopping after three genuine platform limitations instead of attempting a fourth DOM hack.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Try This: The Escalation Checklist">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try This: The Escalation Checklist
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When multiple automated approaches hit platform limitations, produce a precise manual checklist instead of attempting a fourth approach:</p>
+<p><strong>Kit Form Automation – Human Escalation Checklist:</strong></p>
+<ol type="1">
+<li>Open Kit form editor &gt; select the confirmation message textarea</li>
+<li>Paste: “Check your email to confirm your subscription”</li>
+<li>In the automation dropdown, select “Add subscriber to sequence: Welcome”</li>
+</ol>
+<p>Three automated approaches failed on React internals. The human completed this in 2 minutes. The discipline: recognize when the last 10% is a platform limitation, not an application logic problem.</p>
+</div>
+</div>
 </section>
 <section id="the-persona-drift-correction" class="level2">
 <h2 class="anchored" data-anchor-id="the-persona-drift-correction">The Persona Drift Correction</h2>
 <p>During landing page work, the orchestrator’s authority profile described the author as a “software engineer.” The user corrected immediately: <em>“I am NOT a Software Engineer. I’m a Global Black Belt with 14+ years enterprise strategy.”</em></p>
-<p>This is <strong>Anti-Pattern #17 — Persona Drift</strong>. The agents had latched onto the most common tech-industry persona in their training data rather than the actual role described in the source documents. The correction propagated across all files — landing page, preface, chapter bios, panel briefs.</p>
-<p>It also surfaced <strong>Anti-Pattern #7 — The Trust Fall</strong>. The authority profile had been generated in an earlier wave and accepted without human verification. A single factual error — job title — cascaded into every downstream deliverable that referenced the author’s credentials. The fix was cheap (find-and-replace across files), but only because it was caught early. Had the book shipped with “software engineer” in the bio, the credibility damage would have been real.</p>
+<p>This is <strong>Anti-Pattern #17 – Persona Drift</strong>. The agents had latched onto the most common tech-industry persona in their training data rather than the actual role described in the source documents. The correction propagated across all files – landing page, preface, chapter bios, panel briefs.</p>
+<p>It also surfaced <strong>Anti-Pattern #7 – The Trust Fall</strong>. The authority profile had been generated in an earlier wave and accepted without human verification. A single factual error – job title – cascaded into every downstream deliverable that referenced the author’s credentials. The fix was cheap (find-and-replace across files), but only because it was caught early. Had the book shipped with “software engineer” in the bio, the credibility damage would have been real.</p>
 </section>
 <section id="the-pii-audit-pipeline" class="level2">
 <h2 class="anchored" data-anchor-id="the-pii-audit-pipeline">The PII Audit Pipeline</h2>
-<p>The security phase demonstrated the value of parallel agent dispatch with explicit failure handling.</p>
+<p>Four parallel agents scanned the repository for sensitive data. Three completed normally, finding findings across 25+ files. One agent refused to scan – the career directory contained personal documents and the agent’s safety guardrails triggered, declining to process content it classified as sensitive personal information. The guardrail was correct in principle (the files <em>were</em> sensitive), but the task was finding sensitive content to <em>remove</em> it – an edge case where safety boundaries and task objectives were aligned but the agent couldn’t distinguish audit-to-remove from audit-to-exploit. The orchestrator adapted with manual grep analysis.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div>
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    subgraph "Dispatch — 4 Parallel Agents"
+    subgraph "Dispatch -- 4 Parallel Agents"
         A1[Agent 1: career/]
         A2[Agent 2: reviews/]
         A3[Agent 3: audits + agents/]
         A4[Agent 4: config files]
     end
 
-    A1 --&gt;|"REFUSED — safety guardrails"| F1[Manual grep analysis]
-    A2 --&gt;|"17 HIGH, 9 MEDIUM"| R[Remediation Plan]
-    A3 --&gt;|"21 HIGH, 11 MEDIUM"| R
-    A4 --&gt;|"0 HIGH, 1 MEDIUM"| R
+    A1 --&gt;|"REFUSED -- safety guardrails"| F1[Manual grep analysis]
+    A2 &amp; A3 &amp; A4 --&gt;|findings| R[Remediation Plan]
 
     F1 --&gt; R
-
-    R --&gt; D[13 files removed from tracking]
-    R --&gt; P[4 placeholders created]
-    D &amp; P --&gt; G[git-filter-repo history scrub]
-    G --&gt; FP[Force push clean history]
-    FP --&gt; V[Verify: originals preserved locally]
+    R --&gt; G[git-filter-repo history scrub]
+    G --&gt; V[Clean history, originals preserved locally]
 </pre>
 </div>
 <p></p></figure><p></p>
 </div>
 </div>
 </div>
-<p><strong>Agent 1 refused to scan.</strong> The career directory contained personal documents, and the agent’s safety guardrails triggered twice — it declined to process content it classified as sensitive personal information. The orchestrator adapted: instead of fighting the guardrail, it performed manual grep analysis on the same files. The guardrail was correct in principle (the files <em>were</em> sensitive), but the task was <em>finding</em> sensitive content to <em>remove</em> it. This is an edge case where safety boundaries and the task objective were aligned but the agent couldn’t distinguish audit-to-remove from audit-to-exploit.</p>
-<p>Agents 2 and 3 found 38 HIGH and 20 MEDIUM findings across 25+ files. Remediation removed 13 files (5,486 lines) from git tracking, replaced 4 GitHub configuration files with safe public placeholders, and scrubbed the entire repository history with <code>git-filter-repo</code>. All originals were preserved locally under gitignore.</p>
-</section>
-<section id="the-landing-page-context-problem" class="level2">
-<h2 class="anchored" data-anchor-id="the-landing-page-context-problem">The Landing Page Context Problem</h2>
-<p>The first landing page agent stalled — zero output for eight minutes. A second agent completed but produced generic recommendations disconnected from the actual page. The third attempt embedded the full HTML of the existing page directly in the prompt. It worked immediately, producing field-by-field rewrites for all 15 Kit Cedar template sections.</p>
-<p>This is <strong>Anti-Pattern #2 — Context Dumping</strong> in reverse. The first two agents failed not from too much context but from too little. The landing page task required the agent to reason about <em>specific HTML structure</em> — which fields exist, what they currently say, how the template constrains layout. Without the page itself in context, the agents could only generate generic marketing copy. With it, they produced precise, field-mapped recommendations.</p>
-<p>The lesson: progressive disclosure means providing the <em>right</em> context, not the <em>least</em> context.</p>
 </section>
 <section id="constraint-discovery" class="level2">
 <h2 class="anchored" data-anchor-id="constraint-discovery">Constraint Discovery</h2>
 <p>Two constraints emerged that no panel anticipated:</p>
-<p><strong>Email infrastructure:</strong> The domain registrar had silently discontinued free email forwarding. The orchestrator discovered this during DNS setup, pivoted to ImprovMX (free tier), configured MX records, added SPF and DKIM entries, and verified delivery — emails that initially landed in spam moved to inbox after domain verification completed.</p>
-<p><strong>CELA risk:</strong> A PR adding a handbook link to the APM README (a Microsoft org repository) was identified by the user as a potential compliance risk — personal lead generation via a corporate open-source asset. The PR was closed and a new constraint was added: no promotional links from microsoft/ org repos to personal content. This is the Architect role exercising judgment that no agent could have — organizational policy awareness that exists nowhere in the training data.</p>
+<p><strong>Email infrastructure:</strong> The domain registrar had silently discontinued free email forwarding. The orchestrator discovered this during DNS setup, pivoted to ImprovMX (free tier), configured MX records, added SPF and DKIM entries, and verified delivery.</p>
+<p><strong>CELA risk – the novel finding.</strong> A PR adding a handbook link to the APM README (a Microsoft org repository) was identified by the user as a potential compliance risk – personal lead generation via a corporate open-source asset. The PR was closed and a new constraint was added: no promotional links from microsoft/ org repos to personal content. This is the Architect role exercising judgment that no agent could have – organizational policy awareness that exists nowhere in the training data. No panel suggested this constraint. No agent flagged it. The entire deliberation architecture – fifteen personas across seven panels – missed it because organizational policy is not in the training data and cannot be inferred from public documentation.</p>
+<p>Agents also needed specific artifacts in context to be useful. The first two landing page agents failed – one stalled for eight minutes, the other produced generic copy – because they lacked the actual HTML. The third attempt embedded the full page source and immediately produced field-by-field rewrites. The lesson: progressive disclosure means providing the <em>right</em> context, not the <em>least</em> context.</p>
 </section>
-<section id="what-the-panels-got-right-and-wrong" class="level2">
-<h2 class="anchored" data-anchor-id="what-the-panels-got-right-and-wrong">What the Panels Got Right and Wrong</h2>
-<p><strong>Right:</strong> The panels’ strategic recommendations were sound. Free distribution, soft email gating, Kit as the platform, LinkedIn as the primary channel, 3-hour weekly ceiling — all survived contact with implementation. The moderator synthesis protocol was effective at resolving disagreements by applying explicit criteria (existing setup, time constraints, audience fit).</p>
-<p><strong>Wrong:</strong> Panels drifted toward the generic when not anchored to specific artifacts. The first strategy panel produced career coaching instead of growth tactics. The landing page panels produced marketing platitudes until given actual HTML. The LinkedIn panel’s initial headline included “APM” — which reads as “Application Performance Monitoring” to 95% of the industry. Each correction required human judgment about audience perception that the agents lacked.</p>
-</section>
-<section id="what-held-true-regardless-of-the-model" class="level2">
-<h2 class="anchored" data-anchor-id="what-held-true-regardless-of-the-model">What Held True Regardless of the Model</h2>
-<p>Every failure in this case study maps to a structural property tested under real conditions:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 42%">
-<col style="width: 57%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Property</th>
-<th>Manifestation</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Context remains finite and fragile</td>
-<td>Landing page agents failed without HTML in context</td>
-</tr>
-<tr class="even">
-<td>Output remains probabilistic</td>
-<td>“Software engineer” persona drift in authority profile</td>
-</tr>
-<tr class="odd">
-<td>Explicit knowledge &gt; implicit knowledge</td>
-<td>Kit React internals undocumented; three approaches failed</td>
-</tr>
-<tr class="even">
-<td>Human judgment remains bottleneck and differentiator</td>
-<td>CELA risk, bio correction, career-coaching redirect</td>
-</tr>
-<tr class="odd">
-<td>Composition remains necessary</td>
-<td>15 personas across 7 panels; no single agent could span strategy through security</td>
-</tr>
-</tbody>
-</table>
-<div class="callout callout-style-default callout-note callout-titled" title="Metrics">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Metrics
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>7 panel rounds across 6 phases · 15+ distinct personas · 18 tasks planned (1,191 lines of spec) · 5 parallel code agents · 3 browser automation approaches · 4 parallel PII audit agents · 38 HIGH + 20 MEDIUM findings · 13 files removed (5,486 lines) · 2 favicon rounds (8 concepts) · 3 user overrides · entire repo history scrubbed</p>
-</div>
-</div>
-<p>The growth engine shipped. The system worked not because every agent succeeded, but because the orchestrator knew when to pivot and when to escalate. See the TL;DR at the top for the distilled lessons.</p>
+<section id="what-held-true" class="level2">
+<h2 class="anchored" data-anchor-id="what-held-true">What Held True</h2>
+<p>The five structural properties held (see the APM Overhaul case study for the full treatment). The novel finding: <strong>organizational policy awareness lives nowhere in training data</strong>. The CELA risk discovery – personal lead generation via a corporate open-source asset – was caught solely by human judgment. No prompt engineering, no panel composition, and no escalation protocol would have surfaced it. This is the clearest example in the book of a constraint that is permanently outside the agent’s reach.</p>
+<p>The growth engine shipped. The system worked not because every agent succeeded – the Kit automation plainly failed – but because the orchestrator knew when to pivot and when to stop.</p>
 
 
 </section>
