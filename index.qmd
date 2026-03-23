@@ -4,12 +4,12 @@ title-block-style: none
 number-sections: false
 ---
 
-::: {.callout-note appearance="minimal" icon=false}
-**Free to read online.** Want the formatted version? **[📕 Get the PDF & EPUB -->](download.qmd)**
-:::
-
 ::: {style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;"}
 **Version {{< var version >}}** · {{< var build-date >}}
+:::
+
+::: {.callout-note appearance="minimal" icon=false}
+**Free to read online.** Want the formatted version? **[📕 Get the PDF & EPUB -->](download.qmd)**
 :::
 
 ## Why This Book Exists
