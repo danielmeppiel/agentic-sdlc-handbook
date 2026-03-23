@@ -160,6 +160,8 @@ Nine patterns that emerge at the session level — where context capacity, state
 
 ### Context Window Exhaustion
 
+::: {tbl-colwidths="[20,80]"}
+
 | | |
 |---|---|
 | **Symptom** | Output quality degrades partway through a task. Early functions are well-structured; later ones are sloppy or ignore constraints followed earlier. No error — just quietly worse output. |
@@ -169,7 +171,11 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Right-size tasks. If the agent followed a convention in its first three functions but ignores it in the fifth, the context is exhausted. End session, checkpoint, start fresh. |
 | **Recovery** | Revert degraded output. Split remaining work into a new task with fresh context. |
 
+:::
+
 ### Hallucinated Edits
+
+::: {tbl-colwidths="[20,80]"}
 
 | | |
 |---|---|
@@ -180,7 +186,11 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Verify file state after completion. `git diff` is ground truth. The checkpoint discipline catches functional regressions; spot-checks catch non-functional missing edits. |
 | **Recovery** | Compare agent's reported changes against actual diff. Re-dispatch focused tasks for just the missing edits. |
 
+:::
+
 ### Stale Context Between Waves
+
+::: {tbl-colwidths="[20,80]"}
 
 | | |
 |---|---|
@@ -191,7 +201,11 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Re-read file state after each wave before assembling next wave's context. Include explicit references to interface changes: "Note: `resolve()` now takes a `strict` parameter (added in wave 2)." |
 | **Recovery** | Run integration tests that exercise cross-module interactions. Revert affected output and re-dispatch with current file content. |
 
+:::
+
 ### Cost Runaway
+
+::: {tbl-colwidths="[20,80]"}
 
 | | |
 |---|---|
@@ -202,7 +216,11 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Set a retry budget. After two failed dispatches for the same task, change the approach: decompose further, add context, or escalate. Don't loop at the same level. |
 | **Recovery** | Stop. Review what's been attempted. Often the agent is stuck because the task is underspecified. One specific constraint added to context is worth more than ten retries with the same input. |
 
+:::
+
 ### The "Almost Done" Trap
+
+::: {tbl-colwidths="[20,80]"}
 
 | | |
 |---|---|
@@ -213,7 +231,11 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Identify the hard part during planning. Consider doing it manually or as a separate, tightly-scoped agent task with maximum context. |
 | **Recovery** | Accept the 90%. Commit it. Handle the rest manually or in a fresh session focused exclusively on the hard part. |
 
+:::
+
 ### Session State Loss
+
+::: {tbl-colwidths="[20,80]"}
 
 | | |
 |---|---|
@@ -224,7 +246,11 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Commit after every wave. Externalize state that matters (plan file, task status) to persistent storage. Smaller waves mean smaller blast radius. |
 | **Recovery** | Revert to last committed checkpoint. Re-read the plan. Re-dispatch from the last completed wave. Cost is one wave's re-execution, not the entire session. |
 
+:::
+
 ### Persona Drift
+
+::: {tbl-colwidths="[20,80]"}
 
 | | |
 |---|---|
@@ -235,7 +261,11 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Keep persona definitions short and directive. Reinforce role boundaries in the task prompt, not just the system prompt. Shorter sessions reduce drift opportunity. |
 | **Recovery** | Fresh session with the persona restated. Review drifted output for out-of-role changes — a security reviewer that started editing code may have introduced changes outside its competence. |
 
+:::
+
 ### Cross-Wave Merge Conflicts
+
+::: {tbl-colwidths="[20,80]"}
 
 | | |
 |---|---|
@@ -246,7 +276,11 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Prevention** | Integration tests after each wave, not just unit tests. When wave 2 modifies a module that wave 1 also touched, include wave 1's final output in wave 2's context. Treat shared interfaces as explicit contracts in the plan. |
 | **Recovery** | Run the full test suite on the combined state. Identify the conflict boundary. Re-dispatch the later wave with the earlier wave's output as context. |
 
+:::
+
 ### Prompt Injection via Dependencies
+
+::: {tbl-colwidths="[20,80]"}
 
 | | |
 |---|---|
@@ -256,6 +290,8 @@ Nine patterns that emerge at the session level — where context capacity, state
 | **Severity** | Critical |
 | **Prevention** | Treat all external content in agent context as untrusted input. Restrict agent access to vetted files. Use allowlists, not blocklists, for context inclusion. Review dependency code before including it in agent context. |
 | **Recovery** | Identify the injecting content. Remove it from context. Revert any agent output produced after the injection point. Audit all changes from the affected session — injection may have caused subtle, intentional-looking modifications. |
+
+:::
 
 **Why this pattern is uniquely dangerous.** In traditional dependency management, there is a gap between install and execution — you install a package, then your code explicitly calls it. In agent configuration, *file presence is execution*. The moment a compromised instruction file exists in `.github/` or `.cursor/`, agents ingest it. There is no import statement, no function call, no opt-in. Install and execution are the same event.
 

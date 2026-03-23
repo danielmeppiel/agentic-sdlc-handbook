@@ -29,6 +29,7 @@ The most useful way to see this is through time allocation. The table below draw
 :::
 
 ```{mermaid}
+%%| fig-width: 6.5
 ---
 config:
     xyChart:

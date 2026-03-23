@@ -4,7 +4,7 @@ title: "The Instrumented Codebase"
 
 Open any repository that uses AI agents reliably and you'll notice something before you read a single line of application code: the project is full of markdown files that aren't documentation. They're instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints — scattered through `.github/` directories and woven into the source tree. These files don't ship to production. They don't appear in the build output. But they determine whether an AI agent produces code that respects the project's architecture or code that confidently violates it.
 
-This chapter catalogs those files. It defines six primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that's ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?
+This chapter catalogs those files. It defines seven primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that's ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?
 
 ---
 
@@ -20,19 +20,20 @@ The term "primitive" is deliberate. These artifacts are the atomic units of agen
 
 ---
 
-## The Six Primitive Types
+## The Seven Primitive Types
 
-Six categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all six on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.
+Seven categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all seven on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.
 
 ```{mermaid}
 block-beta
-    columns 3
-    A["Instructions\n.instructions.md\n─\nScoped conventions\nper file/directory"]:1
-    B["Agents\n.chatmode.md\n─\nSpecialist personas\nwith tool boundaries"]:1
-    C["Skills\nSKILL.md\n─\nReusable decision\nframeworks"]:1
-    D["Prompts\n.prompt.md\n─\nRepeatable\nworkflows"]:1
-    E["Memory\n.memory.md\n─\nCross-session\nknowledge"]:1
-    F["Orchestration\n.spec.md\n─\nExecution-ready\nspecifications"]:1
+    columns 4
+    A["Instructions<br/>.instructions.md<br/>─<br/>Scoped conventions<br/>per file/directory"]:1
+    B["Agents<br/>.agent.md<br/>─<br/>Specialist personas<br/>with tool boundaries"]:1
+    C["Skills<br/>SKILL.md<br/>─<br/>Reusable decision<br/>frameworks"]:1
+    D["Prompts<br/>.prompt.md<br/>─<br/>Repeatable<br/>workflows"]:1
+    E["Memory<br/>.memory.md<br/>─<br/>Cross-session<br/>knowledge"]:1
+    F["Orchestration<br/>.spec.md<br/>─<br/>Execution-ready<br/>specifications"]:1
+    G["Hooks<br/>event-driven<br/>─<br/>Automated actions<br/>on dev events"]:1
 ```
 
 ### Instructions
@@ -71,7 +72,7 @@ description: "API layer conventions for endpoint implementation"
 
 **Purpose:** Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to "who should work on this?" — not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.
 
-**File format:** `.chatmode.md` or `.agent.md` with frontmatter specifying the model, tools, and description.
+**File format:** `.agent.md` with frontmatter specifying the model, tools, and description.
 
 ```yaml
 ---
@@ -242,6 +243,11 @@ Memory files capture the knowledge that doesn't fit in instructions because it i
 
 Memory files are the most likely primitive to drift from reality. Include dates. Review them quarterly. If a section hasn't been updated in six months, verify that it's still accurate or remove it.
 
+::: {.callout-note}
+## Memory Storage Varies by Tool
+While this chapter describes memory as markdown files for portability, some tools implement memory as structured databases. GitHub Copilot, for example, stores memory in a database system rather than flat files. The principles are the same — persistence, discoverability, and staleness management — regardless of the storage mechanism.
+:::
+
 ### Orchestration
 
 **Purpose:** Bridge planning and implementation by defining structured specifications that can be executed by humans or agents with the same precision. Orchestration primitives decompose large features into implementation-ready units.
@@ -280,22 +286,40 @@ with Redis-backed sliding window counters.
 
 Specification files matter because they make the "Reduced Scope" constraint operational. Instead of telling an agent "implement rate limiting" and hoping it figures out the approach, the spec defines scope, components, contracts, and success criteria upfront. The agent implements against a specification, not a wish.
 
+### Hooks
+
+**Purpose:** Define automated actions triggered by development events. Hooks bridge the gap between passive context (instructions, memory) and active behavior — making the instrumented codebase reactive rather than waiting to be queried.
+
+**File format:** Configured via tool-specific hook mechanisms (e.g., VS Code tasks, GitHub Actions triggers, copilot hooks configuration) rather than a single portable file format.
+
+**Examples of what hooks automate:**
+
+- Auto-run linting on save to catch convention violations before commit
+- Trigger test generation when a new source file is created
+- Auto-update memory files after a successful PR merge
+- Run a security-reviewer agent on every change to `src/auth/`
+
+Hooks complete the instrumentation model. Without them, every primitive is passive — it waits for an agent to be invoked and for the right context to load. With hooks, the context layer responds to events: a file save triggers a check, a new file triggers scaffolding, a merged PR triggers a memory update. The instrumented codebase stops being a library of reference material and starts behaving like an active participant in the development workflow.
+
+Start with one or two hooks — a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.
+
 ---
 
 ## Tool Support and Portability
 
-The six primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.
+The seven primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.
 
 ::: {tbl-colwidths="[16,28,18,20,18]"}
 
 | Primitive | GitHub Copilot (VS Code) | Cursor | Claude Code | Windsurf |
 |-----------|--------------------------|--------|-------------|----------|
 | **Instructions** | `.instructions.md` with `applyTo` frontmatter; `copilot-instructions.md` global | `.cursor/rules/*.mdc` with glob frontmatter | `CLAUDE.md` per directory | `.windsurfrules`; cascade rules |
-| **Agents** | `.chatmode.md` with model + tools | — | — | — |
+| **Agents** | `.agent.md` with model + tools | — | — | — |
 | **Skills** | `SKILL.md` directories with examples | — (embed in rules) | — (embed in `CLAUDE.md`) | — (embed in rules) |
 | **Prompts** | `.prompt.md` with execution mode | — | — | Flows (different model) |
 | **Memory** | `.memory.md` referenced in context | In rules or notepads | In `CLAUDE.md` sections | In rules |
 | **Orchestration** | `.spec.md` loaded as context | Loaded as context | Loaded as context | Loaded as context |
+| **Hooks** | Copilot hooks config; VS Code tasks | — | — | — |
 
 :::
 
@@ -307,7 +331,7 @@ Three observations.
 
 **Agent configurations are the least portable.** Chat modes, model selection, and tool boundaries are defined differently in every tool and don't transfer. The knowledge inside them — domain expertise, named patterns, anti-patterns — is just markdown and moves freely. The activation mechanism does not.
 
-**Most tools natively support two of six.** Instructions (in some form) and memory (via root-level markdown). The remaining four — skills, prompts, orchestration specs, agent configurations — have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.
+**Most tools natively support two of seven.** Instructions (in some form) and memory (via root-level markdown). The remaining five — skills, prompts, orchestration specs, agent configurations, and hooks — have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.
 
 ### What happens when you switch tools
 
@@ -332,7 +356,7 @@ For teams working across multiple tools, the translation between formats can be 
 
 ## Directory Structure
 
-The six primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions — the most complete native implementation of all six primitive types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.
+The seven primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions — the most complete native implementation of all seven primitive types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.
 
 ```
 project/
@@ -344,11 +368,11 @@ project/
 │   │   ├── frontend.instructions.md     # applyTo: "src/ui/**/*.tsx"
 │   │   ├── testing.instructions.md      # applyTo: "**/test/**"
 │   │   └── database.instructions.md     # applyTo: "src/db/**"
-│   ├── chatmodes/
-│   │   ├── architect.chatmode.md        # Structure, patterns, trade-offs
-│   │   ├── backend-dev.chatmode.md      # API implementation, business logic
-│   │   ├── security-reviewer.chatmode.md # Injection, traversal, credentials
-│   │   └── doc-writer.chatmode.md       # Documentation consistency
+│   ├── agents/
+│   │   ├── architect.agent.md        # Structure, patterns, trade-offs
+│   │   ├── backend-dev.agent.md      # API implementation, business logic
+│   │   ├── security-reviewer.agent.md # Injection, traversal, credentials
+│   │   └── doc-writer.agent.md       # Documentation consistency
 │   ├── skills/
 │   │   ├── cli-logging-ux/
 │   │   │   ├── SKILL.md
@@ -379,7 +403,7 @@ Three observations about this structure.
 
 **Primitives live in `.github/`**, not scattered through the source tree. This centralizes the knowledge layer — a developer looking for the project's AI configuration finds it in one place. The exceptions are `AGENTS.md` files, which live in the directories they describe, because they're part of a discovery hierarchy (Chapter 11 explains this in detail).
 
-**Each primitive type has its own directory.** Instructions, agents, skills, prompts, and specs don't mix. This makes it straightforward to audit what you have: how many instruction files exist, what domains they cover, which skills are defined. Mixed directories make this accounting harder than it needs to be.
+**Each primitive type has its own directory.** Instructions, agents, skills, prompts, specs, and hooks don't mix. This makes it straightforward to audit what you have: how many instruction files exist, what domains they cover, which skills are defined. Mixed directories make this accounting harder than it needs to be.
 
 **The structure is flat within each directory.** Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you're probably over-engineering — most projects need 8-12 instruction files.
 
@@ -398,6 +422,7 @@ Global principles (copilot-instructions.md)
           └─ Agent configuration (persona, model, tool boundaries)
               └─ Prompt or spec (the specific workflow being executed)
                   └─ Memory (accumulated project context)
+                      └─ Hooks (event-driven triggers, operating across all layers)
 ```
 
 When an agent is asked to modify `src/api/users.py`, the effective context assembles from:
@@ -410,7 +435,7 @@ When an agent is asked to modify `src/api/users.py`, the effective context assem
 
 Each layer adds specificity. None contradicts the layer above — more specific primitives refine general guidance, they don't override it. If a conflict exists, it indicates a design error in the primitives, not a resolution the agent should attempt.
 
-This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone's head.
+This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone's head.
 
 ---
 
@@ -457,6 +482,7 @@ The "in heads" column is your instrumentation debt. Every item there is a conven
 | Defines a repeatable multi-step process | A prompt |
 | Records a decision, trade-off, or historical fact | A memory file |
 | Specifies a feature with components and success criteria | A specification |
+| Defines an automated response to a development event | A hook |
 
 **Step 5: Write your starter set.** Begin with 3-5 primitives covering your critical items. Don't aim for completeness — the feedback loop will guide you to what's actually needed faster than upfront planning will.
 
@@ -507,9 +533,9 @@ project/
 │   │   ├── auth.instructions.md
 │   │   ├── testing.instructions.md
 │   │   └── cli.instructions.md
-│   ├── chatmodes/
-│   │   ├── backend-dev.chatmode.md
-│   │   └── doc-writer.chatmode.md
+│   ├── agents/
+│   │   ├── backend-dev.agent.md
+│   │   └── doc-writer.agent.md
 │   ├── skills/
 │   │   └── api-middleware/
 │   │       └── SKILL.md
@@ -602,7 +628,7 @@ This feedback loop is how primitive quality compounds over time. Every failure y
 
 ## Starting Points
 
-The six primitives and the full directory structure represent a mature instrumented codebase. You don't need to build all of it at once. Start where the leverage is highest.
+The seven primitives and the full directory structure represent a mature instrumented codebase. You don't need to build all of it at once. Start where the leverage is highest.
 
 **Week one.** Write three files:
 1. Global instructions (10-15 lines) — your non-negotiable principles

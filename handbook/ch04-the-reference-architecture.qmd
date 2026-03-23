@@ -59,6 +59,8 @@ The three layers apply at every phase of software delivery. The table below maps
 
 Maturity tiers: **Now** = available across two or more vendors. **Emerging** = available in one or two tools, or in limited preview. **Directional** = announced, demonstrated, or on public roadmaps but not production-ready.
 
+{{< pagebreak >}}
+
 ::: {.landscape}
 
 ::: {tbl-colwidths="[9,11,13,13,14,12,12,9,7]"}

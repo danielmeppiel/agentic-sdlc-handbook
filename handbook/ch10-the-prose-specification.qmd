@@ -383,12 +383,12 @@ The general pattern: each constraint addresses one failure mode, and each partne
 ```{mermaid}
 %%| fig-width: 6
 graph TD
-    P["P\nProgressive\nDisclosure"] <-- "controls attention\nwithin scope" --> E["E\nExplicit\nHierarchy"]
-    R["R\nReduced\nScope"] <-- "constrains what\nsafety must cover" --> S["S\nSafety\nBoundaries"]
-    O["O\nOrchestrated\nComposition"] <-- "single source of\ntruth across tasks" --> R
-    P <-- "loads only what\nfits in scope" --> R
-    E <-- "hierarchy defines\nboundary scope" --> S
-    O <-- "composable units\nenable disclosure" --> P
+    P["P<br/>Progressive<br/>Disclosure"] <-- "controls attention<br/>within scope" --> E["E<br/>Explicit<br/>Hierarchy"]
+    R["R<br/>Reduced<br/>Scope"] <-- "constrains what<br/>safety must cover" --> S["S<br/>Safety<br/>Boundaries"]
+    O["O<br/>Orchestrated<br/>Composition"] <-- "single source of<br/>truth across tasks" --> R
+    P <-- "loads only what<br/>fits in scope" --> R
+    E <-- "hierarchy defines<br/>boundary scope" --> S
+    O <-- "composable units<br/>enable disclosure" --> P
 ```
 
 ---

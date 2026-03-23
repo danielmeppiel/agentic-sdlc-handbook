@@ -29,19 +29,19 @@ Not every team is equally ready for agentic development, and not every team shou
 
 Four dimensions determine readiness. Assess each on a three-point scale: not ready, partially ready, ready.
 
-**Codebase readiness.** How much of the team's working knowledge is explicit versus implicit? If architectural decisions live in people's heads, if coding conventions are enforced through review comments rather than documentation, if the build system requires tribal knowledge to operate — the codebase is not ready for agents. Agents work with explicit context. Chapters 4 and 8 cover what "explicit" means in practice.
+**Codebase readiness** — How much of the team's working knowledge is explicit versus implicit? If architectural decisions live in people's heads, if coding conventions are enforced through review comments rather than documentation, if the build system requires tribal knowledge to operate — the codebase is not ready for agents. Agents work with explicit context. Chapters 4 and 8 cover what "explicit" means in practice.
 
 Assessment questions: Is there a written architecture document a new hire could use? Are coding standards documented or only enforced in review? Can someone unfamiliar with the project run the build and tests from documentation alone?
 
-**Process readiness.** Does the team have structured workflows that can accommodate AI-generated code? This means code review processes that handle higher volume, CI/CD pipelines that catch the kinds of defects agents introduce (pattern violations, not just compilation errors), and branching strategies that isolate agent-generated changes until they pass review. Chapter 5 covers governance in detail.
+**Process readiness** — Does the team have structured workflows that can accommodate AI-generated code? This means code review processes that handle higher volume, CI/CD pipelines that catch the kinds of defects agents introduce (pattern violations, not just compilation errors), and branching strategies that isolate agent-generated changes until they pass review. Chapter 5 covers governance in detail.
 
 Assessment questions: Does the team have automated quality gates beyond compilation? Is code review structured or ad hoc? How long does a typical PR take from submission to merge?
 
-**Skill readiness.** Does the team include developers who can evaluate agent output critically? This is not about AI expertise — it is about engineering judgment. A senior developer who understands the codebase can evaluate whether agent-generated code fits the architecture and handles edge cases. A team of junior developers without senior oversight will accept plausible-looking output that violates invariants they don't yet understand. Chapter 6 addressed this compositional dynamic.
+**Skill readiness** — Does the team include developers who can evaluate agent output critically? This is not about AI expertise — it is about engineering judgment. A senior developer who understands the codebase can evaluate whether agent-generated code fits the architecture and handles edge cases. A team of junior developers without senior oversight will accept plausible-looking output that violates invariants they don't yet understand. Chapter 6 addressed this compositional dynamic.
 
 Assessment questions: What is the ratio of senior to junior developers? Can reviewers articulate *why* code is wrong, not just that it looks wrong? Has the team onboarded a new hire using written documentation in the past year?
 
-**Cultural readiness.** Does the team view AI tools as assistants or replacements? Teams that feel threatened will resist in ways that no mandate can overcome — subtle non-adoption, blame-shifting when things go wrong, refusal to invest in context engineering because "the tools should just work." Teams that view AI as an amplifier adopt faster and more sustainably.
+**Cultural readiness** — Does the team view AI tools as assistants or replacements? Teams that feel threatened will resist in ways that no mandate can overcome — subtle non-adoption, blame-shifting when things go wrong, refusal to invest in context engineering because "the tools should just work." Teams that view AI as an amplifier adopt faster and more sustainably.
 
 Assessment questions: How did the team respond to the last significant tooling change? Do developers experiment voluntarily, or only when mandated? Is there psychological safety around admitting that a tool-assisted approach failed?
 

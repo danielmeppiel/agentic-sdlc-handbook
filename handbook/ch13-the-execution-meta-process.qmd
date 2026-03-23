@@ -15,13 +15,14 @@ The methodology is a five-phase meta-process. It works regardless of which AI co
 Every large change follows these phases, in order:
 
 ```{mermaid}
+%%| fig-width: 6.5
 flowchart LR
-    AUDIT["AUDIT\n(understand)"] --> PLAN["PLAN\n(scope, waves,\nteams)"]
-    PLAN --> WAVE["WAVE [0..N]\n(parallel agents)"]
-    WAVE --> VALIDATE["VALIDATE\n(test, spot-check)"]
-    VALIDATE -->|All waves done| SHIP["SHIP\n(commit, push,\nmerge)"]
+    AUDIT["AUDIT<br/>(understand)"] --> PLAN["PLAN<br/>(scope, waves,<br/>teams)"]
+    PLAN --> WAVE["WAVE [0..N]<br/>(parallel agents)"]
+    WAVE --> VALIDATE["VALIDATE<br/>(test, spot-check)"]
+    VALIDATE -->|All waves done| SHIP["SHIP<br/>(commit, push,<br/>merge)"]
     VALIDATE -->|Next wave| WAVE
-    VALIDATE -->|Failure| ADAPT["ADAPT\n(diagnose, adjust)"]
+    VALIDATE -->|Failure| ADAPT["ADAPT<br/>(diagnose, adjust)"]
     ADAPT --> PLAN
 ```
 
