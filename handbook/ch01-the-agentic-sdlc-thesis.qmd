@@ -170,6 +170,14 @@ The constraints are the point. Let's see what they produce.
 
 ---
 
+::: {.content-visible when-format="html"}
 ::: {.callout-tip appearance="simple" icon=false}
-**Found this useful?** Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../download.qmd)
+**Found this useful?** Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../download.qmd) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+:::
+:::
+
+::: {.content-hidden when-format="html"}
+::: {.callout-tip appearance="simple" icon=false}
+**Found this useful?** Read the latest version at [danielmeppiel.github.io/apm-handbook](https://danielmeppiel.github.io/apm-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+:::
 :::

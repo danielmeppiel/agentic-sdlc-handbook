@@ -456,6 +456,14 @@ These 19 patterns represent the collective scar tissue of early agentic developm
 
 ---
 
+::: {.content-visible when-format="html"}
 ::: {.callout-tip appearance="simple" icon=false}
-**Spotting new anti-patterns regularly?** Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../download.qmd)
+**Spotting new anti-patterns regularly?** Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../download.qmd) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+:::
+:::
+
+::: {.content-hidden when-format="html"}
+::: {.callout-tip appearance="simple" icon=false}
+**Spotting new anti-patterns regularly?** Read the latest version at [danielmeppiel.github.io/apm-handbook](https://danielmeppiel.github.io/apm-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+:::
 :::

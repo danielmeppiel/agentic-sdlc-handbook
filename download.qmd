@@ -5,6 +5,8 @@ number-sections: false
 sidebar: false
 ---
 
+::: {.content-visible when-format="html"}
+
 ## Get the PDF & EPUB
 
 The complete handbook is free to read online. For the formatted **PDF** and **EPUB** versions -- optimized for offline reading, printing, and annotation -- enter your email below. You'll receive the download links instantly.
@@ -19,4 +21,16 @@ The complete handbook is free to read online. For the formatted **PDF** and **EP
 
 ::: {.callout-note appearance="minimal" icon=false}
 Prefer to read online? [Start with the thesis -->](handbook/ch01-the-agentic-sdlc-thesis.qmd)
+:::
+
+:::
+
+::: {.content-hidden when-format="html"}
+
+You're reading the offline version. Visit the website for the latest updates and additional resources:
+
+- **Read online:** [danielmeppiel.github.io/apm-handbook](https://danielmeppiel.github.io/apm-handbook/)
+- **APM on GitHub:** [github.com/microsoft/apm](https://github.com/microsoft/apm)
+- **Follow the author:** [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+
 :::
