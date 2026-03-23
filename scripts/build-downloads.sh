@@ -8,14 +8,21 @@ set -euo pipefail
 
 cd "$(git rev-parse --show-toplevel)"
 
+PDF="_book/The-Agentic-SDLC-Handbook.pdf"
+EPUB="_book/The-Agentic-SDLC-Handbook.epub"
+
 echo "Rendering PDF..."
 quarto render --to pdf
+
+# Save PDF before EPUB render clears _book/
+cp "$PDF" /tmp/handbook-build.pdf
 
 echo "Rendering EPUB..."
 quarto render --to epub
 
-PDF="_book/The-Agentic-SDLC-Handbook.pdf"
-EPUB="_book/The-Agentic-SDLC-Handbook.epub"
+# Restore PDF alongside EPUB
+cp /tmp/handbook-build.pdf "$PDF"
+rm -f /tmp/handbook-build.pdf
 
 if [[ -f "$PDF" && -f "$EPUB" ]]; then
     echo ""
