@@ -18,22 +18,24 @@ At every phase of the software development lifecycle, work happens across three 
 
 The layers are not independent. They form a stack where each depends on the one below it:
 
+::: {.landscape}
+
 ```{mermaid}
-%%| fig-width: 7
+%%| fig-width: 8.5
 flowchart TB
-    subgraph HUMAN ["🧑 HUMAN LAYER"]
+    subgraph HUMAN ["HUMAN LAYER"]
         direction LR
         HR["Roles: Product, Architecture,<br/>Engineering, QA, Operations"]
         HF["Functions: Decisions, Governance,<br/>Accountability, Strategy"]
     end
 
-    subgraph AGENT ["🤖 AGENT LAYER"]
+    subgraph AGENT ["AGENT LAYER"]
         direction LR
         AC["Capabilities: Generate, Analyze,<br/>Test, Review, Transform"]
         AB["Boundaries: Scoped authority,<br/>context-dependent, auditable"]
     end
 
-    subgraph PLATFORM ["⚙️ PLATFORM LAYER"]
+    subgraph PLATFORM ["PLATFORM LAYER"]
         direction LR
         PI["Infrastructure: SCM, CI/CD,<br/>Auth, Observability, Registries"]
         PN["Integrations: APIs, Webhooks,<br/>Context Sources, Artifact Stores"]
@@ -48,6 +50,8 @@ flowchart TB
     style AGENT fill:#e67e22,color:#fff
     style PLATFORM fill:#2ecc71,color:#fff
 ```
+
+:::
 
 This structure is not a proposal. It is a description of what already exists in any organization using AI coding tools — whether they've designed it deliberately or not. The agent in your developer's editor is already operating across these three layers. The question is whether the boundaries, the context flow, and the governance are intentional.
 
@@ -146,24 +150,15 @@ The difference is not the tool. It is the context.
 
 Context operates across three domains, each with different characteristics:
 
-```
-+--------------------------------------------------------------------+
-|                        WORK CONTEXT                                |
-|  Decisions, requirements, meeting outcomes, strategic priorities    |
-|  Examples: ADRs, sprint plans, product briefs, stakeholder notes   |
-|  Source: Collaboration tools, wikis, project management systems    |
-+--------------------------------------------------------------------+
-|                        DATA CONTEXT                                |
-|  Business intelligence, domain models, analytics, ontologies       |
-|  Examples: Data dictionaries, domain glossaries, schema docs       |
-|  Source: BI platforms, data catalogs, knowledge graphs             |
-+--------------------------------------------------------------------+
-|                        CODE CONTEXT                                |
-|  Architecture, conventions, dependency graphs, API surfaces        |
-|  Examples: Coding standards, instruction files, module boundaries  |
-|  Source: Repositories, CI/CD systems, artifact registries          |
-+--------------------------------------------------------------------+
-```
+::: {tbl-colwidths="[15,30,30,25]"}
+
+| Context Layer | What It Contains | Examples | Sources |
+|---|---|---|---|
+| **Work Context** | Decisions, requirements, meeting outcomes, strategic priorities | ADRs, sprint plans, product briefs, stakeholder notes | Collaboration tools, wikis, project management systems |
+| **Data Context** | Business intelligence, domain models, analytics, ontologies | Data dictionaries, domain glossaries, schema docs | BI platforms, data catalogs, knowledge graphs |
+| **Code Context** | Architecture, conventions, dependency graphs, API surfaces | Coding standards, instruction files, module boundaries | Repositories, CI/CD systems, artifact registries |
+
+:::
 
 **Work context** captures *why* decisions were made and *what* the organization intends. Most of this knowledge exists today in meeting notes, Slack threads, and individual memory. Making it machine-readable — through structured ADRs, specification templates, and decision logs — is a documentation investment with a new payoff: agents that understand the reasoning behind the code, not just the code itself.
 
@@ -177,17 +172,19 @@ Structured context is not a one-time cost. It compounds.
 
 When an agent produces a code review using your team's documented quality standards, that review generates structured feedback. When a developer resolves the feedback and updates a convention document, the convention becomes richer. When the next agent interaction loads that richer convention, the output improves. Each cycle reinforces the next:
 
-```
-Structured context  --->  Better agent output  --->  Richer artifacts
-       ^                                                     |
-       |                                                     |
-       +-----------------------------------------------------+
-                    (feedback loop)
+```{mermaid}
+%%| fig-width: 6
+%%| label: fig-context-flywheel
+%%| fig-cap: "The context compounding flywheel"
+graph LR
+    A["Structured<br/>context"] --> B["Better agent<br/>output"]
+    B --> C["Richer<br/>artifacts"]
+    C --> A
 ```
 
 This flywheel means the gap between organizations that invest in context early and those that defer widens over time. It is not a linear gap. An organization that starts structuring context in 2025 does not just have two years' head start over one that starts in 2027 — it has two years of compounding context that the late starter must build from scratch while the early adopter's agents are already leveraging it.
 
-**Evidence: the 70-file PR.** This book's primary case study — a pull request touching 70 files, passing 2,874 tests, completed in roughly 90 minutes with three human interventions — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: documented coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global project rules down to directory-specific overrides. None of these artifacts existed at the start. Each was created when an agent interaction failed due to a context gap — a convention violation caught in review, a deprecated API called because no instruction excluded it, a test pattern that didn't match the project's framework. By the time the 70-file PR was attempted, the agent was operating with rich, structured context that had been refined through dozens of feedback cycles. Without that accumulated context, the same task on the same model would have produced 70 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1's Vibe Coding Cliff. The delta between "70 files of rework" and "70 files merged in 90 minutes" *is* the context moat, demonstrated.
+**Evidence: the 75-file PR.** This book's primary case study — a pull request touching 75 files, climbing from 2,829 to 2,897 tests, completed in roughly 90 minutes with three human interventions — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: documented coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global project rules down to directory-specific overrides. None of these artifacts existed at the start. Each was created when an agent interaction failed due to a context gap — a convention violation caught in review, a deprecated API called because no instruction excluded it, a test pattern that didn't match the project's framework. By the time the 75-file PR was attempted, the agent was operating with rich, structured context that had been refined through dozens of feedback cycles. Without that accumulated context, the same task on the same model would have produced 75 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1's Vibe Coding Cliff. The delta between "75 files of rework" and "75 files merged in 90 minutes" *is* the context moat, demonstrated.
 
 ### Technical Debt Gets a New Cost
 

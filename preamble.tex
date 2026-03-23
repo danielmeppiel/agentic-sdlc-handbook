@@ -12,7 +12,13 @@
 \usepackage{float}
 \floatplacement{figure}{H}
 
-% Prevent figures from exceeding text width
+% Auto-scale oversize images to fit within text width
 \makeatletter
 \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
 \makeatother
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+
+% Force code block line wrapping in PDF
+\usepackage{fvextra}
+\fvset{breaklines=true, breakanywhere=true}

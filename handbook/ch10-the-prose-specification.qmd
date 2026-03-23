@@ -381,7 +381,7 @@ The five constraints are defined independently but produce their strongest effec
 The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.
 
 ```{mermaid}
-%%| fig-width: 6
+%%| fig-width: 4.5
 graph TD
     P["P<br/>Progressive<br/>Disclosure"] <-- "controls attention<br/>within scope" --> E["E<br/>Explicit<br/>Hierarchy"]
     R["R<br/>Reduced<br/>Scope"] <-- "constrains what<br/>safety must cover" --> S["S<br/>Safety<br/>Boundaries"]

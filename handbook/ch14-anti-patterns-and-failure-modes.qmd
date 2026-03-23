@@ -443,25 +443,27 @@ Total recovery cost: three focused dispatches instead of an open-ended retry loo
 
 When something goes wrong, the first question is what kind of wrong:
 
-```{mermaid}
-%%| fig-width: 7.5
-flowchart TD
-    START(["Something went wrong\nwith agent output"]) --> Q1{Code syntactically\nwrong?}
+::: {.landscape}
 
-    Q1 -- Yes --> FIX1["Model capability issue\nStronger model, better examples,\nor do it manually"]
+```{mermaid}
+%%| fig-width: 8.5
+flowchart TD
+    START(["Something went wrong<br/>with agent output"]) --> Q1{Code syntactically<br/>wrong?}
+
+    Q1 -- Yes --> FIX1["Model capability issue<br/>Stronger model, better examples,<br/>or do it manually"]
     Q1 -- No --> Q2{Tests fail?}
 
-    Q2 -- Yes --> Q2a{Agent's code\nor pre-existing?}
-    Q2a -- "Agent's" --> FIX2["Check: task too broad?\nContext stale?\nConstraint dropped?"]
-    Q2a -- Pre-existing --> FIX2b["Separate issue\nDo not fix in this session"]
+    Q2 -- Yes --> Q2a{Agent's code<br/>or pre-existing?}
+    Q2a -- "Agent's" --> FIX2["Check: task too broad?<br/>Context stale?<br/>Constraint dropped?"]
+    Q2a -- Pre-existing --> FIX2b["Separate issue<br/>Do not fix in this session"]
 
-    Q2 -- No --> Q3{Follows your\nconventions?}
+    Q2 -- No --> Q3{Follows your<br/>conventions?}
 
-    Q3 -- No --> FIX3["Primitive issue\nRule missing? Wrong scope?\nToo much context noise?"]
-    Q3 -- Yes --> Q4{Integrates correctly\nwith system?}
+    Q3 -- No --> FIX3["Primitive issue<br/>Rule missing? Wrong scope?<br/>Too much context noise?"]
+    Q3 -- Yes --> Q4{Integrates correctly<br/>with system?}
 
-    Q4 -- No --> FIX4["Architectural issue\nRight interfaces visible?\nModule boundaries respected?"]
-    Q4 -- Yes --> FIX5["Probably fine\nVerify edge cases: error paths,\nnull inputs, concurrency, auth"]
+    Q4 -- No --> FIX4["Architectural issue<br/>Right interfaces visible?<br/>Module boundaries respected?"]
+    Q4 -- Yes --> FIX5["Probably fine<br/>Verify edge cases: error paths,<br/>null inputs, concurrency, auth"]
 
     style FIX1 fill:#e63946,color:#fff
     style FIX2 fill:#e76f51,color:#fff
@@ -470,6 +472,8 @@ flowchart TD
     style FIX5 fill:#2d6a4f,color:#fff
     style FIX2b fill:#6c757d,color:#fff
 ```
+
+:::
 
 ---
 
@@ -483,7 +487,7 @@ Agents have filesystem access, can execute commands, and generate code for your 
 
 **Credential exposure.** Agents reading environment files or test fixtures may echo sensitive values in output or embed them in generated code. Exclude credential files from context. Use secret scanning in CI.
 
-These risks aren't unique to AI-generated code — they're amplified by volume. An agent generating 70 files in 90 minutes produces more review surface area than a human in the same timeframe. Review discipline must scale with generation speed.
+These risks aren't unique to AI-generated code — they're amplified by volume. An agent generating 75 files in 90 minutes produces more review surface area than a human in the same timeframe. Review discipline must scale with generation speed.
 
 ---
 

@@ -5,7 +5,7 @@ number-sections: false
 
 ---
 
-## How Copilot CLI Orchestrated a 52-File Architecture Change Across 25 Agents
+## How Copilot CLI Orchestrated a 75-File Architecture Change Across 25 Agents
 
 ::: {.callout-note}
 This case study documents a real Copilot CLI session against
@@ -42,7 +42,7 @@ revealed a single root cause branching into three systemic failures:
 
 A point fix would have patched `_validate_package_exists()`. The
 structural fix required centralised auth resolution, a command-logger
-abstraction, and diagnostic collection — touching 52 files.
+abstraction, and diagnostic collection — touching 75 files.
 
 ---
 
@@ -196,6 +196,18 @@ produced output.
 
 ---
 
+::: {.callout-tip title="Mapping to the Three Practitioner Roles (Chapter 8)"}
+Of the five escalation events, three required direct human judgment calls — mapping to the three practitioner roles introduced in Chapter 8:
+
+- **Architect** — Escalation #4 (PAT 403): decided to pivot validation from `git ls-remote` to a single REST API code path, reshaping the architecture rather than adding token-type branches.
+- **Escalation Handler** — Escalation #1 (install.py): diagnosed agent stall, split remaining work across two replacement agents.
+- **Reviewer** — Escalation #5 (Silent NameError): traced the failure from test output to a missing import, directed a targeted fix.
+
+The remaining two escalations (#2 unicode persistence, #3 token type correction) were caught during checkpoint verification and resolved by the orchestrator without role-switching. Chapter 13 summarises the timeline; this case study provides the full escalation log.
+:::
+
+---
+
 ## Anti-Pattern Mapping
 
 | Escalation | Anti-pattern | PROSE Constraint | Resolution |
@@ -233,10 +245,10 @@ mechanism through which human judgment shaped the architecture.
 ---
 
 The lessons from the TL;DR at the top were earned here. The full
-evidence chain — from a single confusing error message to a 52-file
+evidence chain — from a single confusing error message to a 75-file
 architecture overhaul — is inspectable at
 [PR #394](https://github.com/microsoft/apm/pull/394).
 
 ::: {.callout-note title="Metrics"}
-52 files changed · 2,829 → 2,897 tests (+68) · 6 audit agents · 25 implementation agents · 8 plan iterations · 5 escalations (1×L2, 2×L3, 2×L4) · 9 waves
+75 files changed · +7,832/−1,074 lines · 2,829 → 2,897 tests (+68) · 6 audit agents · 25 implementation agents · 8 plan iterations · 5 escalations (1×L2, 2×L3, 2×L4) · 9 waves
 :::
