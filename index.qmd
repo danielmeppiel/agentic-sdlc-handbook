@@ -39,9 +39,9 @@ You don't need to read sequentially. Start with whichever part matches your role
 
 ## About the Author
 
-Daniel Meppiel is a software engineer at **Microsoft** and the creator of [APM (Agent Package Manager)](https://github.com/microsoft/apm), an open-source tool for managing AI agent configurations across codebases -- 700+ GitHub stars and growing. He designed the **PROSE framework**, a specification methodology for making AI coding agents reliable in professional software delivery.
+Daniel Meppiel is a Global Black Belt at **Microsoft** and the creator of [APM (Agent Package Manager)](https://github.com/microsoft/apm), an open-source tool for managing AI agent configurations across codebases -- 700+ GitHub stars and growing. He designed the **PROSE framework**, a specification methodology for making AI coding agents reliable in professional software delivery.
 
-Before Microsoft, Daniel worked at **GitHub** on developer tooling and at **CERN** on data acquisition systems for particle physics experiments. His career arc -- from physics instrumentation to developer platforms to AI-native engineering -- gives him an unusual vantage point on how software development is changing.
+With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise adoption, Daniel bridges the gap between technical architecture and business outcomes. He founded and ran **Wegaw** as CTO for 4 years -- an AI-powered water intelligence startup serving European energy companies. Before Microsoft, he worked at **GitHub** on developer tooling and at **CERN** on data acquisition systems for particle physics experiments.
 
 This handbook was produced using the same methodology and tooling it describes.
 
