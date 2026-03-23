@@ -55,7 +55,7 @@ Daniel Meppiel is a Global Black Belt at **Microsoft** and the creator of [APM (
 
 With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise adoption, Daniel bridges the gap between technical architecture and business outcomes. His career arc runs from **CERN** (Product Lifecycle Management modernization for particle physics experiments), through **Avaloq** (legacy core-banking system migration) -- the same classes of system modernization and code migration that AI agents now accelerate in the SDLC -- to founding **WeGaw** as CTO for 4 years (building a complex AI-powered water intelligence platform from scratch, serving global energy companies), **Sonar** (code security), **GitHub** (developer tooling), and now **Microsoft**.
 
-This handbook was produced using the same methodology and tooling it describes.
+This handbook was produced using the same methodology and tooling it describes. The case studies document real sessions executed by the author -- who also designed the PROSE methodology. This creates an inherent advantage: the author knows when to push and when to intervene in ways that are not fully captured by the written method. Where authorial expertise likely mattered beyond what the methodology prescribes, the case studies flag it. Practitioners should treat the documented patterns as a starting point and report where the method alone fell short.
 
 This is a living document. New chapters, case studies, and PROSE refinements are published continuously.
 

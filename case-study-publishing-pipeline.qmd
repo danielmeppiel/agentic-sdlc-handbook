@@ -12,10 +12,6 @@ number-sections: false
 - Expert panels produce better outcomes than solo research, but the human still chooses the publishing philosophy.
 :::
 
-::: {.callout-note}
-This session used GitHub Copilot CLI as the orchestrator, but the patterns apply to any agent-capable environment.
-:::
-
 ---
 
 ## The Problem
@@ -79,7 +75,7 @@ flowchart TD
 
 **Issue 1 — Narrow text.** The `scrbook` document class has wide binding margins designed for physical books. Fix: switch to `scrreprt` with explicit geometry (25mm left/right, 30mm top/bottom).
 
-**Issue 2 — Missing Mermaid diagrams.** All 15 chapters used GitHub-flavored `` ```mermaid `` fences. Quarto requires `` ```{mermaid} `` for PDF rendering via headless Chromium. This was **Anti-Pattern #10: Not Fixing the Primitives** — the syntax was wrong at the source level across every chapter. A bulk `sed` conversion fixed all 15 blocks; the PDF grew from 686KB to 3.7MB as rendered diagram PNGs appeared.
+**Issue 2 — Missing Mermaid diagrams.** All 15 chapters used GitHub-flavored `` ```mermaid `` fences. Quarto requires `` ```{mermaid} `` for PDF rendering via headless Chromium. This was **Anti-Pattern #10: Not Fixing the Primitives** — the syntax was wrong at the source level across every chapter. A bulk `sed` conversion fixed all 15 blocks; the PDF grew from 686KB to 3.8MB as rendered diagram PNGs appeared.
 
 **Issue 3 — Duplicate heading numbers.** Manual numbers in headings (`### 1. The Monolithic Prompt`) clashed with Quarto's auto-numbering, producing `15.2.1 1.` in the PDF. Stripped manual numbers from 25 headings across two chapters.
 
@@ -87,7 +83,18 @@ flowchart TD
 
 **Issue 5 — ASCII art table.** Chapter 4 contained a complex ASCII art SDLC phases table that rendered as a code block in PDF. Converted to a proper 9-column markdown pipe table.
 
-Each fix was technically correct. The trap is that correctness at one layer exposes incorrectness at the next. The orchestrator treated each as a new micro-wave with its own checkpoint — never batching speculative fixes.
+Each fix was technically correct. The trap is that correctness at one layer exposes incorrectness at the next. The orchestrator treated each as a new micro-wave with its own checkpoint -- never batching speculative fixes.
+
+::: {.callout-tip title="Try This: Micro-Wave Checkpoints for Cascade Fixes"}
+When each fix reveals the next issue (the "Almost Done" cascade), treat each fix as its own wave:
+
+1. Make one fix
+2. Render/build to see the result
+3. Commit before touching anything else
+4. Only then investigate the next issue
+
+This prevents speculative batching -- fixing three things at once when you don't yet know if fix #1 changes the landscape for fixes #2 and #3.
+:::
 
 ## CI/CD: Four Iterations to Stability
 
@@ -129,48 +136,23 @@ flowchart TB
 
 :::
 
-The 15-minute local render is a direct consequence of **context window exhaustion applied to CI** — Chromium-based Mermaid rendering is too heavy for a fast feedback loop. The architecture makes this explicit: CI optimizes for speed (HTML-only, 49 seconds), local optimizes for completeness (all formats).
+The 15-minute local render is a practical constraint -- Chromium-based Mermaid rendering is too heavy for a fast CI feedback loop. The architecture makes this explicit: CI optimizes for speed (HTML-only, 49 seconds), local optimizes for completeness (all formats).
 
 ## Download UX: Seven Iterations of Human Refinement
 
-The download experience went through seven rounds — all driven by the human author:
+The download experience went through seven rounds -- all driven by the human author:
 
-1. Quarto's built-in `downloads: [pdf, epub]` — toolbar icon too small
-2. Large Bootstrap buttons in a preface callout box — concept approved
-3. Fixed duplicate title (manual H1 overlapping Quarto-generated H1)
-4. Fixed "0.1" section numbering in preface — set `number-sections: false`
-5. Fixed subtitle to address both audiences (leaders and practitioners)
-6. Removed redundant intro text (subtitle and body repeated the same message)
-7. Simplified to: *"Free to read online. Free to download."*
+1. Quarto's built-in `downloads: [pdf, epub]` -- toolbar icon too small, easily missed
+2. Fixed duplicate titles and "0.1" section numbering clashes between manual and Quarto-generated headings
+3. Simplified to: *"Free to read online. Free to download."*
 
-Every iteration was a human design judgment. The agent executed each change in under a minute. This is the collaboration pattern at its clearest: **the human refines intent; the agent refines implementation**.
+The middle four iterations were variations on the same theme: the human spotted a UX friction, the agent fixed it in under a minute. This is the collaboration pattern at its clearest: **the human refines intent; the agent refines implementation**.
 
 ## Licensing: Expert Panel Deliberation
 
 A three-expert panel (IP Attorney, Publishing Strategist, Growth Hacker) evaluated licensing options. The recommendation was unanimous: **CC BY-NC-ND 4.0**.
 
-::: {.landscape}
-
-```{mermaid}
-%%| fig-width: 6.5
-sequenceDiagram
-    participant O as Orchestrator
-    participant P as Expert Panel
-    participant H as Author
-
-    O->>P: Evaluate licensing<br/>for free tech book
-    P->>P: IP Attorney: protects<br/>canonical version
-    P->>P: Strategist: sharing<br/>+ attribution
-    P->>P: Growth: max reach,<br/>protect monetization
-    P->>O: Unanimous: CC BY-NC-ND 4.0
-    O->>H: Recommendation + rationale
-    H->>O: Approved
-    O->>O: Apply to LICENSE, README,<br/>index, _quarto.yml
-```
-
-:::
-
-The rationale maps to four properties: invites sharing (reach), requires attribution (authorship), prohibits commercial use (author's brand), prohibits derivatives (one canonical version). Implementation touched four files — `LICENSE`, `README.md`, `index.qmd`, and the `_quarto.yml` footer.
+The rationale maps to four properties: invites sharing (reach), requires attribution (authorship), prohibits commercial use (author's brand), prohibits derivatives (one canonical version). Implementation touched four files -- `LICENSE`, `README.md`, `index.qmd`, and the `_quarto.yml` footer.
 
 ## The Authenticity Question
 
@@ -178,7 +160,7 @@ A separate three-expert panel (HN Skeptic, Thought Leadership Strategist, Meta-A
 
 > *"Could this person have written a credible book without AI? If yes, AI reads as methodology demonstration."*
 
-The framing rule: *"built using the same methodology it teaches"* — never *"AI-written."* Expected risk: roughly 15–20% drive-by dismissal, but engaged readers find the transparency more impressive than the alternative.
+The framing rule: *"built using the same methodology it teaches"* -- never *"AI-written."* Expected risk: some initial skepticism from readers who dismiss anything AI-assisted, but engaged readers find the transparency more impressive than the alternative.
 
 The README was rewritten to showcase the pipeline: an 11-agent team table, a 5-stage pipeline diagram, and links to review artifacts. **Explicit knowledge over implicit knowledge** — a property that held true here too. Hiding the process would contradict the book's thesis.
 
@@ -190,7 +172,7 @@ The publishing pipeline compressed weeks of toolchain research, format debugging
 3 output formats (HTML, PDF, EPUB) · 15 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy
 :::
 
-The division of labor was consistent: every design decision was human; every technical execution was agent. See the TL;DR at the top for the distilled lessons.
+The division of labor was consistent: every design decision was human; every technical execution was agent.
 
 ---
 

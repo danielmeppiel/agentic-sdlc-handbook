@@ -197,14 +197,16 @@ produced output.
 
 ---
 
-::: {.callout-tip title="Mapping to the Three Practitioner Roles (Chapter 8)"}
-Of the five escalation events, three required direct human judgment calls — mapping to the three practitioner roles introduced in Chapter 8:
+::: {.callout-tip title="Try This: Filesystem Verification After Agent Dispatch"}
+After any agent reports success, verify filesystem state directly — never trust self-reports:
 
-- **Architect** — Escalation #4 (PAT 403): decided to pivot validation from `git ls-remote` to a single REST API code path, reshaping the architecture rather than adding token-type branches.
-- **Escalation Handler** — Escalation #1 (install.py): diagnosed agent stall, split remaining work across two replacement agents.
-- **Reviewer** — Escalation #5 (Silent NameError): traced the failure from test output to a missing import, directed a targeted fix.
+```bash
+# After agent claims "all unicode replacements complete":
+git diff --stat           # Did any files actually change?
+grep -rn "✓\|✗\|⚠" src/  # Are the old characters still there?
+```
 
-The remaining two escalations (#2 unicode persistence, #3 token type correction) were caught during checkpoint verification and resolved by the orchestrator without role-switching. Chapter 13 summarises the timeline; this case study provides the full escalation log.
+Agent success messages are probabilistic output. The `diff` command is deterministic. Build this check into every checkpoint.
 :::
 
 ---
@@ -218,7 +220,7 @@ The remaining two escalations (#2 unicode persistence, #3 token type correction)
 | Unicode persistence | #7 The Trust Fall | Safety Boundaries | Never accept self-report without diff check |
 | Token type error | #13 Stale Context Between Waves | Progressive Disclosure | Re-validate expert findings before wiring |
 | PAT 403 | #5 Scope Creep | Reduced Scope | L4 escalation through plan gate |
-| Silent NameError | #9 Skipping Checkpoints | Safety Boundaries | Add behavioural assertions to checkpoint |
+| Silent NameError | #11 Ignoring Partial Results | Safety Boundaries | Assert on observable behaviour, not just pass/fail |
 
 ---
 
@@ -245,11 +247,10 @@ mechanism through which human judgment shaped the architecture.
 
 ---
 
-The lessons from the TL;DR at the top were earned here. The full
-evidence chain — from a single confusing error message to a 75-file
-architecture overhaul — is inspectable at
-[PR #394](https://github.com/microsoft/apm/pull/394).
+The evidence chain is inspectable at [PR #394](https://github.com/microsoft/apm/pull/394). The five escalations above are the full log.
 
 ::: {.callout-note title="Metrics"}
 75 files changed · +7,832/−1,074 lines · 2,829 → 2,897 tests (+68) · 6 audit agents · 25 implementation agents · 8 plan iterations · 5 escalations (1×L2, 2×L3, 2×L4) · 9 waves
+
+Approximate effort: 2 full sessions (~16 hours wall-clock). A senior engineer doing this manually would likely have spent 3-5 days on the auth consolidation alone.
 :::

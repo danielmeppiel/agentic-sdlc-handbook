@@ -106,6 +106,24 @@ Intellectual honesty requires identifying where this book's assumptions are most
 
 ---
 
+## When NOT to Use Agentic Workflows
+
+Not every task benefits from agent orchestration. Applying the methodology where it does not fit wastes time and produces worse outcomes than working manually. Recognize these scenarios early:
+
+**The task requires fewer than 50 lines of change.** If you can hold the full scope in your head, the overhead of persona design, wave planning, and checkpoint discipline is not worth it. Just write the code.
+
+**The domain knowledge is entirely implicit.** If the conventions, constraints, and trade-offs cannot be externalized into instruction primitives -- because they depend on political context, unwritten relationships, or organizational history that resists documentation -- agents will produce plausible but wrong output. Instrument the codebase first (Chapter 9), then apply agents.
+
+**The cost of failure is low and iteration is cheap.** For throwaway scripts, prototyping, and exploratory work, a single agent prompt with no orchestration is faster and sufficient. The methodology exists for production-grade work where reliability matters.
+
+**The work is inherently sequential and creative.** Naming things, choosing abstractions, defining API contracts -- these are judgment-dense tasks where agent suggestions help but orchestrated composition adds nothing. Use agents as sounding boards, not as orchestrated fleets.
+
+**The platform fights automation.** The Growth Engine case study documents three automated approaches to Kit form automation, each hitting React's virtual DOM. When the platform's internals are undocumented and hostile to external manipulation, escalate to a human with a precise checklist rather than attempting a fourth approach.
+
+The methodology's value is recognizing which category a task falls into before committing to an approach.
+
+---
+
 ## Your First Week: What to Do Starting Monday
 
 For leaders who read Block 1 and practitioners who read Block 2, here is the concrete version. Not principles. Actions.

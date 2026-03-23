@@ -13,10 +13,6 @@ number-sections: false
 - Composition is load-bearing: 15 chapters required 50+ dispatches, 4 waves, and 2 integration passes. No single agent could hold the full manuscript.
 :::
 
-::: {.callout-note}
-This session used GitHub Copilot CLI as the orchestrator, but the patterns apply to any agent-capable environment.
-:::
-
 ---
 
 ## The Meta-Narrative
@@ -186,6 +182,26 @@ flowchart TD
 
 This validates the handbook's claim that primitives should be created and iterated throughout a project, not frozen at inception. Anti-pattern #10 (*Not Fixing the Primitives*) warns against correcting symptoms manually instead of updating the instruction set. Each dynamic persona was the fix — a new primitive that addressed a structural gap rather than a one-off patch.
 
+::: {.callout-tip title="Try This: Dynamic Persona Creation"}
+When the process surfaces a gap, create a new persona rather than patching with ad-hoc prompts. Here is the pattern used for the Fact-Ref-Checker:
+
+```yaml
+# .github/agents/fact-ref-checker.agent.md
+---
+name: Fact-Ref-Checker
+role: Claims Auditor
+---
+You audit manuscripts for factual accuracy. For every claim:
+1. Is it sourced? Flag unsourced statistics.
+2. Is it consistent? Cross-reference numbers across chapters.
+3. Is it falsifiable? Flag unfalsifiable superlatives.
+
+Output: severity-ranked findings (CRITICAL / HIGH / MEDIUM).
+```
+
+The key: define the persona's scope and output format explicitly. Generic "review this" dispatches produce generic output.
+:::
+
 ---
 
 ## Escalation Events and Anti-Pattern Mapping
@@ -206,7 +222,7 @@ Four escalation events interrupted normal flow. Each maps to a specific anti-pat
 
 **What happened:** After four corpus audit specialists completed their parallel scans, their outputs needed cross-cutting synthesis that no individual specialist could produce — each had domain-specific findings but none had the full picture.
 
-**Anti-pattern:** #1 (*Monolithic Prompt*) — the temptation was to dump all four outputs into one specialist agent. Instead, the orchestrator escalated to the Chief Editor persona, whose explicit role was cross-chapter coherence.
+**Anti-pattern:** #2 (*Context Dumping*) — the temptation was to dump all four audit outputs into one agent's context window. Instead, the orchestrator escalated to the Chief Editor persona, whose explicit role was cross-chapter coherence.
 
 **Resolution:** Chief Editor ran as synthesizer, producing 7 consensus themes, 6 resolved tensions, 10 cuts, and 9 identified gaps. The persona's scope matched the task.
 
@@ -216,7 +232,7 @@ Four escalation events interrupted normal flow. Each maps to a specific anti-pat
 
 **What happened:** During the APM strategic insertion phase, the orchestrator prepared six surgical insertions. The human author intervened: "Do not mention `apm compile` — niche feature." All six insertions were adapted to respect the constraint.
 
-**Anti-pattern:** #17 (*Persona Drift*) — without the human override, the agents would have promoted a technical feature that violated the book's editorial stance. The author's judgment caught what no reviewer persona was calibrated to flag.
+This was not persona drift or agent failure — every agent was following its persona correctly. The user exercised editorial authority, overriding correct-but-misaligned agent output. This is the Architect role in practice: human judgment as the final arbiter of what the book should and should not say.
 
 **What held true:** *Human judgment remains the bottleneck and the differentiator.* The scarce resource was not token generation but the ability to decide what the book should and should not say.
 
@@ -224,7 +240,7 @@ Four escalation events interrupted normal flow. Each maps to a specific anti-pat
 
 **What happened:** After the "zero APM mentions in 62,500 words" discovery, the Market Analyst wanted more visibility; the Thought Leadership Advisor wanted less. The panel genuinely disagreed.
 
-**Anti-pattern:** #15 (*The "Almost Done" Trap*) — the temptation was to skip the synthesis step and let one voice dominate. Instead, the Chief Editor resolved with a governing principle: *"The book is 100% useful without APM. APM appears as proof, not prerequisite."*
+This demonstrated the value of explicit governing principles as tie-breakers. The Chief Editor resolved the disagreement with a single principle: *"The book is 100% useful without APM. APM appears as proof, not prerequisite."* Once articulated, the principle made every subsequent decision mechanical.
 
 **Resolution:** 6 surgical insertions, 5 name-mentions, approximately 475 words across 5 chapters. The lightest possible touch.
 
@@ -232,43 +248,18 @@ Four escalation events interrupted normal flow. Each maps to a specific anti-pat
 
 ---
 
-## The APM Zero-Mentions Embarrassment
-
-A book about AI-native software development, written by APM's creator, using APM's orchestration infrastructure, contained zero mentions of APM across 62,500 words.
-
-This was not a bug. It was the methodology working correctly. Each agent was dispatched with chapter-specific source material and audience-appropriate scope. No agent had "promote the author's project" in its persona. The absence proved the review process was honest — and prompted a four-wave strategic assessment:
-
-1. **Wave 1:** 4 specialist audits (Market Analyst, Platform Strategist, Practitioner Authority, Publishing Advisor)
-2. **Wave 2:** Chief Editor + Thought Leadership Advisor synthesis
-3. **Wave 3:** CTO Proxy + Dev Lead Proxy validation
-4. **Wave 4:** Final consolidated report
-
-The result was surgical rather than promotional. Credibility comes from restraint.
+A book about AI-native software development, written by APM's creator, using APM's orchestration infrastructure, contained zero mentions of APM across 62,500 words. This was not a bug — it was the methodology working correctly. Each agent was dispatched with chapter-specific scope; no agent had "promote the author's project" in its persona. The absence proved the review process was honest and prompted the four-wave strategic assessment that produced the surgical insertions above.
 
 ---
 
 ## What Held True Regardless of the Model
 
-Chapter 15 identifies five properties that hold regardless of model improvement. This project tested all five under real conditions:
-
-| Property | How This Project Tested It |
-|---|---|
-| **Context will remain finite and fragile** | Architecture agent failed at monolithic scope. Every wave was sized to context budget. |
-| **Output will remain probabilistic** | Three-reviewer pipeline caught inconsistencies no single review pass would find. Fact-checker found 75 flags. |
-| **Explicit knowledge > implicit knowledge** | "Proof, not prerequisite" principle — once articulated — resolved all APM insertion decisions mechanically. |
-| **Human judgment remains bottleneck and differentiator** | User vetoed `apm compile`, overriding all 11 agent personas. Correct call that no agent was positioned to make. |
-| **Composition will remain necessary** | 15 chapters required 50+ dispatches, 4 waves, 3 dynamically created personas, and 2 integration review passes. No single agent could hold the full manuscript in focus. |
-
-The constraints are not training wheels. They are load-bearing architecture.
+The five structural properties from Chapter 15 held under editorial conditions (see the APM Overhaul case study for the full table). The novel test here: **composition scales to non-code domains**. 15 chapters required 50+ dispatches, 4 waves, 3 dynamically created personas, and 2 integration review passes. Code orchestration patterns — wave ordering, checkpoint discipline, context budgeting — transferred directly to editorial orchestration without modification.
 
 ---
 
 ::: {.callout-note title="Metrics"}
-62,510 words · 15 chapters · 11 personas (8 + 3 dynamic) · ~50+ dispatches · 4 writing waves + integration + polish · 15 Mermaid diagrams · 75 fact-check flags (5 critical) · 40 visual opportunities · 5 APM mentions (~475 words) · 4 anti-patterns encountered · 5/5 structural properties tested
+~62,500 words · 15 chapters · 11 personas (8 + 3 dynamic) · ~50+ dispatches · 4 writing waves + integration + polish · 15 Mermaid diagrams · 75 fact-check flags (5 critical) · 40 visual opportunities · 5 APM mentions (~475 words) · 4 escalation events · 5/5 structural properties tested
 :::
 
----
 
-## What This Proves
-
-The Agentic SDLC methodology generalizes beyond code — the same primitives, discipline, and composition patterns that manage multi-agent code changes managed a multi-chapter editorial workflow. The methodology survived contact with its own subject matter. See the TL;DR at the top for the distilled lessons.
