@@ -964,22 +964,35 @@ User: And can you add the new /logout endpoint?</code></pre>
 <section id="when-constraints-are-missing-three-failure-stories" class="level2" data-number="12.7">
 <h2 data-number="12.7" class="anchored" data-anchor-id="when-constraints-are-missing-three-failure-stories"><span class="header-section-number">12.7</span> When Constraints Are Missing: Three Failure Stories</h2>
 <p>The five constraints are defined independently but produce their strongest effects in combination. Theory says each pair closes a gap that neither constraint addresses alone. Practice is more memorable. Here are three teams that had one constraint in place and discovered the hard way what the missing partner cost them.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="About These Stories">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>About These Stories
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The failure scenarios below are fictional composites, distilled from the author’s consulting observations and distorted to protect client confidentiality. They illustrate real patterns, not specific engagements.</p>
+</div>
+</div>
 <p><strong>The team with hierarchy but no progressive disclosure.</strong> A fintech startup (12 engineers, 18 months into their product) built a meticulous instruction hierarchy: global rules at the root, domain rules per service, module-specific rules for payments and auth. Textbook Explicit Hierarchy. But every instruction file was self-contained — the auth instructions inlined the full OWASP token reference (1,400 words), the complete session management spec (900 words), and the rate-limiting policy (600 words). When an agent worked on a simple token-validation bugfix, it loaded the auth-level file and received nearly 3,000 words of guidance for a 15-line change. The agent “solved” the bug by refactoring the token validation to also implement a rate-limiting improvement mentioned in the same file, a change no one asked for that introduced a subtle race condition in the refresh flow. The hierarchy got the <em>right rules</em> to the agent. Without progressive disclosure, it got all of them at once, and the agent could not distinguish the relevant from the adjacent.</p>
 <p><strong>The team with reduced scope but no composition.</strong> A platform team (8 engineers supporting 40+ microservices) was disciplined about task sizing — every agent session had a single, focused objective, fresh context, clean scope. Textbook Reduced Scope. But they had no composition layer. Each task carried its own copy of the coding standards, the error-handling patterns, and the testing requirements, pasted into the prompt rather than referenced from shared context files. When the team updated their error format from string messages to structured error objects, they updated the canonical doc but missed the pasted copies in four prompt templates. For two weeks, agents working on different services produced two different error formats depending on which prompt they received. The scope constraint kept each task reliable in isolation. Without composition, there was no single source of truth to keep them consistent with each other.</p>
 <p><strong>The team with safety boundaries but no reduced scope.</strong> An enterprise team (200+ engineers, regulated healthcare domain) enforced strict boundaries — tool whitelists per agent, mandatory approval gates for security-sensitive files, knowledge scoping via <code>applyTo</code>. Textbook Safety Boundaries. But they routinely dispatched broad tasks: “implement the full OAuth2 integration,” spanning token exchange, PKCE flow, session management, and error handling in one session. The agent operated within its tool boundaries but accumulated so much context over the long session that its attention degraded. Late in the session, it generated a refresh-token endpoint that stored tokens in a client-accessible cookie, a pattern explicitly forbidden by the security instructions loaded at session start, now buried under 40,000 tokens of accumulated implementation context. The safety boundaries constrained what the agent <em>could</em> do. Without reduced scope, they could not ensure the agent still <em>remembered</em> what it should not do.</p>
 <p>The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.</p>
-<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<div class="cell" data-fig-width="4" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-prose-constraints" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-prose-constraints-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <pre class="mermaid mermaid-js" data-label="fig-prose-constraints">graph TD
-    P["P&lt;br/&gt;Progressive&lt;br/&gt;Disclosure"] &lt;-- "controls attention&lt;br/&gt;within scope" --&gt; E["E&lt;br/&gt;Explicit&lt;br/&gt;Hierarchy"]
-    R["R&lt;br/&gt;Reduced&lt;br/&gt;Scope"] &lt;-- "constrains what&lt;br/&gt;safety must cover" --&gt; S["S&lt;br/&gt;Safety&lt;br/&gt;Boundaries"]
-    O["O&lt;br/&gt;Orchestrated&lt;br/&gt;Composition"] &lt;-- "single source of&lt;br/&gt;truth across tasks" --&gt; R
-    P &lt;-- "loads only what&lt;br/&gt;fits in scope" --&gt; R
-    E &lt;-- "hierarchy defines&lt;br/&gt;boundary scope" --&gt; S
+    P["P&lt;br/&gt;Progressive&lt;br/&gt;Disclosure"] &lt;-- "controls&lt;br/&gt;attention" --&gt; E["E&lt;br/&gt;Explicit&lt;br/&gt;Hierarchy"]
+    R["R&lt;br/&gt;Reduced&lt;br/&gt;Scope"] &lt;-- "constrains&lt;br/&gt;safety scope" --&gt; S["S&lt;br/&gt;Safety&lt;br/&gt;Boundaries"]
+    O["O&lt;br/&gt;Orchestrated&lt;br/&gt;Composition"] &lt;-- "single source&lt;br/&gt;of truth" --&gt; R
+    P &lt;-- "loads what&lt;br/&gt;fits scope" --&gt; R
+    E &lt;-- "hierarchy defines&lt;br/&gt;boundaries" --&gt; S
     O &lt;-- "composable units&lt;br/&gt;enable disclosure" --&gt; P
 </pre>
 </div>

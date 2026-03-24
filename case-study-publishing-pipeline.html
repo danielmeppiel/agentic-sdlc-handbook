@@ -727,28 +727,27 @@ Figure&nbsp;19.2: The ‘Almost Done’ trap: cascading PDF rendering fixes
 </tbody>
 </table>
 <p>The final architecture splits rendering by environment:</p>
-<div class="landscape">
-<div class="cell" data-fig-width="5.5" data-layout-align="default">
+<div class="cell" data-fig-width="5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-cs-cicd-architecture" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-cicd-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <pre class="mermaid mermaid-js" data-label="fig-cs-cicd-architecture">flowchart TB
-    subgraph CI ["CI Pipeline (49 seconds)"]
+    subgraph CI ["CI Pipeline (49s)"]
         A1["Checkout"] --&gt; A2["Install Quarto"]
-        A2 --&gt; A3["quarto render --to html"]
+        A2 --&gt; A3["render --to html"]
         A3 --&gt; A4["Restore PDF/EPUB&lt;br/&gt;from gh-pages"]
-        A4 --&gt; A5["quarto publish&lt;br/&gt;--no-render"]
+        A4 --&gt; A5["publish --no-render"]
     end
 
     subgraph Local ["Local Render (15 min)"]
-        B1["quarto render --to pdf"] --&gt; B2["Save PDF"]
-        B2 --&gt; B3["quarto render --to epub"]
+        B1["render --to pdf"] --&gt; B2["Save PDF"]
+        B2 --&gt; B3["render --to epub"]
         B3 --&gt; B4["Save EPUB"]
-        B4 --&gt; B5["quarto render --to html"]
+        B4 --&gt; B5["render --to html"]
         B5 --&gt; B6["Copy PDF + EPUB&lt;br/&gt;into _book/"]
-        B6 --&gt; B7["quarto publish&lt;br/&gt;--no-render"]
+        B6 --&gt; B7["publish --no-render"]
     end
 
 </pre>
@@ -758,7 +757,6 @@ Figure&nbsp;19.2: The ‘Almost Done’ trap: cascading PDF rendering fixes
 Figure&nbsp;19.3: Final CI/CD architecture: CI pipeline and local render workflow
 </figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>

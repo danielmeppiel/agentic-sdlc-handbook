@@ -636,7 +636,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="team-topology-11-personas-four-pods" class="level2">
 <h2 class="anchored" data-anchor-id="team-topology-11-personas-four-pods">Team Topology: 11 Personas, Four Pods</h2>
 <p>The orchestrator designed an 8-persona expert panel at project inception, then dynamically created 3 more as needs emerged during execution. The personas organized into four functional pods:</p>
-<div class="cell" data-fig-width="5.5" data-fig-height="7" data-layout-align="default">
+<div class="cell" data-fig-width="5" data-fig-height="5.5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-cs-team-topology" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -644,26 +644,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div>
 <pre class="mermaid mermaid-js" data-label="fig-cs-team-topology">graph TB
     subgraph Editorial["Editorial Pod"]
-        CE[Chief Editor&lt;br/&gt;Cross-chapter coherence]
-        TLA[Thought Leadership Advisor&lt;br/&gt;Positioning &amp; differentiation]
+        CE[Chief Editor&lt;br/&gt;Coherence]
+        TLA[Thought Leadership&lt;br/&gt;Positioning]
     end
 
     subgraph Domain["Domain Expert Pod"]
-        CS[C-Suite Strategist&lt;br/&gt;Executive lens, ROI framing]
-        PA[Practitioner Authority&lt;br/&gt;Engineering credibility]
-        MA[Market Analyst&lt;br/&gt;Competitive landscape]
-        PS[Platform Strategist&lt;br/&gt;Architecture patterns]
+        CS[C-Suite Strategist&lt;br/&gt;Executive lens]
+        PA[Practitioner Authority&lt;br/&gt;Eng credibility]
+        MA[Market Analyst&lt;br/&gt;Landscape]
+        PS[Platform Strategist&lt;br/&gt;Architecture]
     end
 
     subgraph Review["Review Pod"]
-        CTO[CTO Proxy&lt;br/&gt;Would I buy this for my team?]
-        DL[Dev Lead Proxy&lt;br/&gt;Would my engineers use this?]
+        CTO[CTO Proxy&lt;br/&gt;Buy for my team?]
+        DL[Dev Lead Proxy&lt;br/&gt;Engineers use this?]
     end
 
-    subgraph Audit["Audit Pod — Dynamically Created"]
-        IL[Illustrator&lt;br/&gt;Visual strategist]
-        FC[Fact-Ref-Checker&lt;br/&gt;Claims auditor]
-        PB[Publishing Advisor&lt;br/&gt;Distribution strategy]
+    subgraph Audit["Audit Pod — Dynamic"]
+        IL[Illustrator&lt;br/&gt;Visual strategy]
+        FC[Fact-Ref-Checker&lt;br/&gt;Claims audit]
+        PB[Publishing Advisor&lt;br/&gt;Distribution]
     end
 
     CE --&gt; CTO

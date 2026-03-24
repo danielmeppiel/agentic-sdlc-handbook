@@ -892,15 +892,15 @@ Figure&nbsp;11.1: The seven APM primitive types
 <section id="tool-support-and-portability" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</h2>
 <p>The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
-<div data-tbl-colwidths="[14,24,18,18,14,12]">
+<div data-tbl-colwidths="[12,22,18,18,16,14]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 14%">
-<col style="width: 24%">
-<col style="width: 18%">
-<col style="width: 18%">
-<col style="width: 14%">
 <col style="width: 12%">
+<col style="width: 22%">
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 16%">
+<col style="width: 14%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -915,8 +915,8 @@ Figure&nbsp;11.1: The seven APM primitive types
 <tbody>
 <tr class="odd">
 <td><strong>Instructions</strong></td>
-<td><code>.instructions.md</code> with <code>applyTo</code> frontmatter; <code>copilot-instructions.md</code> global</td>
-<td><code>.cursor/rules/*.mdc</code> with glob frontmatter</td>
+<td><code>.instructions.md</code> + <code>applyTo</code>; <code>copilot-instructions.md</code></td>
+<td><code>.cursor/rules/*.mdc</code> + glob</td>
 <td><code>CLAUDE.md</code> per directory</td>
 <td><code>.windsurfrules</code>; cascade rules</td>
 <td><code>.opencode/instructions.md</code></td>
@@ -924,14 +924,14 @@ Figure&nbsp;11.1: The seven APM primitive types
 <tr class="even">
 <td><strong>Agents</strong></td>
 <td><code>.agent.md</code> with model + tools</td>
-<td>Configurable via rules and agent modes</td>
-<td>Via <code>/commands</code> and agent configurations</td>
+<td>Via rules and agent modes</td>
+<td><code>/commands</code> and agent configs</td>
 <td>—</td>
 <td>—</td>
 </tr>
 <tr class="odd">
 <td><strong>Skills</strong></td>
-<td><code>SKILL.md</code> directories with examples</td>
+<td><code>SKILL.md</code> dirs with examples</td>
 <td>Embed in rules with examples</td>
 <td>Embed in <code>CLAUDE.md</code> sections</td>
 <td>Embed in rules</td>
@@ -939,33 +939,33 @@ Figure&nbsp;11.1: The seven APM primitive types
 </tr>
 <tr class="even">
 <td><strong>Prompts</strong></td>
-<td><code>.prompt.md</code> with execution mode</td>
-<td>Embed in rules or <code>.cursor/prompts/</code></td>
-<td>Via <code>/commands</code> definitions</td>
+<td><code>.prompt.md</code> with exec mode</td>
+<td>Rules or <code>.cursor/prompts/</code></td>
+<td><code>/commands</code> definitions</td>
 <td>Flows (different model)</td>
 <td>—</td>
 </tr>
 <tr class="odd">
 <td><strong>Memory</strong></td>
-<td>SQLite database; <code>.memory.md</code> as portable context</td>
+<td>SQLite DB; <code>.memory.md</code> portable</td>
 <td>Notepads; project-level rules</td>
-<td>In <code>CLAUDE.md</code> sections; persistent memory</td>
+<td><code>CLAUDE.md</code> sections; persistent memory</td>
 <td>In rules</td>
 <td>—</td>
 </tr>
 <tr class="even">
 <td><strong>Orchestration</strong></td>
-<td><code>.spec.md</code> loaded as context; plan mode artifacts</td>
-<td>Loaded as context; composer plans</td>
-<td>Loaded as context; plan mode</td>
+<td><code>.spec.md</code> as context; plan mode</td>
+<td>Context; composer plans</td>
+<td>Context; plan mode</td>
 <td>Loaded as context</td>
 <td>Loaded as context</td>
 </tr>
 <tr class="odd">
 <td><strong>Hooks</strong></td>
 <td>Copilot hooks config; VS Code tasks</td>
-<td>—</td>
-<td>—</td>
+<td>Task runners; <code>.cursor/hooks/</code></td>
+<td>Hooks (<code>hooks</code> in settings); pre/post commands</td>
 <td>—</td>
 <td>—</td>
 </tr>
@@ -988,7 +988,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 <li><strong>Instructions</strong> have the broadest native support — <code>.instructions.md</code> (Copilot), <code>.cursor/rules/</code> (Cursor), <code>CLAUDE.md</code> (Claude Code). Every major tool reads project-level markdown from predictable locations.</li>
 <li><strong>Memory</strong> is implemented as SQLite databases (GitHub Copilot), notepads (Cursor), or embedded in <code>CLAUDE.md</code> sections (Claude Code). The <code>.memory.md</code> format described here works as portable context loaded by any tool.</li>
 <li><strong>Orchestration specs</strong> (<code>.spec.md</code>) map to plan mode artifacts (<code>plan.md</code> in Copilot CLI) or are consumed as plain context files. No tool has a native “spec” file format yet.</li>
-<li><strong>Agents, Skills, Prompts, and Hooks</strong> have the deepest native support in GitHub Copilot’s <code>.agent.md</code>, <code>SKILL.md</code>, <code>.prompt.md</code>, and hooks system. Other tools achieve similar outcomes through their own configuration mechanisms.</li>
+<li><strong>Agents, Skills, and Prompts</strong> have the deepest native support in GitHub Copilot’s <code>.agent.md</code>, <code>SKILL.md</code>, and <code>.prompt.md</code> formats. <strong>Hooks</strong> are natively supported by Copilot, Cursor, and Claude Code; other tools achieve similar outcomes through their own configuration mechanisms.</li>
 </ul>
 <p>The file names in this chapter are conventions that work today. As tools converge, expect native format support to broaden.</p>
 </div>

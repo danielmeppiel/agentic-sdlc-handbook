@@ -1068,19 +1068,19 @@ Figure&nbsp;6.2: The context compounding flywheel
 <section id="the-agentic-computing-stack" class="level2" data-number="6.7">
 <h2 data-number="6.7" class="anchored" data-anchor-id="the-agentic-computing-stack"><span class="header-section-number">6.7</span> The Agentic Computing Stack</h2>
 <p>The components in the build-buy-compose decision above are not independent purchases. They are layers in a technology stack, and as with any stack, each layer depends on the ones below it.</p>
-<div class="cell" data-fig-width="7" data-fig-height="6" data-layout-align="default">
+<div class="cell" data-fig-width="5.5" data-fig-height="5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-agentic-stack" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-agentic-stack-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
 <pre class="mermaid mermaid-js" data-label="fig-agentic-stack">flowchart BT
-    L1["&lt;b&gt;LLM&lt;/b&gt; (GPT, Claude, Gemini)&lt;br/&gt;&lt;i&gt;≈ CPU (x86, ARM)&lt;/i&gt;"]
-    L2["&lt;b&gt;Harness&lt;/b&gt; (Copilot CLI, Cursor, Claude Code)&lt;br/&gt;&lt;i&gt;≈ Runtime / OS (Node.js, JVM)&lt;/i&gt;"]
-    L3["&lt;b&gt;PROSE Constraints&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Architectural Standards (REST, POSIX)&lt;/i&gt;"]
-    L4["&lt;b&gt;Markdown Primitives&lt;/b&gt; (.instructions.md, .agent.md)&lt;br/&gt;&lt;i&gt;≈ Source Code / Config Files&lt;/i&gt;"]
-    L5["&lt;b&gt;APM / Claude plugin.json&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Package Manager (npm, pip, cargo)&lt;/i&gt;"]
-    L6["&lt;b&gt;Spec-Kit, Squad&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Frameworks (Spring, React, Django)&lt;/i&gt;"]
+    L1["&lt;b&gt;LLM&lt;/b&gt;&lt;br/&gt;GPT, Claude, Gemini&lt;br/&gt;&lt;i&gt;≈ CPU&lt;/i&gt;"]
+    L2["&lt;b&gt;Harness&lt;/b&gt;&lt;br/&gt;Copilot CLI, Cursor, Claude Code&lt;br/&gt;&lt;i&gt;≈ Runtime / OS&lt;/i&gt;"]
+    L3["&lt;b&gt;PROSE Constraints&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Arch Standards&lt;/i&gt;"]
+    L4["&lt;b&gt;Markdown Primitives&lt;/b&gt;&lt;br/&gt;.instructions.md, .agent.md&lt;br/&gt;&lt;i&gt;≈ Source / Config&lt;/i&gt;"]
+    L5["&lt;b&gt;APM / plugin.json&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Package Manager&lt;/i&gt;"]
+    L6["&lt;b&gt;Spec-Kit, Squad&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Frameworks&lt;/i&gt;"]
     L7["&lt;b&gt;Agentic Workflows&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Applications&lt;/i&gt;"]
 
     L1 --&gt; L2 --&gt; L3 --&gt; L4 --&gt; L5 --&gt; L6 --&gt; L7
