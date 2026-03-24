@@ -184,19 +184,9 @@ Tasks that fail the self-sufficiency test are the primary source of mid-wave esc
 
 The meta-process is abstract until you see it execute. This section summarizes a real PR — an auth and logging architecture overhaul on APM, an open-source agent package manager (the author's implementation of the distribution layer described in Chapters 9 and 10). The full execution log — including 5 escalation events, 8 plan iterations, and anti-pattern mappings — is in [The APM Auth + Logging Overhaul](../case-study-apm-overhaul.qmd) case study in Part IV.
 
-**Scope.** 5 cross-cutting concerns (auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage) touching 75 files across the entire source tree.
+**Scope.** 5 cross-cutting concerns (auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage) touching 75 files across the entire source tree. The canonical metrics — files, lines, test counts, agent dispatches, escalations — are in the [APM Overhaul case study](../case-study-apm-overhaul.qmd). This section focuses on *how* the meta-process phases played out.
 
-| Metric | Value |
-|---|---|
-| Files changed | 75 |
-| Lines added / removed | +7,832 / −1,074 |
-| Tests | 2,829 → 2,897 (+68 added during session) |
-| Agents dispatched | ~25 implementation + 6 audit |
-| Human interventions | 3 during wave execution (5 total across session) |
-| Plan iterations | 8 (v1 → v8 before execution began) |
-| Wall-clock time | ~90 minutes (wave execution phase) |
-
-**A note on timing.** The 90-minute figure reflects an experienced practitioner working with mature instrumentation: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.
+**A note on timing.** The ~90-minute wave execution time reflects an experienced practitioner working with mature instrumentation: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.
 
 ### Timeline
 
@@ -282,7 +272,7 @@ Session discipline follows the principles established in Chapter 12. In the meta
 
 ## Adapting the Meta-Process
 
-The PR #394 case involved 75 files and ~25 agents across 5 waves (including one recovery wave). Not every change is that large. The meta-process scales in both directions.
+The PR #394 case (see [case study](../case-study-apm-overhaul.qmd) for full metrics) involved multiple waves including one recovery wave. Not every change is that large. The meta-process scales in both directions.
 
 ### Small Changes (fewer than 10 files)
 
@@ -318,7 +308,7 @@ When followed, the meta-process produces four things that manual development typ
 
 **Reproducible process.** The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same context files, and the same plan, would produce substantially similar output. This is our hypothesis, not a tested claim. Controlled reproducibility experiments would strengthen it. The non-determinism of AI agents is bounded by the determinism of the process around them.
 
-**Proportional cost.** The time spent scales with the change scope, not the full codebase size — though we have verified this only at the scale documented in the reference case study. A 75-file change took ~90 minutes of wave execution time regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.
+**Proportional cost.** The time spent scales with the change scope, not the full codebase size — though we have verified this only at the scale documented in the [reference case study](../case-study-apm-overhaul.qmd). The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.
 
 ---
 

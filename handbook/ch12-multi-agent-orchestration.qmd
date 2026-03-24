@@ -209,7 +209,7 @@ The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0's 
 
 Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish, typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.
 
-In the PR #394 execution ([case study](../case-study-apm-overhaul.qmd)), four waves plus one recovery wave handled 75 files in roughly 24 minutes of wave execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. This comparison is estimated, not measured — we did not run the sequential approach. The numbers reflect the author's judgment based on prior single-agent attempts of similar scope. The real value was in reduced context degradation, not reduced time.
+In the PR #394 execution ([case study](../case-study-apm-overhaul.qmd)), four waves plus one recovery wave handled 75 files in roughly 24 minutes of agent computation time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent computation time observed. This comparison is estimated, not measured — we did not run the sequential approach. The numbers reflect the author's judgment based on prior single-agent attempts of similar scope. The real value was in reduced context degradation, not reduced time.
 
 ```{mermaid}
 %%| fig-width: 5.0
@@ -314,7 +314,7 @@ Two agents, each following their specialization's best practices, produce output
 
 **Resolution.** This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan's priority-ordered principles resolve most of them mechanically: if UX is prioritized above architectural purity, the domain agent's approach wins. When the principles don't resolve the conflict, the human decides and documents the rationale.
 
-The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed during wave execution across ~25 agent dispatches — one was a scope decision during planning, one was an agent recovery during Wave 2, and one was test triage after the recovery wave (Wave 2b); see the [case study](../case-study-apm-overhaul.qmd) for the full escalation log. None were design conflicts between agents; all were judgment calls that the plan could not automate. In the documented case, the intervention rate was approximately 12% (3 out of ~25 dispatches). We use 15–20% as a starting hypothesis for well-planned work, though this has not been validated across multiple teams. Rates significantly above 20% may indicate underspecified plans. Rates below 5% warrant scrutiny — the work may be too simple for multi-agent orchestration, or review may be insufficient.
+The frequency of design conflicts is itself a metric. In the PR #394 execution ([case study](../case-study-apm-overhaul.qmd)), 3 human interventions were needed across ~25 agent dispatches. None were design conflicts between agents; all were judgment calls that the plan could not automate. The intervention rate was approximately 12%. We use 15–20% as a starting hypothesis for well-planned work, though this has not been validated across multiple teams. These thresholds are calibration points from our reference case study, not validated benchmarks. Rates significantly above 20% may indicate underspecified plans. Rates below 5% warrant scrutiny — the work may be too simple for multi-agent orchestration, or review may be insufficient.
 
 ---
 
@@ -349,7 +349,7 @@ Not every problem requires human attention. A well-designed orchestration system
 
 The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.[^ch12-autonomy]
 
-In the documented case ([case study](../case-study-apm-overhaul.qmd)), the distribution across all decision points within the ~25 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions during wave execution out of ~25 dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
+In the PR #394 execution ([case study](../case-study-apm-overhaul.qmd)), the distribution across all decision points within the ~25 agent dispatches was roughly two-thirds autonomous (L1), one-eighth automated retry (L2), and one-fifth human decision (L3/L4) — three interventions during wave execution out of ~25 dispatches. That ~20% rate is characteristic of what we observed in a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
 
 ---
 
@@ -357,9 +357,9 @@ In the documented case ([case study](../case-study-apm-overhaul.qmd)), the distr
 
 Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the PR #394 execution ([The APM Auth + Logging Overhaul](../case-study-apm-overhaul.qmd)).
 
-In the PR #394 case, the human time in a well-planned multi-agent execution broke down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). Total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.
+In the PR #394 case, the human time in a well-planned multi-agent execution broke down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). Total human time was roughly 45 minutes against 24 minutes of agent computation time, with a total wave execution time of roughly 90 minutes because human work overlaps with agent execution.
 
-The same 75-file change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts on changes of this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.
+The same change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts at this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.
 
 The multi-agent approach did not save total elapsed time on this change. It traded human planning time for agent quality. The 45 minutes the orchestrator spent coordinating replaced the 30-45 minutes they would have spent debugging context-degraded output — with better results.
 
@@ -465,7 +465,7 @@ This is not a rigid process. A small change might skip straight from step 1 to d
 
 What matters is the discipline behind it: agents are specialized so their context is concentrated, files are partitioned so agents don't conflict, waves are ordered so dependencies are satisfied, and the human makes the decisions that require judgment rather than the decisions that require typing.
 
-The next chapter puts this framework into practice. It walks through the full five-phase meta-process — Audit, Plan, Wave, Validate, Ship — with exact numbers from a 75-file execution that used every pattern described here.
+The next chapter puts this framework into practice. It walks through the full five-phase meta-process — Audit, Plan, Wave, Validate, Ship — with the [reference case study](../case-study-apm-overhaul.qmd) execution that used every pattern described here.
 
 [^ch12-coordination]: The coordination overhead of multi-agent systems parallels Brooks's observation that adding developers to a late project makes it later (*The Mythical Man-Month*, 1975). The difference: agent coordination overhead is predictable and can be reduced through better planning, not just through better communication.
 [^ch12-autonomy]: Our autonomy taxonomy draws conceptually from the SAE levels of driving automation (SAE J3016), adapted for software engineering contexts. The key parallel: higher autonomy levels require not less human involvement, but different kinds of involvement — supervision rather than operation.

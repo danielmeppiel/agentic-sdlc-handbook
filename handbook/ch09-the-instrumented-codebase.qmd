@@ -226,7 +226,8 @@ Prompts are the bridge between ad-hoc chat and systematic workflows. Without the
 ## Authentication (last updated: 2025-06-15)
 - Migrated from session-based to JWT auth in Q1 2025
 - Token refresh uses exponential backoff, max 3 retries
-- EMU (Enterprise Managed User) tokens use `ghu_` prefix
+- EMU (Enterprise Managed User) tokens use `ghu_` prefix ← INCORRECT, agent error
+- CORRECTION: EMU tokens use standard PAT prefixes (`github_pat_` / `ghp_`). `ghu_` is OAuth.
 - The `SessionAuth` class is deprecated but not yet removed.
   Do NOT use it for new code. Migration tracked in JIRA-4521.
 
@@ -311,7 +312,9 @@ Start with one or two hooks: a linting check on save and a test prompt on new fi
 
 ## Tool Support and Portability
 
-The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.
+The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.[^ch09-landscape]
+
+[^ch09-landscape]: This comparison reflects mid-2025 capabilities. The AI coding tool landscape evolves quarterly; verify current capabilities at each vendor's documentation site.
 
 ::: {tbl-colwidths="[12,22,18,18,16,14]"}
 
@@ -335,7 +338,7 @@ The seven primitives describe *what* your codebase needs to communicate to agent
 - **Instructions** have the broadest native support — `.instructions.md` (Copilot), `.cursor/rules/` (Cursor), `CLAUDE.md` (Claude Code). Every major tool reads project-level markdown from predictable locations.
 - **Memory** is implemented as SQLite databases (GitHub Copilot), notepads (Cursor), or embedded in `CLAUDE.md` sections (Claude Code). The `.memory.md` format described here works as portable context loaded by any tool.
 - **Orchestration specs** (`.spec.md`) map to plan mode artifacts (`plan.md` in Copilot CLI) or are consumed as plain context files. No tool has a native "spec" file format yet.
-- **Agents, Skills, and Prompts** have the deepest native support in GitHub Copilot's `.agent.md`, `SKILL.md`, and `.prompt.md` formats. **Hooks** are natively supported by Copilot, Cursor, and Claude Code; other tools achieve similar outcomes through their own configuration mechanisms.
+- **Agents, Skills, and Prompts** have, at the time of writing, the deepest native support in GitHub Copilot's `.agent.md`, `SKILL.md`, and `.prompt.md` formats. **Hooks** are natively supported by Copilot, Cursor, and Claude Code; other tools achieve similar outcomes through their own configuration mechanisms.
 
 The file names in this chapter are conventions that work today. As tools converge, expect native format support to broaden.
 :::
@@ -346,7 +349,7 @@ Three observations.
 
 **Agent configurations are the least portable.** Chat modes, model selection, and tool boundaries are defined differently in every tool and don't transfer. The knowledge inside them (domain expertise, named patterns, anti-patterns) is just markdown and moves freely. The activation mechanism does not.
 
-**The three major tools now support most primitives natively.** GitHub Copilot, Cursor, and Claude Code each support the majority of the seven primitive types, though file formats and native integration depth differ. Copilot has the most comprehensive native format support. Cursor and Claude Code have expanded rapidly and cover instructions, agents, skills, memory, and orchestration through their own mechanisms. OpenCode, the newest entrant, currently supports mainly instructions. Windsurf covers instructions and basic context loading. The methodology described here is portable across all of them — the knowledge transfers even when the wiring differs.
+**The three major tools now support most primitives natively.** GitHub Copilot, Cursor, and Claude Code each support the majority of the seven primitive types, though file formats and native integration depth differ. As of this writing, Copilot has the most extensive native format support, though the gap is narrowing rapidly as Cursor and Claude Code add primitive-equivalent features. OpenCode, the newest entrant, currently supports mainly instructions. Windsurf covers instructions and basic context loading. The methodology described here is portable across all of them — the knowledge transfers even when the wiring differs.
 
 ### What happens when you switch tools
 
@@ -651,7 +654,7 @@ The following excerpts are from a real Copilot CLI session — not a reconstruct
 ## Session `d89b3ccc`
 
 **Repository:** microsoft/apm · **Branch:** `feat/auth-logging-architecture-393`
-**Result:** PR #394 — 75 files changed, 2,829 → 2,897 tests · **Duration:** 207 turns, single session
+**Result:** [PR #394](https://github.com/microsoft/apm/pull/394) — 75 files changed · **Duration:** 207 turns across 2 sessions · [Full metrics](../case-study-apm-overhaul.qmd)
 :::
 
 **Turn 0 — The messy start.** The session opens with the developer pasting raw terminal output of an authentication failure and role-casting the agent in a single breath. This is the Architect role from Chapter 8 — not writing a plan document, but framing the problem and the expertise needed to solve it:
