@@ -540,7 +540,8 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#the-architecture-decision-matrix" id="toc-the-architecture-decision-matrix" class="nav-link" data-scroll-target="#the-architecture-decision-matrix"><span class="header-section-number">6.5</span> The Architecture Decision Matrix</a></li>
   <li><a href="#build-buy-or-compose" id="toc-build-buy-or-compose" class="nav-link" data-scroll-target="#build-buy-or-compose"><span class="header-section-number">6.6</span> Build, Buy, or Compose</a></li>
-  <li><a href="#start-anywhere-expand-deliberately" id="toc-start-anywhere-expand-deliberately" class="nav-link" data-scroll-target="#start-anywhere-expand-deliberately"><span class="header-section-number">6.7</span> Start Anywhere, Expand Deliberately</a></li>
+  <li><a href="#the-agentic-computing-stack" id="toc-the-agentic-computing-stack" class="nav-link" data-scroll-target="#the-agentic-computing-stack"><span class="header-section-number">6.7</span> The Agentic Computing Stack</a></li>
+  <li><a href="#start-anywhere-expand-deliberately" id="toc-start-anywhere-expand-deliberately" class="nav-link" data-scroll-target="#start-anywhere-expand-deliberately"><span class="header-section-number">6.8</span> Start Anywhere, Expand Deliberately</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -1063,10 +1064,50 @@ Figure&nbsp;6.2: The context compounding flywheel
 </div>
 <p>The pattern: work and data context often require building or composing because they are organization-specific. Code context is the most composable because the formats are increasingly standardized — custom instructions in GitHub Copilot, rule files in Cursor, <code>CLAUDE.md</code> in Claude Code — and community-shared configurations can provide a starting point that teams customize.</p>
 <p>No single vendor covers all three context domains comprehensively today. This is a practical observation, not a criticism; the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.</p>
+</section>
+<section id="the-agentic-computing-stack" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="the-agentic-computing-stack"><span class="header-section-number">6.7</span> The Agentic Computing Stack</h2>
+<p>The components in the build-buy-compose decision above are not independent purchases. They are layers in a technology stack, and as with any stack, each layer depends on the ones below it.</p>
+<div class="cell" data-fig-width="7" data-fig-height="6" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-agentic-stack" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-agentic-stack-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-agentic-stack">flowchart BT
+    L1["&lt;b&gt;LLM&lt;/b&gt; (GPT, Claude, Gemini)&lt;br/&gt;&lt;i&gt;≈ CPU (x86, ARM)&lt;/i&gt;"]
+    L2["&lt;b&gt;Harness&lt;/b&gt; (Copilot CLI, Cursor, Claude Code)&lt;br/&gt;&lt;i&gt;≈ Runtime / OS (Node.js, JVM)&lt;/i&gt;"]
+    L3["&lt;b&gt;PROSE Constraints&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Architectural Standards (REST, POSIX)&lt;/i&gt;"]
+    L4["&lt;b&gt;Markdown Primitives&lt;/b&gt; (.instructions.md, .agent.md)&lt;br/&gt;&lt;i&gt;≈ Source Code / Config Files&lt;/i&gt;"]
+    L5["&lt;b&gt;APM / Claude plugin.json&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Package Manager (npm, pip, cargo)&lt;/i&gt;"]
+    L6["&lt;b&gt;Spec-Kit, Squad&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Frameworks (Spring, React, Django)&lt;/i&gt;"]
+    L7["&lt;b&gt;Agentic Workflows&lt;/b&gt;&lt;br/&gt;&lt;i&gt;≈ Applications&lt;/i&gt;"]
+
+    L1 --&gt; L2 --&gt; L3 --&gt; L4 --&gt; L5 --&gt; L6 --&gt; L7
+
+    style L1 fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a
+    style L2 fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a
+    style L3 fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a
+    style L4 fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a
+    style L5 fill:#e6f4ea,stroke:#34a853,color:#1a1a1a
+    style L6 fill:#e6f4ea,stroke:#34a853,color:#1a1a1a
+    style L7 fill:#fce8e6,stroke:#ea4335,color:#1a1a1a
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-agentic-stack-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: The Agentic Computing Stack — seven layers mapping agentic components to their classical analogs.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This stack is not a theoretical proposal — it is forming independently across vendors, which is the strongest evidence that the layers are real. Anthropic’s Claude <code>plugin.json</code> converged on manifest-based primitive bundling independently of APM<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. GitHub’s Agentic Workflows bring CI/CD-native execution to the application layer. Brady Gaster’s Squad<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> and GitHub’s Spec-Kit<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> represent framework-layer emergence: opinionated ways to compose primitives into multi-agent orchestration and spec-driven development. Spec-Kit and Squad are to agentic development what Spring and React are to traditional development — they make orchestration easier in one dimension, constrain freedom in another. They consume primitives via package managers. Any harness can run the resulting workflows. When independent efforts converge on the same layering without coordination, the layers are not an abstraction. They are a discovery.</p>
+<p>The maturity distribution across this stack tells you where to invest. The processing layer (LLMs) is powerful and improving on a cadence measured in weeks. The package management and framework layers are embryonic — roughly where <code>npm</code> was in 2012 or where web frameworks were in the early Rails era. This maturity gap between the bottom and top of the stack is exactly what the early PC era looked like: powerful CPUs, primitive operating systems, no standardized distribution. The strategic implication is clear: invest in the layers that compound — primitives, context infrastructure, distribution standards — not the layers that commoditize. Models get cheaper. Context gets more valuable.</p>
 <hr>
 </section>
-<section id="start-anywhere-expand-deliberately" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="start-anywhere-expand-deliberately"><span class="header-section-number">6.7</span> Start Anywhere, Expand Deliberately</h2>
+<section id="start-anywhere-expand-deliberately" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="start-anywhere-expand-deliberately"><span class="header-section-number">6.8</span> Start Anywhere, Expand Deliberately</h2>
 <p>The architecture presented in this chapter is designed to be adopted incrementally. There is no prerequisite checklist that must be completed before you begin. The following thresholds are starting points based on patterns observed across early-adopter teams; calibrate them to your baseline. The most common — and most effective — starting point:</p>
 <p><strong>Month 1.</strong> Pick one team, one phase (usually Code), and one investment (custom instructions encoding your top five conventions). Measure agent output quality before and after. <em>Gate to expand:</em> agent-generated code passes linting on first attempt ≥70% of the time, and the team has documented at least five conventions in machine-readable form.</p>
 <p><strong>Month 3.</strong> Extend to Review. Add agent-assisted code review with human sign-off on every PR. Measure review turnaround time and defect escape rate. <em>Gate to expand:</em> agent-assisted PRs achieve a review rejection rate no worse than the team’s human-only baseline, and median review turnaround time has decreased by ≥15%.</p>
@@ -1074,11 +1115,18 @@ Figure&nbsp;6.2: The context compounding flywheel
 <p><strong>Month 12.</strong> Evaluate Plan and Build phases. By this point, your team has accumulated six months of structured context, and your agents are materially more effective than they were on day one — the compounding flywheel at work. <em>Gate to expand:</em> the team’s human intervention rate on agent tasks has declined by ≥20% from the Month 3 baseline, and at least two context feedback cycles have produced measurable improvement in agent output quality.</p>
 <p><strong>Month 18.</strong> Assess readiness for Operate phase automation. This requires the most mature infrastructure and the strongest governance — Chapter 5 covers the governance requirements in detail. <em>Gate:</em> the team has structured runbooks for ≥80% of common incident types, and agent-assisted alert correlation achieves ≥90% accuracy in retrospective testing against the past quarter’s incidents.</p>
 <p>This is a planning horizon, not a schedule. Some organizations will move faster; some will spend longer at each stage. The sequence matters more than the timeline: start where the tooling is mature and the context is structured, expand where the evidence supports it, and invest in context continuously.</p>
-<p>The canonical diagram at the top of this chapter — Human Layer, Agent Layer, Platform Layer, mapped across eight phases — is your board-level summary. Print it. Put it on a slide. Use it to answer “where are we and where are we going?” in a single visual. Then use the decision matrix to answer “what do we do next?”</p>
 <hr>
 <p>The reference architecture gives you a shared vocabulary for planning. The context moat gives you a reason to start now rather than wait. But architecture without governance is a blueprint without building codes. Chapter 5 addresses the hardest question in AI-assisted delivery: who is accountable when agents are participants in your software lifecycle, and how do you build the trust frameworks that make autonomous work auditable and safe?</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Anthropic, “Claude Code Plugins,” https://docs.anthropic.com/en/docs/claude-code/plugins<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Brady Gaster, “How Squad Runs Coordinated AI Agents Inside Your Repository,” GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>GitHub, “Spec Kit — Build High-Quality Software Faster,” https://github.com/github/spec-kit<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->

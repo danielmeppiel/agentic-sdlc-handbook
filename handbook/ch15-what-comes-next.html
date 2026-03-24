@@ -576,6 +576,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="21.1" class="anchored" data-anchor-id="near-term-what-changes-in-the-next-twelve-months"><span class="header-section-number">21.1</span> Near-Term: What Changes in the Next Twelve Months</h2>
 <p><strong>Agent tool use becomes standard, not experimental.</strong> The shift from text generation to agents that execute — file operations, terminal commands, API calls, test runs — is underway but uneven.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Within a year, tool-using agents will be the default interaction mode. This makes Safety Boundaries more critical, not less. A model that generates bad code wastes review time. A model that executes bad commands corrupts state. Guardrails that felt conservative in a text-generation world become essential in a tool-execution world.</p>
 <p><strong>Multi-agent orchestration moves from research to practice.</strong> Teams today primarily use single-agent interactions. Multi-agent patterns — planning agents dispatching specialists, review agents evaluating output, agents collaborating through shared artifacts — exist in research and early tooling.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Within a year, they will ship in mainstream platforms. The orchestration disciplines in Chapters 10–12 — task decomposition, wave-based execution, escalation protocols — become operational necessities rather than advanced practices.</p>
+<p><strong>The agentic computing stack crystallizes through independent convergence.</strong> By mid-2025, at least three independent efforts arrived at the same layered architecture: manifest-based primitive distribution, framework-layer composition, and CI/CD-native execution. Anthropic’s <code>plugin.json</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, GitHub’s Agentic Workflows, and open-source frameworks like Squad<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and Spec-Kit<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> didn’t coordinate — they converged because the layers reflect real boundaries in the problem. Open-source tools already provide manifest-based dependency resolution and security scanning at the primitive layer, the same architecture as npm or pip applied to agent configuration rather than runtime code. This is the pattern that produced HTTP → REST → Rails/Express → npm/pip → applications: each layer emerged when practitioners needed it, not when a standards body decreed it. Spec-Kit and Squad are to agentic development what Spring and React are to traditional computing — they make orchestration easier in one direction, constrain freedom in another, and consume primitives via package managers above the harness layer. The strategic signal: when independent implementations from different vendors converge on the same architecture, the architecture is real. Organizations investing in the primitive layer (Chapter 9) are building on the layer most likely to remain stable as the framework layer evolves.</p>
 <hr>
 </section>
 <section id="medium-term-what-shifts-over-one-to-three-years" class="level2" data-number="21.2">
@@ -589,7 +590,6 @@ ul.task-list li input[type="checkbox"] {
 <p>These predictions are directional. The author believes they describe where the field is heading. They are opinions, not forecasts.</p>
 <p><strong>Full lifecycle agent participation becomes achievable.</strong> The eight-phase lifecycle from Chapter 3 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.</p>
 <p><strong>Context infrastructure becomes as foundational as CI/CD.</strong> Every serious engineering organization today has continuous integration and deployment. Context infrastructure (the context files, instruction hierarchies, and knowledge bases that make agents effective) will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology “doesn’t work for us,” the same way organizations without CI concluded automated testing “doesn’t work at our scale.”</p>
-<p>Early implementations already exist. Open-source tools provide manifest-based dependency resolution and security scanning for agent configuration — the same architecture as npm or pip, applied to agent configuration rather than runtime code.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-three-horizons" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -682,6 +682,11 @@ Figure&nbsp;21.1: Three-horizon technology timeline
 <td>Medium — trajectory clear, timeline 5+ years</td>
 </tr>
 <tr class="odd">
+<td>Agentic computing stack layers consolidate</td>
+<td>Emerging</td>
+<td>Medium — convergence visible, standardization not</td>
+</tr>
+<tr class="even">
 <td>The five core constraints hold</td>
 <td>Structural</td>
 <td>High — properties of the problem</td>
@@ -760,6 +765,9 @@ Figure&nbsp;21.1: Three-horizon technology timeline
 <ol>
 <li id="fn1"><p>GitHub Copilot’s “agent mode” (2025), Cursor’s agentic features, and similar integrations in VS Code, JetBrains, and other IDEs demonstrate this shift. The Model Context Protocol (MCP) standardizes how agents access external tools, accelerating adoption.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>OpenAI’s Swarm framework, Microsoft’s AutoGen, and LangGraph represent early multi-agent orchestration libraries. GitHub Copilot coding agent and similar CI-integrated agents mark the beginning of production multi-agent workflows.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Anthropic, “Claude Code Plugins,” https://docs.anthropic.com/en/docs/claude-code/plugins<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Brady Gaster, “How Squad Runs Coordinated AI Agents Inside Your Repository,” GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>GitHub, “Spec Kit — Build High-Quality Software Faster,” https://github.com/github/spec-kit<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
