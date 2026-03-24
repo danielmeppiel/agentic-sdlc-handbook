@@ -1,7 +1,11 @@
 ---
-title: "Writing a 62,500-Word Book with Agent Fleets"
+title: "Writing a 67,000-Word Book with Agent Fleets"
 number-sections: false
 ---
+
+**Scope:** 15 chapters, ~67,000 words — full technical book on AI-native software development  
+**Duration:** Single extended Copilot CLI session  
+**Theme:** Whether code orchestration patterns transfer to editorial composition
 
 **How Copilot CLI orchestrated 11 agent personas across 50+ dispatches to produce *The Agentic SDLC Handbook* — using the methodology the book itself teaches.**
 
@@ -17,7 +21,7 @@ number-sections: false
 
 ## The Meta-Narrative
 
-This is a case study about a book that was written using the process it describes. *The Agentic SDLC Handbook* is a 15-chapter, 62,500-word technical book on AI-native software development. It was authored entirely through agentic orchestration in a single Copilot CLI session. The human author — Daniel Meppiel, Global Black Belt at Microsoft and creator of APM — provided domain expertise, intellectual property context, and editorial direction. Copilot CLI managed the agent team.
+This is a case study about a book that was written using the process it describes. *The Agentic SDLC Handbook* is a 15-chapter, ~67,000-word technical book on AI-native software development. It was drafted and composed through agentic orchestration in a single Copilot CLI session. The human author — Daniel Meppiel, Global Black Belt at Microsoft and creator of APM — provided domain expertise, intellectual property context, and editorial direction. Copilot CLI managed the agent team.
 
 The agent team was packaged and distributed using APM itself: 8 persona definitions as `.agent.md` files, an orchestration workflow as `SKILL.md`, declared as a dependency in `apm.yml`, and deployed via `apm install`. APM was used to build the book that teaches about APM.
 
@@ -168,12 +172,12 @@ Three of the eleven personas did not exist at project inception. They were creat
 ```{mermaid}
 %%| fig-width: 4.5
 %%| fig-cap: "Dynamic persona creation in response to process gaps"
-%%| fig-alt: "Flowchart showing three process gaps that triggered dynamic persona creation. First path: Integration Review where editor reads all 15 chapters leads to a decision node asking if visual anchors are missing. Yes leads to creating the Illustrator Agent (Visual Strategist persona), which produces a fleet of 2 agents finding 40 visual opportunities and embedding 15 Mermaid diagrams. Second path: Integration Review leads to a decision node asking if inconsistent statistics exist across chapters. Yes leads to creating the Fact-Ref-Checker (Claims Auditor persona), which produces a fleet of 2 agents finding 75 flags including 5 critical ones. Third path: The question 'How to publish?' leads to a decision node asking if publishing expertise is needed. Yes leads to creating the Publishing Advisor, which evaluates 5 paths and recommends Open Core plus Premium model."
+%%| fig-alt: "Flowchart showing three process gaps that triggered dynamic persona creation. First path: Integration Review where editor reads all 15 chapters leads to a decision node asking if visual anchors are missing. Yes leads to creating the Illustrator Agent (Visual Strategist persona), which produces a fleet of 2 agents finding 40 visual opportunities and embedding 24 Mermaid diagrams. Second path: Integration Review leads to a decision node asking if inconsistent statistics exist across chapters. Yes leads to creating the Fact-Ref-Checker (Claims Auditor persona), which produces a fleet of 2 agents finding 75 flags including 5 critical ones. Third path: The question 'How to publish?' leads to a decision node asking if publishing expertise is needed. Yes leads to creating the Publishing Advisor, which evaluates 5 paths and recommends Open Core plus Premium model."
 %%| label: fig-cs-dynamic-personas
 flowchart TD
     A[Integration Review<br/>Editor reads all 15 chapters] --> B{Visual anchors<br/>missing?}
     B -->|Yes| C[Create Illustrator Agent<br/>Visual Strategist persona]
-    C --> D[Fleet of 2: Block 1 + Block 2<br/>40 visual opportunities<br/>15 Mermaid diagrams embedded]
+    C --> D[Fleet of 2: Block 1 + Block 2<br/>40 visual opportunities<br/>24 Mermaid diagrams embedded]
 
     A --> E{Inconsistent statistics<br/>across chapters?}
     E -->|Yes| F[Create Fact-Ref-Checker<br/>Claims Auditor persona]
@@ -243,7 +247,7 @@ This was not persona drift or agent failure — every agent was following its pe
 
 ### 4. Panel Disagreement on APM Prominence
 
-**What happened:** After the "zero APM mentions in 62,500 words" discovery, the Market Analyst wanted more visibility; the Thought Leadership Advisor wanted less. The panel genuinely disagreed.
+**What happened:** After the "zero APM mentions in ~67,000 words" discovery, the Market Analyst wanted more visibility; the Thought Leadership Advisor wanted less. The panel genuinely disagreed.
 
 This demonstrated the value of explicit governing principles as tie-breakers. The Chief Editor resolved the disagreement with a single principle: *"The book is 100% useful without APM. APM appears as proof, not prerequisite."* Once articulated, the principle made every subsequent decision mechanical.
 
@@ -253,18 +257,30 @@ This demonstrated the value of explicit governing principles as tie-breakers. Th
 
 ---
 
-A book about AI-native software development, written by APM's creator, using APM's orchestration infrastructure, contained zero mentions of APM across 62,500 words. This was not a bug — it was the methodology working correctly. Each agent was dispatched with chapter-specific scope; no agent had "promote the author's project" in its persona. The absence proved the review process was honest and prompted the four-wave strategic assessment that produced the surgical insertions above.
+A book about AI-native software development, written by APM's creator, using APM's orchestration infrastructure, contained zero mentions of APM across ~67,000 words. This was not a bug — it was the methodology working correctly. Each agent was dispatched with chapter-specific scope; no agent had "promote the author's project" in its persona. The absence proved the review process was honest and prompted the four-wave strategic assessment that produced the surgical insertions above.
 
 ---
 
-## What Held True Regardless of the Model
+## The Authenticity Question
 
-The five structural properties from Chapter 15 held under editorial conditions (see the APM Overhaul case study for the full table). The novel test here: **composition scales to non-code domains**. 15 chapters required 50+ dispatches, 4 waves, 3 dynamically created personas, and 2 integration review passes. Code orchestration patterns — wave ordering, checkpoint discipline, context budgeting — transferred directly to editorial orchestration without modification.
+A separate three-expert panel (HN Skeptic, Thought Leadership Strategist, Meta-Authenticity Analyst) evaluated the risk of openly documenting the AI-assisted pipeline. The consensus: **net positive**. The key test:
+
+> *"Could this person have written a credible book without AI? If yes, AI reads as methodology demonstration."*
+
+The framing rule: *"built using the same methodology it teaches"* -- never *"AI-written."* Expected risk: some initial skepticism from readers who dismiss anything AI-assisted, but engaged readers find the transparency more impressive than the alternative.
+
+The README was rewritten to showcase the pipeline: an 11-agent team table, a 5-stage pipeline diagram, and links to review artifacts. **Explicit knowledge over implicit knowledge** — a property that held true here too. Hiding the process would contradict the book's thesis.
+
+---
+
+## What Held True
+
+The five structural properties held under editorial conditions (see the APM Overhaul case study for the full treatment). The novel finding: **composition-level orchestration** — coordinating agents that write prose, not code — scaled without modification to the wave model.
 
 ---
 
 ::: {.callout-note title="Metrics"}
-~62,500 words · 15 chapters · 11 personas (8 + 3 dynamic) · ~50+ dispatches · 4 writing waves + integration + polish · 15 Mermaid diagrams · 75 fact-check flags (5 critical) · 40 visual opportunities · 5 APM mentions (~475 words) · 4 escalation events · 5/5 structural properties tested
+~67,000 words · 15 chapters · 11 personas (8 + 3 dynamic) · ~50+ dispatches · 4 writing waves + integration + polish · 24 Mermaid diagrams · 75 fact-check flags (5 critical) · 40 visual opportunities · 5 APM mentions (~475 words) · 4 escalation events · 5/5 structural properties tested
 :::
 
 

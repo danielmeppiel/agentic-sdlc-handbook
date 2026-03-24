@@ -10,9 +10,9 @@ Most organizations planning AI adoption ask "which tool should we buy?" The bett
 
 At every phase of the software development lifecycle, work happens across three distinct layers. Understanding them is the difference between a coherent AI strategy and a collection of disconnected tool purchases.
 
-**The Human Layer** is where judgment, accountability, and strategic decisions live. Humans set objectives, make architectural choices, define quality standards, and bear responsibility for what ships. No current AI system replaces these functions. The question is not whether humans remain in the loop — they do — but which decisions require human judgment and which are better delegated.
+**The Human Layer** is where judgment, accountability, and strategic decisions live. Humans set objectives, make architectural choices, define quality standards, and bear responsibility for what ships. No current AI system replaces these functions. The question is not whether humans remain in the loop (they do) but which decisions require human judgment and which are better delegated.
 
-**The Agent Layer** is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy — from passive suggestion to autonomous task execution — but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.
+**The Agent Layer** is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy, from passive suggestion to autonomous task execution, but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.
 
 **The Platform Layer** is the infrastructure that enables both humans and agents: source control, CI/CD pipelines, identity and access management, observability, artifact registries, and the APIs that connect them. This layer is often invisible in AI adoption conversations, which is precisely why adoption stalls. An agent that can generate code but cannot run tests, read build output, or access your dependency graph is an agent working blind.
 
@@ -55,7 +55,7 @@ This structure is not a proposal. It is a description of what already exists in 
 
 ## Mapping the Layers Across the Lifecycle
 
-The three layers apply at every phase of software delivery. The table below maps what each layer does in each phase — and, critically, which capabilities are available today versus emerging or directional.
+The three layers apply at every phase of software delivery. The table below maps what each layer does in each phase and, critically, which capabilities are available today versus emerging or directional.
 
 Maturity tiers: **Now** = available across two or more vendors. **Emerging** = available in one or two tools, or in limited preview. **Directional** = announced, demonstrated, or on public roadmaps but not production-ready.
 
@@ -79,11 +79,11 @@ Maturity tiers: **Now** = available across two or more vendors. **Emerging** = a
 
 Executives do not need to think in eight phases. They need three buckets that map to planning cadences, budget lines, and organizational accountability:
 
-**Intent** (Ideate + Plan) answers "what are we building and why?" Agent assistance here is mostly emerging. Research agents that surface prior art, planning agents that draft architecture decision records and decompose epics into tasks — these exist in early forms, but no tool reliably automates the judgment calls that make planning valuable.
+**Intent** (Ideate + Plan) answers "what are we building and why?" Agent assistance here is mostly emerging. Research agents that surface prior art, planning agents that draft architecture decision records and decompose epics into tasks. These exist in early forms, but no tool reliably automates the judgment calls that make planning valuable.
 
 **Build** (Code + Build + Test + Review) answers "how do we turn intent into verified software?" This is where agent capabilities are most mature. Code generation, build diagnostics, test generation, and automated code review all have production-ready implementations across multiple vendors. This is also where most organizations start, and where the Vibe Coding Cliff from Chapter 1 hits hardest if context is not structured.
 
-**Operate** (Release + Operate) answers "how do we get software to users and keep it running?" Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions — these capabilities exist in point solutions (e.g., PagerDuty's AIOps, Datadog's Watchdog) but not yet in workflows integrated end-to-end with the development lifecycle.
+**Operate** (Release + Operate) answers "how do we get software to users and keep it running?" Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions. These capabilities exist in point solutions (e.g., PagerDuty's AIOps, Datadog's Watchdog) but not yet in workflows integrated end-to-end with the development lifecycle.
 
 The practical implication: based on vendor maturity and published adoption patterns, most organizations appear to have concentrated investment in the Build bucket, with minimal coverage in Intent and almost none in Operate. This is not a failure. It reflects where the technology is mature. But it means the next high-value investments are in Plan, Test, and Review — where the work is expensive, the feedback loops are slow, and structured context makes the difference between useful automation and expensive noise.
 
@@ -126,7 +126,7 @@ The three-layer model clarifies what happens to human roles when agents enter th
 
 :::
 
-The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the structural properties of language models described in Chapter 1 — they process and generate; they do not decide or bear responsibility.
+The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the structural properties of language models described in Chapter 1: they process and generate; they do not decide or bear responsibility.
 
 Chapter 6 covers the organizational design implications in detail: team structures, the junior pipeline, and new hiring profiles. Here, the point is architectural: the Human Layer does not shrink. It concentrates on the activities that require human judgment, and those activities become more visible and more important.
 
@@ -134,11 +134,11 @@ Chapter 6 covers the organizational design implications in detail: team structur
 
 ## The Context Moat
 
-Your competitors have access to the same AI models you do. They can license the same coding tools. What they cannot replicate is your organization's accumulated engineering knowledge — if you have made it machine-readable. If you have not, your AI tools are working with the same generic training data as everyone else's. This is the context moat.
+Your competitors have access to the same AI models you do. They can license the same coding tools. What they cannot replicate is your organization's accumulated engineering knowledge — if you have made it structured and agent-consumable. If you have not, your AI tools are working with the same generic training data as everyone else's. This is the context moat.
 
 **Why context beats models.** Model quality commoditizes. In 2022, OpenAI's Codex was the dominant commercial code-generation offering. By mid-2025, several model families compete credibly (OpenAI, Anthropic, Google, Meta, Mistral, among others). Pricing has trended downward as competition increases. The model powering your agent is a procurement decision, not a strategic advantage. Context is the opposite: it is proprietary, it accumulates over time, and it directly determines the quality of every agent interaction.
 
-Consider two teams of similar size, working on codebases of similar complexity, using identical AI tools on the same underlying model. Team A has documented its coding conventions, API patterns, error-handling standards, and module boundaries in structured instruction files that agents load automatically. Team B has not — its conventions exist in senior engineers' heads and scattered code comments.
+Consider two teams of similar size, working on codebases of similar complexity, using identical AI tools on the same underlying model. Team A has documented its coding conventions, API patterns, error-handling standards, and module boundaries in structured instruction files that agents load automatically. Team B has not; its conventions exist in senior engineers' heads and scattered code comments.
 
 Team A's agents generate code that passes linting on the first attempt, follows the internal API surface, and produces pull requests that reviewers approve with minor comments. Team B's agents generate plausible code that calls deprecated APIs, invents its own error patterns, and produces pull requests that require substantial rework. The rework cost compounds across every developer, every day. Over six months, Team A's context investment has paid for itself many times over, while Team B is still debating whether AI tools are "worth it."
 
@@ -151,7 +151,7 @@ Context operates across three domains, each with different characteristics:
 | Context Layer | What It Contains | Examples | Sources |
 |---|---|---|---|
 | **Work Context** | Decisions, requirements, meeting outcomes, strategic priorities | ADRs, sprint plans, product briefs, stakeholder notes | Collaboration tools, wikis, project management systems |
-| **Data Context** | Business intelligence, domain models, analytics, ontologies | Data dictionaries, domain glossaries, schema docs | BI platforms, data catalogs, knowledge graphs |
+| **Data Context** | Business intelligence, domain models, analytics, structured domain knowledge | Data dictionaries, domain glossaries, schema docs | BI platforms, data catalogs, knowledge graphs |
 | **Code Context** | Architecture, conventions, dependency graphs, API surfaces | Coding standards, instruction files, module boundaries | Repositories, CI/CD systems, artifact registries |
 
 :::
@@ -179,15 +179,15 @@ graph LR
     C --> A
 ```
 
-This flywheel means the gap between organizations that invest in context early and those that defer widens over time. It is not a linear gap. An organization that starts structuring context in 2025 does not just have two years' head start over one that starts in 2027 — it has two years of compounding context that the late starter must build from scratch while the early adopter's agents are already leveraging it.
+This flywheel means the gap between organizations that invest in context early and those that defer widens over time. It is not a linear gap. An organization that starts structuring context in 2025 does not just have two years' head start over one that starts in 2027; it has two years of compounding context that the late starter must build from scratch while the early adopter's agents are already leveraging it.
 
-**Evidence: the 75-file PR.** This book's primary case study — a pull request touching 75 files, climbing from 2,829 to 2,897 tests, completed in roughly 90 minutes with three human interventions — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: documented coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global project rules down to directory-specific overrides. None of these artifacts existed at the start. Each was created when an agent interaction failed due to a context gap — a convention violation caught in review, a deprecated API called because no instruction excluded it, a test pattern that didn't match the project's framework. By the time the 75-file PR was attempted, the agent was operating with rich, structured context that had been refined through dozens of feedback cycles. Without that accumulated context, the same task on the same model would have produced 75 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1's Vibe Coding Cliff. The delta between "75 files of rework" and "75 files merged in 90 minutes" *is* the context moat, demonstrated.
+**Evidence: the 75-file PR.** This book's primary case study — a pull request touching 75 files, climbing from 2,829 to 2,897 tests, completed in roughly 90 minutes of wave execution time with 3 execution-phase interventions (5 total including verification) — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: documented coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global project rules down to directory-specific overrides. None of these artifacts existed at the start. Each was created when an agent interaction failed due to a context gap — a convention violation caught in review, a deprecated API called because no instruction excluded it, a test pattern that didn't match the project's framework. By the time the 75-file PR was attempted, the agent was operating with rich, structured context that had been refined through dozens of feedback cycles. Without that accumulated context, the same task on the same model would have produced 75 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1's Vibe Coding Cliff. The delta between "75 files of rework" and "75 files merged in 90 minutes" *is* the context moat, demonstrated.
 
 ### Technical Debt Gets a New Cost
 
 AI changes the ROI calculus for documentation debt, convention debt, and knowledge-base debt. Consider an illustrative example: in a representative scenario, documenting your API conventions might take two days of engineering time. Without that documentation, agents hallucinate your internal patterns. In teams we have observed, pull request reviews frequently caught three to five convention violations that required rework. With documentation, the agent generates convention-compliant code from the first attempt. The payback period in these cases was roughly two weeks.
 
-This recalculation applies across the codebase. Undocumented module boundaries, implicit architectural decisions, tribal knowledge stored only in senior engineers' heads — all of these were always technical debt. AI makes the cost of that debt visible on every agent interaction, because the agent fails precisely where the documentation fails.
+This recalculation applies across the codebase. Undocumented module boundaries, implicit architectural decisions, tribal knowledge stored only in senior engineers' heads: all of these were always technical debt. AI makes the cost of that debt visible on every agent interaction, because the agent fails precisely where the documentation fails.
 
 The implication for leaders: re-prioritize your backlog. Items that were perpetually deferred — "document the authentication flow," "write down the module ownership model," "formalize the error-handling conventions" — now have a concrete, measurable payoff that they did not have before AI tools existed. Chapter 11 provides the methodology for auditing and structuring this context systematically.
 
@@ -233,14 +233,14 @@ For each context domain, leaders face a decision: build internal tooling, buy fr
 | Context domain | Build | Buy | Compose |
 |---|---|---|---|
 | **Work context** | Internal knowledge base, custom ADR tooling | Platform-integrated wikis (Notion, Confluence, GitHub Wikis) | API connectors bridging collaboration tools to agent context |
-| **Data context** | Custom domain model documentation, internal ontologies | Data catalog platforms (Collibra, Alation, dbt) | Federation layers that expose data definitions to coding agents |
+| **Data context** | Custom domain model documentation, internal domain taxonomies | Data catalog platforms (Collibra, Alation, dbt) | Federation layers that expose data definitions to coding agents |
 | **Code context** | Instruction files, custom rules, agent configurations | IDE-integrated context from platform vendors | Open-source primitive packages, shared community configurations |
 
 :::
 
 The pattern: work and data context often require building or composing because they are organization-specific. Code context is the most composable because the formats are increasingly standardized — custom instructions in GitHub Copilot, rule files in Cursor, `CLAUDE.md` in Claude Code — and community-shared configurations can provide a starting point that teams customize.
 
-No single vendor covers all three context domains comprehensively today. This is a structural observation, not a criticism — the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.
+No single vendor covers all three context domains comprehensively today. This is a structural observation, not a criticism; the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.
 
 ---
 

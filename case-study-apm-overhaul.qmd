@@ -3,6 +3,14 @@ title: "The APM Auth + Logging Overhaul"
 number-sections: false
 ---
 
+**Scope:** PR #394 against [microsoft/apm](https://github.com/microsoft/apm) — auth consolidation, logging abstraction, diagnostic collection  
+**Duration:** ~16 hours wall-clock across 2 sessions  
+**Theme:** Multi-agent orchestration against a production codebase — the methodology's home turf
+
+::: {.callout-note title="Part IV: Case Studies"}
+These four case studies test the methodology under progressively different conditions. The APM Overhaul applies multi-agent orchestration to a production codebase — engineering in its purest form. The Handbook Writing study tests whether the same patterns transfer to editorial composition. The Publishing Pipeline tests infrastructure automation. The Growth Engine tests non-engineering work where agent limitations become most visible. Each study documents what worked, what failed, and what the methodology could not do.
+:::
+
 ---
 
 ## How Copilot CLI Orchestrated a 75-File Architecture Change Across 25 Agents
@@ -12,7 +20,7 @@ This case study documents a real Copilot CLI session against
 [microsoft/apm](https://github.com/microsoft/apm) (PR #394).
 Every metric comes from session checkpoint logs.
 Chapters 12–13 introduced this session's structure. Here we focus on
-**what went wrong, what the recovery looked like, and what it proves.**
+**what went wrong, what the recovery looked like, and what it demonstrates about the methodology under production conditions.**
 :::
 
 ::: {.callout-tip title="Five Lessons — The TL;DR"}
@@ -85,6 +93,8 @@ per-dependency auth paths. This is **Scope Creep** (Anti-pattern #5) —
 but handled correctly. The scope expanded *before* execution began,
 through the plan gate, not mid-wave.
 
+The plan targeted 47 primary source files. The final PR touched 75 — the additional 28 were test files, configuration updates, and documentation changes discovered during execution. This is typical of dependency-following refactors.
+
 ---
 
 ## Wave Execution
@@ -100,6 +110,8 @@ Tests climbed from 2,829 to 2,897 across nine waves.
 | Logger wiring | 7 parallel | All commands through CommandLogger. install.py (58 calls) **got stuck** → escalated | 2,874 tests |
 | Tests | parallel | 78 unit + 26 integration + 11 diagnostics | 2,897 tests |
 | Ship | sequential | Docs, skills, CHANGELOG, PR review fixes | Released as v0.8.4 |
+
+*115 new tests were written (78 unit, 26 integration, 11 diagnostics); 47 legacy tests were consolidated or replaced during the refactor, for a net gain of 68.*
 
 The **one-file-one-agent-per-wave** rule (Ch12) prevented merge conflicts
 across all parallel dispatches. The one exception — install.py in the
@@ -223,7 +235,7 @@ Agent success messages are probabilistic output. The `diff` command is determini
 | Unicode persistence | #7 The Trust Fall | Safety Boundaries | Never accept self-report without diff check |
 | Token type error | #13 Stale Context Between Waves | Progressive Disclosure | Re-validate expert findings before wiring |
 | PAT 403 | #5 Scope Creep | Reduced Scope | L4 escalation through plan gate |
-| Silent NameError | #11 Ignoring Partial Results | Safety Boundaries | Assert on observable behaviour, not just pass/fail |
+| Silent NameError | #9 Skipping Checkpoints | Safety Boundaries | Assert on observable behaviour, not just pass/fail |
 
 ---
 
@@ -252,8 +264,25 @@ mechanism through which human judgment shaped the architecture.
 
 The evidence chain is inspectable at [PR #394](https://github.com/microsoft/apm/pull/394). The five escalations above are the full log.
 
-::: {.callout-note title="Metrics"}
-75 files changed · +7,832/−1,074 lines · 2,829 → 2,897 tests (+68) · 6 audit agents · 25 implementation agents · 8 plan iterations · 5 escalations (1×L2, 2×L3, 2×L4) · 9 waves
+::: {.callout-note title="Canonical Metrics — PR #394"}
 
-Approximate effort: 2 full sessions (~16 hours wall-clock). A senior engineer doing this manually would likely have spent 3-5 days on the auth consolidation alone.
+| Metric | Value | Notes |
+|--------|-------|-------|
+| Files changed | 75 | 47 planned + 28 dependency/test/config |
+| Lines changed | +7,832/−1,074 | |
+| Tests before | 2,829 | Baseline at start |
+| Tests after | 2,897 | +115 written, −47 consolidated = +68 net |
+| Agent dispatches | ~25 | Across 9 waves in 5 phases |
+| Audit agents | 6 | Expert panel phase |
+| Plan iterations | 8 | v1–v8, approved at v8 |
+| Escalations | 5 | 1×L2, 2×L3, 2×L4 |
+| Execution interventions | 3 | During wave execution (L3/L4 escalations) |
+| Verification interventions | 2 | During review/validation |
+| Wave execution time | ~90 minutes | Active agent + human review time |
+| Total wall-clock time | ~16 hours | 2 sessions including planning, monitoring, breaks |
+| Human time breakdown | ~30% planning, ~20% monitoring, ~25% interventions, ~25% review | Approximate, single execution |
+
+*Other chapters reference these metrics. "~90 minutes" refers to wave execution time; "~16 hours" refers to total elapsed time including planning and breaks.*
+
+In the author's experience, similar-scope manual refactors (consolidating authentication patterns across 40+ files) have taken 3–5 days of focused engineering time. This estimate has not been formally benchmarked.
 :::

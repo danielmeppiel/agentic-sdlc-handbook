@@ -151,6 +151,10 @@ Agents also needed specific artifacts in context to be useful. The first two lan
 
 ## What Held True
 
-The five structural properties held (see the APM Overhaul case study for the full treatment). The novel finding: **organizational policy awareness lives nowhere in training data**. The CELA risk discovery -- personal lead generation via a corporate open-source asset -- was caught solely by human judgment. No prompt engineering, no panel composition, and no escalation protocol would have surfaced it. This is the clearest example in the book of a constraint that is permanently outside the agent's reach.
+The structural properties held where applicable. The novel and most important finding: **organizational policy awareness lives nowhere in training data**. This is a permanent boundary of agentic methodology that no model improvement will address.
 
 The growth engine shipped. The system worked not because every agent succeeded -- the Kit automation plainly failed -- but because the orchestrator knew when to pivot and when to stop.
+
+::: {.callout-note title="Metrics"}
+6 implementation phases · 7+ expert panels · 15 agent personas · 3 Kit automation attempts (all blocked by platform limitations) · 1 manual workaround · 1 CELA risk discovery · 3 anti-patterns observed (#17 Persona Drift, #7 The Trust Fall, #5 Scope Creep) · Methodology limitation discovered: organizational policy awareness
+:::

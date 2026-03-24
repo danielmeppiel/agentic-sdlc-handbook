@@ -3,7 +3,11 @@ title: "The Publishing Pipeline"
 number-sections: false
 ---
 
-**How Copilot CLI orchestrated a 62,500-word book from manuscript to multi-format deployment**
+**Scope:** Manuscript-to-deployment pipeline — HTML, PDF, EPUB output + CI/CD  
+**Duration:** Multiple waves within a single extended session  
+**Theme:** Infrastructure automation and the "Almost Done" cascade
+
+**How Copilot CLI orchestrated a 67,000-word book from manuscript to multi-format deployment**
 
 ::: {.callout-tip title="Key Takeaways — The TL;DR"}
 - Every design decision was human; every technical execution was agent — that division held throughout.
@@ -40,7 +44,7 @@ A single general-purpose agent converted the entire manuscript in one wave:
 - Created `index.qmd` with a reading guide and download callouts
 - Created `.github/workflows/publish.yml` for CI auto-deploy
 
-HTML render: 16 files, zero errors, 15 Mermaid diagrams confirmed. The site went live on the `gh-pages` branch within the same wave.
+HTML render: 16 files, zero errors, 24 Mermaid diagrams confirmed. The site went live on the `gh-pages` branch within the same wave.
 
 ```{mermaid}
 %%| fig-width: 4.5
@@ -79,7 +83,7 @@ flowchart TD
 
 **Issue 1 — Narrow text.** The `scrbook` document class has wide binding margins designed for physical books. Fix: switch to `scrreprt` with explicit geometry (25mm left/right, 30mm top/bottom).
 
-**Issue 2 — Missing Mermaid diagrams.** All 15 chapters used GitHub-flavored `` ```mermaid `` fences. Quarto requires `` ```{mermaid} `` for PDF rendering via headless Chromium. This was **Anti-Pattern #10: Not Fixing the Primitives** — the syntax was wrong at the source level across every chapter. A bulk `sed` conversion fixed all 15 blocks; the PDF grew from 686KB to 3.8MB as rendered diagram PNGs appeared.
+**Issue 2 — Missing Mermaid diagrams.** All 15 chapters used GitHub-flavored `` ```mermaid `` fences. Quarto requires `` ```{mermaid} `` for PDF rendering via headless Chromium. This was **Anti-Pattern #10: Not Fixing the Primitives** — the syntax was wrong at the source level across every chapter. A bulk `sed` conversion fixed all 24 blocks; the PDF grew from 686KB to 3.8MB as rendered diagram PNGs appeared.
 
 **Issue 3 — Duplicate heading numbers.** Manual numbers in headings (`### 1. The Monolithic Prompt`) clashed with Quarto's auto-numbering, producing `15.2.1 1.` in the PDF. Stripped manual numbers from 25 headings across two chapters.
 
@@ -159,22 +163,14 @@ A three-expert panel (IP Attorney, Publishing Strategist, Growth Hacker) evaluat
 
 The rationale maps to four properties: invites sharing (reach), requires attribution (authorship), prohibits commercial use (author's brand), prohibits derivatives (one canonical version). Implementation touched four files -- `LICENSE`, `README.md`, `index.qmd`, and the `_quarto.yml` footer.
 
-## The Authenticity Question
-
-A separate three-expert panel (HN Skeptic, Thought Leadership Strategist, Meta-Authenticity Analyst) evaluated the risk of openly documenting the AI-assisted pipeline. The consensus: **net positive**. The key test:
-
-> *"Could this person have written a credible book without AI? If yes, AI reads as methodology demonstration."*
-
-The framing rule: *"built using the same methodology it teaches"* -- never *"AI-written."* Expected risk: some initial skepticism from readers who dismiss anything AI-assisted, but engaged readers find the transparency more impressive than the alternative.
-
-The README was rewritten to showcase the pipeline: an 11-agent team table, a 5-stage pipeline diagram, and links to review artifacts. **Explicit knowledge over implicit knowledge** — a property that held true here too. Hiding the process would contradict the book's thesis.
-
 ## What This Case Study Shows
 
 The publishing pipeline compressed weeks of toolchain research, format debugging, and CI configuration into focused waves of agent execution guided by human judgment.
 
+**What Held True.** The structural properties from the APM Overhaul held. The novel test: the "Almost Done" cascade demonstrated that checkpoint discipline prevents compounding rendering failures as effectively as it prevents compounding code failures.
+
 ::: {.callout-note title="Metrics"}
-3 output formats (HTML, PDF, EPUB) · 15 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy
+3 output formats (HTML, PDF, EPUB) · 36 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy
 :::
 
 The division of labor was consistent: every design decision was human; every technical execution was agent.
