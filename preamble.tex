@@ -22,3 +22,11 @@
 % Force code block line wrapping in PDF
 \usepackage{fvextra}
 \fvset{breaklines=true, breakanywhere=true}
+
+% Compact TOC — reduce vertical spacing (KOMA-Script native)
+\RedeclareSectionCommand[tocbeforeskip=0.2em]{chapter}
+\RedeclareSectionCommand[tocbeforeskip=0em]{section}
+\addtokomafont{chapterentry}{\small}
+
+% Ensure deep section numbering renders (chapters + sections + subsections)
+\setcounter{secnumdepth}{3}

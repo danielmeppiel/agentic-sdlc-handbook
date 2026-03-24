@@ -34,33 +34,33 @@ This case study maps the execution to the handbook's own vocabulary (Chapter 14)
 The orchestrator designed an 8-persona expert panel at project inception, then dynamically created 3 more as needs emerged during execution. The personas organized into four functional pods:
 
 ```{mermaid}
-%%| fig-width: 5.5
-%%| fig-height: 7
+%%| fig-width: 5.0
+%%| fig-height: 5.5
 %%| fig-cap: "Agent team topology: 11 personas organized in four pods"
 %%| fig-alt: "Diagram showing four pods. The Editorial Pod contains Chief Editor (cross-chapter coherence) and Thought Leadership Advisor (positioning and differentiation). The Domain Expert Pod contains C-Suite Strategist (executive lens, ROI framing), Practitioner Authority (engineering credibility), Market Analyst (competitive landscape), and Platform Strategist (architecture patterns). The Review Pod contains CTO Proxy (would I buy this for my team?) and Dev Lead Proxy (would my engineers use this?). The Audit Pod, dynamically created, contains Illustrator (visual strategist), Fact-Ref-Checker (claims auditor), and Publishing Advisor (distribution strategy). Chief Editor connects to CTO Proxy, Dev Lead Proxy, Illustrator, and Fact-Ref-Checker."
 %%| label: fig-cs-team-topology
 graph TB
     subgraph Editorial["Editorial Pod"]
-        CE[Chief Editor<br/>Cross-chapter coherence]
-        TLA[Thought Leadership Advisor<br/>Positioning & differentiation]
+        CE[Chief Editor<br/>Coherence]
+        TLA[Thought Leadership<br/>Positioning]
     end
 
     subgraph Domain["Domain Expert Pod"]
-        CS[C-Suite Strategist<br/>Executive lens, ROI framing]
-        PA[Practitioner Authority<br/>Engineering credibility]
-        MA[Market Analyst<br/>Competitive landscape]
-        PS[Platform Strategist<br/>Architecture patterns]
+        CS[C-Suite Strategist<br/>Executive lens]
+        PA[Practitioner Authority<br/>Eng credibility]
+        MA[Market Analyst<br/>Landscape]
+        PS[Platform Strategist<br/>Architecture]
     end
 
     subgraph Review["Review Pod"]
-        CTO[CTO Proxy<br/>Would I buy this for my team?]
-        DL[Dev Lead Proxy<br/>Would my engineers use this?]
+        CTO[CTO Proxy<br/>Buy for my team?]
+        DL[Dev Lead Proxy<br/>Engineers use this?]
     end
 
-    subgraph Audit["Audit Pod — Dynamically Created"]
-        IL[Illustrator<br/>Visual strategist]
-        FC[Fact-Ref-Checker<br/>Claims auditor]
-        PB[Publishing Advisor<br/>Distribution strategy]
+    subgraph Audit["Audit Pod — Dynamic"]
+        IL[Illustrator<br/>Visual strategy]
+        FC[Fact-Ref-Checker<br/>Claims audit]
+        PB[Publishing Advisor<br/>Distribution]
     end
 
     CE --> CTO

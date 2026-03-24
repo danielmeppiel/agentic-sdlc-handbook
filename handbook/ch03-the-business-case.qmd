@@ -238,30 +238,21 @@ The formula above is a template. Here is what it looks like with numbers.
 - Expected defect reduction: 20%
 - Current onboarding cost: $15,000 per new hire; 10 hires/year; 30% reduction expected
 
-```
-Total annual developer investment (A)        = 50 × $200,000 = $10,000,000
+::: {tbl-colwidths="[40,35,25]"}
 
-Cycle time improvement: 25%
-25% × $10,000,000                            = $2,500,000 (B)
+| Line item | Calculation | Value |
+|---|---|---|
+| Total annual developer investment (A) | 50 × $200,000 | $10,000,000 |
+| Cycle time value (B) | 25% × $10,000,000 | $2,500,000 |
+| Defect reduction (C) | $500,000 × 20% | $100,000 |
+| Knowledge retention (D) | $15,000 × 10 hires × 30% | $45,000 |
+| **Total annual value (B+C+D)** | — | **$2,645,000** |
+| Year-1 cost (scaled from TCO) | ~$77K–$229K × 5 | $350,000–$1,150,000 |
+| **Value-to-cost ratio** | — | **2.3–7.6×** |
 
-Defect reduction value:
-  $500,000 × 20%                             = $100,000 (C)
+:::
 
-Knowledge retention value:
-  $15,000 × 10 hires × 30%                  = $45,000 (D)
-
-Total annual value (B + C + D)               = $2,645,000
-
-Total year-1 cost (from TCO table, scaled)   ≈ $350,000–$1,150,000
-  (TCO table shows $77K–$229K for 10 engineers. Scale ×5 for 50,
-   with some economies on governance and training.)
-
-Annual value exceeds year-1 cost by 2.3–7.6×.
-But value does not accrue evenly — months 1–4 are ramp-up
-(see The Adoption Timeline above).
-Accounting for the ramp, expect break-even at month 6–10
-from project start, depending on cost position and adoption speed.
-```
+But value does not accrue evenly — months 1–4 are ramp-up (see The Adoption Timeline above). Accounting for the ramp, expect break-even at month 6–10 from project start, depending on cost position and adoption speed.
 
 The time-savings value (B) dominates. This is typical — cycle time improvement is the largest and most defensible value driver. Note that the $2.5M does not mean the organization saves $2.5M in cash. It means the team delivers the equivalent of $2.5M more throughput at the same headcount. The value manifests as faster delivery, not smaller payroll.
 

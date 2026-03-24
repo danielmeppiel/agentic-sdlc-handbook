@@ -117,33 +117,29 @@ The deployment pipeline went through its own iteration gauntlet:
 
 The final architecture splits rendering by environment:
 
-::: {.landscape}
-
 ```{mermaid}
-%%| fig-width: 5.5
+%%| fig-width: 5.0
 %%| fig-cap: "Final CI/CD architecture: CI pipeline and local render workflow"
 %%| fig-alt: "Flowchart showing two parallel subgraphs. The CI Pipeline (49 seconds) subgraph contains five sequential steps: Checkout, Install Quarto, quarto render to html, Restore PDF and EPUB from gh-pages, and quarto publish with no-render flag. The Local Render (15 minutes) subgraph contains seven sequential steps: quarto render to pdf, Save PDF, quarto render to epub, Save EPUB, quarto render to html, Copy PDF and EPUB into _book directory, and quarto publish with no-render flag. CI optimizes for speed with HTML only while Local optimizes for completeness with all formats."
 %%| label: fig-cs-cicd-architecture
 flowchart TB
-    subgraph CI ["CI Pipeline (49 seconds)"]
+    subgraph CI ["CI Pipeline (49s)"]
         A1["Checkout"] --> A2["Install Quarto"]
-        A2 --> A3["quarto render --to html"]
+        A2 --> A3["render --to html"]
         A3 --> A4["Restore PDF/EPUB<br/>from gh-pages"]
-        A4 --> A5["quarto publish<br/>--no-render"]
+        A4 --> A5["publish --no-render"]
     end
 
     subgraph Local ["Local Render (15 min)"]
-        B1["quarto render --to pdf"] --> B2["Save PDF"]
-        B2 --> B3["quarto render --to epub"]
+        B1["render --to pdf"] --> B2["Save PDF"]
+        B2 --> B3["render --to epub"]
         B3 --> B4["Save EPUB"]
-        B4 --> B5["quarto render --to html"]
+        B4 --> B5["render --to html"]
         B5 --> B6["Copy PDF + EPUB<br/>into _book/"]
-        B6 --> B7["quarto publish<br/>--no-render"]
+        B6 --> B7["publish --no-render"]
     end
 
 ```
-
-:::
 
 The 15-minute local render is a practical constraint -- Chromium-based Mermaid rendering is too heavy for a fast CI feedback loop. The architecture makes this explicit: CI optimizes for speed (HTML-only, 49 seconds), local optimizes for completeness (all formats).
 

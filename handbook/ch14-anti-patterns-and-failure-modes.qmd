@@ -444,18 +444,18 @@ Total recovery cost: three focused dispatches instead of an open-ended retry loo
 When something goes wrong, the first question is what kind of wrong:
 
 ```{mermaid}
-%%| fig-width: 5.0
+%%| fig-width: 4.5
 %%| fig-cap: "Failure mode decision tree for diagnosing agent output issues"
 %%| fig-alt: "Top-down decision tree flowchart for diagnosing agent output issues. Starting from Agent output issue, the first question is Syntax error: Yes leads to Model issue — Upgrade or manual (red, error). No leads to Tests fail: Yes branches to Agent's code or pre-existing — Agent's leads to Task/context issue — Narrow scope (orange, warning), Pre-existing leads to Separate issue — Skip (neutral blue). If Tests don't fail, the next question is Follows conventions: No leads to Primitive gap — Add rule (orange, warning). Yes leads to Integrates correctly: No leads to Architecture issue — Fix boundaries (orange, warning), Yes leads to Probably fine — Check edges (green, success)."
 %%| label: fig-failure-decision-tree
 flowchart TD
     START(["Agent output<br/>issue?"]) --> Q1{"Syntax error?"}
 
-    Q1 -- Yes --> FIX1["Model issue<br/>Upgrade or manual"]
+    Q1 -- Yes --> FIX1["Model issue<br/>Upgrade/manual"]
     Q1 -- No --> Q2{"Tests fail?"}
 
-    Q2 -- Yes --> Q2a{"Agent's code<br/>or pre-existing?"}
-    Q2a -- "Agent's" --> FIX2["Task/context issue<br/>Narrow scope"]
+    Q2 -- Yes --> Q2a{"Agent's code or<br/>pre-existing?"}
+    Q2a -- "Agent's" --> FIX2["Context issue<br/>Narrow scope"]
     Q2a -- Pre-existing --> FIX2b["Separate issue<br/>Skip"]
 
     Q2 -- No --> Q3{"Follows<br/>conventions?"}
@@ -463,7 +463,7 @@ flowchart TD
     Q3 -- No --> FIX3["Primitive gap<br/>Add rule"]
     Q3 -- Yes --> Q4{"Integrates<br/>correctly?"}
 
-    Q4 -- No --> FIX4["Architecture issue<br/>Fix boundaries"]
+    Q4 -- No --> FIX4["Arch issue<br/>Fix boundaries"]
     Q4 -- Yes --> FIX5["Probably fine<br/>Check edges"]
 
 ```

@@ -372,6 +372,10 @@ Every agent, regardless of what it is working on, loads all of this. The Python 
 
 The five constraints are defined independently but produce their strongest effects in combination. Theory says each pair closes a gap that neither constraint addresses alone. Practice is more memorable. Here are three teams that had one constraint in place and discovered the hard way what the missing partner cost them.
 
+::: {.callout-note title="About These Stories"}
+The failure scenarios below are fictional composites, distilled from the author's consulting observations and distorted to protect client confidentiality. They illustrate real patterns, not specific engagements.
+:::
+
 **The team with hierarchy but no progressive disclosure.** A fintech startup (12 engineers, 18 months into their product) built a meticulous instruction hierarchy: global rules at the root, domain rules per service, module-specific rules for payments and auth. Textbook Explicit Hierarchy. But every instruction file was self-contained — the auth instructions inlined the full OWASP token reference (1,400 words), the complete session management spec (900 words), and the rate-limiting policy (600 words). When an agent worked on a simple token-validation bugfix, it loaded the auth-level file and received nearly 3,000 words of guidance for a 15-line change. The agent "solved" the bug by refactoring the token validation to also implement a rate-limiting improvement mentioned in the same file, a change no one asked for that introduced a subtle race condition in the refresh flow. The hierarchy got the *right rules* to the agent. Without progressive disclosure, it got all of them at once, and the agent could not distinguish the relevant from the adjacent.
 
 **The team with reduced scope but no composition.** A platform team (8 engineers supporting 40+ microservices) was disciplined about task sizing — every agent session had a single, focused objective, fresh context, clean scope. Textbook Reduced Scope. But they had no composition layer. Each task carried its own copy of the coding standards, the error-handling patterns, and the testing requirements, pasted into the prompt rather than referenced from shared context files. When the team updated their error format from string messages to structured error objects, they updated the canonical doc but missed the pasted copies in four prompt templates. For two weeks, agents working on different services produced two different error formats depending on which prompt they received. The scope constraint kept each task reliable in isolation. Without composition, there was no single source of truth to keep them consistent with each other.
@@ -381,16 +385,16 @@ The five constraints are defined independently but produce their strongest effec
 The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.
 
 ```{mermaid}
-%%| fig-width: 4.5
+%%| fig-width: 4.0
 %%| label: fig-prose-constraints
 %%| fig-cap: "Relationships between the five PROSE constraints"
 %%| fig-alt: "Graph showing five interconnected nodes representing the PROSE constraints: P (Progressive Disclosure), R (Reduced Scope), O (Orchestrated Composition), S (Safety Boundaries), and E (Explicit Hierarchy). Bidirectional edges connect: P and E with 'controls attention within scope', R and S with 'constrains what safety must cover', O and R with 'single source of truth across tasks', P and R with 'loads only what fits in scope', E and S with 'hierarchy defines boundary scope', and O and P with 'composable units enable disclosure'. Each pair reinforces the other to cover distinct failure modes."
 graph TD
-    P["P<br/>Progressive<br/>Disclosure"] <-- "controls attention<br/>within scope" --> E["E<br/>Explicit<br/>Hierarchy"]
-    R["R<br/>Reduced<br/>Scope"] <-- "constrains what<br/>safety must cover" --> S["S<br/>Safety<br/>Boundaries"]
-    O["O<br/>Orchestrated<br/>Composition"] <-- "single source of<br/>truth across tasks" --> R
-    P <-- "loads only what<br/>fits in scope" --> R
-    E <-- "hierarchy defines<br/>boundary scope" --> S
+    P["P<br/>Progressive<br/>Disclosure"] <-- "controls<br/>attention" --> E["E<br/>Explicit<br/>Hierarchy"]
+    R["R<br/>Reduced<br/>Scope"] <-- "constrains<br/>safety scope" --> S["S<br/>Safety<br/>Boundaries"]
+    O["O<br/>Orchestrated<br/>Composition"] <-- "single source<br/>of truth" --> R
+    P <-- "loads what<br/>fits scope" --> R
+    E <-- "hierarchy defines<br/>boundaries" --> S
     O <-- "composable units<br/>enable disclosure" --> P
 ```
 

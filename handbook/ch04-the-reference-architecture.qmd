@@ -250,15 +250,15 @@ The components in the build-buy-compose decision above are not independent purch
 ```{mermaid}
 %%| label: fig-agentic-stack
 %%| fig-cap: "The Agentic Computing Stack — seven layers mapping agentic components to their classical analogs."
-%%| fig-width: 7
-%%| fig-height: 6
+%%| fig-width: 5.5
+%%| fig-height: 5
 flowchart BT
-    L1["<b>LLM</b> (GPT, Claude, Gemini)<br/><i>≈ CPU (x86, ARM)</i>"]
-    L2["<b>Harness</b> (Copilot CLI, Cursor, Claude Code)<br/><i>≈ Runtime / OS (Node.js, JVM)</i>"]
-    L3["<b>PROSE Constraints</b><br/><i>≈ Architectural Standards (REST, POSIX)</i>"]
-    L4["<b>Markdown Primitives</b> (.instructions.md, .agent.md)<br/><i>≈ Source Code / Config Files</i>"]
-    L5["<b>APM / Claude plugin.json</b><br/><i>≈ Package Manager (npm, pip, cargo)</i>"]
-    L6["<b>Spec-Kit, Squad</b><br/><i>≈ Frameworks (Spring, React, Django)</i>"]
+    L1["<b>LLM</b><br/>GPT, Claude, Gemini<br/><i>≈ CPU</i>"]
+    L2["<b>Harness</b><br/>Copilot CLI, Cursor, Claude Code<br/><i>≈ Runtime / OS</i>"]
+    L3["<b>PROSE Constraints</b><br/><i>≈ Arch Standards</i>"]
+    L4["<b>Markdown Primitives</b><br/>.instructions.md, .agent.md<br/><i>≈ Source / Config</i>"]
+    L5["<b>APM / plugin.json</b><br/><i>≈ Package Manager</i>"]
+    L6["<b>Spec-Kit, Squad</b><br/><i>≈ Frameworks</i>"]
     L7["<b>Agentic Workflows</b><br/><i>≈ Applications</i>"]
 
     L1 --> L2 --> L3 --> L4 --> L5 --> L6 --> L7
