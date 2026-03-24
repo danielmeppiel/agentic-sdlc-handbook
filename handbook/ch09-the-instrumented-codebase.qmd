@@ -313,21 +313,32 @@ Start with one or two hooks: a linting check on save and a test prompt on new fi
 
 The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.
 
-::: {tbl-colwidths="[16,28,18,20,18]"}
+::: {tbl-colwidths="[14,24,18,18,14,12]"}
 
-| Primitive | GitHub Copilot (VS Code) | Cursor | Claude Code | Windsurf |
-|-----------|--------------------------|--------|-------------|----------|
-| **Instructions** | `.instructions.md` with `applyTo` frontmatter; `copilot-instructions.md` global | `.cursor/rules/*.mdc` with glob frontmatter | `CLAUDE.md` per directory | `.windsurfrules`; cascade rules |
-| **Agents** | `.agent.md` with model + tools | — | — | — |
-| **Skills** | `SKILL.md` directories with examples | — (embed in rules) | — (embed in `CLAUDE.md`) | — (embed in rules) |
-| **Prompts** | `.prompt.md` with execution mode | — | — | Flows (different model) |
-| **Memory** | `.memory.md` referenced in context | In rules or notepads | In `CLAUDE.md` sections | In rules |
-| **Orchestration** | `.spec.md` loaded as context | Loaded as context | Loaded as context | Loaded as context |
-| **Hooks** | Copilot hooks config; VS Code tasks | — | — | — |
+| Primitive | GitHub Copilot (VS Code) | Cursor | Claude Code | Windsurf | OpenCode |
+|-----------|--------------------------|--------|-------------|----------|----------|
+| **Instructions** | `.instructions.md` with `applyTo` frontmatter; `copilot-instructions.md` global | `.cursor/rules/*.mdc` with glob frontmatter | `CLAUDE.md` per directory | `.windsurfrules`; cascade rules | `.opencode/instructions.md` |
+| **Agents** | `.agent.md` with model + tools | Configurable via rules and agent modes | Via `/commands` and agent configurations | — | — |
+| **Skills** | `SKILL.md` directories with examples | Embed in rules with examples | Embed in `CLAUDE.md` sections | Embed in rules | — |
+| **Prompts** | `.prompt.md` with execution mode | Embed in rules or `.cursor/prompts/` | Via `/commands` definitions | Flows (different model) | — |
+| **Memory** | SQLite database; `.memory.md` as portable context | Notepads; project-level rules | In `CLAUDE.md` sections; persistent memory | In rules | — |
+| **Orchestration** | `.spec.md` loaded as context; plan mode artifacts | Loaded as context; composer plans | Loaded as context; plan mode | Loaded as context | Loaded as context |
+| **Hooks** | Copilot hooks config; VS Code tasks | — | — | — | — |
 
 :::
 
 "—" means the tool has no native format for that type. The knowledge is still usable (you embed it in whatever instruction format the tool does support) but automatic activation and scoping are lost.
+
+::: {.callout-note title="Implementation Reality"}
+The seven primitives describe *what* your codebase needs to communicate to agents, not a universal file format. Tools implement these concepts differently:
+
+- **Instructions** have the broadest native support — `.instructions.md` (Copilot), `.cursor/rules/` (Cursor), `CLAUDE.md` (Claude Code). Every major tool reads project-level markdown from predictable locations.
+- **Memory** is implemented as SQLite databases (GitHub Copilot), notepads (Cursor), or embedded in `CLAUDE.md` sections (Claude Code). The `.memory.md` format described here works as portable context loaded by any tool.
+- **Orchestration specs** (`.spec.md`) map to plan mode artifacts (`plan.md` in Copilot CLI) or are consumed as plain context files. No tool has a native "spec" file format yet.
+- **Agents, Skills, Prompts, and Hooks** have the deepest native support in GitHub Copilot's `.agent.md`, `SKILL.md`, `.prompt.md`, and hooks system. Other tools achieve similar outcomes through their own configuration mechanisms.
+
+The file names in this chapter are conventions that work today. As tools converge, expect native format support to broaden.
+:::
 
 Three observations.
 
@@ -335,7 +346,7 @@ Three observations.
 
 **Agent configurations are the least portable.** Chat modes, model selection, and tool boundaries are defined differently in every tool and don't transfer. The knowledge inside them (domain expertise, named patterns, anti-patterns) is just markdown and moves freely. The activation mechanism does not.
 
-**Most tools natively support two of seven.** Instructions (in some form) and memory (via root-level markdown). The remaining five (skills, prompts, orchestration specs, agent configurations, and hooks) have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.
+**The three major tools now support most primitives natively.** GitHub Copilot, Cursor, and Claude Code each support the majority of the seven primitive types, though file formats and native integration depth differ. Copilot has the most comprehensive native format support. Cursor and Claude Code have expanded rapidly and cover instructions, agents, skills, memory, and orchestration through their own mechanisms. OpenCode, the newest entrant, currently supports mainly instructions. Windsurf covers instructions and basic context loading. The methodology described here is portable across all of them — the knowledge transfers even when the wiring differs.
 
 ### What happens when you switch tools
 

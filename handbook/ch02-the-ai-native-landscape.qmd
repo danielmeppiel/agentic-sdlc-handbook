@@ -103,21 +103,21 @@ The maturity tiers: **Now** = available and shipping in production. **Emerging**
 
 ::: {.landscape}
 
-::: {tbl-colwidths="[22,13,13,13,13,13,13]"}
+::: {tbl-colwidths="[20,12,12,12,12,10,12,10]"}
 
-| Capability | GitHub Copilot | Cursor | Claude Code | Windsurf | Amazon Q Developer | JetBrains AI |
-|---|---|---|---|---|---|---|
-| Code completion | Now | Now | N/A | Now | Now | Now |
-| Chat / explain | Now | Now | Now | Now | Now | Now |
-| Multi-file editing | Now | Now | Now | Now | Emerging | Emerging |
-| Agent mode (in-editor) | Now | Now | N/A | Now | Emerging | Emerging |
-| Terminal / CLI agent | Now | N/A | Now | N/A | Emerging | N/A |
-| Autonomous PR creation | Now | Emerging | Now | Directional | Directional | N/A |
-| Code review agent | Now | Emerging | Directional | Directional | Emerging | Directional |
-| Multi-model routing | Now | Now | N/A | Now | Emerging | Now |
-| Custom instructions / rules | Now | Now | Now | Now | Emerging | Emerging |
-| Enterprise governance | Now | Emerging | Emerging | Emerging | Now | Emerging |
-| Full SDLC platform | Now | Directional | N/A | N/A | Emerging | N/A |
+| Capability | GitHub Copilot | Cursor | Claude Code | Windsurf | OpenCode | Amazon Q Developer | JetBrains AI |
+|---|---|---|---|---|---|---|---|
+| Code completion | Now | Now | N/A | Now | N/A | Now | Now |
+| Chat / explain | Now | Now | Now | Now | Now | Now | Now |
+| Multi-file editing | Now | Now | Now | Now | Emerging | Emerging | Emerging |
+| Agent mode (in-editor) | Now | Now | N/A | Now | N/A | Emerging | Emerging |
+| Terminal / CLI agent | Now | N/A | Now | N/A | Now | Emerging | N/A |
+| Autonomous PR creation | Now | Emerging | Now | Directional | Directional | Directional | N/A |
+| Code review agent | Now | Emerging | Directional | Directional | N/A | Emerging | Directional |
+| Multi-model routing | Now | Now | N/A | Now | Now | Emerging | Now |
+| Custom instructions / rules | Now | Now | Now | Now | Emerging | Emerging | Emerging |
+| Enterprise governance | Now | Emerging | Emerging | Emerging | N/A | Now | Emerging |
+| Full SDLC platform | Now | Directional | N/A | N/A | N/A | Emerging | N/A |
 
 :::
 
@@ -125,13 +125,13 @@ The maturity tiers: **Now** = available and shipping in production. **Emerging**
 
 **Where to look first.** Not every row matters equally. If you're a CTO deciding where to invest evaluation time, three capabilities separate "we have a coding tool" from "we have a strategy":
 
-1. **Custom instructions / rules.** This is the mechanism that addresses the Vibe Coding Cliff. Without it, every agent interaction starts from zero context. With it, your architectural decisions, conventions, and constraints are loaded automatically. This is the row that determines whether AI tools get more reliable over time or stay permanently mediocre. All major tools support this now, but the implementations differ: GitHub Copilot uses custom instructions and `.github/copilot-instructions.md`, Cursor uses `.cursor/rules`, Claude Code uses `CLAUDE.md`. The methodology in this book is portable across all of them.
+1. **Custom instructions / rules.** This is the mechanism that addresses the Vibe Coding Cliff. Without it, every agent interaction starts from zero context. With it, your architectural decisions, conventions, and constraints are loaded automatically. This is the row that determines whether AI tools get more reliable over time or stay permanently mediocre. All major tools support this now, but the implementations differ: GitHub Copilot uses custom instructions and `.github/copilot-instructions.md`, Cursor uses `.cursor/rules`, Claude Code uses `CLAUDE.md`, and OpenCode uses `.opencode/instructions.md`. The methodology in this book is portable across all of them.
 2. **Enterprise governance.** Audit logs, SSO, data residency controls, policy enforcement. Without these, you're flying blind on compliance. This is where coding tools and platforms diverge most sharply, and where "good enough for a developer" and "acceptable for the organization" are different conversations.
 3. **Autonomous PR creation and code review agents.** These are the frontier capabilities that move AI from "helps me type faster" to "participates in my workflow." They're also where the governance gap is widest — an agent that can open a PR or approve a review needs the same trust framework you'd apply to a new hire.
 
 The rest of the matrix (completion, chat, multi-file editing) is table stakes. Every serious tool does it. Don't let a vendor differentiate on capabilities that stopped being differentiators in 2024.
 
-One more thing the matrix can't show you: **architecture shapes capability.** Claude Code has no code completion and no in-editor agent mode because it's a CLI tool, not an editor plugin — that's a design decision, not a deficiency. Cursor has no terminal agent because it's an editor-first experience. JetBrains AI doesn't do autonomous PRs because it's focused on the IDE experience. The N/A cells matter as much as the Now cells — they tell you what each tool is *trying to be*, which tells you whether it fits your workflow.
+One more thing the matrix can't show you: **architecture shapes capability.** Claude Code has no code completion and no in-editor agent mode because it's a CLI tool, not an editor plugin — that's a design decision, not a deficiency. Cursor has no terminal agent because it's an editor-first experience. OpenCode is a terminal-native tool like Claude Code, focused on CLI workflows with multi-model routing — it's the newest entrant and its capability set is still expanding. JetBrains AI doesn't do autonomous PRs because it's focused on the IDE experience. The N/A cells matter as much as the Now cells — they tell you what each tool is *trying to be*, which tells you whether it fits your workflow.
 
 Microsoft's tools (GitHub Copilot + GitHub platform) cover the widest breadth across both the coding-tool and platform categories. This is a factual observation; the author works at Microsoft and discloses this. Whether breadth matters more than depth at any given capability is a decision each organization makes for itself.
 
