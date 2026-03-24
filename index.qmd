@@ -1,8 +1,9 @@
 ---
-title: "Preface"
 title-block-style: none
 number-sections: false
 ---
+
+# Preface {.unnumbered}
 
 ::: {style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;"}
 **Version {{< var version >}}** · {{< var build-date >}}

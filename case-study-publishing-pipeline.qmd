@@ -1,7 +1,8 @@
 ---
-title: "The Publishing Pipeline"
 number-sections: false
 ---
+
+# The Publishing Pipeline {.unnumbered}
 
 **Scope:** Manuscript-to-deployment pipeline — HTML, PDF, EPUB output + CI/CD  
 **Duration:** Multiple waves within a single extended session  

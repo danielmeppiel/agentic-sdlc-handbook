@@ -1,9 +1,10 @@
 ---
-title: "Download the Handbook"
 title-block-style: none
 number-sections: false
 sidebar: false
 ---
+
+# Download the Handbook {.unnumbered}
 
 ::: {.content-visible when-format="html"}
 

@@ -1,7 +1,8 @@
 ---
-title: "Writing a ~68,000-Word Book with Agent Fleets"
 number-sections: false
 ---
+
+# Writing a ~68,000-Word Book with Agent Fleets {.unnumbered}
 
 **Scope:** 15 chapters, ~68,000 words — full technical book on AI-native software development  
 **Duration:** Single extended Copilot CLI session  
