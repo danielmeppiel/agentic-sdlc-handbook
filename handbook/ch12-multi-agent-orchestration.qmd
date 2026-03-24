@@ -467,3 +467,6 @@ This is not a rigid process. A small change might skip straight from step 1 to d
 What matters is the discipline behind it: agents are specialized so their context is concentrated, files are partitioned so agents don't conflict, waves are ordered so dependencies are satisfied, and the human makes the decisions that require judgment rather than the decisions that require typing.
 
 The next chapter puts this framework into practice. It walks through the full five-phase meta-process — Audit, Plan, Wave, Validate, Ship — with exact numbers from a 75-file execution that used every pattern described here.
+
+[^ch12-coordination]: The coordination overhead of multi-agent systems parallels Brooks's observation that adding developers to a late project makes it later (*The Mythical Man-Month*, 1975). The difference: agent coordination overhead is predictable and can be reduced through better planning, not just through better communication.
+[^ch12-autonomy]: Our autonomy taxonomy draws conceptually from the SAE levels of driving automation (SAE J3016), adapted for software engineering contexts. The key parallel: higher autonomy levels require not less human involvement, but different kinds of involvement — supervision rather than operation.

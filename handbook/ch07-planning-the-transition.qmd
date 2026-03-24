@@ -329,3 +329,6 @@ This chapter closes Block 1. If you also write code — or need to understand wh
 You now have the strategic picture: the market context that makes this transition urgent (Chapter 2), the business case that justifies the investment (Chapter 3), the reference architecture that organizes the capability (Chapter 4), the governance structures that make it trustworthy (Chapter 5), the team structures that sustain the organizational change (Chapter 6), and the transition plan that sequences the rollout (this chapter).
 
 The investment is real. The timeline is months, not weeks. The value compounds — but only if the foundation is structural, not aspirational.
+
+[^ch7-bad]: Baumeister et al., "Bad Is Stronger Than Good," *Review of General Psychology* 5, no. 4 (2001): 323–370. The negativity bias is well-established in organizational psychology.
+[^ch7-shadow]: A 2024 Microsoft Work Trend Index report found that 78% of AI users brought their own tools to work, with leadership often unaware. See: Microsoft, "2024 Work Trend Index Annual Report."

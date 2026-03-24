@@ -179,3 +179,6 @@ Four role transitions in twenty minutes. None of them required conscious effort 
 The mindset is not complex. The AI is a capable, fast, amnesiac engineer. Your job is architect, reviewer, and escalation handler — the roles that require continuity, judgment, and accountability. The agent handles volume. You handle direction.
 
 The rest of Block 2 teaches you how.
+
+[^ch8-n1]: The limitations of single-case methodology are well-documented. See Flyvbjerg, "Five Misunderstandings About Case-Study Research," *Qualitative Inquiry* 12, no. 2 (2006): 219–245. Our approach follows his argument that a well-chosen single case can be decisive for theory development.
+[^ch8-cognitive]: Sweller's Cognitive Load Theory (1988) provides the theoretical basis for why reducing extraneous cognitive load improves performance. Agent-delegated execution reduces extraneous load (build mechanics, file navigation) while preserving germane load (architecture decisions, review).

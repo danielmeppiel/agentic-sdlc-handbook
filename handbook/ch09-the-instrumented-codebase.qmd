@@ -776,3 +776,6 @@ The directory structure and primitive types in this chapter can be built by hand
 > `apm install` pulls shared context files from any Git repository into your project.
 
 Now you know what to build. What follows is how to make it work.
+
+[^ch9-lint]: Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Failures in Chapter 14.
+[^ch9-scope]: The principle of scoped, hierarchical configuration mirrors established patterns in software engineering — from CSS specificity to Git's nested .gitignore files. The key insight is that agents benefit from the same locality-of-reference that makes these patterns effective for humans.
