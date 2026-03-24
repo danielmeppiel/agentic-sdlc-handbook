@@ -14,6 +14,8 @@ This chapter applies the three-tier honesty framework (available now, emerging, 
 
 **Multi-agent orchestration moves from research to practice.** Teams today primarily use single-agent interactions. Multi-agent patterns — planning agents dispatching specialists, review agents evaluating output, agents collaborating through shared artifacts — exist in research and early tooling.[^ch15-multiagent] Within a year, they will ship in mainstream platforms. The orchestration disciplines in Chapters 10–12 — task decomposition, wave-based execution, escalation protocols — become operational necessities rather than advanced practices.
 
+**The agentic computing stack crystallizes through independent convergence.** By mid-2025, at least three independent efforts arrived at the same layered architecture: manifest-based primitive distribution, framework-layer composition, and CI/CD-native execution. Anthropic's `plugin.json`[^ch15-plugin], GitHub's Agentic Workflows, and open-source frameworks like Squad[^ch15-squad] and Spec-Kit[^ch15-speckit] didn't coordinate — they converged because the layers reflect real boundaries in the problem. Open-source tools already provide manifest-based dependency resolution and security scanning at the primitive layer, the same architecture as npm or pip applied to agent configuration rather than runtime code. This is the pattern that produced HTTP → REST → Rails/Express → npm/pip → applications: each layer emerged when practitioners needed it, not when a standards body decreed it. Spec-Kit and Squad are to agentic development what Spring and React are to traditional computing — they make orchestration easier in one direction, constrain freedom in another, and consume primitives via package managers above the harness layer. The strategic signal: when independent implementations from different vendors converge on the same architecture, the architecture is real. Organizations investing in the primitive layer (Chapter 9) are building on the layer most likely to remain stable as the framework layer evolves.
+
 ---
 
 ## Medium-Term: What Shifts Over One to Three Years
@@ -31,8 +33,6 @@ These predictions are directional. The author believes they describe where the f
 **Full lifecycle agent participation becomes achievable.** The eight-phase lifecycle from Chapter 3 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.
 
 **Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and deployment. Context infrastructure (the context files, instruction hierarchies, and knowledge bases that make agents effective) will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," the same way organizations without CI concluded automated testing "doesn't work at our scale."
-
-Early implementations already exist. Open-source tools provide manifest-based dependency resolution and security scanning for agent configuration — the same architecture as npm or pip, applied to agent configuration rather than runtime code.
 
 ```{mermaid}
 %%| fig-width: 4.5
@@ -87,6 +87,7 @@ These five properties map directly to the PROSE constraints from Chapter 1. The 
 | Specification replaces implementation as the core skill | Emerging | Medium — direction clear, timeline uncertain |
 | Full lifecycle agent coverage becomes operational | Directional | Low-to-medium — plausible, not inevitable |
 | Context infrastructure becomes as foundational as CI/CD | Directional | Medium — trajectory clear, timeline 5+ years |
+| Agentic computing stack layers consolidate | Emerging | Medium — convergence visible, standardization not |
 | The five core constraints hold | Structural | High — properties of the problem |
 
 The reader should calibrate accordingly. Invest confidently in the "available now" tier. Prepare for the "emerging" tier. Be aware of the "directional" tier without betting the organization on specific timelines.
@@ -180,3 +181,9 @@ The methodology is the floor, not the ceiling. Build on it.
 [^ch15-tooluse]: GitHub Copilot's "agent mode" (2025), Cursor's agentic features, and similar integrations in VS Code, JetBrains, and other IDEs demonstrate this shift. The Model Context Protocol (MCP) standardizes how agents access external tools, accelerating adoption.
 
 [^ch15-multiagent]: OpenAI's Swarm framework, Microsoft's AutoGen, and LangGraph represent early multi-agent orchestration libraries. GitHub Copilot coding agent and similar CI-integrated agents mark the beginning of production multi-agent workflows.
+
+[^ch15-plugin]: Anthropic, "Claude Code Plugins," https://docs.anthropic.com/en/docs/claude-code/plugins
+
+[^ch15-squad]: Brady Gaster, "How Squad Runs Coordinated AI Agents Inside Your Repository," GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/
+
+[^ch15-speckit]: GitHub, "Spec Kit — Build High-Quality Software Faster," https://github.com/github/spec-kit

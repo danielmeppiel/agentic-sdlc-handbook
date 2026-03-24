@@ -787,7 +787,22 @@ The directory structure and primitive types in this chapter can be built by hand
 > `apm init` generates `copilot-instructions.md`, one scoped instruction file, and one agent configuration, the Week One starter set from this chapter.
 > `apm install` pulls shared context files from any Git repository into your project.
 
+::: {.callout-note}
+## From primitives to frameworks
+
+The primitives in this chapter — instructions, agents, skills, prompts, memory — are the *library* layer of the agentic computing stack introduced in Chapter 4. Above them, framework-layer tooling is beginning to emerge: opinionated systems that compose these primitives into complete workflows.
+
+Two early examples. **Squad** (`github.com/bradygaster/squad`) provides repository-native multi-agent orchestration built on GitHub Copilot, consuming instruction and agent primitives to dispatch specialized agents in coordinated workflows[^ch9-squad]. **Spec-Kit** (`github.com/github/spec-kit`) takes spec-driven development further — specifications become executable artifacts rather than passive context[^ch9-speckit].
+
+Convergence is also visible across vendors. Claude's `plugin.json` manifest independently arrived at the same primitive-bundling pattern as APM: a declarative package that bundles skills, agents, hooks, and MCP servers into versioned, distributable units with namespaced composition and marketplace distribution[^ch9-plugin]. When independent implementations from different vendors converge on the same structure, the underlying abstraction is sound.
+
+An honest hedge: these tools are early. The *pattern* — frameworks that consume standardized primitives — is durable. The specific tools will evolve, merge, or be replaced. Your investment should be in the primitives themselves (this chapter), not in any single framework. If the primitives are well-structured, framework migration is a packaging change, not a rewrite.
+:::
+
 Now you know what to build. What follows is how to make it work.
 
 [^ch9-lint]: Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Failures in Chapter 14.
 [^ch9-scope]: The principle of scoped, hierarchical configuration mirrors established patterns in software engineering — from CSS specificity to Git's nested .gitignore files. The key insight is that agents benefit from the same locality-of-reference that makes these patterns effective for humans.
+[^ch9-squad]: Brady Gaster, "How Squad Runs Coordinated AI Agents Inside Your Repository," GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/
+[^ch9-speckit]: GitHub, "Spec Kit — Build High-Quality Software Faster," https://github.com/github/spec-kit
+[^ch9-plugin]: Anthropic, "Claude Code Plugins," https://docs.anthropic.com/en/docs/claude-code/plugins

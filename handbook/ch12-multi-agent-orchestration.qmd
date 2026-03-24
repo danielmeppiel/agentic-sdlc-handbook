@@ -438,6 +438,8 @@ This state includes:
 
 The agent sessions are stateless workers. The coordination layer is the stateful manager. Keeping this separation clean is what makes multi-agent orchestration predictable. When the coordination state is mixed into agent sessions — when an agent is asked to "track which files you've changed and tell the next agent" — the result is fragile and error-prone.
 
+What we have been describing is the *runtime* layer of the agentic computing stack (Chapter 4). Just as an operating system manages processes, memory, and I/O for a CPU, the orchestration harness manages sessions, context loading, and file I/O for the LLM. The harness doesn't do the thinking — it creates the conditions under which thinking produces reliable results.
+
 ---
 
 ## Putting It Together

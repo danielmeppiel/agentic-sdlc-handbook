@@ -243,6 +243,39 @@ The pattern: work and data context often require building or composing because t
 
 No single vendor covers all three context domains comprehensively today. This is a practical observation, not a criticism; the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.
 
+## The Agentic Computing Stack
+
+The components in the build-buy-compose decision above are not independent purchases. They are layers in a technology stack, and as with any stack, each layer depends on the ones below it.
+
+```{mermaid}
+%%| label: fig-agentic-stack
+%%| fig-cap: "The Agentic Computing Stack — seven layers mapping agentic components to their classical analogs."
+%%| fig-width: 7
+%%| fig-height: 6
+flowchart BT
+    L1["<b>LLM</b> (GPT, Claude, Gemini)<br/><i>≈ CPU (x86, ARM)</i>"]
+    L2["<b>Harness</b> (Copilot CLI, Cursor, Claude Code)<br/><i>≈ Runtime / OS (Node.js, JVM)</i>"]
+    L3["<b>PROSE Constraints</b><br/><i>≈ Architectural Standards (REST, POSIX)</i>"]
+    L4["<b>Markdown Primitives</b> (.instructions.md, .agent.md)<br/><i>≈ Source Code / Config Files</i>"]
+    L5["<b>APM / Claude plugin.json</b><br/><i>≈ Package Manager (npm, pip, cargo)</i>"]
+    L6["<b>Spec-Kit, Squad</b><br/><i>≈ Frameworks (Spring, React, Django)</i>"]
+    L7["<b>Agentic Workflows</b><br/><i>≈ Applications</i>"]
+
+    L1 --> L2 --> L3 --> L4 --> L5 --> L6 --> L7
+
+    style L1 fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a
+    style L2 fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a
+    style L3 fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a
+    style L4 fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a
+    style L5 fill:#e6f4ea,stroke:#34a853,color:#1a1a1a
+    style L6 fill:#e6f4ea,stroke:#34a853,color:#1a1a1a
+    style L7 fill:#fce8e6,stroke:#ea4335,color:#1a1a1a
+```
+
+This stack is not a theoretical proposal — it is forming independently across vendors, which is the strongest evidence that the layers are real. Anthropic's Claude `plugin.json` converged on manifest-based primitive bundling independently of APM[^ch4-plugin]. GitHub's Agentic Workflows bring CI/CD-native execution to the application layer. Brady Gaster's Squad[^ch4-squad] and GitHub's Spec-Kit[^ch4-speckit] represent framework-layer emergence: opinionated ways to compose primitives into multi-agent orchestration and spec-driven development. Spec-Kit and Squad are to agentic development what Spring and React are to traditional development — they make orchestration easier in one dimension, constrain freedom in another. They consume primitives via package managers. Any harness can run the resulting workflows. When independent efforts converge on the same layering without coordination, the layers are not an abstraction. They are a discovery.
+
+The maturity distribution across this stack tells you where to invest. The processing layer (LLMs) is powerful and improving on a cadence measured in weeks. The package management and framework layers are embryonic — roughly where `npm` was in 2012 or where web frameworks were in the early Rails era. This maturity gap between the bottom and top of the stack is exactly what the early PC era looked like: powerful CPUs, primitive operating systems, no standardized distribution. The strategic implication is clear: invest in the layers that compound — primitives, context infrastructure, distribution standards — not the layers that commoditize. Models get cheaper. Context gets more valuable.
+
 ---
 
 ## Start Anywhere, Expand Deliberately
@@ -261,8 +294,12 @@ The architecture presented in this chapter is designed to be adopted incremental
 
 This is a planning horizon, not a schedule. Some organizations will move faster; some will spend longer at each stage. The sequence matters more than the timeline: start where the tooling is mature and the context is structured, expand where the evidence supports it, and invest in context continuously.
 
-The canonical diagram at the top of this chapter — Human Layer, Agent Layer, Platform Layer, mapped across eight phases — is your board-level summary. Print it. Put it on a slide. Use it to answer "where are we and where are we going?" in a single visual. Then use the decision matrix to answer "what do we do next?"
-
 ---
 
 The reference architecture gives you a shared vocabulary for planning. The context moat gives you a reason to start now rather than wait. But architecture without governance is a blueprint without building codes. Chapter 5 addresses the hardest question in AI-assisted delivery: who is accountable when agents are participants in your software lifecycle, and how do you build the trust frameworks that make autonomous work auditable and safe?
+
+[^ch4-plugin]: Anthropic, "Claude Code Plugins," https://docs.anthropic.com/en/docs/claude-code/plugins
+
+[^ch4-squad]: Brady Gaster, "How Squad Runs Coordinated AI Agents Inside Your Repository," GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/
+
+[^ch4-speckit]: GitHub, "Spec Kit — Build High-Quality Software Faster," https://github.com/github/spec-kit

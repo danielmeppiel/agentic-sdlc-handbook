@@ -119,6 +119,8 @@ When they're violated, the failures are equally predictable:
 
 Most of these anti-patterns stem from a single root cause: ignoring that context is finite and fragile. The book returns to these patterns in detail in Chapter 14.
 
+REST didn't just define constraints — it named a layer in a complete computing stack. HTTP provided transport, web servers provided runtime, REST provided architectural constraints, and everything above (languages, package managers, frameworks, applications) built on that foundation. An equivalent stack is forming for agentic development: LLMs as processing, harnesses as runtime, PROSE constraints as the orchestration standard, markdown primitives as lingua franca, package managers for distribution, and emerging frameworks for composition. Andrej Karpathy observed that we are in "the 1980s of computing" with LLMs — the processing layer is powerful, but the layers above it are embryonic[^ch1-karpathy]. The parallel is structurally precise: the maturity gap between the bottom of the stack and the top is exactly what defined the early PC era. Chapter 4 maps this stack in detail.
+
 ### Honest Positioning
 
 PROSE is one framework among emerging approaches to structured AI-assisted development. It is the one this book teaches, because it has verifiable evidence behind it. But intellectual honesty demands acknowledging the landscape.
@@ -190,3 +192,5 @@ The constraints are the point. Let's see what they produce.
 [^ch1-satisfaction]: In the 2024 Stack Overflow Developer Survey, 45% of professional developers rated AI tools as "bad" or "very bad" at handling complex tasks, even as overall AI adoption reached 76%. See [survey.stackoverflow.co/2024/ai](https://survey.stackoverflow.co/2024/ai).
 
 [^ch1-rework]: Multiple data points support this range: the 2025 Stack Overflow Developer Survey found 66% of developers report AI-generated solutions as "almost right, but not quite"; GitClear's 2025 analysis of 211M lines of code showed code quality metrics degrading with AI adoption; and their 2026 analysis found heavy AI users produce 9× more code churn than non-users. See [survey.stackoverflow.co/2025/ai](https://survey.stackoverflow.co/2025/ai) and [gitclear.com/ai_assistant_code_quality_2025_research](https://www.gitclear.com/ai_assistant_code_quality_2025_research).
+
+[^ch1-karpathy]: Andrej Karpathy, keynote at UC Berkeley AI Hackathon 2024. https://youtu.be/tsTeEkzO9xc
