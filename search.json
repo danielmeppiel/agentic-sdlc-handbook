@@ -40,6 +40,16 @@
     ]
   },
   {
+    "objectID": "index.html#acknowledgments",
+    "href": "index.html#acknowledgments",
+    "title": "The Agentic SDLC Handbook",
+    "section": "Acknowledgments",
+    "text": "Acknowledgments\nThis book exists because of the people who shaped its ideas and the people who trusted them.\nFrançois Bouterouche brainstormed the kernel vision of the technology stack with me — the conversations that became the computing paradigm at the heart of Chapter 4. Francesco Manni, my manager and mentor for four years at GitHub, taught me serving leadership by example; his principles and trust created the space where this work could happen. Don Syme and Peli de Halleux, from GitHub Next, cultivated ingenuity and exploration with an openness that made ideas flow freely — and trusted APM’s foundational concepts enough to carry them into GitHub Agentic Workflows. Sébastien Le Calvez built the Software Global Black Belt team and go-to-market motion that created the feedback loop between real-world practice and the methodology in these pages.\nTo Mondragon Unibertsitatea — for teaching curiosity, innovation, and self-starting spirit through rigorous engineering and Project-Based Learning. The methodology in this book owes more to those foundations than it might appear.\nTo the early adopters and contributors of APM who believed in the project and in me — Sergio Sisternes, Sébastien Degodez, and François Descamps. Open source lives or dies on the people who show up first.\nThe views and opinions in this book are my own and do not represent those of my employer.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Preface</span>"
+    ]
+  },
+  {
     "objectID": "index.html#license",
     "href": "index.html#license",
     "title": "The Agentic SDLC Handbook",
