@@ -120,7 +120,7 @@ The final architecture splits rendering by environment:
 ::: {.landscape}
 
 ```{mermaid}
-%%| fig-width: 6.5
+%%| fig-width: 5.5
 %%| fig-cap: "Final CI/CD architecture: CI pipeline and local render workflow"
 %%| fig-alt: "Flowchart showing two parallel subgraphs. The CI Pipeline (49 seconds) subgraph contains five sequential steps: Checkout, Install Quarto, quarto render to html, Restore PDF and EPUB from gh-pages, and quarto publish with no-render flag. The Local Render (15 minutes) subgraph contains seven sequential steps: quarto render to pdf, Save PDF, quarto render to epub, Save EPUB, quarto render to html, Copy PDF and EPUB into _book directory, and quarto publish with no-render flag. CI optimizes for speed with HTML only while Local optimizes for completeness with all formats."
 %%| label: fig-cs-cicd-architecture

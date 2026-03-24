@@ -25,6 +25,7 @@ The term "primitive" is deliberate. These artifacts are the atomic units of agen
 Seven categories cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all seven on day one (the instrumentation audit later in this chapter helps you decide where to start) but understanding the complete set is necessary before making that decision.
 
 ```{mermaid}
+%%| fig-width: 5.0
 %%| label: fig-seven-primitives
 %%| fig-cap: "The seven APM primitive types"
 %%| fig-alt: "Block diagram showing seven APM primitive types arranged in a 4-by-2 grid. Row 1: Instructions (.instructions.md — scoped conventions per file or directory), Agents (.agent.md — specialist personas with tool boundaries), Skills (SKILL.md — reusable decision frameworks), Prompts (.prompt.md — repeatable workflows). Row 2: Memory (.memory.md — cross-session knowledge), Orchestration (.spec.md — execution-ready specifications), Hooks (event-driven — automated actions on dev events). The seventh slot in row 2 is empty."

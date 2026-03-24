@@ -177,7 +177,8 @@ Enforcing this rule requires partitioning the file set before dispatch. If two c
 The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.
 
 ```{mermaid}
-%%| fig-width: 4.5
+%%| fig-width: 5.0
+%%| fig-height: 6
 %%| fig-cap: "Wave-based parallelism with dependency ordering"
 %%| fig-alt: "Flowchart showing three waves of parallel agent execution: Wave 0 (Foundation) runs Types, Utilities, and Config agents in parallel, followed by a Tests pass checkpoint; Wave 1 (Core Changes) runs Migration, API, and Auth agents in parallel, followed by another Tests pass checkpoint; Wave 2 (Integration) runs Wiring and Tests agents in parallel. Each wave completes and passes tests before the next wave begins."
 %%| label: fig-wave-parallelism
@@ -213,7 +214,7 @@ In the PR #394 execution ([case study](../case-study-apm-overhaul.qmd)), four wa
 ::: {.landscape}
 
 ```{mermaid}
-%%| fig-width: 6.5
+%%| fig-width: 5.5
 %%| fig-cap: "Wave execution timeline showing parallel agent dispatch"
 %%| fig-alt: "Gantt chart showing three waves of agent execution over time: Wave 0 (Foundation) runs Types, Utilities, and Config agents in parallel with a critical Checkpoint milestone; Wave 1 (Core) runs Migration, API, and Auth agents in parallel with a Checkpoint; Wave 2 (Integration) runs Wiring and Tests agents in parallel with a final Checkpoint. Each wave starts only after the previous wave's checkpoint completes."
 %%| label: fig-wave-timeline
@@ -444,7 +445,7 @@ The agent sessions are stateless workers. The coordination layer is the stateful
 The patterns described in this chapter compose into a workflow:
 
 ```{mermaid}
-%%| fig-width: 4.5
+%%| fig-width: 5.0
 %%| fig-cap: "Complete multi-agent orchestration workflow"
 %%| fig-alt: "Flowchart showing a six-step orchestration workflow: step 1 Assess (Scope decision) flows to step 2 Specialize (Team pattern), then to step 3 Partition (File ownership), then to step 4 Order (Wave dependencies), then to step 5 Dispatch (Parallel execution), then to step 6 Validate (Test and checkpoint). From Validate, Pass loops back to Dispatch for the next wave, and Fail goes to Diagnose. From Diagnose, L1 or L2 issues go to Retry which returns to Dispatch, while L3 or L4 issues go to Human decides which returns to Order for replanning."
 %%| label: fig-orchestration-workflow

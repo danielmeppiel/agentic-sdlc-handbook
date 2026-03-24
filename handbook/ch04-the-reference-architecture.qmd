@@ -20,6 +20,7 @@ The layers are not independent. They form a stack where each depends on the one 
 
 ```{mermaid}
 %%| fig-width: 5.0
+%%| fig-height: 5
 %%| fig-cap: "The three-layer reference architecture: Human, Agent, Platform"
 %%| fig-alt: "A left-to-right flowchart showing three layers of the reference architecture. The Human Layer contains Roles (Product, Architecture, Engineering, QA, Operations) and Functions (Decisions, Governance, Accountability). The Agent Layer contains Capabilities (Generate, Analyze, Test, Review) and Boundaries (Scoped authority, context-dependent, auditable). The Platform Layer contains Infrastructure (SCM, CI/CD, Auth, Observability) and Integrations (APIs, Webhooks, Context Sources, Artifacts). Bidirectional arrows show: Human sets constraints and delegates tasks to Agent, Agent sends escalations, approvals, and results back to Human, Agent invokes tools and reads context from Platform, and Platform returns build results, test output, and telemetry to Agent."
 %%| label: fig-three-layers
