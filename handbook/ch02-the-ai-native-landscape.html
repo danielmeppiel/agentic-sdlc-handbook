@@ -723,16 +723,17 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <p>A feature comparison grid is the most natural thing to produce and the least useful thing to read. Every vendor has one. They all look favorable to the vendor that made them. The table below attempts something different: an honest snapshot of where each tool actually is, what it can’t do by design, and, critically, which capabilities you should care about first.</p>
 <p>The maturity tiers: <strong>Now</strong> = available and shipping in production. <strong>Emerging</strong> = available but limited, or in public preview. <strong>Directional</strong> = announced, demonstrated in research, or on a public roadmap but not yet usable at production scale. <strong>N/A</strong> = not applicable — the tool’s architecture doesn’t target this capability, and that’s a design choice, not a gap.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <div class="landscape">
-<div data-tbl-colwidths="[22,13,13,13,13,13,13]">
+<div data-tbl-colwidths="[20,12,12,12,12,10,12,10]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 13%">
+<col style="width: 20%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 10%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -741,6 +742,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <th>Cursor</th>
 <th>Claude Code</th>
 <th>Windsurf</th>
+<th>OpenCode</th>
 <th>Amazon Q Developer</th>
 <th>JetBrains AI</th>
 </tr>
@@ -752,11 +754,13 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Now</td>
 <td>N/A</td>
 <td>Now</td>
+<td>N/A</td>
 <td>Now</td>
 <td>Now</td>
 </tr>
 <tr class="even">
 <td>Chat / explain</td>
+<td>Now</td>
 <td>Now</td>
 <td>Now</td>
 <td>Now</td>
@@ -772,6 +776,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Now</td>
 <td>Emerging</td>
 <td>Emerging</td>
+<td>Emerging</td>
 </tr>
 <tr class="even">
 <td>Agent mode (in-editor)</td>
@@ -779,6 +784,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Now</td>
 <td>N/A</td>
 <td>Now</td>
+<td>N/A</td>
 <td>Emerging</td>
 <td>Emerging</td>
 </tr>
@@ -788,6 +794,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>N/A</td>
 <td>Now</td>
 <td>N/A</td>
+<td>Now</td>
 <td>Emerging</td>
 <td>N/A</td>
 </tr>
@@ -798,6 +805,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Now</td>
 <td>Directional</td>
 <td>Directional</td>
+<td>Directional</td>
 <td>N/A</td>
 </tr>
 <tr class="odd">
@@ -806,6 +814,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Emerging</td>
 <td>Directional</td>
 <td>Directional</td>
+<td>N/A</td>
 <td>Emerging</td>
 <td>Directional</td>
 </tr>
@@ -814,6 +823,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Now</td>
 <td>Now</td>
 <td>N/A</td>
+<td>Now</td>
 <td>Now</td>
 <td>Emerging</td>
 <td>Now</td>
@@ -826,6 +836,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Now</td>
 <td>Emerging</td>
 <td>Emerging</td>
+<td>Emerging</td>
 </tr>
 <tr class="even">
 <td>Enterprise governance</td>
@@ -833,6 +844,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Emerging</td>
 <td>Emerging</td>
 <td>Emerging</td>
+<td>N/A</td>
 <td>Now</td>
 <td>Emerging</td>
 </tr>
@@ -840,6 +852,7 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 <td>Full SDLC platform</td>
 <td>Now</td>
 <td>Directional</td>
+<td>N/A</td>
 <td>N/A</td>
 <td>N/A</td>
 <td>Emerging</td>
@@ -851,12 +864,12 @@ Figure&nbsp;4.1: Four phases of AI-assisted development evolution
 </div>
 <p><strong>Where to look first.</strong> Not every row matters equally. If you’re a CTO deciding where to invest evaluation time, three capabilities separate “we have a coding tool” from “we have a strategy”:</p>
 <ol type="1">
-<li><strong>Custom instructions / rules.</strong> This is the mechanism that addresses the Vibe Coding Cliff. Without it, every agent interaction starts from zero context. With it, your architectural decisions, conventions, and constraints are loaded automatically. This is the row that determines whether AI tools get more reliable over time or stay permanently mediocre. All major tools support this now, but the implementations differ: GitHub Copilot uses custom instructions and <code>.github/copilot-instructions.md</code>, Cursor uses <code>.cursor/rules</code>, Claude Code uses <code>CLAUDE.md</code>. The methodology in this book is portable across all of them.</li>
+<li><strong>Custom instructions / rules.</strong> This is the mechanism that addresses the Vibe Coding Cliff. Without it, every agent interaction starts from zero context. With it, your architectural decisions, conventions, and constraints are loaded automatically. This is the row that determines whether AI tools get more reliable over time or stay permanently mediocre. All major tools support this now, but the implementations differ: GitHub Copilot uses custom instructions and <code>.github/copilot-instructions.md</code>, Cursor uses <code>.cursor/rules</code>, Claude Code uses <code>CLAUDE.md</code>, and OpenCode uses <code>.opencode/instructions.md</code>. The methodology in this book is portable across all of them.</li>
 <li><strong>Enterprise governance.</strong> Audit logs, SSO, data residency controls, policy enforcement. Without these, you’re flying blind on compliance. This is where coding tools and platforms diverge most sharply, and where “good enough for a developer” and “acceptable for the organization” are different conversations.</li>
 <li><strong>Autonomous PR creation and code review agents.</strong> These are the frontier capabilities that move AI from “helps me type faster” to “participates in my workflow.” They’re also where the governance gap is widest — an agent that can open a PR or approve a review needs the same trust framework you’d apply to a new hire.</li>
 </ol>
 <p>The rest of the matrix (completion, chat, multi-file editing) is table stakes. Every serious tool does it. Don’t let a vendor differentiate on capabilities that stopped being differentiators in 2024.</p>
-<p>One more thing the matrix can’t show you: <strong>architecture shapes capability.</strong> Claude Code has no code completion and no in-editor agent mode because it’s a CLI tool, not an editor plugin — that’s a design decision, not a deficiency. Cursor has no terminal agent because it’s an editor-first experience. JetBrains AI doesn’t do autonomous PRs because it’s focused on the IDE experience. The N/A cells matter as much as the Now cells — they tell you what each tool is <em>trying to be</em>, which tells you whether it fits your workflow.</p>
+<p>One more thing the matrix can’t show you: <strong>architecture shapes capability.</strong> Claude Code has no code completion and no in-editor agent mode because it’s a CLI tool, not an editor plugin — that’s a design decision, not a deficiency. Cursor has no terminal agent because it’s an editor-first experience. OpenCode is a terminal-native tool like Claude Code, focused on CLI workflows with multi-model routing — it’s the newest entrant and its capability set is still expanding. JetBrains AI doesn’t do autonomous PRs because it’s focused on the IDE experience. The N/A cells matter as much as the Now cells — they tell you what each tool is <em>trying to be</em>, which tells you whether it fits your workflow.</p>
 <p>Microsoft’s tools (GitHub Copilot + GitHub platform) cover the widest breadth across both the coding-tool and platform categories. This is a factual observation; the author works at Microsoft and discloses this. Whether breadth matters more than depth at any given capability is a decision each organization makes for itself.</p>
 <hr>
 </section>

@@ -842,7 +842,7 @@ Figure&nbsp;14.2: Audit, Execute, Validate pattern
 <section id="wave-based-parallelism" class="level3" data-number="14.3.2">
 <h3 data-number="14.3.2" class="anchored" data-anchor-id="wave-based-parallelism"><span class="header-section-number">14.3.2</span> Wave-Based Parallelism</h3>
 <p>The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.</p>
-<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<div class="cell" data-fig-width="5" data-fig-height="6" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-wave-parallelism" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -883,7 +883,7 @@ Figure&nbsp;14.3: Wave-based parallelism with dependency ordering
 <p>Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish, typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.</p>
 <p>In the PR #394 execution (<a href="../case-study-apm-overhaul.html">case study</a>), four waves plus one recovery wave handled 75 files in roughly 24 minutes of wave execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. This comparison is estimated, not measured — we did not run the sequential approach. The numbers reflect the author’s judgment based on prior single-agent attempts of similar scope. The real value was in reduced context degradation, not reduced time.</p>
 <div class="landscape">
-<div class="cell" data-fig-width="6.5" data-layout-align="default">
+<div class="cell" data-fig-width="5.5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-wave-timeline" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -1142,7 +1142,7 @@ Figure&nbsp;14.6: Session isolation: agents share filesystem, not conversation s
 <section id="putting-it-together" class="level2" data-number="14.8">
 <h2 data-number="14.8" class="anchored" data-anchor-id="putting-it-together"><span class="header-section-number">14.8</span> Putting It Together</h2>
 <p>The patterns described in this chapter compose into a workflow:</p>
-<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<div class="cell" data-fig-width="5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-orchestration-workflow" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

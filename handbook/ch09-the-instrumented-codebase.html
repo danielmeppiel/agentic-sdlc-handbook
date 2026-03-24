@@ -629,7 +629,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="the-seven-primitive-types" class="level2" data-number="11.2">
 <h2 data-number="11.2" class="anchored" data-anchor-id="the-seven-primitive-types"><span class="header-section-number">11.2</span> The Seven Primitive Types</h2>
 <p>Seven categories cover the full range of knowledge an agent needs. Each addresses a distinct gap between what’s in the code and what an agent needs to know. Not every project needs all seven on day one (the instrumentation audit later in this chapter helps you decide where to start) but understanding the complete set is necessary before making that decision.</p>
-<div class="cell" data-layout-align="default">
+<div class="cell" data-fig-width="5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-seven-primitives" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -892,14 +892,15 @@ Figure&nbsp;11.1: The seven APM primitive types
 <section id="tool-support-and-portability" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</h2>
 <p>The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
-<div data-tbl-colwidths="[16,28,18,20,18]">
+<div data-tbl-colwidths="[14,24,18,18,14,12]">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 16%">
-<col style="width: 28%">
+<col style="width: 14%">
+<col style="width: 24%">
 <col style="width: 18%">
-<col style="width: 20%">
 <col style="width: 18%">
+<col style="width: 14%">
+<col style="width: 12%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -908,6 +909,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 <th>Cursor</th>
 <th>Claude Code</th>
 <th>Windsurf</th>
+<th>OpenCode</th>
 </tr>
 </thead>
 <tbody>
@@ -917,39 +919,45 @@ Figure&nbsp;11.1: The seven APM primitive types
 <td><code>.cursor/rules/*.mdc</code> with glob frontmatter</td>
 <td><code>CLAUDE.md</code> per directory</td>
 <td><code>.windsurfrules</code>; cascade rules</td>
+<td><code>.opencode/instructions.md</code></td>
 </tr>
 <tr class="even">
 <td><strong>Agents</strong></td>
 <td><code>.agent.md</code> with model + tools</td>
-<td>—</td>
+<td>Configurable via rules and agent modes</td>
+<td>Via <code>/commands</code> and agent configurations</td>
 <td>—</td>
 <td>—</td>
 </tr>
 <tr class="odd">
 <td><strong>Skills</strong></td>
 <td><code>SKILL.md</code> directories with examples</td>
-<td>— (embed in rules)</td>
-<td>— (embed in <code>CLAUDE.md</code>)</td>
-<td>— (embed in rules)</td>
+<td>Embed in rules with examples</td>
+<td>Embed in <code>CLAUDE.md</code> sections</td>
+<td>Embed in rules</td>
+<td>—</td>
 </tr>
 <tr class="even">
 <td><strong>Prompts</strong></td>
 <td><code>.prompt.md</code> with execution mode</td>
-<td>—</td>
-<td>—</td>
+<td>Embed in rules or <code>.cursor/prompts/</code></td>
+<td>Via <code>/commands</code> definitions</td>
 <td>Flows (different model)</td>
+<td>—</td>
 </tr>
 <tr class="odd">
 <td><strong>Memory</strong></td>
-<td><code>.memory.md</code> referenced in context</td>
-<td>In rules or notepads</td>
-<td>In <code>CLAUDE.md</code> sections</td>
+<td>SQLite database; <code>.memory.md</code> as portable context</td>
+<td>Notepads; project-level rules</td>
+<td>In <code>CLAUDE.md</code> sections; persistent memory</td>
 <td>In rules</td>
+<td>—</td>
 </tr>
 <tr class="even">
 <td><strong>Orchestration</strong></td>
-<td><code>.spec.md</code> loaded as context</td>
-<td>Loaded as context</td>
+<td><code>.spec.md</code> loaded as context; plan mode artifacts</td>
+<td>Loaded as context; composer plans</td>
+<td>Loaded as context; plan mode</td>
 <td>Loaded as context</td>
 <td>Loaded as context</td>
 </tr>
@@ -959,15 +967,36 @@ Figure&nbsp;11.1: The seven APM primitive types
 <td>—</td>
 <td>—</td>
 <td>—</td>
+<td>—</td>
 </tr>
 </tbody>
 </table>
 </div>
 <p>“—” means the tool has no native format for that type. The knowledge is still usable (you embed it in whatever instruction format the tool does support) but automatic activation and scoping are lost.</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Implementation Reality">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Implementation Reality
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The seven primitives describe <em>what</em> your codebase needs to communicate to agents, not a universal file format. Tools implement these concepts differently:</p>
+<ul>
+<li><strong>Instructions</strong> have the broadest native support — <code>.instructions.md</code> (Copilot), <code>.cursor/rules/</code> (Cursor), <code>CLAUDE.md</code> (Claude Code). Every major tool reads project-level markdown from predictable locations.</li>
+<li><strong>Memory</strong> is implemented as SQLite databases (GitHub Copilot), notepads (Cursor), or embedded in <code>CLAUDE.md</code> sections (Claude Code). The <code>.memory.md</code> format described here works as portable context loaded by any tool.</li>
+<li><strong>Orchestration specs</strong> (<code>.spec.md</code>) map to plan mode artifacts (<code>plan.md</code> in Copilot CLI) or are consumed as plain context files. No tool has a native “spec” file format yet.</li>
+<li><strong>Agents, Skills, Prompts, and Hooks</strong> have the deepest native support in GitHub Copilot’s <code>.agent.md</code>, <code>SKILL.md</code>, <code>.prompt.md</code>, and hooks system. Other tools achieve similar outcomes through their own configuration mechanisms.</li>
+</ul>
+<p>The file names in this chapter are conventions that work today. As tools converge, expect native format support to broaden.</p>
+</div>
+</div>
 <p>Three observations.</p>
 <p><strong>Instructions are the universal context file.</strong> Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ (<code>applyTo</code> frontmatter, glob-based rule files, per-directory placement) but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.</p>
 <p><strong>Agent configurations are the least portable.</strong> Chat modes, model selection, and tool boundaries are defined differently in every tool and don’t transfer. The knowledge inside them (domain expertise, named patterns, anti-patterns) is just markdown and moves freely. The activation mechanism does not.</p>
-<p><strong>Most tools natively support two of seven.</strong> Instructions (in some form) and memory (via root-level markdown). The remaining five (skills, prompts, orchestration specs, agent configurations, and hooks) have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.</p>
+<p><strong>The three major tools now support most primitives natively.</strong> GitHub Copilot, Cursor, and Claude Code each support the majority of the seven primitive types, though file formats and native integration depth differ. Copilot has the most comprehensive native format support. Cursor and Claude Code have expanded rapidly and cover instructions, agents, skills, memory, and orchestration through their own mechanisms. OpenCode, the newest entrant, currently supports mainly instructions. Windsurf covers instructions and basic context loading. The methodology described here is portable across all of them — the knowledge transfers even when the wiring differs.</p>
 <section id="what-happens-when-you-switch-tools" class="level3" data-number="11.3.1">
 <h3 data-number="11.3.1" class="anchored" data-anchor-id="what-happens-when-you-switch-tools"><span class="header-section-number">11.3.1</span> What happens when you switch tools</h3>
 <p>If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your instrumentation files in two tiers:</p>
