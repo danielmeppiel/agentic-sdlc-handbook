@@ -480,7 +480,7 @@ Agents have filesystem access, can execute commands, and generate code for your 
 
 **Credential exposure.** Agents reading environment files or test fixtures may echo sensitive values in output or embed them in generated code. Exclude credential files from context. Use secret scanning in CI.
 
-These risks aren't unique to AI-generated code — they're amplified by volume. An agent generating 75 files in 90 minutes produces more review surface area than a human in the same timeframe. Review discipline must scale with generation speed.
+These risks aren't unique to AI-generated code — they're amplified by volume. An agent generating 75 files in ~90 minutes of wave execution time (see [The APM Auth + Logging Overhaul](../case-study-apm-overhaul.qmd)) produces more review surface area than a human in the same timeframe. Review discipline must scale with generation speed.
 
 ---
 

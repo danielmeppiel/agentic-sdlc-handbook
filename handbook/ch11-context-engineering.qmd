@@ -43,7 +43,7 @@ Make this concrete. On a 128K-to-200K-token window — common in current frontie
 
 :::
 
-These allocations reflect the author's observed patterns across Copilot CLI sessions. Your distribution will vary by model, tool, and task type. Treat these as starting estimates, not benchmarks.
+These allocations are starting recommendations from the author's practice — observed across Copilot CLI sessions and similar agentic tools, not derived from controlled experiments. Your distribution will vary by model, tool, and task type. Calibrate based on your codebase and tooling rather than treating any single breakdown as a benchmark.
 
 Those 20K instruction tokens are approximately 800 lines of typical prose markdown. If your global instructions alone consume 400 of those lines, you've spent half your instruction budget before a single scoped rule loads. And the 60K for code context sounds generous until you realize a single mid-sized module — types, implementation, tests — can easily consume 15K tokens. At scale, every line of instruction competes directly with a line of source code the agent could have seen instead.
 

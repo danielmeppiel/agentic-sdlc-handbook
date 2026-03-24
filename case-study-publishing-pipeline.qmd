@@ -7,7 +7,7 @@ number-sections: false
 **Duration:** Multiple waves within a single extended session  
 **Theme:** Infrastructure automation and the "Almost Done" cascade
 
-**How Copilot CLI orchestrated a 67,000-word book from manuscript to multi-format deployment**
+**How Copilot CLI orchestrated a ~68,000-word book from manuscript to multi-format deployment**
 
 ::: {.callout-tip title="Key Takeaways — The TL;DR"}
 - Every design decision was human; every technical execution was agent — that division held throughout.
@@ -44,7 +44,7 @@ A single general-purpose agent converted the entire manuscript in one wave:
 - Created `index.qmd` with a reading guide and download callouts
 - Created `.github/workflows/publish.yml` for CI auto-deploy
 
-HTML render: 16 files, zero errors, 24 Mermaid diagrams confirmed. The site went live on the `gh-pages` branch within the same wave.
+HTML render: 16 files, zero errors, 25 Mermaid diagrams confirmed. The site went live on the `gh-pages` branch within the same wave.
 
 ```{mermaid}
 %%| fig-width: 4.5
@@ -170,7 +170,7 @@ The publishing pipeline compressed weeks of toolchain research, format debugging
 **What Held True.** The structural properties from the APM Overhaul held. The novel test: the "Almost Done" cascade demonstrated that checkpoint discipline prevents compounding rendering failures as effectively as it prevents compounding code failures.
 
 ::: {.callout-note title="Metrics"}
-3 output formats (HTML, PDF, EPUB) · 36 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy
+3 output formats (HTML, PDF, EPUB) · 37 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy
 :::
 
 The division of labor was consistent: every design decision was human; every technical execution was agent.
