@@ -293,6 +293,12 @@ Nine patterns that emerge at the session level, where context capacity, state ma
 
 :::
 
+::: {.callout-warning}
+## File Presence Is Execution
+
+In agent configuration, installing a package and executing it are the same event. When an agent reads a skill file or instruction set, it incorporates those directives immediately — there is no separate "install" step that a human reviews before "execution." This collapses the traditional install → review → execute pipeline into a single action, making supply chain security for agent primitives fundamentally different from traditional package management.
+:::
+
 **Why this pattern is uniquely dangerous.** In traditional dependency management, there is a gap between install and execution — you install a package, then your code explicitly calls it. In agent configuration, *file presence is execution*. The moment a compromised instruction file exists in `.github/` or `.cursor/`, agents ingest it. There is no import statement, no function call, no opt-in. Install and execution are the same event.
 
 Attack vectors include hidden Unicode characters (tag characters, bidirectional overrides, variation selectors) that are invisible in editors but alter agent behavior, and transitive dependencies that silently introduce MCP server access.
@@ -366,6 +372,8 @@ Technical anti-patterns happen in code. Organizational anti-patterns amplify eve
 **Abandoned governance.** No one audits what agents modify outside stated scope. No one tracks token costs against value. AI usage grows organically without the structures that catch these patterns before they become expensive.
 
 Each organizational pattern amplifies a technical one. Over-trust amplifies the Trust Fall. Under-specification causes Context Dumping. No feedback loop perpetuates Not Fixing the Primitives. The fix is organizational: team agreements, review processes, and treating primitives as shared infrastructure.
+
+**Missing policy encoding.** Agents cannot infer organizational policies from training data. Your CELA review triggers, your data classification rules, your compliance thresholds — none of these exist in any model's weights. If a policy is not explicitly encoded in the context layer (instruction files, governance primitives, CI checks), agents will violate it with confidence and without warning. This is not a bug to be fixed; it is a permanent boundary. See Chapter 5 for the governance framework that addresses it.
 
 ---
 

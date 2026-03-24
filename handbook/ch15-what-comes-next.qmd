@@ -82,7 +82,7 @@ These five properties map directly to the PROSE constraints from Chapter 1. The 
 | Claim | Tier | Confidence |
 |---|---|---|
 | Tool-using agents become the default interaction mode | Available now | High — shipping in multiple platforms |
-| Multi-agent orchestration enters mainstream tooling | Available now | High — already in early production |
+| Multi-agent orchestration enters mainstream tooling | Available now | High — shipping in multiple tools |
 | Agent governance becomes a distinct discipline | Emerging | Medium — need is clear, tooling is not |
 | Specification replaces implementation as the core skill | Emerging | Medium — direction clear, timeline uncertain |
 | Full lifecycle agent coverage becomes operational | Directional | Low-to-medium — plausible, not inevitable |

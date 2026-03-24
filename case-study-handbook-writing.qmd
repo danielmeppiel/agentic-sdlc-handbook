@@ -7,7 +7,7 @@ number-sections: false
 **Duration:** Single extended Copilot CLI session  
 **Theme:** Whether code orchestration patterns transfer to editorial composition
 
-**How Copilot CLI orchestrated 11 agent personas across 50+ dispatches to produce *The Agentic SDLC Handbook* — using the methodology the book itself teaches.**
+**Writing a ~68,000-Word Book with the Agentic SDLC — using the methodology the book itself teaches.**
 
 ::: {.callout-tip title="Key Takeaways — The TL;DR"}
 - The same primitives that orchestrate code changes — personas, skills, file-scoped rules — orchestrate prose at book scale.

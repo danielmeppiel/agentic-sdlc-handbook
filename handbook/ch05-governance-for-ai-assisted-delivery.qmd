@@ -146,6 +146,12 @@ Your agents consume context — instruction files, documentation, configuration,
 
 **Compromised instruction files** are especially dangerous because your agent instruction files are code that governs code. If an attacker gains write access (through a compromised dependency, a supply chain attack, or a malicious contribution), they can influence every line of agent-generated code without modifying a single source file.
 
+::: {.callout-warning}
+## Organizational Policy: The Permanent Governance Gap
+
+One limitation of AI-assisted governance that no model improvement will resolve: organizational policy awareness lives nowhere in training data. An agent can enforce coding standards from a rules file. It can run 22 automated policy checks in CI. But it cannot know that your organization's legal team requires review for any feature touching PII, or that a PR linking a personal asset from a corporate repository creates a compliance risk — unless that policy is explicitly encoded in the context layer. This is why governance primitives (Chapter 9) must include organizational policies, not just technical standards. The [Growth Engine case study](../case-study-growth-engine.qmd) documents this finding in detail: fifteen agent personas across seven expert panels missed a compliance constraint that a human caught in seconds.
+:::
+
 ---
 
 ## Regulatory Landscape
@@ -246,3 +252,16 @@ Use this as a starting point. Adapt the specifics to your organization's risk pr
 10. Test your fallback. Verify your team can sustain delivery if agent assistance is unavailable for 48 hours.
 11. Confirm your E&O and cyber insurance policies address agent-generated code. Raise the question with your CFO before the board does.
 12. Schedule a quarterly governance review. Agent capabilities and regulatory requirements both move fast.
+
+::: {.callout-tip}
+## These Governance Principles Have Concrete Implementations
+
+The governance framework above is not theoretical. The APM project implements each principle as CI-enforceable infrastructure:
+
+- **Lock file audit trails** pin every agent configuration to exact commit SHAs with full dependency provenance — producing SOC 2-ready evidence from standard `git log` queries.
+- **Policy inheritance chains** (Enterprise → Organization → Repository) ensure security baselines cascade automatically; child policies can only tighten constraints, never relax them.
+- **CI enforcement gates** run 22 automated checks (6 baseline + 16 organizational policy) and block deployments that violate policy — no human gatekeeper required.
+- **Content scanning** detects hidden Unicode attacks (bidirectional overrides, tag characters, variation selectors) before files reach agent-readable directories — addressing the prompt supply chain threat at the pre-deployment stage.
+
+The pattern generalizes: governance primitives that can be expressed as CI checks should be. The ones that cannot — organizational policy, legal review triggers, risk classification — must be encoded as explicit context for agents and humans alike.
+:::

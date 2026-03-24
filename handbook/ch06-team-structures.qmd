@@ -211,14 +211,16 @@ Team size and composition change under agentic development. The direction is con
 
 ::: {tbl-colwidths="[22,18,22,38]"}
 
-| Team profile | Pre-Agentic | Agentic (Mature) | Notes |
+| Team profile | Pre-Agentic | Agentic (Mature) † | Notes |
 |---|---|---|---|
-| Typical team size | 6–10 engineers | 4–7 engineers | Fewer people, higher output per person |
-| Senior-to-junior ratio | 1:2 to 1:3 | 1:1 to 2:1 | More senior judgment required for review and context |
-| Context engineering allocation | 0% | 10–20% of team capacity | Ongoing investment, not a one-time cost |
-| Review time allocation | 15–20% of team capacity | 25–35% of team capacity | Agent output requires more review, not less |
+| Typical team size | 6–10 engineers | 4–7 engineers † | Fewer people, higher output per person |
+| Senior-to-junior ratio | 1:2 to 1:3 | 1:1 to 2:1 † | More senior judgment required for review and context |
+| Context engineering allocation | 0% | 10–20% of team capacity † | Ongoing investment, not a one-time cost |
+| Review time allocation | 15–20% of team capacity | 25–35% of team capacity † | Agent output requires more review, not less |
 
 :::
+
+† Projected figures are based on early adopter reports and the author's observations, not longitudinal studies. Pre-agentic figures reflect established industry norms.
 
 Two caveats.
 

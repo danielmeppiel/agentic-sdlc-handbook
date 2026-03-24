@@ -364,7 +364,7 @@ Use CSS modules. Follow BEM naming...
 
 Every agent, regardless of what it is working on, loads all of this. The Python backend agent processes CSS naming conventions. The database migration agent processes React accessibility guidelines. Attention is wasted. Worse, rules from unrelated domains can interfere — the agent might apply the "use modules" CSS guidance to Python module organization, producing unexpected results.
 
-**Fix:** Split by scope. Python rules in a Python-scoped file. React rules in a frontend-scoped file. Authentication rules in an auth-scoped file. Each agent loads only what applies to its current task.
+**Fix:** Split by scope. Python rules in a Python-scoped file. React rules in a frontend-scoped file. Authentication rules in an auth-scoped file. Each agent loads only what applies to its current task. Chapter 11 covers the engineering details: how to size each layer for the context budget, compose the hierarchy at runtime, and maintain it as your codebase evolves (see §The Instruction Hierarchy in Chapter 11).
 
 ---
 
@@ -563,20 +563,10 @@ The five constraints are the specification. The chapters that follow (context en
 
 ---
 
-::: {.content-visible when-format="html"}
-::: {.callout-tip appearance="simple" icon=false}
-**Deploy PROSE in your repo now**: `pip install apm-cli && apm init` -- [APM on GitHub](https://github.com/microsoft/apm)
+::: {.callout-tip}
+## Try It
 
-Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../download.qmd) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
-:::
-:::
-
-::: {.content-hidden when-format="html"}
-::: {.callout-tip appearance="simple" icon=false}
-**Deploy PROSE in your repo now**: `pip install apm-cli && apm init` -- [APM on GitHub](https://github.com/microsoft/apm)
-
-Read the latest version at [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
-:::
+One implementation of PROSE scaffolding: `pip install apm-cli && apm init` — [APM on GitHub](https://github.com/microsoft/apm). The primitives in this chapter can also be created manually following the file templates above.
 :::
 
 [^ch10-constraints]: The idea that constraints enable creativity rather than restricting it has deep roots in design thinking. See: Stokes, "Creativity from Constraints: The Psychology of Breakthrough," Springer, 2005.

@@ -13,7 +13,7 @@ These four case studies test the methodology under progressively different condi
 
 ---
 
-## How Copilot CLI Orchestrated a 75-File Architecture Change Across 25 Agents
+## Orchestrating a 75-File Architecture Change Across 25 Agents
 
 ::: {.callout-note}
 This case study documents a real Copilot CLI session against
@@ -101,7 +101,7 @@ The plan targeted 47 primary source files. The final PR touched 75 — the addit
 
 The plan decomposed into five phases. Each wave followed **checkpoint
 discipline** — full test suite after every wave, commit before the next.
-Tests climbed from 2,829 to 2,897 across nine waves.
+Tests climbed from 2,829 to 2,897 across five waves.
 
 | Wave | Agents | Scope | Checkpoint |
 |------|--------|-------|------------|
@@ -272,7 +272,7 @@ The evidence chain is inspectable at [PR #394](https://github.com/microsoft/apm/
 | Lines changed | +7,832/−1,074 | |
 | Tests before | 2,829 | Baseline at start |
 | Tests after | 2,897 | +115 written, −47 consolidated = +68 net |
-| Agent dispatches | ~25 | Across 9 waves in 5 phases |
+| Agent dispatches | ~25 | Across 5 waves in 5 phases |
 | Audit agents | 6 | Expert panel phase |
 | Plan iterations | 8 | v1–v8, approved at v8 |
 | Escalations | 5 | 1×L2, 2×L3, 2×L4 |

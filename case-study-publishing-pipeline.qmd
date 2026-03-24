@@ -7,7 +7,7 @@ number-sections: false
 **Duration:** Multiple waves within a single extended session  
 **Theme:** Infrastructure automation and the "Almost Done" cascade
 
-**How Copilot CLI orchestrated a ~68,000-word book from manuscript to multi-format deployment**
+**From manuscript to multi-format deployment: the Agentic SDLC applied to publishing infrastructure**
 
 ::: {.callout-tip title="Key Takeaways — The TL;DR"}
 - Every design decision was human; every technical execution was agent — that division held throughout.

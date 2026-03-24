@@ -51,51 +51,32 @@ Two practical implications follow. First, shorter sessions produce better result
 
 ## The Instruction Hierarchy
 
-The most consequential context engineering decision is how you structure your instructions. The naive approach is a single document: one large file containing every convention, pattern, and constraint your team follows. This is the "flat instructions" anti-pattern, and it fails for the same reason a single 800-page employee handbook fails: nobody reads the chapter on database conventions when they're fixing a CSS bug, and neither does an agent. Worse, the agent can't skip sections; it loads everything, diluting its attention on what matters.
+The most consequential context engineering decision is how you structure your instructions. Chapter 10 specifies the Explicit Hierarchy constraint: instructions form layers from global to local, each inheriting from above and adding specificity below (see §E — Explicit Hierarchy in Chapter 10). This section covers the engineering side — how to build that hierarchy in a real repository, size each layer for the context budget, and compose it at runtime.
 
-The solution is a hierarchy: instructions that increase in specificity as scope narrows, from project-wide to directory-level to file-level. Each layer loads only when relevant.
+The hierarchy has five layers, from broadest to most specific scope:
 
-### Global scope: project-wide principles
+```{mermaid}
+%%| fig-width: 5.0
+%%| label: fig-instruction-hierarchy
+%%| fig-cap: "The five layers of an instruction hierarchy, from enterprise policy (broadest) to skill files (most specific). Each layer inherits constraints from above and adds domain-specific guidance below."
+%%| fig-alt: "Top-down flowchart showing five levels of instruction hierarchy: Enterprise/Org Policy at the top with security baselines and tighten-only inheritance, flowing down to Repository Instructions with copilot-instructions.md applying to all files, then Directory Scopes with backend/AGENTS.md applying to src/backend paths, then Agent Configurations with .agent.md files applying to specific paths like src/auth, and finally Skill Files at the bottom with SKILL.md packages activating on code-pattern matches. Arrows flow downward showing scope narrowing at each level."
+flowchart TD
+    A["🏢 Enterprise / Org Policy<br/><em>Security baselines, compliance rules</em><br/><code>apm-policy.yml · tighten-only inheritance</code>"] --> B
+    B["📁 Repository Instructions<br/><em>copilot-instructions.md · root AGENTS.md</em><br/><code>applyTo: '**'</code>"] --> C
+    C["📂 Directory Scopes<br/><em>backend/AGENTS.md · .instructions.md</em><br/><code>applyTo: 'src/backend/**'</code>"] --> D
+    D["🤖 Agent Configurations<br/><em>.agent.md definitions</em><br/><code>applyTo: 'src/auth/**'</code>"] --> E
+    E["⚡ Skill Files<br/><em>SKILL.md packages</em><br/><code>Activates on code-pattern match</code>"]
 
-The top layer defines principles that apply everywhere. These are your team's non-negotiable constraints — the things that are true regardless of which file an agent is editing.
-
-```markdown
-# Project Principles
-
-## Error Handling
-- All public API functions return Result types, never throw exceptions
-- Log errors at the boundary where they're caught, not where they originate
-
-## Security
-- No credentials in source code. Use environment variables or secret managers.
-- All user input is validated at the API boundary before reaching business logic.
-
-## Testing
-- Every public function has at least one test. No exceptions.
-- Tests use the factory pattern for test data. No inline object construction.
+    style A fill:#e8f4fd,stroke:#4a90d9
+    style B fill:#f0f4e8,stroke:#7ba23f
+    style C fill:#fef9e7,stroke:#d4a843
+    style D fill:#fde8e8,stroke:#d94a4a
+    style E fill:#fff3e0,stroke:#e8913a
 ```
 
-Global instructions should be short. If your project-wide principles exceed 50 lines, you are almost certainly including domain-specific guidance that belongs in a narrower scope.
+Each layer narrows scope and adds specificity. Enterprise policies define security baselines and compliance requirements that no repository can relax — they flow down through tighten-only inheritance (allow-lists intersect, deny-lists union, enforcement only escalates). Repository-wide instructions establish project principles: error handling, naming, testing. Directory-scoped instructions target domains (`src/auth/`, `src/frontend/`) so that auth rules never pollute frontend context. Agent configurations bind expertise and tool boundaries to specific task types. Skills activate on code-pattern matches to deliver just-in-time playbooks.
 
-### Directory scope: domain-specific rules
-
-The middle layer targets specific areas of the codebase. When an agent edits a file in `src/auth/`, it loads the auth-specific instructions. When it edits `src/frontend/`, it loads frontend rules. Neither set pollutes the other.
-
-```markdown
-# Authentication Module Rules
-applyTo: "src/auth/**"
-
-## Token Management
-- All token operations go through AuthResolver. Never access tokens directly.
-- Token refresh uses exponential backoff with a maximum of 3 retries.
-- EMU (Enterprise Managed User) tokens use the standard `ghu_` prefix.
-
-## Patterns
-- Use the CredentialChain pattern for multi-source credential resolution.
-- Order: environment variable → credential file → interactive prompt.
-```
-
-The `applyTo` pattern is the mechanism. When the agent's task involves files matching that glob, the instructions load. When it doesn't, they stay out of the context window. This is progressive disclosure at the instruction level: context arrives just-in-time, not just-in-case.
+The engineering constraint at every layer is size. Global instructions should stay under 50 lines — if your project-wide principles exceed that, you are including domain-specific guidance that belongs in a narrower scope. Directory-scoped instructions should focus on the patterns unique to that domain. The total instruction load for any single agent task should fit within the ~20K-token instruction budget described in the context budget above. That means your hierarchy must be selective: each layer earns its tokens by being relevant to the current task, not merely present in the repository.
 
 ### File scope: surgical constraints
 
@@ -324,7 +305,7 @@ The critical point is that none of these failures are model failures. The model 
 
 **Over-stuffing context.** The instinct to provide more information is strong and almost always counterproductive. A 400-line instruction file doesn't give the agent "more to work with." It gives it more to get distracted by. Instructions should be the minimum sufficient guidance for their scope. If you can't remember what's in your instruction file without re-reading it, the agent is having the same problem.
 
-**Flat instructions without scoping.** A single global instruction file that covers everything — API conventions, frontend patterns, database rules, deployment procedures — forces every agent session to load every rule. The backend agent spends context budget on frontend rules. The documentation agent loads database conventions. Scope your instructions. If an instruction doesn't apply to the current task, it shouldn't be in the context window.
+**Flat instructions without scoping.** A single global instruction file that covers everything — API conventions, frontend patterns, database rules, deployment procedures — forces every agent session to load every rule. The backend agent spends context budget on frontend rules. The documentation agent loads database conventions. Scope your instructions using the hierarchy in @fig-instruction-hierarchy above (see also §Flat Instructions anti-pattern in Chapter 10).
 
 **Duplicating knowledge across files.** When the same convention appears in three different instruction files, you've created a maintenance problem. When the convention changes, you update one file and forget the others. The agent gets contradictory guidance and produces inconsistent output. Extract shared knowledge into skills. Reference, don't repeat.
 
