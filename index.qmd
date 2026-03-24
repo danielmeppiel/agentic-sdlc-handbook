@@ -21,8 +21,7 @@ number-sections: false
 :::
 
 ::: {style="text-align: center; margin: 2rem 0 3rem 0; font-style: italic; color: #555;"}
-For Delphine — my pillar, my light.\
-And for Gabriel, Laia, and Adrian — my foundation, my hope.
+For Delphine, Gabriel, Laia, and Adrian — everything else is context.
 :::
 
 ## Why This Book Exists
