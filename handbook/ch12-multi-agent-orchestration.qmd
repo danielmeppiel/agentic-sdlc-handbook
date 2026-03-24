@@ -2,11 +2,7 @@
 title: "Multi-Agent Orchestration"
 ---
 
-A single AI agent can modify a file. It can even modify several files in sequence, if the changes are simple enough and the context window holds. But the moment you need to change 40 files across 5 concerns — authentication, logging, type safety, migration, and cleanup — a single agent becomes the bottleneck. Not because it lacks intelligence. Because it lacks bandwidth.
-
-Context windows are finite. A single agent handling a cross-cutting change must hold the entire scope in focus simultaneously: every file, every convention, every dependency between the changes. By the twentieth file, the instructions from the first file are competing for attention with accumulated conversation history. Quality degrades not because the model is worse, but because the context is overloaded.
-
-Multi-agent orchestration solves this by decomposing work across specialized agents that each operate within manageable context budgets. But coordination is not free. Agents that work in parallel can conflict. Agents with different specializations can produce inconsistent output. Agents that don't know about each other's changes can break each other's work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.
+A single AI agent can modify a file, and even several files in sequence if the changes are simple enough and the context window holds. But the moment a cross-cutting change spans 40 files across 5 concerns, a single agent becomes the bottleneck — not because it lacks intelligence, but because it lacks bandwidth. Multi-agent orchestration solves the coordination problem by decomposing work across specialized agents that each operate within manageable context budgets. But coordination is not free. Agents that work in parallel can conflict, produce inconsistent output, or break each other's work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.
 
 This chapter covers when to use multiple agents, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human's role is in all of it.
 
@@ -14,12 +10,12 @@ This chapter covers when to use multiple agents, how to specialize them, how to 
 
 ## When One Agent Is Enough
 
-Not every task requires multiple agents. The overhead of orchestration — partitioning work, managing sessions, resolving conflicts, validating independently — is real. If the task fits comfortably in a single agent's context, the single agent is the better choice.
+Not every task requires multiple agents. The overhead of orchestration (partitioning work, managing sessions, resolving conflicts, validating independently) is real. If the task fits comfortably in a single agent's context, the single agent is the better choice.
 
 A single agent is sufficient when:
 
 - **Scope is narrow.** The change touches fewer than 10 files in a single module.
-- **Concern is singular.** One type of change — fix logging, update types, add tests — not three interleaved concerns.
+- **Concern is singular.** One type of change (fix logging, update types, add tests), not three interleaved concerns.
 - **Dependencies are linear.** Each file change follows naturally from the previous one, with no need for parallel work.
 - **Context budget is adequate.** The agent can hold all relevant source files, instructions, and conversation history without exceeding roughly 60% of its window capacity, leaving room for reasoning.
 
@@ -40,7 +36,7 @@ The decision matrix:
 | Time pressure | Low | Moderate to high |
 | Risk of context overload | Low | High |
 
-The boundary between 10 and 15 files is not arbitrary. It reflects the practical limit where a single agent's conversation history — accumulated tool calls, file reads, edit confirmations, test output — begins consuming enough context to crowd out the instructions and source code that the agent needs to do its work well. Your mileage will vary by model, task complexity, and instruction file size.
+The boundary at 10-15 files is approximate and experience-derived, though not precisely measured. It reflects the practical limit where a single agent's conversation history — accumulated tool calls, file reads, edit confirmations, test output — begins consuming enough context to crowd out the instructions and source code that the agent needs to do its work well. Your mileage will vary by model, task complexity, and instruction file size.
 
 When the decision is marginal, err toward a single agent. Coordination costs are real. Multi-agent orchestration is a tool for tasks that exceed single-agent capacity, not a default mode of operation.
 
@@ -82,13 +78,13 @@ For cross-cutting changes, organize agents by area of expertise rather than by w
 | **Context loaded** | Type definitions, Module boundaries, Pattern catalog, Dependency graph | Output conventions, Symbol dictionaries, UX guidelines, Migration patterns |
 | **Owns** | Type safety fixes, Dead code removal, API consolidation | Verbose coverage, Logger migration, Formatting cleanup |
 
-In the reference case study ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in the [case study](../case-study-apm-overhaul.qmd) and summarized in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 75-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
+In the auth-logging overhaul ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in the [case study](../case-study-apm-overhaul.qmd) and summarized in Chapter 13), this two-team structure (architecture team led by an architect agent, domain team led by a logging expert agent) handled a 75-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
 
 This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.
 
 #### Concrete Dispatch: What It Actually Looks Like
 
-The Domain Teams pattern describes structure. Here is what a dispatch actually looks like in practice — the instruction files, the prompt, and the file list. This example uses a terminal-based agent, but the pattern applies regardless of tool.
+The Domain Teams pattern describes structure. Here is what a dispatch actually looks like in practice: the instruction files, the prompt, and the file list. This example uses a terminal-based agent, but the pattern applies regardless of tool.
 
 Before dispatching, the orchestrator prepares three things: the instruction files the agent will load, the file list it owns exclusively, and the task prompt.
 
@@ -162,7 +158,7 @@ Running agents in parallel reduces wall-clock time. It also introduces the possi
 
 The most important parallelization rule is the simplest: within a single execution batch, no two agents may modify the same file.
 
-Most agent tooling edits files using string matching — the agent specifies an exact block of text to find and replace. If Agent A modifies `install.py` and then Agent B tries to edit the same file, the text Agent B expects to find has already changed. The edit fails silently or produces corrupted output.
+Most agent tooling edits files using string matching: the agent specifies an exact block of text to find and replace. If Agent A modifies `install.py` and then Agent B tries to edit the same file, the text Agent B expects to find has already changed. The edit fails silently or produces corrupted output.
 
 This is not a theoretical risk. It is the most common failure mode in parallel agent execution.
 
@@ -208,11 +204,11 @@ flowchart TD
     W2 --- W2G & W2H
 ```
 
-The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0's output being committed and tested. Within a wave, agents are independent — they share no files and make no assumptions about each other's progress.
+The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0's output being committed and tested. Within a wave, agents are independent: they share no files and make no assumptions about each other's progress.
 
-Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.
+Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish, typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.
 
-In the reference case study (PR #394, detailed in the [case study](../case-study-apm-overhaul.qmd)), four waves plus one recovery wave handled 75 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. Meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.
+In the PR #394 execution ([case study](../case-study-apm-overhaul.qmd)), four waves plus one recovery wave handled 75 files in roughly 24 minutes of wave execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. This comparison is estimated, not measured — we did not run the sequential approach. The numbers reflect the author's judgment based on prior single-agent attempts of similar scope. The real value was in reduced context degradation, not reduced time.
 
 ::: {.landscape}
 
@@ -268,7 +264,7 @@ gantt
     Review    :r1, 22, 26
 ```
 
-This works when the review and test operations are read-only and the execution operations have no backward dependencies on review findings. If a review agent finds a problem in Wave 0, the fix goes into a later wave — it does not interrupt Wave 1, which was planned against the committed Wave 0 output.
+This works when the review and test operations are read-only and the execution operations have no backward dependencies on review findings. If a review agent finds a problem in Wave 0, the fix goes into a later wave; it does not interrupt Wave 1, which was planned against the committed Wave 0 output.
 
 ---
 
@@ -288,7 +284,7 @@ Files that attract changes from multiple concerns are a signal. If `install.py` 
 
 Two agents produce output that is independently correct but mutually inconsistent. Agent A introduces a new error-handling pattern. Agent B, working on a different file, follows the old pattern because its instructions referenced the pre-change codebase.
 
-**Resolution.** Foundation-before-migration wave ordering. Changes that establish new patterns — type definitions, utility functions, shared conventions — go in early waves. Changes that consume those patterns go in later waves. Agent B's instructions reference the committed output of Wave 0, not the original codebase.
+**Resolution.** Foundation-before-migration wave ordering. Changes that establish new patterns (type definitions, utility functions, shared conventions) go in early waves. Changes that consume those patterns go in later waves. Agent B's instructions reference the committed output of Wave 0, not the original codebase.
 
 This is why the wave model requires testing and committing after each wave. The committed state after Wave 0 is the ground truth for Wave 1 agents. If you skip the commit, Wave 1 agents work against stale context and semantic conflicts multiply.
 
@@ -319,9 +315,9 @@ The mistake to avoid: redispatching the entire original wave. The logging migrat
 
 Two agents, each following their specialization's best practices, produce output that reflects genuinely different design philosophies. The architecture agent consolidates error handling into a central module. The domain agent keeps error handling local to each command because the domain's UX conventions require command-specific error messages.
 
-**Resolution.** This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan's priority-ordered principles resolve most of them mechanically — if UX is prioritized above structural purity, the domain agent's approach wins. When the principles don't resolve the conflict, the human decides and documents the rationale.
+**Resolution.** This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan's priority-ordered principles resolve most of them mechanically: if UX is prioritized above structural purity, the domain agent's approach wins. When the principles don't resolve the conflict, the human decides and documents the rationale.
 
-The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed during wave execution across ~25 agent dispatches — one was a scope decision during planning, one was an agent recovery during Wave 2, and one was test triage after the recovery wave (Wave 2b); see the [case study](../case-study-apm-overhaul.qmd) for the full escalation log. None were design conflicts between agents; all were judgment calls that the plan could not automate. A rate of roughly 15–20% human intervention is typical for well-planned multi-agent work. If you are intervening on more than 30%, the plan's principles are insufficiently specific. If you are intervening on less than 5%, you are either lucky or not checking carefully enough.
+The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed during wave execution across ~25 agent dispatches — one was a scope decision during planning, one was an agent recovery during Wave 2, and one was test triage after the recovery wave (Wave 2b); see the [case study](../case-study-apm-overhaul.qmd) for the full escalation log. None were design conflicts between agents; all were judgment calls that the plan could not automate. In the documented case, the intervention rate was approximately 12% (3 out of ~25 dispatches). We use 15–20% as a starting hypothesis for well-planned work, though this has not been validated across multiple teams. Rates significantly above 20% may indicate underspecified plans. Rates below 5% warrant scrutiny — the work may be too simple for multi-agent orchestration, or review may be insufficient.
 
 ---
 
@@ -356,13 +352,13 @@ Not every problem requires human attention. A well-designed orchestration system
 
 The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.
 
-In the reference case study ([case study](../case-study-apm-overhaul.qmd)), the distribution across all decision points within the ~25 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions during wave execution out of ~25 dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
+In the documented case ([case study](../case-study-apm-overhaul.qmd)), the distribution across all decision points within the ~25 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions during wave execution out of ~25 dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.
 
 ---
 
 ## The Coordination Tax: Honest Numbers
 
-Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the reference case study ([The APM Auth + Logging Overhaul](../case-study-apm-overhaul.qmd)).
+Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the PR #394 execution ([The APM Auth + Logging Overhaul](../case-study-apm-overhaul.qmd)).
 
 In the PR #394 case, the human time in a well-planned multi-agent execution broke down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). Total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.
 
@@ -379,7 +375,7 @@ Multi-agent orchestration pays for itself when:
 - **Context degradation is the real bottleneck.** For changes that require deep architectural understanding — not mechanical find-and-replace — the quality benefit of focused context outweighs the coordination cost.
 - **You will do this more than once.** The first multi-agent orchestration on a codebase takes longest because you are building instruction files, learning partition boundaries, and developing intuition for wave sizing. The second takes half the planning time. By the third, the dispatch prompts are templates.
 
-The overhead for a well-planned multi-agent execution is roughly 40-60% of total human time spent on coordination rather than direct value work. For a poorly planned execution — vague dispatch prompts, unclear file ownership, missing instruction files — the overhead can exceed 80%, at which point a single agent with good context would have been faster.
+The overhead for a well-planned multi-agent execution is roughly 40-60% of total human time spent on coordination rather than direct value work. For a poorly planned execution — vague dispatch prompts, unclear file ownership, missing instruction files — based on the contrast between our reference execution and less-structured attempts, we estimate it can reach 70-80% or higher, at which point a single agent with good context would have been faster.
 
 This is not a tool for every change. It is a tool for changes that exceed what a single agent can hold in focus. Know the threshold for your codebase, and do not orchestrate for the sake of orchestrating.
 
@@ -387,7 +383,7 @@ This is not a tool for every change. It is a tool for changes that exceed what a
 
 ## Session Management
 
-Every agent dispatch creates a session — a context window with its own conversation history, loaded instructions, and accumulated state. Managing these sessions is a practical concern that directly affects output quality.
+Every agent dispatch creates a session: a context window with its own conversation history, loaded instructions, and accumulated state. Managing these sessions is a practical concern that directly affects output quality.
 
 ### Session Isolation
 
@@ -422,7 +418,7 @@ Shorter sessions produce better output. A session that has been running for 40 t
 
 Three guidelines for session lifetime:
 
-1. **One task per session.** An agent dispatched to "migrate logging in `resolver.py` and update tests in `test_resolver.py`" is one task. Reusing that session for a second, unrelated task inherits the first task's conversation history — dead weight for the second task.
+1. **One task per session.** An agent dispatched to "migrate logging in `resolver.py` and update tests in `test_resolver.py`" is one task. Reusing that session for a second, unrelated task inherits the first task's conversation history, dead weight for the second task.
 
 2. **Reset on failure.** If an agent gets stuck — looping on the same error, producing the same incorrect output — terminate the session and dispatch a fresh one with refined instructions. The fresh session starts without the accumulated confusion of the failed attempt.
 

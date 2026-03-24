@@ -8,7 +8,7 @@ You have a codebase with 200,000 lines of code, a style guide nobody reads, thre
 
 ## The Context Budget
 
-Every AI interaction operates within a fixed capacity. A context window is not a bucket you fill — it is a budget you allocate. Like any budget, the question is not "how much can I spend?" but "what do I spend it on?"
+Every AI interaction operates within a fixed capacity. A context window is not a bucket you fill; it is a budget you allocate. Like any budget, the question is not "how much can I spend?" but "what do I spend it on?"
 
 A typical agent session divides its context roughly as follows:
 
@@ -27,7 +27,7 @@ pie title Context Window Budget (128K tokens)
 
 You control two of these segments directly: instructions and code context. You influence a third — conversation history — through session discipline. The system prompt and working memory are largely fixed by the tool. This means your leverage is concentrated: what instructions load, which code is visible, and how long the session runs before you reset.
 
-The budget model produces a simple decision rule. Before adding anything to an agent's context, ask: does this earn its space? Every instruction that loads is a line of code that doesn't. Every file that's visible is one that could have been more relevant. Context is not free, and attention within the window is not uniform — information at the beginning and end gets more weight; content in the middle degrades. This is not a theoretical concern. It is why a 40-line instruction file outperforms a 400-line one that covers the same material with less focus.
+The budget model produces a simple decision rule. Before adding anything to an agent's context, ask: does this earn its space? Every instruction that loads is a line of code that doesn't. Every file that's visible is one that could have been more relevant. Context is not free, and attention within the window is not uniform — information at the beginning and end gets more weight; content in the middle degrades.[^ch11-middle] This is not a theoretical concern. In our experience, a focused 40-line instruction file produces more consistent output than a sprawling 400-line one covering the same material.
 
 Make this concrete. On a 128K-to-200K-token window — common in current frontier models — the budget translates to real numbers:
 
@@ -43,13 +43,15 @@ Make this concrete. On a 128K-to-200K-token window — common in current frontie
 
 :::
 
+These allocations reflect the author's observed patterns across Copilot CLI sessions. Your distribution will vary by model, tool, and task type. Treat these as starting estimates, not benchmarks.
+
 Those 20K instruction tokens are approximately 800 lines of typical prose markdown. If your global instructions alone consume 400 of those lines, you've spent half your instruction budget before a single scoped rule loads. And the 60K for code context sounds generous until you realize a single mid-sized module — types, implementation, tests — can easily consume 15K tokens. At scale, every line of instruction competes directly with a line of source code the agent could have seen instead.
 
 Two practical implications follow. First, shorter sessions produce better results than longer ones, because conversation history consumes progressively more of the budget. When a session has been running for 30 turns, the instructions you set at the beginning are competing with pages of accumulated dialogue. Second, loading instructions that aren't relevant to the current task is not neutral — it actively degrades performance on the task that matters.
 
 ## The Instruction Hierarchy
 
-The most consequential context engineering decision is how you structure your instructions. The naive approach is a single document — one large file containing every convention, pattern, and constraint your team follows. This is the "flat instructions" anti-pattern, and it fails for the same reason a single 800-page employee handbook fails: nobody reads the chapter on database conventions when they're fixing a CSS bug, and neither does an agent. Worse, the agent can't skip sections — it loads everything, diluting its attention on what matters.
+The most consequential context engineering decision is how you structure your instructions. The naive approach is a single document: one large file containing every convention, pattern, and constraint your team follows. This is the "flat instructions" anti-pattern, and it fails for the same reason a single 800-page employee handbook fails: nobody reads the chapter on database conventions when they're fixing a CSS bug, and neither does an agent. Worse, the agent can't skip sections; it loads everything, diluting its attention on what matters.
 
 The solution is a hierarchy: instructions that increase in specificity as scope narrows, from project-wide to directory-level to file-level. Each layer loads only when relevant.
 
@@ -93,7 +95,7 @@ applyTo: "src/auth/**"
 - Order: environment variable → credential file → interactive prompt.
 ```
 
-The `applyTo` pattern is the mechanism. When the agent's task involves files matching that glob, the instructions load. When it doesn't, they stay out of the context window. This is progressive disclosure at the instruction level — context arrives just-in-time, not just-in-case.
+The `applyTo` pattern is the mechanism. When the agent's task involves files matching that glob, the instructions load. When it doesn't, they stay out of the context window. This is progressive disclosure at the instruction level: context arrives just-in-time, not just-in-case.
 
 ### File scope: surgical constraints
 
@@ -126,7 +128,7 @@ When an agent edits `src/auth/token_resolver.py`, the effective context is:
 
 When the same agent later edits `src/frontend/dashboard.tsx`, the auth rules unload and frontend rules load. The global principles persist. This is the Explicit Hierarchy constraint in action: specificity increases as scope narrows, and irrelevant context is automatically excluded.
 
-The practical benefit is measurable. A project with 300 lines of instructions split across 8 scoped files will produce more consistent agent output than a project with 100 lines in a single global file. The split version loads 30-50 relevant lines per task; the monolithic version loads all 100 regardless of relevance.
+The practical benefit is measurable. A project with 300 lines of instructions split across 8 scoped files will produce more consistent agent output than a project with 100 lines in a single global file. Note that the scoped version also contains more total content; the comparison illustrates both the value of structure and of comprehensive coverage. The split version loads 30-50 relevant lines per task; the monolithic version loads all 100 regardless of relevance.
 
 ## Agent Configuration
 
@@ -178,7 +180,7 @@ For a typical project, three to five agent configurations cover most tasks: an a
 
 Skills occupy the space between instructions and agents. An instruction says "follow this rule." An agent says "be this expert." A skill says "when you encounter this situation, here's the complete playbook."
 
-A skill is a reusable knowledge package that activates based on code patterns. When an agent touches logging code, the logging skill fires. When it touches authentication flows, the auth skill fires. The agent doesn't choose to activate a skill — the tooling detects the match and loads it.
+A skill is a reusable knowledge package that activates based on code patterns. When an agent touches logging code, the logging skill fires. When it touches authentication flows, the auth skill fires. The agent doesn't choose to activate a skill; the tooling detects the match and loads it.
 
 The design test for a skill is: does this knowledge apply across multiple files, require more than a few rules to express, and get triggered by a detectable pattern? If all three are true, it's a skill. If the knowledge applies to one file, it's an instruction. If it's a general approach rather than pattern-specific guidance, it belongs in an agent configuration.
 
@@ -223,7 +225,7 @@ Three strategies address it.
 
 **When to reset.** Session resets are cheap; accumulated drift is expensive. Three concrete triggers:
 
-1. **Stale references.** The agent references a file it read or modified more than 3-4 turns ago. Its mental model of that file is now competing with everything that's happened since — and losing.
+1. **Stale references.** The agent references a file it read or modified more than 3-4 turns ago. Its mental model of that file is now competing with everything that's happened since, and losing.
 2. **Error spirals.** You've pasted more than two error messages in the same session. Each paste adds context that pulls the agent toward debugging the symptom rather than rethinking the approach. A fresh session with the error described in one sentence often solves in one turn what three debugging turns couldn't.
 3. **Conversation length.** The session exceeds roughly 30-40 turns. At that point, your original instructions are buried under pages of dialogue, and the agent's effective context has drifted far from where it started.
 
@@ -241,7 +243,7 @@ The decision of what to externalize vs. what to keep in instructions follows a s
 
 Run the instrumentation audit from Chapter 9 if you haven't already. Its five steps — list conventions, classify where they live, rank by failure cost, map to primitive types, and write a starter set — identify the raw material. This section focuses on what to do with that material once you have it: how to allocate your context budget, where each piece belongs in the hierarchy, and how to structure retrieval for knowledge that doesn't fit in always-loaded instructions.
 
-The audit reveals three categories of knowledge: conventions already visible in code (partially available to agents), conventions written in documentation (available only if explicitly loaded), and conventions that exist only in your team's memory (completely invisible). The last category — your context debt — is where context engineering begins. Each item in that category needs a home: a scope in the hierarchy, a loading strategy (always-on instruction vs. on-demand retrieval), and a format that agents can act on.
+The audit reveals three categories of knowledge: conventions already visible in code (partially available to agents), conventions written in documentation (available only if explicitly loaded), and conventions that exist only in your team's memory (completely invisible). The last category, your context debt, is where context engineering begins. Each item in that category needs a home: a scope in the hierarchy, a loading strategy (always-on instruction vs. on-demand retrieval), and a format that agents can act on.
 
 ## Before and After
 
@@ -344,6 +346,8 @@ If the audit feels like a large undertaking, start smaller. The minimum viable c
 | One domain instruction | Your most-edited module | The patterns and constraints specific to where agents will work most |
 | One agent configuration | Your most common task type | The expertise and behavioral constraints for the work agents do daily |
 
-Write these three files. Use the agent on a real task. Observe what goes wrong. Fix the primitives. Repeat. In two weeks you'll have a context architecture that's shaped by actual failure modes rather than theoretical completeness — and that architecture will be more effective than any comprehensive upfront design.
+Write these three files. Use the agent on a real task. Observe what goes wrong. Fix the primitives. Repeat. Within a few iteration cycles you'll have a context architecture that's shaped by actual failure modes rather than theoretical completeness, and that architecture will be more effective than any comprehensive upfront design.
 
 Context engineering is not about making agents smarter. It is about making the information available to agents accurate, relevant, and proportional to the task. The model doesn't change. The context does. And that is where the leverage is.
+
+[^ch11-middle]: Liu et al., "Lost in the Middle: How Language Models Use Long Contexts," 2023. Accepted at NeurIPS 2024.

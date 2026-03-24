@@ -6,13 +6,13 @@ Every technique in this book was born from a failure. In our early experiments, 
 
 This chapter documents 19 distinct ways AI-native development goes wrong, why each failure happens, which PROSE constraint it violates, and how to prevent or recover.
 
-The uncomfortable truth: AI failures don't crash. They produce plausible wrong output. An agent that silently violates your architecture or ignores a security boundary produces code that compiles, might pass tests, and enters your codebase as technical debt you don't know you have. Learning to see these failures before they ship is the skill that separates effective AI-native development from expensive AI-assisted typing.
+The uncomfortable truth: AI failures don't crash. They produce plausible wrong output.[^ch14-plausible] An agent that silently violates your architecture or ignores a security boundary produces code that compiles, might pass tests, and enters your codebase as technical debt you don't know you have. Learning to see these failures before they ship is the skill that separates effective AI-native development from expensive AI-assisted typing.
 
 ---
 
 ## The Taxonomy
 
-Every anti-pattern maps to a PROSE constraint. This isn't a taxonomy imposed after the fact — it's why the constraints exist. Each constraint was articulated because a class of failures kept recurring, and ad-hoc fixes weren't enough.
+Every anti-pattern maps to a PROSE constraint. This isn't a taxonomy imposed after the fact; it's why the constraints exist. Each constraint was articulated because a class of failures kept recurring, and ad-hoc fixes weren't enough.
 
 ::: {tbl-colwidths="[5,20,20,55]"}
 
@@ -70,7 +70,7 @@ These are the patterns from Chapter 1's PROSE constraint table, expanded with wo
 
 **Constraint violated.** Progressive Disclosure.
 
-**Prevention.** Context budgeting. For each task, include only the target file, direct dependencies, and relevant primitives. The meta-process's planning phase does this naturally — each wave's task assignment specifies exactly which files each agent receives.
+**Prevention.** Context budgeting. For each task, include only the target file, direct dependencies, and relevant primitives. The meta-process's planning phase does this naturally: each wave's task assignment specifies exactly which files each agent receives.
 
 **Recovery.** Subtract files from context one at a time, re-running the task. You will likely find that removing irrelevant files *improves* quality.
 
@@ -156,7 +156,7 @@ The correction happened in the code, not the instruction set. Manual corrections
 
 ## Session and Resource Failure Modes
 
-Nine patterns that emerge at the session level — where context capacity, state management, and external inputs create failure conditions the foundational and execution anti-patterns don't cover.
+Nine patterns that emerge at the session level, where context capacity, state management, and external inputs create failure conditions the foundational and execution anti-patterns don't cover.
 
 ### Context Window Exhaustion
 
@@ -224,7 +224,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 
 | | |
 |---|---|
-| **Symptom** | Agent completed 90% of the task. The remaining 10% — an edge case, a subtle interaction — resists every attempt. Hours pass refining prompts. |
+| **Symptom** | Agent completed 90% of the task. The remaining 10% (an edge case, a subtle interaction) resists every attempt. Hours pass refining prompts. |
 | **Root cause** | Some tasks are flat for 90% and vertical for the last 10%. The easy parts follow common patterns; the hard part requires novel reasoning about your specific system's constraints. Sunk cost makes starting over feel irrational, but closing the gap exceeds the cost of the complete task done differently. |
 | **Constraint violated** | Reduced Scope |
 | **Severity** | Medium |
@@ -239,7 +239,7 @@ Nine patterns that emerge at the session level — where context capacity, state
 
 | | |
 |---|---|
-| **Symptom** | Mid-task, the session crashes. Plan state, partial edits, task tracking — gone. Some files are partially edited, leaving the codebase inconsistent. |
+| **Symptom** | Mid-task, the session crashes. Plan state, partial edits, task tracking: gone. Some files are partially edited, leaving the codebase inconsistent. |
 | **Root cause** | Agent sessions are stateful but not durable. State lives in context and memory, not persistent storage. |
 | **Constraint violated** | Safety Boundaries |
 | **Severity** | High |
@@ -305,7 +305,7 @@ Attack vectors include hidden Unicode characters (tag characters, bidirectional 
 
 The failure modes above share a property that distinguishes them from traditional bugs: they don't announce themselves. A compiler error stops the build. An AI failure produces output that compiles, might pass tests, and reads well in review.
 
-Silent failures fall into three categories — convention violations, semantic drift, and architectural erosion — each requiring different detection methods at different points in the workflow.
+Silent failures fall into three categories (convention violations, semantic drift, and architectural erosion), each requiring different detection methods at different points in the workflow.
 
 ### Silent Failure Detection Checklist
 
@@ -379,7 +379,7 @@ When you've hit an anti-pattern and need to get back on track, six steps:
 
 3. **Revert what doesn't.** If agent output has contaminated files beyond the task's scope, revert to the last known-good state. Don't salvage sprawling changes.
 
-4. **Decompose.** The most common recovery action. Whatever task was too large, too broad, or too underspecified — break it down. Write sub-tasks explicitly. Assign scope boundaries.
+4. **Decompose.** The most common recovery action. Whatever task was too large, too broad, or too underspecified: break it down. Write sub-tasks explicitly. Assign scope boundaries.
 
 5. **Fix the primitive.** Before re-dispatching, add whatever instruction was missing or insufficient. This is the step that converts a one-time recovery into a permanent improvement. Ask: which rule, if it had existed, would have prevented this failure? Write that rule. Scope it to the right level in the hierarchy.
 
@@ -491,6 +491,8 @@ This is not exhaustive. New failure modes will emerge as agent capabilities evol
 If you encounter a failure not in this chapter, add it using the same format: symptom, root cause, constraint violated, prevention, recovery. The taxonomy is a living document.
 
 These 19 patterns represent the collective scar tissue of early agentic development practice — the failures that wasted the most time, burned the most tokens, and eroded the most trust. Learn from them, and you skip the most expensive part of the learning curve.
+
+[^ch14-plausible]: The "plausible but wrong" failure mode is well-documented in the AI safety literature. See, e.g., the concept of "sycophantic behavior" in Perez et al., "Discovering Language Model Behaviors with Model-Written Evaluations" (2022), where models produce confident, fluent output that aligns with user expectations rather than ground truth.
 
 ---
 
