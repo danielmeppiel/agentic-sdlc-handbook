@@ -115,8 +115,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="../apm-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="../apm-handbook/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="../agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="../agentic-sdlc-handbook/apple-touch-icon.png">
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -337,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
@@ -518,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 62,500-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -588,11 +588,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#what-happens-at-a-checkpoint" id="toc-what-happens-at-a-checkpoint" class="nav-link" data-scroll-target="#what-happens-at-a-checkpoint"><span class="header-section-number">15.4.2</span> What Happens at a Checkpoint</a></li>
   <li><a href="#the-adapt-loop" id="toc-the-adapt-loop" class="nav-link" data-scroll-target="#the-adapt-loop"><span class="header-section-number">15.4.3</span> The ADAPT Loop</a></li>
   </ul></li>
-  <li><a href="#session-management" id="toc-session-management" class="nav-link" data-scroll-target="#session-management"><span class="header-section-number">15.5</span> Session Management</a>
-  <ul class="collapse">
-  <li><a href="#when-to-reset" id="toc-when-to-reset" class="nav-link" data-scroll-target="#when-to-reset"><span class="header-section-number">15.5.1</span> When to Reset</a></li>
-  <li><a href="#session-boundaries-in-practice" id="toc-session-boundaries-in-practice" class="nav-link" data-scroll-target="#session-boundaries-in-practice"><span class="header-section-number">15.5.2</span> Session Boundaries in Practice</a></li>
-  </ul></li>
+  <li><a href="#session-management" id="toc-session-management" class="nav-link" data-scroll-target="#session-management"><span class="header-section-number">15.5</span> Session Management</a></li>
   <li><a href="#adapting-the-meta-process" id="toc-adapting-the-meta-process" class="nav-link" data-scroll-target="#adapting-the-meta-process"><span class="header-section-number">15.6</span> Adapting the Meta-Process</a>
   <ul class="collapse">
   <li><a href="#small-changes-fewer-than-10-files" id="toc-small-changes-fewer-than-10-files" class="nav-link" data-scroll-target="#small-changes-fewer-than-10-files"><span class="header-section-number">15.6.1</span> Small Changes (fewer than 10 files)</a></li>
@@ -600,7 +596,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#what-the-meta-process-produces" id="toc-what-the-meta-process-produces" class="nav-link" data-scroll-target="#what-the-meta-process-produces"><span class="header-section-number">15.7</span> What the Meta-Process Produces</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -657,12 +653,12 @@ Figure&nbsp;15.1: The five execution phases with adaptation loop
 </div>
 </div>
 <p><strong>Audit</strong> — understand the codebase from the perspectives that matter for this change. <strong>Plan</strong> — define scope, decompose into dependency-ordered waves, assign agent teams. <strong>Wave</strong> — execute each wave as a batch of parallel agents, one file per agent. <strong>Validate</strong> — test after every wave, spot-check critical changes, commit. <strong>Ship</strong> — final verification and merge.</p>
-<p>The ADAPT loop connects wave execution back to planning. When a wave fails — a test breaks, an agent gets stuck, a dependency was missed — you diagnose, adjust the plan, and re-execute. The loop is not a sign of failure. It is the mechanism that makes the process resilient.</p>
+<p>The ADAPT loop connects wave execution back to planning. When a wave fails (a test breaks, an agent gets stuck, a dependency was missed), you diagnose, adjust the plan, and re-execute. The loop is not a sign of failure. It is the mechanism that makes the process resilient.</p>
 <p>Each phase has a specific purpose, a specific human decision, and a specific output. What follows is the specification for each.</p>
 <section id="phase-1-audit" class="level3" data-number="15.1.1">
 <h3 data-number="15.1.1" class="anchored" data-anchor-id="phase-1-audit"><span class="header-section-number">15.1.1</span> Phase 1: Audit</h3>
 <p><strong>Purpose.</strong> Build a multi-perspective understanding of the code you are about to change. The audit surfaces what you know, what you’ve forgotten, and what you never knew.</p>
-<p><strong>How it works.</strong> You dispatch expert agents — typically 2 to 4, running in parallel — each with a distinct audit lens. An architecture expert examines structural patterns, coupling, and separation of concerns. A domain expert examines the specific subsystem (logging conventions, auth flows, API contracts). A security expert checks for vulnerabilities. Each agent produces ranked findings with severity levels, exact file-and-line citations, and remediation guidance.</p>
+<p><strong>How it works.</strong> You dispatch expert agents, typically 2 to 4 running in parallel, each with a distinct audit lens. An architecture expert examines architectural patterns, coupling, and separation of concerns. A domain expert examines the specific subsystem (logging conventions, auth flows, API contracts). A security expert checks for vulnerabilities. Each agent produces ranked findings with severity levels, exact file-and-line citations, and remediation guidance.</p>
 <p><strong>The human decision.</strong> You review the audit reports and decide what matters. Not every finding warrants action. Some are informational. Some are follow-up items for a different PR. The audit gives you the information; the plan reflects your judgment about which findings to act on now.</p>
 <p><strong>Key rule.</strong> Audits are read-only. The agents explore the codebase. They do not modify it. This separation is important: it means you can dispatch audit agents freely, without worrying about partial changes or file conflicts.</p>
 <p><strong>Enabling capabilities.</strong> Background agents with parallel dispatch and session isolation. Each audit agent runs in its own context window with read-only access to the codebase, so findings are independent and agents cannot interfere with each other.</p>
@@ -671,7 +667,7 @@ Figure&nbsp;15.1: The five execution phases with adaptation loop
 <section id="phase-2-plan" class="level3" data-number="15.1.2">
 <h3 data-number="15.1.2" class="anchored" data-anchor-id="phase-2-plan"><span class="header-section-number">15.1.2</span> Phase 2: Plan</h3>
 <p><strong>Purpose.</strong> Transform audit findings into an executable specification: what changes, in what order, by which agents, with what constraints.</p>
-<p><strong>How it works.</strong> You define the scope (what’s in, what’s out, what’s deferred), the agent teams (which personas own which concerns), and the wave structure (dependency-ordered batches of work). The plan includes principles — priority-ordered values that anchor every decision when trade-offs arise — and constraints — what must not change.</p>
+<p><strong>How it works.</strong> You define the scope (what’s in, what’s out, what’s deferred), the agent teams (which personas own which concerns), and the wave structure (dependency-ordered batches of work).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The plan includes principles — priority-ordered values that anchor every decision when trade-offs arise — and constraints — what must not change.</p>
 <p>A well-structured plan looks like this:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">Scope</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="at">  Auth resolver deduplication, verbose coverage gaps,</span></span>
@@ -701,25 +697,25 @@ Figure&nbsp;15.1: The five execution phases with adaptation loop
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="at">  Do NOT modify test infrastructure.</span></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="at">  Do NOT change CLI command signatures.</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="at">  Do NOT alter public API return types.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><strong>The human decision.</strong> You approve the plan. This is the highest-leverage moment in the entire process. A mediocre plan with perfect execution produces mediocre software. A great plan with imperfect execution produces great software — because the test gates catch the imperfections. Take your time here. Review the wave dependencies. Question whether the scope is right. Ask whether the wave structure accounts for the files that will change in multiple phases.</p>
+<p><strong>The human decision.</strong> You approve the plan. This is the highest-leverage moment in the entire process.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> A mediocre plan with perfect execution produces mediocre software. A great plan with imperfect execution produces great software — because the test gates catch the imperfections. Take your time here. Review the wave dependencies. Question whether the scope is right. Ask whether the wave structure accounts for the files that will change in multiple phases.</p>
 <p><strong>Key rule.</strong> No implementation starts until you approve the plan. This is the single most important gate.</p>
-<p><strong>Enabling capabilities.</strong> Background exploration agents to validate planning assumptions — mapping dependency graphs, tracing call chains, verifying that the wave structure accounts for shared files. The planning itself is human judgment; the agents accelerate the information gathering that informs it.</p>
+<p><strong>Enabling capabilities.</strong> Background exploration agents to validate planning assumptions: mapping dependency graphs, tracing call chains, verifying that the wave structure accounts for shared files. The planning itself is human judgment; the agents accelerate the information gathering that informs it.</p>
 <p><strong>Output.</strong> An approved plan with scope, teams, waves, principles, and constraints.</p>
 </section>
 <section id="phase-3-wave-execution" class="level3" data-number="15.1.3">
 <h3 data-number="15.1.3" class="anchored" data-anchor-id="phase-3-wave-execution"><span class="header-section-number">15.1.3</span> Phase 3: Wave Execution</h3>
 <p><strong>Purpose.</strong> Execute the plan in dependency-ordered batches, with validation between each batch.</p>
 <p><strong>How it works.</strong> Each wave is a set of tasks with no unmet dependencies. The orchestrating tool dispatches parallel agents for each task in the wave, grouped so that no two agents edit the same file simultaneously. Each agent receives precise instructions: which files to change, what patterns to follow, what constraints to respect, and what verification to run before reporting completion. When all agents in a wave finish, the full test suite runs. If tests pass, the wave is committed. If tests fail, you triage.</p>
-<p>The wave structure produces a clean commit history — one commit per wave — and guarantees that you can bisect regressions to a specific batch of changes.</p>
+<p>The wave structure produces a clean commit history (one commit per wave) and guarantees that you can bisect regressions to a specific batch of changes.</p>
 <p><strong>The human decision.</strong> You approve each wave launch (or, if you trust the plan, authorize the full sequence). You triage any test failures. You intervene on escalation.</p>
 <p><strong>Key rule.</strong> Every wave ends with green tests and a commit. No exceptions.</p>
-<p><strong>Enabling capabilities.</strong> Parallel agent dispatch with session isolation — each agent works in a clean context window, receiving only the instructions and code relevant to its task. The orchestrating session coordinates dispatch, collects results, and triggers the test runner between waves. Integration with the project’s existing test suite (or CI pipeline) provides the gate.</p>
+<p><strong>Enabling capabilities.</strong> Parallel agent dispatch with session isolation: each agent works in a clean context window, receiving only the instructions and code relevant to its task. The orchestrating session coordinates dispatch, collects results, and triggers the test runner between waves. Integration with the project’s existing test suite (or CI pipeline) provides the gate.</p>
 <p><strong>Output.</strong> A commit per wave, with all tests passing.</p>
 </section>
 <section id="phase-4-validate" class="level3" data-number="15.1.4">
 <h3 data-number="15.1.4" class="anchored" data-anchor-id="phase-4-validate"><span class="header-section-number">15.1.4</span> Phase 4: Validate</h3>
 <p><strong>Purpose.</strong> Confirm the final state before shipping.</p>
-<p><strong>How it works.</strong> The full test suite runs — unit tests, acceptance tests, and optionally integration or end-to-end tests. You spot-check critical changes: the files with the most complex modifications, the boundary conditions you specified in the plan, the areas where agents were most likely to make subtle errors.</p>
+<p><strong>How it works.</strong> The full test suite runs: unit tests, acceptance tests, and optionally integration or end-to-end tests. You spot-check critical changes: the files with the most complex modifications, the boundary conditions you specified in the plan, the areas where agents were most likely to make subtle errors.</p>
 <p><strong>The human decision.</strong> You decide whether the changes are ready to ship.</p>
 <p><strong>Enabling capabilities.</strong> The project’s CI pipeline or test runner — the same infrastructure your team already uses. No special tooling is needed for validation beyond what exists for normal development. The value comes from the process (test after every wave, spot-check critical files), not from additional tools.</p>
 <p><strong>Output.</strong> A validated changeset.</p>
@@ -727,7 +723,7 @@ Figure&nbsp;15.1: The five execution phases with adaptation loop
 <section id="phase-5-ship" class="level3" data-number="15.1.5">
 <h3 data-number="15.1.5" class="anchored" data-anchor-id="phase-5-ship"><span class="header-section-number">15.1.5</span> Phase 5: Ship</h3>
 <p><strong>Purpose.</strong> Commit, push, and merge.</p>
-<p><strong>How it works.</strong> Update the changelog if it wasn’t updated during wave execution. Push the branch. If CI passes, merge. The commit history — one commit per wave, each with passing tests — makes the PR reviewable and bisectable.</p>
+<p><strong>How it works.</strong> Update the changelog if it wasn’t updated during wave execution. Push the branch. If CI passes, merge. The commit history (one commit per wave, each with passing tests) makes the PR reviewable and bisectable.</p>
 <p><strong>Output.</strong> A merged PR.</p>
 <hr>
 </section>
@@ -737,7 +733,7 @@ Figure&nbsp;15.1: The five execution phases with adaptation loop
 <p>The wave structure is where planning becomes engineering. A poorly decomposed set of waves produces merge conflicts, stale context, and cascading failures. A well-decomposed set produces clean parallel execution with natural validation boundaries.</p>
 <section id="the-dependency-graph" class="level3" data-number="15.2.1">
 <h3 data-number="15.2.1" class="anchored" data-anchor-id="the-dependency-graph"><span class="header-section-number">15.2.1</span> The Dependency Graph</h3>
-<p>Waves are ordered by dependency. Wave 0 contains tasks with no dependencies — foundational changes that other waves build on. Wave 1 contains tasks that depend on Wave 0 outputs. Wave 2 depends on Wave 1. The dependency is directional and strict: no task in wave N may depend on a task in wave N+1.</p>
+<p>Waves are ordered by dependency. Wave 0 contains tasks with no dependencies: foundational changes that other waves build on. Wave 1 contains tasks that depend on Wave 0 outputs. Wave 2 depends on Wave 1. The dependency is directional and strict: no task in wave N may depend on a task in wave N+1.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-wave-deps" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -758,15 +754,15 @@ Figure&nbsp;15.2: Wave dependency chain: Foundation → Core → Migration → P
 </div>
 </div>
 </div>
-<p>The most common dependency pattern is foundation-before-migration. Type definitions, protocol changes, and method signatures go in Wave 0. Code that uses those new interfaces goes in Wave 1+. If you put both in the same wave, agents will try to both define and consume new APIs simultaneously — and the consumer agents will work against a file state that doesn’t yet include the definitions.</p>
+<p>The most common dependency pattern is foundation-before-migration. Type definitions, protocol changes, and method signatures go in Wave 0. Code that uses those new interfaces goes in Wave 1+. If you put both in the same wave, agents will try to both define and consume new APIs simultaneously, and the consumer agents will work against a file state that doesn’t yet include the definitions.</p>
 </section>
 <section id="the-one-file-one-agent-rule" class="level3" data-number="15.2.2">
 <h3 data-number="15.2.2" class="anchored" data-anchor-id="the-one-file-one-agent-rule"><span class="header-section-number">15.2.2</span> The One-File-One-Agent Rule</h3>
-<p>The one-file-one-agent rule from Chapter 12 shapes wave design more than any other constraint. Within a wave, no two agents may edit the same file. If two logically independent changes both touch the same file, they go in separate waves — or they’re assigned to a single agent that handles both changes in sequence.</p>
+<p>The one-file-one-agent rule from Chapter 12 shapes wave design more than any other constraint. Within a wave, no two agents may edit the same file. If two logically independent changes both touch the same file, they go in separate waves, or they’re assigned to a single agent that handles both changes in sequence.</p>
 </section>
 <section id="sizing-waves" class="level3" data-number="15.2.3">
 <h3 data-number="15.2.3" class="anchored" data-anchor-id="sizing-waves"><span class="header-section-number">15.2.3</span> Sizing Waves</h3>
-<p>The size of a wave affects execution time and risk. Smaller waves — 2 to 4 agents — complete faster and are easier to debug when something goes wrong. Larger waves — 6 to 10 agents — have higher throughput but are dominated by the slowest agent, and a single failure in a large wave means triaging more changes.</p>
+<p>The size of a wave affects execution time and risk. Smaller waves (2 to 4 agents) complete faster and are easier to debug when something goes wrong. Larger waves (6 to 10 agents) have higher throughput but are dominated by the slowest agent, and a single failure in a large wave means triaging more changes.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -815,7 +811,7 @@ Figure&nbsp;15.2: Wave dependency chain: Foundation → Core → Migration → P
 <section id="pr-394-the-worked-example" class="level2" data-number="15.3">
 <h2 data-number="15.3" class="anchored" data-anchor-id="pr-394-the-worked-example"><span class="header-section-number">15.3</span> <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>: The Worked Example</h2>
 <p>The meta-process is abstract until you see it execute. This section summarizes a real PR — an auth and logging architecture overhaul on APM, an open-source agent package manager (the author’s implementation of the distribution layer described in Chapters 9 and 10). The full execution log — including 5 escalation events, 8 plan iterations, and anti-pattern mappings — is in <a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a> case study in Part IV.</p>
-<p><strong>Scope.</strong> 5 cross-cutting concerns — auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage — touching 75 files across the entire source tree.</p>
+<p><strong>Scope.</strong> 5 cross-cutting concerns (auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage) touching 75 files across the entire source tree.</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -858,7 +854,7 @@ Figure&nbsp;15.2: Wave dependency chain: Foundation → Core → Migration → P
 </tr>
 </tbody>
 </table>
-<p><strong>A note on timing.</strong> The 90-minute figure reflects an experienced practitioner working with mature primitives — battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.</p>
+<p><strong>A note on timing.</strong> The 90-minute figure reflects an experienced practitioner working with mature instrumentation: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.</p>
 <section id="timeline" class="level3" data-number="15.3.1">
 <h3 data-number="15.3.1" class="anchored" data-anchor-id="timeline"><span class="header-section-number">15.3.1</span> Timeline</h3>
 <table class="caption-top table">
@@ -924,13 +920,13 @@ Figure&nbsp;15.2: Wave dependency chain: Foundation → Core → Migration → P
 </section>
 <section id="the-three-practitioner-roles-in-action" class="level3" data-number="15.3.2">
 <h3 data-number="15.3.2" class="anchored" data-anchor-id="the-three-practitioner-roles-in-action"><span class="header-section-number">15.3.2</span> The Three Practitioner Roles in Action</h3>
-<p>Across wave execution, the human intervened exactly three times — each mapping to one of the three practitioner roles from Chapter 8:</p>
+<p>Across wave execution, the human intervened exactly three times, each mapping to one of the three practitioner roles from Chapter 8:</p>
 <ol type="1">
 <li><strong>Architect</strong> (during planning): decided to include all severity levels in scope rather than deferring moderate findings. This required judgment about priorities, release timeline, and the cost of context-switching back later.</li>
 <li><strong>Escalation Handler</strong> (during Wave 2): diagnosed an agent stall on install.py (58 call sites exhausted the context window), decided to split remaining work across two replacement agents rather than retrying.</li>
-<li><strong>Reviewer</strong> (during Wave 2b): triaged a test failure caused by an ordering issue in the migration — a function call was migrated but its setup code wasn’t — and directed a targeted fix.</li>
+<li><strong>Reviewer</strong> (during Wave 2b): triaged a test failure caused by an ordering issue in the migration (a function call was migrated but its setup code wasn’t) and directed a targeted fix.</li>
 </ol>
-<p>Three interventions, three roles, no overlap. These are the categories of human judgment that the meta-process surfaces, not eliminates. The <a href="../case-study-apm-overhaul.html">case study</a> documents two additional escalation events — a token type correction and a silent NameError — that were caught during checkpoint verification and mapped to anti-patterns in Chapter 14.</p>
+<p>Three interventions, three roles, no overlap. These are the categories of human judgment that the meta-process surfaces, not eliminates. The <a href="../case-study-apm-overhaul.html">case study</a> documents two additional escalation events (a token type correction and a silent NameError) that were caught during checkpoint verification and mapped to anti-patterns in Chapter 14.</p>
 <hr>
 </section>
 </section>
@@ -939,21 +935,21 @@ Figure&nbsp;15.2: Wave dependency chain: Foundation → Core → Migration → P
 <p>A checkpoint is the pause between waves. It is the mechanism that makes the meta-process safe.</p>
 <section id="why-test-after-every-wave" class="level3" data-number="15.4.1">
 <h3 data-number="15.4.1" class="anchored" data-anchor-id="why-test-after-every-wave"><span class="header-section-number">15.4.1</span> Why Test After Every Wave</h3>
-<p>The alternative — executing all waves and testing at the end — is faster in the best case and catastrophic in the worst case. If wave 3 introduces a regression, and you haven’t tested since wave 0, you don’t know whether the regression was introduced in wave 1, 2, or 3. You can’t bisect. You can’t revert a single wave. You’re debugging a composite changeset that spans the entire execution.</p>
-<p>Testing after every wave makes each wave an independently verifiable unit. If wave 2 breaks a test, you know the regression was introduced in wave 2. You can inspect the wave 2 diff, identify the cause, fix it, and continue — without touching waves 0 or 1.</p>
+<p>The alternative (executing all waves and testing at the end) is faster in the best case and catastrophic in the worst case. If wave 3 introduces a regression, and you haven’t tested since wave 0, you don’t know whether the regression was introduced in wave 1, 2, or 3. You can’t bisect. You can’t revert a single wave. You’re debugging a composite changeset that spans the entire execution.</p>
+<p>Testing after every wave makes each wave an independently verifiable unit. If wave 2 breaks a test, you know the regression was introduced in wave 2. You can inspect the wave 2 diff, identify the cause, fix it, and continue, without touching waves 0 or 1.</p>
 <p>The cost is real: a full test suite run after every wave. In the PR #394 case, that was ~2,850 tests taking approximately 2 minutes per run, across 5 checkpoints (4 waves + final validation) — roughly 10 minutes of testing total. The alternative — debugging a 75-file composite changeset without bisection points — would have cost hours.</p>
 </section>
 <section id="what-happens-at-a-checkpoint" class="level3" data-number="15.4.2">
 <h3 data-number="15.4.2" class="anchored" data-anchor-id="what-happens-at-a-checkpoint"><span class="header-section-number">15.4.2</span> What Happens at a Checkpoint</h3>
 <p>Each checkpoint has four components:</p>
-<p><strong>Test gate.</strong> The full test suite runs. If any test fails, the wave is not committed. The failure is triaged — either fixed immediately (if the cause is obvious) or escalated to the human.</p>
+<p><strong>Test gate.</strong> The full test suite runs. If any test fails, the wave is not committed. The failure is triaged: either fixed immediately (if the cause is obvious) or escalated to the human.</p>
 <p><strong>Spot-check.</strong> The human reviews a sample of changes. Focus on boundary conditions, pattern compliance, and scope discipline. Did the agent handle the edge case? Did it follow existing patterns or invent new ones? Did it change only what was specified?</p>
 <p><strong>Commit.</strong> Every wave gets its own commit with a descriptive message. This creates a clean, bisectable history.</p>
-<p><strong>Plan review.</strong> Optionally, the human reviews the remaining plan and adjusts if the current wave revealed something unexpected — a dependency that was missed, a task that should be split, a wave that should be reordered.</p>
+<p><strong>Plan review.</strong> Optionally, the human reviews the remaining plan and adjusts if the current wave revealed something unexpected: a dependency that was missed, a task that should be split, a wave that should be reordered.</p>
 </section>
 <section id="the-adapt-loop" class="level3" data-number="15.4.3">
 <h3 data-number="15.4.3" class="anchored" data-anchor-id="the-adapt-loop"><span class="header-section-number">15.4.3</span> The ADAPT Loop</h3>
-<p>When a checkpoint fails — tests are red, an agent is stuck, a dependency was missed — the meta-process doesn’t stop. It adapts.</p>
+<p>When a checkpoint fails (tests are red, an agent is stuck, a dependency was missed), the meta-process doesn’t stop. It adapts.</p>
 <div class="cell" data-fig-width="4" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-adapt-loop" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -983,64 +979,20 @@ Figure&nbsp;15.3: The ADAPT loop for mid-execution recovery
 </section>
 <section id="session-management" class="level2" data-number="15.5">
 <h2 data-number="15.5" class="anchored" data-anchor-id="session-management"><span class="header-section-number">15.5</span> Session Management</h2>
-<p>A practical concern that the meta-process must account for: AI agent sessions are stateful and finite. Context accumulates. Attention degrades. A session that has been running for 40 turns is working with a context window that is largely consumed by conversation history, leaving less room for the instructions and code context that determine output quality.</p>
-<section id="when-to-reset" class="level3" data-number="15.5.1">
-<h3 data-number="15.5.1" class="anchored" data-anchor-id="when-to-reset"><span class="header-section-number">15.5.1</span> When to Reset</h3>
-<p>The natural reset boundary is the wave. Each wave is a logically complete unit of work. Starting a fresh session for each wave — or for each agent within a wave — means every agent works with a clean context window, loaded with only the instructions and code relevant to its specific task.</p>
-<p>Long-running sessions degrade in two ways. First, instructions loaded at the beginning of the session compete with accumulated conversation history for attention. Second, the agent’s “memory” of what it was told to do becomes less reliable as the session grows. Both effects are gradual and invisible — the agent doesn’t announce that it’s losing focus. Output quality simply drifts.</p>
-</section>
-<section id="session-boundaries-in-practice" class="level3" data-number="15.5.2">
-<h3 data-number="15.5.2" class="anchored" data-anchor-id="session-boundaries-in-practice"><span class="header-section-number">15.5.2</span> Session Boundaries in Practice</h3>
-<p>For the wave execution model, session management is straightforward:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Session Type</th>
-<th>Isolation</th>
-<th>State</th>
-<th>Purpose</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Audit agents</td>
-<td>Fully isolated</td>
-<td>No state carried forward</td>
-<td>Read-only analysis</td>
-</tr>
-<tr class="even">
-<td>Wave agents</td>
-<td>Fully isolated</td>
-<td>Full context per task, no history from previous waves</td>
-<td>Scoped implementation</td>
-</tr>
-<tr class="odd">
-<td>Orchestrating session</td>
-<td>Long-running</td>
-<td>Accumulates state intentionally: task status, wave history, decision rationale</td>
-<td>Plan management, agent dispatch, checkpoints</td>
-</tr>
-</tbody>
-</table>
-<p>This separation is why the meta-process uses parallel isolated agents rather than a single agent executing tasks sequentially. Parallel agents don’t just execute faster — they execute with cleaner context.</p>
+<p>Session discipline follows the principles established in Chapter 12. In the meta-process context, two additional considerations apply:</p>
+<p><strong>Phase transitions are natural reset boundaries.</strong> Each wave is a logically complete unit of work. Starting a fresh session for each wave means every agent works with a clean context window, loaded with only the instructions and code relevant to its specific task. The orchestrating session is the exception: it runs long intentionally, accumulating task status, wave history, and decision rationale.</p>
+<p><strong>Parallel agents produce cleaner context, not just faster execution.</strong> The meta-process uses parallel isolated agents rather than a single agent executing tasks sequentially. This is a context quality decision as much as a throughput decision.</p>
 <hr>
-</section>
 </section>
 <section id="adapting-the-meta-process" class="level2" data-number="15.6">
 <h2 data-number="15.6" class="anchored" data-anchor-id="adapting-the-meta-process"><span class="header-section-number">15.6</span> Adapting the Meta-Process</h2>
 <p>The PR #394 case involved 75 files and ~25 agents across 5 waves (including one recovery wave). Not every change is that large. The meta-process scales in both directions.</p>
 <section id="small-changes-fewer-than-10-files" class="level3" data-number="15.6.1">
 <h3 data-number="15.6.1" class="anchored" data-anchor-id="small-changes-fewer-than-10-files"><span class="header-section-number">15.6.1</span> Small Changes (fewer than 10 files)</h3>
-<p>For focused changes within a single concern — fixing a bug, adding a feature to one module, refactoring a small subsystem — the full wave structure is overhead. The meta-process compresses:</p>
+<p>For focused changes within a single concern (fixing a bug, adding a feature to one module, refactoring a small subsystem), the full wave structure is overhead. The meta-process compresses:</p>
 <ul>
 <li><strong>Audit</strong> becomes a single expert agent reviewing the relevant files.</li>
-<li><strong>Plan</strong> becomes a mental model — you know the scope, there’s one wave.</li>
+<li><strong>Plan</strong> becomes a mental model: you know the scope, there’s one wave.</li>
 <li><strong>Execution</strong> is a single wave with 1-2 agents.</li>
 <li><strong>Validate and Ship</strong> are unchanged.</li>
 </ul>
@@ -1048,11 +1000,11 @@ Figure&nbsp;15.3: The ADAPT loop for mid-execution recovery
 </section>
 <section id="large-changes-more-than-100-files" class="level3" data-number="15.6.2">
 <h3 data-number="15.6.2" class="anchored" data-anchor-id="large-changes-more-than-100-files"><span class="header-section-number">15.6.2</span> Large Changes (more than 100 files)</h3>
-<p>For changes that span a significant portion of the codebase — a framework migration, a cross-cutting security hardening, a major API version bump — the meta-process extends:</p>
+<p>For changes that span a significant portion of the codebase (a framework migration, a cross-cutting security hardening, a major API version bump), the meta-process extends:</p>
 <ul>
 <li><strong>Audit</strong> uses more expert agents (4-6), each covering a different subsystem or concern.</li>
 <li><strong>Plan</strong> requires more waves (6-10), with careful dependency mapping and explicit scope boundaries for each.</li>
-<li><strong>Execution</strong> may use a two-team structure with distinct agent personas: an architecture team for structural changes and a domain team for concern-specific changes.</li>
+<li><strong>Execution</strong> may use a two-team structure with distinct agent personas: an architecture team for cross-cutting changes and a domain team for concern-specific changes.</li>
 <li><strong>The ADAPT loop</strong> is more likely to fire, and the plan should anticipate it. Leave slack in the wave structure for recovery waves.</li>
 </ul>
 <p>The scaling property to preserve: each wave remains independently verifiable. If a 200-file change is decomposed into 8 waves of 25 files each, each wave is still a self-contained, testable unit. The total complexity grows; the complexity of any single checkpoint does not.</p>
@@ -1063,14 +1015,21 @@ Figure&nbsp;15.3: The ADAPT loop for mid-execution recovery
 <h2 data-number="15.7" class="anchored" data-anchor-id="what-the-meta-process-produces"><span class="header-section-number">15.7</span> What the Meta-Process Produces</h2>
 <p>When followed, the meta-process produces four things that manual development typically does not.</p>
 <p><strong>Bisectable history.</strong> Every wave is a separate commit with passing tests. If a bug surfaces after merge, you can bisect to the exact wave that introduced it. This is not possible with the typical “one giant commit per feature” or “squash everything” approaches.</p>
-<p><strong>Auditable decisions.</strong> The plan documents what was decided and why. The checkpoint records document what happened at each validation point. The escalation records document what required human judgment and what the judgment was. A reviewer reading the PR has a complete record of the decision chain — not just the final code.</p>
-<p><strong>Reproducible process.</strong> The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same primitives, and the same plan, would produce substantially similar output. The non-determinism of AI agents is bounded by the determinism of the process around them.</p>
-<p><strong>Proportional cost.</strong> The time spent is proportional to the change, not the codebase. A 75-file change took 90 minutes regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.</p>
+<p><strong>Auditable decisions.</strong> The plan documents what was decided and why. The checkpoint records document what happened at each validation point. The escalation records document what required human judgment and what the judgment was. A reviewer reading the PR has a complete record of the decision chain, not just the final code.</p>
+<p><strong>Reproducible process.</strong> The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same context files, and the same plan, would produce substantially similar output. This is our hypothesis, not a tested claim. Controlled reproducibility experiments would strengthen it. The non-determinism of AI agents is bounded by the determinism of the process around them.</p>
+<p><strong>Proportional cost.</strong> The time spent scales with the change scope, not the full codebase size — though we have verified this only at the scale documented in the reference case study. A 75-file change took ~90 minutes of total elapsed time regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.</p>
 <hr>
 <p>The meta-process is the operational core of everything this book teaches. PROSE provides the constraints. Context engineering provides the information. Agent primitives encode the knowledge. The meta-process is how they combine into shipped code.</p>
 <p>But following a process correctly is only half the challenge. The other half is recognizing when it’s going wrong — when an anti-pattern is forming, when a failure mode is emerging, when the process is producing output that looks correct and isn’t. The next chapter documents what those failures look like and how to prevent them.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>This decomposition pattern echoes Conway’s Law: “Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations.” Here, agent team boundaries mirror module boundaries by design, not accident.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Brooks makes the same argument in <em>The Mythical Man-Month</em> (1975): “Plan to throw one away; you will, anyhow.” The meta-process inverts this — invest disproportionately in the plan so you don’t have to throw the execution away.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -1160,7 +1119,7 @@ Figure&nbsp;15.3: The ADAPT loop for mid-execution recovery
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/agentic-sdlc-handbook\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1500,10 +1459,10 @@ Figure&nbsp;15.3: The ADAPT loop for mid-execution recovery
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="../apm-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="../agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">© 2025-2026 Daniel Meppiel · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color: #aaa;">CC BY-NC-ND 4.0</a></p>

@@ -80,8 +80,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="../apm-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="../apm-handbook/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="../agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="../agentic-sdlc-handbook/apple-touch-icon.png">
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -302,7 +302,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
@@ -483,7 +483,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 62,500-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -563,7 +563,7 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#putting-it-together" id="toc-putting-it-together" class="nav-link" data-scroll-target="#putting-it-together"><span class="header-section-number">14.8</span> Putting It Together</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -588,18 +588,16 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>A single AI agent can modify a file. It can even modify several files in sequence, if the changes are simple enough and the context window holds. But the moment you need to change 40 files across 5 concerns — authentication, logging, type safety, migration, and cleanup — a single agent becomes the bottleneck. Not because it lacks intelligence. Because it lacks bandwidth.</p>
-<p>Context windows are finite. A single agent handling a cross-cutting change must hold the entire scope in focus simultaneously: every file, every convention, every dependency between the changes. By the twentieth file, the instructions from the first file are competing for attention with accumulated conversation history. Quality degrades not because the model is worse, but because the context is overloaded.</p>
-<p>Multi-agent orchestration solves this by decomposing work across specialized agents that each operate within manageable context budgets. But coordination is not free. Agents that work in parallel can conflict. Agents with different specializations can produce inconsistent output. Agents that don’t know about each other’s changes can break each other’s work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.</p>
+<p>A single AI agent can modify a file, and even several files in sequence if the changes are simple enough and the context window holds. But the moment a cross-cutting change spans 40 files across 5 concerns, a single agent becomes the bottleneck — not because it lacks intelligence, but because it lacks bandwidth. Multi-agent orchestration solves the coordination problem by decomposing work across specialized agents that each operate within manageable context budgets. But coordination is not free. Agents that work in parallel can conflict, produce inconsistent output, or break each other’s work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>This chapter covers when to use multiple agents, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human’s role is in all of it.</p>
 <hr>
 <section id="when-one-agent-is-enough" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="when-one-agent-is-enough"><span class="header-section-number">14.1</span> When One Agent Is Enough</h2>
-<p>Not every task requires multiple agents. The overhead of orchestration — partitioning work, managing sessions, resolving conflicts, validating independently — is real. If the task fits comfortably in a single agent’s context, the single agent is the better choice.</p>
+<p>Not every task requires multiple agents. The overhead of orchestration (partitioning work, managing sessions, resolving conflicts, validating independently) is real. If the task fits comfortably in a single agent’s context, the single agent is the better choice.</p>
 <p>A single agent is sufficient when:</p>
 <ul>
 <li><strong>Scope is narrow.</strong> The change touches fewer than 10 files in a single module.</li>
-<li><strong>Concern is singular.</strong> One type of change — fix logging, update types, add tests — not three interleaved concerns.</li>
+<li><strong>Concern is singular.</strong> One type of change (fix logging, update types, add tests), not three interleaved concerns.</li>
 <li><strong>Dependencies are linear.</strong> Each file change follows naturally from the previous one, with no need for parallel work.</li>
 <li><strong>Context budget is adequate.</strong> The agent can hold all relevant source files, instructions, and conversation history without exceeding roughly 60% of its window capacity, leaving room for reasoning.</li>
 </ul>
@@ -651,14 +649,14 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>The boundary between 10 and 15 files is not arbitrary. It reflects the practical limit where a single agent’s conversation history — accumulated tool calls, file reads, edit confirmations, test output — begins consuming enough context to crowd out the instructions and source code that the agent needs to do its work well. Your mileage will vary by model, task complexity, and instruction file size.</p>
+<p>The boundary at 10-15 files is approximate and experience-derived, though not precisely measured. It reflects the practical limit where a single agent’s conversation history — accumulated tool calls, file reads, edit confirmations, test output — begins consuming enough context to crowd out the instructions and source code that the agent needs to do its work well. Your mileage will vary by model, task complexity, and instruction file size.</p>
 <p>When the decision is marginal, err toward a single agent. Coordination costs are real. Multi-agent orchestration is a tool for tasks that exceed single-agent capacity, not a default mode of operation.</p>
 <hr>
 </section>
 <section id="agent-specialization-patterns" class="level2" data-number="14.2">
 <h2 data-number="14.2" class="anchored" data-anchor-id="agent-specialization-patterns"><span class="header-section-number">14.2</span> Agent Specialization Patterns</h2>
 <p>The key insight behind multi-agent orchestration is that specialization produces better results than generalization — for the same reason that a team of specialists outperforms a team of generalists on complex projects. A security expert and a logging expert, each working within their domain, produce more reliable output than a single agent told to “handle security and logging.”</p>
-<p>Specialization works because it reduces the context each agent needs to carry. An architecture agent loaded with type definitions, module boundaries, and structural patterns does not also need logging conventions, output formatting rules, and symbol dictionaries. The context it receives is concentrated, not diluted.</p>
+<p>Specialization works because it reduces the context each agent needs to carry. An architecture agent loaded with type definitions, module boundaries, and architectural patterns does not also need logging conventions, output formatting rules, and symbol dictionaries. The context it receives is concentrated, not diluted.</p>
 <p>Three specialization patterns recur across most multi-agent workflows.</p>
 <section id="pattern-1-writer-reviewer-tester" class="level3" data-number="14.2.1">
 <h3 data-number="14.2.1" class="anchored" data-anchor-id="pattern-1-writer-reviewer-tester"><span class="header-section-number">14.2.1</span> Pattern 1: Writer / Reviewer / Tester</h3>
@@ -715,11 +713,11 @@ Figure&nbsp;14.1: Writer, Reviewer, Tester pattern
 </tr>
 </tbody>
 </table>
-<p>In the reference case study (<a href="https://github.com/microsoft/apm/pull/394">PR #394</a>, detailed in the <a href="../case-study-apm-overhaul.html">case study</a> and summarized in Chapter 13), this two-team structure — architecture team led by an architect agent, domain team led by a logging expert agent — handled a 75-file change across five concerns. The architecture team carried type definitions and structural patterns. The domain team carried output conventions and migration examples. Neither team needed the other’s context, and both produced output consistent with their specialization.</p>
+<p>In the auth-logging overhaul (<a href="https://github.com/microsoft/apm/pull/394">PR #394</a>, detailed in the <a href="../case-study-apm-overhaul.html">case study</a> and summarized in Chapter 13), this two-team structure (architecture team led by an architect agent, domain team led by a logging expert agent) handled a 75-file change across five concerns. The architecture team carried type definitions and architectural patterns. The domain team carried output conventions and migration examples. Neither team needed the other’s context, and both produced output consistent with their specialization.</p>
 <p>This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.</p>
 <section id="concrete-dispatch-what-it-actually-looks-like" class="level4" data-number="14.2.2.1">
 <h4 data-number="14.2.2.1" class="anchored" data-anchor-id="concrete-dispatch-what-it-actually-looks-like"><span class="header-section-number">14.2.2.1</span> Concrete Dispatch: What It Actually Looks Like</h4>
-<p>The Domain Teams pattern describes structure. Here is what a dispatch actually looks like in practice — the instruction files, the prompt, and the file list. This example uses a terminal-based agent, but the pattern applies regardless of tool.</p>
+<p>The Domain Teams pattern describes structure. Here is what a dispatch actually looks like in practice: the instruction files, the prompt, and the file list. This example uses a terminal-based agent, but the pattern applies regardless of tool.</p>
 <p>Before dispatching, the orchestrator prepares three things: the instruction files the agent will load, the file list it owns exclusively, and the task prompt.</p>
 <p><strong>Instruction files loaded into context:</strong></p>
 <pre class="text"><code>.ai/instructions.md              # Project-wide conventions (always loaded)
@@ -789,7 +787,7 @@ Figure&nbsp;14.2: Audit, Execute, Validate pattern
 <section id="the-one-file-one-agent-rule" class="level3" data-number="14.3.1">
 <h3 data-number="14.3.1" class="anchored" data-anchor-id="the-one-file-one-agent-rule"><span class="header-section-number">14.3.1</span> The One-File-One-Agent Rule</h3>
 <p>The most important parallelization rule is the simplest: within a single execution batch, no two agents may modify the same file.</p>
-<p>Most agent tooling edits files using string matching — the agent specifies an exact block of text to find and replace. If Agent A modifies <code>install.py</code> and then Agent B tries to edit the same file, the text Agent B expects to find has already changed. The edit fails silently or produces corrupted output.</p>
+<p>Most agent tooling edits files using string matching: the agent specifies an exact block of text to find and replace. If Agent A modifies <code>install.py</code> and then Agent B tries to edit the same file, the text Agent B expects to find has already changed. The edit fails silently or produces corrupted output.</p>
 <p>This is not a theoretical risk. It is the most common failure mode in parallel agent execution.</p>
 <table class="caption-top table">
 <colgroup>
@@ -881,9 +879,9 @@ Figure&nbsp;14.3: Wave-based parallelism with dependency ordering
 </div>
 </div>
 </div>
-<p>The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0’s output being committed and tested. Within a wave, agents are independent — they share no files and make no assumptions about each other’s progress.</p>
-<p>Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish — typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.</p>
-<p>In the reference case study (PR #394, detailed in the <a href="../case-study-apm-overhaul.html">case study</a>), four waves plus one recovery wave handled 75 files in roughly 24 minutes of agent execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. Meaningful for a change this size, but the real value was in reduced context degradation, not reduced time.</p>
+<p>The dependencies between waves are explicit. Wave 1 agents can rely on Wave 0’s output being committed and tested. Within a wave, agents are independent: they share no files and make no assumptions about each other’s progress.</p>
+<p>Wave sizing matters. A wave with 2-3 agents completes in the time it takes the slowest agent to finish, typically 3-5 minutes. A wave with 8 agents still takes 8-10 minutes because the slowest agent dominates, but also increases the risk of failures that block the entire wave. Prefer more, smaller waves over fewer, larger ones.</p>
+<p>In the PR #394 execution (<a href="../case-study-apm-overhaul.html">case study</a>), four waves plus one recovery wave handled 75 files in roughly 24 minutes of wave execution time. Wave sizes ranged from 1 to 5 agents. The parallelism saved approximately 21 minutes compared to sequential execution — based on an estimated 45 minutes of sequential agent time versus the 24 minutes of parallel agent time observed. This comparison is estimated, not measured — we did not run the sequential approach. The numbers reflect the author’s judgment based on prior single-agent attempts of similar scope. The real value was in reduced context degradation, not reduced time.</p>
 <div class="landscape">
 <div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
@@ -954,7 +952,7 @@ Figure&nbsp;14.5: Pipeline parallelism: overlapping wave execution
 </div>
 </div>
 </div>
-<p>This works when the review and test operations are read-only and the execution operations have no backward dependencies on review findings. If a review agent finds a problem in Wave 0, the fix goes into a later wave — it does not interrupt Wave 1, which was planned against the committed Wave 0 output.</p>
+<p>This works when the review and test operations are read-only and the execution operations have no backward dependencies on review findings. If a review agent finds a problem in Wave 0, the fix goes into a later wave; it does not interrupt Wave 1, which was planned against the committed Wave 0 output.</p>
 <hr>
 </section>
 </section>
@@ -970,7 +968,7 @@ Figure&nbsp;14.5: Pipeline parallelism: overlapping wave execution
 <section id="semantic-conflicts" class="level3" data-number="14.4.2">
 <h3 data-number="14.4.2" class="anchored" data-anchor-id="semantic-conflicts"><span class="header-section-number">14.4.2</span> Semantic Conflicts</h3>
 <p>Two agents produce output that is independently correct but mutually inconsistent. Agent A introduces a new error-handling pattern. Agent B, working on a different file, follows the old pattern because its instructions referenced the pre-change codebase.</p>
-<p><strong>Resolution.</strong> Foundation-before-migration wave ordering. Changes that establish new patterns — type definitions, utility functions, shared conventions — go in early waves. Changes that consume those patterns go in later waves. Agent B’s instructions reference the committed output of Wave 0, not the original codebase.</p>
+<p><strong>Resolution.</strong> Foundation-before-migration wave ordering. Changes that establish new patterns (type definitions, utility functions, shared conventions) go in early waves. Changes that consume those patterns go in later waves. Agent B’s instructions reference the committed output of Wave 0, not the original codebase.</p>
 <p>This is why the wave model requires testing and committing after each wave. The committed state after Wave 0 is the ground truth for Wave 1 agents. If you skip the commit, Wave 1 agents work against stale context and semantic conflicts multiply.</p>
 <section id="semantic-conflict-recovery-a-walkthrough" class="level4" data-number="14.4.2.1">
 <h4 data-number="14.4.2.1" class="anchored" data-anchor-id="semantic-conflict-recovery-a-walkthrough"><span class="header-section-number">14.4.2.1</span> Semantic Conflict Recovery: A Walkthrough</h4>
@@ -992,8 +990,8 @@ Figure&nbsp;14.5: Pipeline parallelism: overlapping wave execution
 <section id="design-conflicts" class="level3" data-number="14.4.3">
 <h3 data-number="14.4.3" class="anchored" data-anchor-id="design-conflicts"><span class="header-section-number">14.4.3</span> Design Conflicts</h3>
 <p>Two agents, each following their specialization’s best practices, produce output that reflects genuinely different design philosophies. The architecture agent consolidates error handling into a central module. The domain agent keeps error handling local to each command because the domain’s UX conventions require command-specific error messages.</p>
-<p><strong>Resolution.</strong> This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan’s priority-ordered principles resolve most of them mechanically — if UX is prioritized above structural purity, the domain agent’s approach wins. When the principles don’t resolve the conflict, the human decides and documents the rationale.</p>
-<p>The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed during wave execution across ~25 agent dispatches — one was a scope decision during planning, one was an agent recovery during Wave 2, and one was test triage after the recovery wave (Wave 2b); see the <a href="../case-study-apm-overhaul.html">case study</a> for the full escalation log. None were design conflicts between agents; all were judgment calls that the plan could not automate. A rate of roughly 15–20% human intervention is typical for well-planned multi-agent work. If you are intervening on more than 30%, the plan’s principles are insufficiently specific. If you are intervening on less than 5%, you are either lucky or not checking carefully enough.</p>
+<p><strong>Resolution.</strong> This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan’s priority-ordered principles resolve most of them mechanically: if UX is prioritized above architectural purity, the domain agent’s approach wins. When the principles don’t resolve the conflict, the human decides and documents the rationale.</p>
+<p>The frequency of design conflicts is itself a metric. In the PR #394 execution, 3 human interventions were needed during wave execution across ~25 agent dispatches — one was a scope decision during planning, one was an agent recovery during Wave 2, and one was test triage after the recovery wave (Wave 2b); see the <a href="../case-study-apm-overhaul.html">case study</a> for the full escalation log. None were design conflicts between agents; all were judgment calls that the plan could not automate. In the documented case, the intervention rate was approximately 12% (3 out of ~25 dispatches). We use 15–20% as a starting hypothesis for well-planned work, though this has not been validated across multiple teams. Rates significantly above 20% may indicate underspecified plans. Rates below 5% warrant scrutiny — the work may be too simple for multi-agent orchestration, or review may be insufficient.</p>
 <hr>
 </section>
 </section>
@@ -1054,14 +1052,14 @@ Figure&nbsp;14.5: Pipeline parallelism: overlapping wave execution
 </tbody>
 </table>
 </div>
-<p>The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.</p>
-<p>In the reference case study (<a href="../case-study-apm-overhaul.html">case study</a>), the distribution across all decision points within the ~25 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions during wave execution out of ~25 dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.</p>
+<p>The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>In the documented case (<a href="../case-study-apm-overhaul.html">case study</a>), the distribution across all decision points within the ~25 agent dispatches was roughly 67% autonomous (L1), 13% automated retry (L2), and 20% human decision (L3/L4) — three interventions during wave execution out of ~25 dispatches. That 20% rate is characteristic of a well-planned execution on a non-trivial change. If your L3+ rate exceeds 25%, the plan needs more specific principles or better task scoping.</p>
 <hr>
 </section>
 </section>
 <section id="the-coordination-tax-honest-numbers" class="level2" data-number="14.6">
 <h2 data-number="14.6" class="anchored" data-anchor-id="the-coordination-tax-honest-numbers"><span class="header-section-number">14.6</span> The Coordination Tax: Honest Numbers</h2>
-<p>Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the reference case study (<a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a>).</p>
+<p>Multi-agent orchestration saves time through parallelism and improves quality through focused context. It also costs time through planning, monitoring, and intervention. Here is the honest accounting, based on the PR #394 execution (<a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a>).</p>
 <p>In the PR #394 case, the human time in a well-planned multi-agent execution broke down into four activities: planning and partitioning (~30% of human time), monitoring execution (~20%), handling interventions (~25%), and post-execution review (~25%). Total human time was roughly 45 minutes against 24 minutes of agent execution, with a total elapsed time of roughly 90 minutes because human work overlaps with agent execution.</p>
 <p>The same 75-file change executed sequentially by a single agent would take an estimated 60-75 minutes of agent time — but with compounding context degradation after file 20. Based on similar single-agent attempts on changes of this scale, expect 2-3 additional rework cycles to fix quality issues caused by context overload, adding 30-45 minutes. Total single-agent elapsed time: roughly 90-120 minutes with lower output quality.</p>
 <p>The multi-agent approach did not save total elapsed time on this change. It traded human planning time for agent quality. The 45 minutes the orchestrator spent coordinating replaced the 30-45 minutes they would have spent debugging context-degraded output — with better results.</p>
@@ -1074,14 +1072,14 @@ Figure&nbsp;14.5: Pipeline parallelism: overlapping wave execution
 <li><strong>Context degradation is the real bottleneck.</strong> For changes that require deep architectural understanding — not mechanical find-and-replace — the quality benefit of focused context outweighs the coordination cost.</li>
 <li><strong>You will do this more than once.</strong> The first multi-agent orchestration on a codebase takes longest because you are building instruction files, learning partition boundaries, and developing intuition for wave sizing. The second takes half the planning time. By the third, the dispatch prompts are templates.</li>
 </ul>
-<p>The overhead for a well-planned multi-agent execution is roughly 40-60% of total human time spent on coordination rather than direct value work. For a poorly planned execution — vague dispatch prompts, unclear file ownership, missing instruction files — the overhead can exceed 80%, at which point a single agent with good context would have been faster.</p>
+<p>The overhead for a well-planned multi-agent execution is roughly 40-60% of total human time spent on coordination rather than direct value work. For a poorly planned execution — vague dispatch prompts, unclear file ownership, missing instruction files — based on the contrast between our reference execution and less-structured attempts, we estimate it can reach 70-80% or higher, at which point a single agent with good context would have been faster.</p>
 <p>This is not a tool for every change. It is a tool for changes that exceed what a single agent can hold in focus. Know the threshold for your codebase, and do not orchestrate for the sake of orchestrating.</p>
 <hr>
 </section>
 </section>
 <section id="session-management" class="level2" data-number="14.7">
 <h2 data-number="14.7" class="anchored" data-anchor-id="session-management"><span class="header-section-number">14.7</span> Session Management</h2>
-<p>Every agent dispatch creates a session — a context window with its own conversation history, loaded instructions, and accumulated state. Managing these sessions is a practical concern that directly affects output quality.</p>
+<p>Every agent dispatch creates a session: a context window with its own conversation history, loaded instructions, and accumulated state. Managing these sessions is a practical concern that directly affects output quality.</p>
 <section id="session-isolation" class="level3" data-number="14.7.1">
 <h3 data-number="14.7.1" class="anchored" data-anchor-id="session-isolation"><span class="header-section-number">14.7.1</span> Session Isolation</h3>
 <p>Each agent session is independent. Agent A cannot see Agent B’s conversation history, edits, or reasoning. This is a feature, not a limitation. Session isolation ensures that one agent’s context degradation does not propagate to others. If Agent A’s session becomes cluttered after a complex debugging sequence, Agent B starts fresh with a clean context.</p>
@@ -1122,7 +1120,7 @@ Figure&nbsp;14.6: Session isolation: agents share filesystem, not conversation s
 <p>Shorter sessions produce better output. A session that has been running for 40 turns carries 40 turns of conversation history, which consumes context that could hold source code or instructions. The marginal value of each additional turn decreases as history accumulates.</p>
 <p>Three guidelines for session lifetime:</p>
 <ol type="1">
-<li><p><strong>One task per session.</strong> An agent dispatched to “migrate logging in <code>resolver.py</code> and update tests in <code>test_resolver.py</code>” is one task. Reusing that session for a second, unrelated task inherits the first task’s conversation history — dead weight for the second task.</p></li>
+<li><p><strong>One task per session.</strong> An agent dispatched to “migrate logging in <code>resolver.py</code> and update tests in <code>test_resolver.py</code>” is one task. Reusing that session for a second, unrelated task inherits the first task’s conversation history, dead weight for the second task.</p></li>
 <li><p><strong>Reset on failure.</strong> If an agent gets stuck — looping on the same error, producing the same incorrect output — terminate the session and dispatch a fresh one with refined instructions. The fresh session starts without the accumulated confusion of the failed attempt.</p></li>
 <li><p><strong>State through files, not memory.</strong> Any information that needs to survive across sessions must be written to the filesystem: committed code, plan documents, checkpoint records. Session-internal state (the agent’s reasoning, intermediate attempts, debugging output) is ephemeral and should be treated as such.</p></li>
 </ol>
@@ -1177,6 +1175,13 @@ Figure&nbsp;14.7: Complete multi-agent orchestration workflow
 <p>The next chapter puts this framework into practice. It walks through the full five-phase meta-process — Audit, Plan, Wave, Validate, Ship — with exact numbers from a 75-file execution that used every pattern described here.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The coordination overhead of multi-agent systems parallels Brooks’s observation that adding developers to a late project makes it later (<em>The Mythical Man-Month</em>, 1975). The difference: agent coordination overhead is predictable and can be reduced through better planning, not just through better communication.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Our autonomy taxonomy draws conceptually from the SAE levels of driving automation (SAE J3016), adapted for software engineering contexts. The key parallel: higher autonomy levels require not less human involvement, but different kinds of involvement — supervision rather than operation.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -1266,7 +1271,7 @@ Figure&nbsp;14.7: Complete multi-agent orchestration workflow
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/agentic-sdlc-handbook\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1606,10 +1611,10 @@ Figure&nbsp;14.7: Complete multi-agent orchestration workflow
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="../apm-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="../agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">© 2025-2026 Daniel Meppiel · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color: #aaa;">CC BY-NC-ND 4.0</a></p>

@@ -80,8 +80,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="../apm-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="../apm-handbook/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="../agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="../agentic-sdlc-handbook/apple-touch-icon.png">
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -302,7 +302,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
@@ -483,7 +483,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 62,500-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -556,7 +556,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#interpreting-results" id="toc-interpreting-results" class="nav-link" data-scroll-target="#interpreting-results"><span class="header-section-number">8.9.1</span> Interpreting Results</a></li>
   </ul></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -581,13 +581,13 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>The question every VP of Engineering asks privately: “If AI agents write most of the code, what happens to my team?” The honest answer is more nuanced — and more urgent — than either “nothing changes” or “everyone’s replaced.”</p>
-<p>Agentic development does not eliminate engineering roles. It restructures how teams coordinate, what skills matter, and where humans add irreplaceable value. Organizations that design for this shift deliberately will outperform those that let it happen accidentally. This chapter provides the structural framework for that deliberate design.</p>
+<p>The question every VP of Engineering asks privately: “If AI agents write most of the code, what happens to my team?” The honest answer is more nuanced, and more urgent, than either “nothing changes” or “everyone’s replaced.”</p>
+<p>Agentic development does not eliminate engineering roles. It restructures how teams coordinate, what skills matter, and where humans add irreplaceable value. Organizations that plan this shift tend to navigate it more successfully than those that let it happen accidentally. This chapter provides the organizational framework for that deliberate design.</p>
 <hr>
 <section id="what-shifts-what-stays" class="level2" data-number="8.1">
 <h2 data-number="8.1" class="anchored" data-anchor-id="what-shifts-what-stays"><span class="header-section-number">8.1</span> What Shifts, What Stays</h2>
 <p>Before redrawing org charts, understand what actually changes about daily engineering work. Agent adoption shifts the <em>proportion</em> of time spent on different activities. It does not change which activities require human judgment.</p>
-<p>The most useful way to see this is through time allocation. The table below draws on published results from early enterprise adopters and patterns observed across teams adopting AI-assisted development. It represents typical patterns, not universal truths — your distribution will vary by team maturity, codebase complexity, and adoption depth.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>The most useful way to see this is through time allocation. The table below draws on published results from early enterprise adopters and patterns observed across teams adopting AI-assisted development. It represents typical patterns, not universal truths; your distribution will vary by team maturity, codebase complexity, and adoption depth.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div data-tbl-colwidths="[22,14,32,32]">
 <table class="caption-top table">
 <colgroup>
@@ -600,7 +600,7 @@ ul.task-list li input[type="checkbox"] {
 <tr class="header">
 <th>Activity</th>
 <th>Pre-Agentic</th>
-<th>With Agentic Tools (Projected)</th>
+<th>With Agentic Tools (Projected †)</th>
 <th>Direction</th>
 </tr>
 </thead>
@@ -608,37 +608,37 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>Writing new code</td>
 <td>30–35%</td>
-<td>10–15%</td>
+<td>10–15% †</td>
 <td>Sharply down — agents handle first-draft generation</td>
 </tr>
 <tr class="even">
 <td>Reading and understanding code</td>
 <td>20–25%</td>
-<td>15–20%</td>
+<td>15–20% †</td>
 <td>Slightly down — agents assist navigation and explanation</td>
 </tr>
 <tr class="odd">
 <td>Code review</td>
 <td>10–15%</td>
-<td>20–25%</td>
+<td>20–25% †</td>
 <td>Up — early adopter teams report that reviewing agent output is qualitatively harder</td>
 </tr>
 <tr class="even">
 <td>Specification and design</td>
 <td>10–15%</td>
-<td>20–25%</td>
+<td>20–25% †</td>
 <td>Up — better specs produce better agent output</td>
 </tr>
 <tr class="odd">
 <td>Debugging and incident response</td>
 <td>15–20%</td>
-<td>10–15%</td>
+<td>10–15% †</td>
 <td>Slightly down, but the bugs that remain are subtler</td>
 </tr>
 <tr class="even">
 <td>Context engineering</td>
 <td>0%</td>
-<td>10–15%</td>
+<td>10–15% †</td>
 <td>New — building and maintaining the context layer</td>
 </tr>
 <tr class="odd">
@@ -649,6 +649,16 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
+</div>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p><strong>†</strong> Projected agentic-era figures are based on author observation and early adopter reports, not survey data.</p>
+</div>
+</div>
 </div>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
@@ -682,20 +692,20 @@ Figure&nbsp;8.1: Developer time allocation across activities
 </blockquote>
 <p>Three patterns matter.</p>
 <p><strong>Code production shrinks as a share of engineering work.</strong> Agentic tools accelerate the part that was already a minority of an engineer’s time. This is why “10x faster coding” does not translate to “10x faster delivery.” The bottleneck moves to review, specification, and design.</p>
-<p><strong>Review becomes harder, not easier.</strong> Agent-generated code is the output of a statistical process — syntactically correct, test-passing, and potentially hiding subtle misunderstandings of intent. Chapter 5 covered the governance structures around this; the team implication is that review skill becomes a core competency, not a chore to minimize.</p>
+<p><strong>Review becomes harder, not easier.</strong> Agent-generated code is the output of a statistical process: syntactically correct, test-passing, and potentially hiding subtle misunderstandings of intent. Chapter 5 covered the governance structures around this; the team implication is that review skill becomes a core competency, not a chore to minimize.</p>
 <p><strong>Context engineering appears as a new activity category.</strong> Someone has to build and maintain the instructions, conventions, and agent configurations that determine whether agents produce useful output or confident nonsense. Chapter 4 established why context is the moat; this chapter addresses who builds it.</p>
 <hr>
 </section>
 <section id="the-10x-team-not-the-10x-developer" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="the-10x-team-not-the-10x-developer"><span class="header-section-number">8.2</span> The 10x Team, Not the 10x Developer</h2>
-<p>The “10x developer” idea has persisted for decades. Agentic development makes it obsolete — not because individual skill stops mattering, but because the leverage point shifts from individual output to team capability.</p>
+<p>The “10x developer” idea has persisted for decades. Agentic development makes it obsolete, not because individual skill stops mattering, but because the leverage point shifts from individual output to team capability.</p>
 <p>An engineer working alone with an AI agent can produce code faster. But output quality depends on the context the agent received, which depends on the team’s documentation discipline, which depends on the organization’s investment in context engineering. A brilliant developer with poor team context will get worse results than a competent developer with excellent team context. The multiplier is in the system, not the individual.</p>
 <p>The teams that extract the most value from agentic tools share four properties:</p>
 <ul>
-<li><strong>Explicit knowledge.</strong> Conventions documented, not tribal. Architecture decisions recorded, not remembered. The context layer from Chapter 4 — built and maintained as an organizational asset.</li>
+<li><strong>Explicit knowledge.</strong> Conventions documented, not tribal. Architecture decisions recorded, not remembered. The context layer from Chapter 4, built and maintained as an organizational asset.</li>
 <li><strong>Strong review culture.</strong> Reviewing agent output is a skill. Teams where review is valued, structured, and staffed appropriately catch defects that individual developers miss. Teams where review is a speed bump produce fragile systems.</li>
-<li><strong>Clear specification habits.</strong> The quality of agent output is directly proportional to the quality of the specification it receives. Teams that invest in writing clear, scoped specifications get better results from agents than teams that write vague tickets and expect agents to fill in the gaps.</li>
-<li><strong>Feedback loops.</strong> Teams that capture what went wrong — which agent outputs required rework, which context gaps caused failures — and feed corrections back into their context layer improve continuously. Teams that treat each agent interaction as independent repeat the same failures.</li>
+<li><strong>Clear specification habits.</strong> The quality of agent output is strongly correlated with the quality of the specification it receives. Teams that invest in writing clear, scoped specifications get better results from agents than teams that write vague tickets and expect agents to fill in the gaps.</li>
+<li><strong>Feedback loops.</strong> Teams that capture what went wrong (which agent outputs required rework, which context gaps caused failures) and feed corrections back into their context layer improve continuously. Teams that treat each agent interaction as independent repeat the same failures.</li>
 </ul>
 <p>The practical implication for leaders: invest in team capability, not individual heroics. A team of solid engineers with a well-maintained context layer will outperform a team of exceptional engineers working in a knowledge vacuum.</p>
 <hr>
@@ -708,19 +718,19 @@ Figure&nbsp;8.1: Developer time allocation across activities
 <p>The senior engineer’s value was always more about judgment than typing speed. Agentic tools make this explicit. A senior engineer in an agentic team spends less time writing code and more time on:</p>
 <ul>
 <li><strong>Architecture and design.</strong> Defining the boundaries, patterns, and constraints that agents must respect. This was always part of the senior role; it becomes a larger share.</li>
-<li><strong>Context engineering.</strong> Translating architectural knowledge into explicit artifacts — instructions, conventions, agent configurations — that encode the team’s judgment for agent consumption. This is the new craft skill for senior engineers.</li>
+<li><strong>Context engineering.</strong> Translating architectural knowledge into explicit artifacts: instructions, conventions, agent configurations, that encode the team’s judgment for agent consumption. This is the new craft skill for senior engineers.</li>
 <li><strong>Review and escalation.</strong> Evaluating agent output against architectural intent, catching subtle violations that pass automated checks, and handling the cases agents cannot. The cases that reach a senior engineer are harder, not fewer.</li>
 <li><strong>Mentoring.</strong> Teaching junior engineers how to evaluate agent output, how to write effective specifications, and how to build engineering judgment that agents cannot replace.</li>
 </ul>
-<p>The shift is from “the person who writes the hardest code” to “the person who shapes the system that writes the code.” Senior engineers who resist this shift — who insist on writing everything themselves — become a bottleneck. Those who embrace it become force multipliers.</p>
+<p>The shift is from “the person who writes the hardest code” to “the person who shapes the system that writes the code.” Senior engineers who resist this shift, who insist on writing everything themselves, become a bottleneck. Those who embrace it become force multipliers.</p>
 </section>
 <section id="junior-engineers-from-code-writers-to-ai-augmented-contributors" class="level3" data-number="8.3.2">
 <h3 data-number="8.3.2" class="anchored" data-anchor-id="junior-engineers-from-code-writers-to-ai-augmented-contributors"><span class="header-section-number">8.3.2</span> Junior Engineers: From Code Writers to AI-Augmented Contributors</h3>
-<p>This is the most sensitive role shift, and the one leaders must manage most carefully. If agents handle the tasks that junior engineers used to learn on — simple bug fixes, small features, boilerplate implementation — the learning pathway narrows. But the solution is not to ban agents from junior workflows. It is to redesign how juniors develop skills.</p>
+<p>This is the most sensitive role shift, and the one leaders must manage most carefully. If agents handle the tasks that junior engineers used to learn on (simple bug fixes, small features, boilerplate implementation), the learning pathway narrows. But the solution is not to ban agents from junior workflows. It is to redesign how juniors develop skills.</p>
 <p>A junior engineer in an agentic team should be:</p>
 <ul>
-<li><strong>Reviewing agent output, not just writing code.</strong> Review develops the same judgment that writing code does — arguably faster, because the reviewer sees more patterns in less time. Structured review assignments, where a junior reviews agent output under senior supervision, are the most efficient skill-building tool available.</li>
-<li><strong>Writing specifications for agent tasks.</strong> This forces the junior to think through the problem before any code exists — a discipline that many senior engineers wish they had learned earlier.</li>
+<li><strong>Reviewing agent output, not just writing code.</strong> Review develops the same judgment that writing code does, arguably faster, because the reviewer sees more patterns in less time. Structured review assignments, where a junior reviews agent output under senior supervision, are the most efficient skill-building tool available.</li>
+<li><strong>Writing specifications for agent tasks.</strong> This forces the junior to think through the problem before any code exists, a discipline that many senior engineers wish they had learned earlier.</li>
 <li><strong>Diagnosing agent failures.</strong> When agent output is wrong, understanding <em>why</em> it is wrong builds deeper understanding than writing correct code from scratch. “The agent violated the repository pattern because it doesn’t understand our dependency injection setup” teaches architecture.</li>
 <li><strong>Building and maintaining context artifacts.</strong> Contributing to the documentation, conventions, and instructions that agents consume. This requires understanding the codebase at a level that builds genuine expertise.</li>
 </ul>
@@ -729,15 +739,15 @@ Figure&nbsp;8.1: Developer time allocation across activities
 <section id="tech-leads-from-task-assigners-to-orchestrators" class="level3" data-number="8.3.3">
 <h3 data-number="8.3.3" class="anchored" data-anchor-id="tech-leads-from-task-assigners-to-orchestrators"><span class="header-section-number">8.3.3</span> Tech Leads: From Task Assigners to Orchestrators</h3>
 <p>The tech lead role shifts from assigning tasks to people toward orchestrating work across humans and agents. This includes deciding which tasks are appropriate for agent execution, which require human implementation, and which need a hybrid approach. The judgment required is substantial: a task that looks simple may touch code paths that agents consistently mishandle, and a task that looks complex may decompose into agent-friendly subtasks.</p>
-<p>Tech leads also become the primary feedback loop owners — tracking which context gaps cause repeated agent failures and prioritizing context improvements.</p>
+<p>Tech leads also become the primary feedback loop owners, tracking which context gaps cause repeated agent failures and prioritizing context improvements.</p>
 <hr>
 </section>
 </section>
 <section id="new-roles" class="level2" data-number="8.4">
 <h2 data-number="8.4" class="anchored" data-anchor-id="new-roles"><span class="header-section-number">8.4</span> New Roles</h2>
-<p>Two roles emerge that did not exist before agentic development. Neither requires hiring new people in most cases — they are specializations that existing team members grow into.</p>
-<p><strong>Context engineer.</strong> The person responsible for building, maintaining, and optimizing the context layer that shapes agent behavior. In small teams, this is a hat worn by a senior engineer. In larger organizations, it becomes a dedicated role, often within a platform or developer experience team. The context engineer’s output is not code — it is the knowledge infrastructure that makes agent-produced code reliable. The role requires deep codebase knowledge, strong technical writing skills, and a systematic approach to testing whether context changes improve agent output.</p>
-<p><strong>Agent operations specialist.</strong> In organizations using orchestrated SDLC workflows — where agents participate in issue triage, code review, testing, or deployment — someone needs to monitor agent behavior, tune configurations, and manage cost and rate limits. This role overlaps with platform engineering and SRE. It is emerging, not established, and most organizations will not need it until they reach Phase 4 maturity as described in Chapter 2.</p>
+<p>Two roles emerge that did not exist before agentic development. Neither requires hiring new people in most cases; they are specializations that existing team members grow into.</p>
+<p><strong>Context engineer.</strong> The person responsible for building, maintaining, and optimizing the context layer that shapes agent behavior. In small teams, this is a hat worn by a senior engineer. In larger organizations, it becomes a dedicated role, often within a platform or developer experience team. The context engineer’s output is not code; it is the knowledge infrastructure that makes agent-produced code reliable. The role requires deep codebase knowledge, strong technical writing skills, and a systematic approach to testing whether context changes improve agent output.</p>
+<p><strong>Agent operations specialist.</strong> In organizations using orchestrated SDLC workflows (where agents participate in issue triage, code review, testing, or deployment), someone needs to monitor agent behavior, tune configurations, and manage cost and rate limits. This role overlaps with platform engineering and SRE. It is emerging, not established, and most organizations will not need it until they reach Phase 4 maturity as described in Chapter 2.</p>
 <p>Neither role should be created by fiat. Both emerge from demonstrated need. If your context layer is small and stable, you do not need a dedicated context engineer. If you are not running autonomous agent workflows, you do not need an agent operations specialist. Create the role when the work exists, not when the job title sounds innovative.</p>
 <hr>
 </section>
@@ -746,14 +756,14 @@ Figure&nbsp;8.1: Developer time allocation across activities
 <p>Team Topologies, the framework by Matthew Skelton and Manuel Pais, provides a useful lens for how agentic development changes team structures.</p>
 <section id="what-works" class="level3" data-number="8.5.1">
 <h3 data-number="8.5.1" class="anchored" data-anchor-id="what-works"><span class="header-section-number">8.5.1</span> What Works</h3>
-<p><strong>Stream-aligned teams with embedded context engineering.</strong> The most effective pattern is the simplest: existing product teams that add context engineering to their responsibilities. The team that owns the code also owns the context layer for that code. This preserves domain knowledge proximity — the people who understand the system best are the ones encoding that understanding for agents. Context engineering is a team responsibility, not a separate function.</p>
-<p><strong>A platform team that provides shared context infrastructure.</strong> Organization-wide conventions, common patterns, and cross-cutting context assets — authentication patterns, logging standards, API design guidelines — are better maintained centrally than duplicated across teams. A platform team (or a developer experience team, depending on your vocabulary) owns these shared primitives. Stream-aligned teams consume them and add domain-specific context on top. This mirrors the Explicit Hierarchy constraint from Chapter 1: global rules flow down, domain specifics are local.</p>
-<p><strong>Enabling teams for adoption support.</strong> During the transition period — which is what Chapter 7 plans in detail — a small enabling team that coaches other teams through adoption, maintains best practices documentation, and provides hands-on support is the most effective accelerant. This team has a finite lifespan. Once adoption is mature, its responsibilities fold into the platform team or dissolve.</p>
+<p><strong>Stream-aligned teams with embedded context engineering.</strong> The most effective pattern is the simplest: existing product teams that add context engineering to their responsibilities. The team that owns the code also owns the context layer for that code. This preserves domain knowledge proximity: the people who understand the system best are the ones encoding that understanding for agents. Context engineering is a team responsibility, not a separate function.</p>
+<p><strong>A platform team that provides shared context infrastructure.</strong> Organization-wide conventions, common patterns, and cross-cutting context assets (authentication patterns, logging standards, API design guidelines) are better maintained centrally than duplicated across teams. A platform team (or a developer experience team, depending on your vocabulary) owns these shared assets. Stream-aligned teams consume them and add domain-specific context on top. This mirrors the Explicit Hierarchy constraint from Chapter 1: global rules flow down, domain specifics are local.</p>
+<p><strong>Enabling teams for adoption support.</strong> During the transition period (which is what Chapter 7 plans in detail), a small enabling team that coaches other teams through adoption, maintains best practices documentation, and provides hands-on support is the most effective accelerant. This team has a finite lifespan. Once adoption is mature, its responsibilities fold into the platform team or dissolve.</p>
 </section>
 <section id="what-doesnt-work" class="level3" data-number="8.5.2">
 <h3 data-number="8.5.2" class="anchored" data-anchor-id="what-doesnt-work"><span class="header-section-number">8.5.2</span> What Doesn’t Work</h3>
 <p><strong>A centralized “AI team” that handles all agent interactions.</strong> A specialized group becomes the bottleneck for all agent work. The result is a coordination tax that eliminates the speed advantage, and a knowledge gap because the AI team doesn’t understand each product domain deeply enough to write good context.</p>
-<p><strong>Splitting “human code” and “agent code” into separate workflows.</strong> Some organizations try to create parallel tracks — human engineers handle “important” code, agents handle “routine” code. This fails because the boundary between important and routine is not stable, because agent code still requires human review and integration, and because it creates a two-class system that undermines team cohesion. All code is the team’s code, regardless of who or what produced it.</p>
+<p><strong>Splitting “human code” and “agent code” into separate workflows.</strong> Some organizations try to create parallel tracks: human engineers handle “important” code, agents handle “routine” code. This fails because the boundary between important and routine is not stable, because agent code still requires human review and integration, and because it creates a two-class system that undermines team cohesion. All code is the team’s code, regardless of who or what produced it.</p>
 <p><strong>Replacing team roles with agents.</strong> Reducing headcount on the assumption that agents will cover the gap. Teams that lose senior engineers because “the AI can do that now” lose the judgment required to evaluate agent output and maintain architectural coherence. The result is a team that produces more code and less working software.</p>
 <hr>
 </section>
@@ -849,7 +859,7 @@ Figure&nbsp;8.1: Developer time allocation across activities
 <h3 data-number="8.7.1" class="anchored" data-anchor-id="hiring-implications"><span class="header-section-number">8.7.1</span> Hiring Implications</h3>
 <p>The skill matrix changes what you screen for, what you stop requiring, and how you interview.</p>
 <p><strong>Screen for:</strong> Systems thinking, technical communication (can the candidate explain a design decision in writing, not just verbally?), evaluation skill (can they identify subtle flaws in code they didn’t write?), comfort with ambiguity, and learning velocity.</p>
-<p><strong>Stop requiring:</strong> Whiteboard algorithm implementation, syntax trivia, memorized API knowledge. These were always imperfect proxies for engineering capability. They are now irrelevant proxies, because agents eliminate the tasks they supposedly measure.</p>
+<p><strong>Stop requiring:</strong> Whiteboard algorithm implementation, syntax trivia, memorized API knowledge. These were always imperfect proxies for engineering capability. They are now increasingly poor proxies, because agents eliminate the tasks they supposedly measure.</p>
 <p><strong>Interview changes:</strong> Include a review exercise — give candidates agent-generated code with subtle defects and evaluate how they identify and explain the problems. Include a specification exercise — give candidates an ambiguous requirement and evaluate how they decompose it into a clear, implementable specification. These exercises test the skills that matter now.</p>
 </section>
 <section id="retention-risks" class="level3" data-number="8.7.2">
@@ -999,8 +1009,8 @@ Figure&nbsp;8.1: Developer time allocation across activities
 <p><strong>A pattern we frequently observe</strong> in early assessments: high marks on senior presence and psychological safety, low marks on knowledge explicitness and context ownership. This is normal. It reflects teams that have strong people and weak infrastructure — which is exactly what agentic development exposes.</p>
 <p>The worksheet is not a one-time exercise. Reassess quarterly during your first year of agentic adoption. The dimensions that need attention shift as the team matures — early focus is on knowledge explicitness and review capability; later focus shifts to junior development and feedback loops.</p>
 <hr>
-<p>The structural changes described in this chapter take time. They are not a reorganization to announce on Monday. They are a set of shifts to design for, measure against, and adjust as your team learns what works in your context.</p>
-<p>Chapter 7 takes these structural insights and builds the operational plan — the phased transition from pilot to full adoption, with concrete criteria for each stage and honest metrics for tracking progress.</p>
+<p>The organizational changes described in this chapter take time. They are not a reorganization to announce on Monday. They are a set of shifts to design for, measure against, and adjust as your team learns what works in your context.</p>
+<p>Chapter 7 takes these organizational insights and builds the operational plan — the phased transition from pilot to full adoption, with concrete criteria for each stage and honest metrics for tracking progress.</p>
 
 
 </section>
@@ -1100,7 +1110,7 @@ Figure&nbsp;8.1: Developer time allocation across activities
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/agentic-sdlc-handbook\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1440,10 +1450,10 @@ Figure&nbsp;8.1: Developer time allocation across activities
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="../apm-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="../agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">© 2025-2026 Daniel Meppiel · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color: #aaa;">CC BY-NC-ND 4.0</a></p>

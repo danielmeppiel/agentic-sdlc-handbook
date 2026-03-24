@@ -80,8 +80,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="../apm-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="../apm-handbook/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="../agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="../agentic-sdlc-handbook/apple-touch-icon.png">
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -302,7 +302,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
@@ -483,7 +483,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 62,500-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -535,7 +535,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#first-day-a-task-from-start-to-finish" id="toc-first-day-a-task-from-start-to-finish" class="nav-link" data-scroll-target="#first-day-a-task-from-start-to-finish"><span class="header-section-number">10.6</span> First Day: A Task from Start to Finish</a></li>
   <li><a href="#the-mindset-in-practice" id="toc-the-mindset-in-practice" class="nav-link" data-scroll-target="#the-mindset-in-practice"><span class="header-section-number">10.7</span> The Mindset in Practice</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -561,22 +561,23 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>Block 1 answered what to decide. Block 2 answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.</p>
+<p><em>The practitioner chapters that follow draw primarily from the author’s direct experience building and using agentic development workflows. Where claims derive from the reference case study (PR #394, documented in Part IV), this is noted. Where heuristics are offered (such as thresholds or timing estimates), they reflect observed patterns from this practice, not controlled experiments. The reader should treat specific numbers as starting points for their own calibration, not as industry benchmarks.</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <hr>
 <section id="the-autocomplete-trap" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="the-autocomplete-trap"><span class="header-section-number">10.1</span> The Autocomplete Trap</h2>
-<p>Most developers first encounter AI coding tools as autocomplete. You type a function signature, the tool suggests the body, you hit Tab. The interaction is local: one prompt, one completion, one edit. The mental model is straightforward — the AI predicts what you were going to type anyway, and sometimes it’s right.</p>
-<p>This mental model is a trap. Not because autocomplete is bad — it’s useful, and it will remain useful — but because it teaches you the wrong relationship with AI. It teaches you that AI is a text predictor that occasionally saves keystrokes. When you carry that mental model into agentic development, everything breaks.</p>
-<p>An agent is not predicting your next line. An agent is attempting to execute a task — reading files, making decisions about structure, writing code across multiple locations, running tests, interpreting failures. The difference is not incremental. Autocomplete fails gracefully: a bad suggestion costs you a Tab press and a backspace. An agent fails expensively: it produces code that compiles, passes a superficial review, and encodes the wrong assumptions into your system. You don’t catch the failure at the moment of generation. You catch it in code review, or in CI, or in production.</p>
-<p>The practitioners who succeed with agentic development are those who discard the autocomplete mental model early. They stop thinking of AI as a tool that helps them write code faster. They start thinking of it as an engineer on their team — one with specific strengths, specific limitations, and a specific need for context that must be supplied explicitly, every time.</p>
+<p>Most developers first encounter AI coding tools as autocomplete. You type a function signature, the tool suggests the body, you hit Tab. The interaction is local: one prompt, one completion, one edit. The mental model is straightforward: the AI predicts what you were going to type anyway, and sometimes it’s right.</p>
+<p>This mental model is a trap. Not because autocomplete is bad (it’s useful, and it will remain useful) but because it teaches you the wrong relationship with AI. It teaches you that AI is a text predictor that occasionally saves keystrokes. When you carry that mental model into agentic development, everything breaks.</p>
+<p>An agent is not predicting your next line. An agent is attempting to execute a task: reading files, making decisions about structure, writing code across multiple locations, running tests, interpreting failures. The difference is not incremental. Autocomplete fails gracefully: a bad suggestion costs you a Tab press and a backspace. An agent fails expensively: it produces code that compiles, passes a superficial review, and encodes the wrong assumptions into your system. You don’t catch the failure at the moment of generation. You catch it in code review, or in CI, or in production.</p>
+<p>The practitioners who succeed with agentic development are those who discard the autocomplete mental model early. They stop thinking of AI as a tool that helps them write code faster. They start thinking of it as an engineer on their team, one with specific strengths, specific limitations, and a specific need for context that must be supplied explicitly, every time.</p>
 <p>A junior engineer who joins your team does not automatically know your authentication patterns, your module boundaries, your error-handling conventions, or the implicit architectural decisions that live in your team’s collective memory. They write code that works in isolation and violates the system’s invariants. They need onboarding. They need explicit guidance. They need someone to review their work and redirect them when they drift.</p>
 <p>An AI agent is that junior engineer, every single session. It has no persistent memory of your codebase. It cannot learn from last week’s code review. Every time you dispatch it, it starts from zero. The difference is speed: a junior engineer takes days to produce code that violates your conventions. An agent does it in minutes, at scale, across dozens of files. The damage from poor onboarding compounds faster.</p>
-<p>This is the mental model that works: AI is a capable but amnesiac engineer that needs explicit context to do useful work. Your job is to supply that context — reliably, structurally, and at the right level of detail for the task at hand.</p>
+<p>This is the mental model that works: AI is a capable but amnesiac engineer that needs explicit context to do useful work. Your job is to supply that context: reliably, systematically, and at the right level of detail for the task at hand.</p>
 <hr>
 </section>
 <section id="from-writing-code-to-engineering-context" class="level2" data-number="10.2">
 <h2 data-number="10.2" class="anchored" data-anchor-id="from-writing-code-to-engineering-context"><span class="header-section-number">10.2</span> From Writing Code to Engineering Context</h2>
 <p>In traditional development, your primary output is code. You read requirements, you think through the design, you type the implementation. The artifact is source files. Your skill is measured by the quality of what you write.</p>
-<p>In agentic development, your primary output shifts. You still write code — but the most leveraged thing you write is context. The instructions that tell agents what your system looks like, the constraints that prevent them from violating your architecture, the decomposition that breaks work into pieces sized for an agent’s context window. The artifact is still source files, but the source files are produced by agents operating within the boundaries you defined. Your skill is measured by the quality of the boundaries.</p>
+<p>In agentic development, your primary output shifts. You still write code, but the most leveraged thing you write is context. The instructions that tell agents what your system looks like, the constraints that prevent them from violating your architecture, the decomposition that breaks work into pieces sized for an agent’s context window. The artifact is still source files, but the source files are produced by agents operating within the boundaries you defined. Your skill is measured by the quality of the boundaries.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>This is not a soft claim about “thinking at a higher level.” It is a concrete change in where your time goes.</p>
 <p>Consider a task: migrate 40 call sites from a deprecated logging helper to a new structured logging API. In traditional development, you open each file, find the call site, understand the surrounding context, make the edit, verify the tests. Your time is spent on the edits. In agentic development, you spend your time on the setup: defining which files are in scope, specifying the exact transformation pattern, identifying edge cases the agent should handle differently, setting the constraint that no behavioral changes are allowed beyond the migration. Then you dispatch and review.</p>
 <p>The shift is from execution to specification. And specification, it turns out, is harder than most developers expect.</p>
@@ -588,21 +589,21 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Constraint context.</strong> What the agent must not do. Which files are off-limits. Which behavioral contracts must be preserved. Which “obvious” refactoring would actually break a downstream consumer.</li>
 <li><strong>Domain context.</strong> The business logic, the edge cases, the implicit rules that exist in your team’s understanding but not in the code. Why the authentication flow has a seemingly redundant check. Why the error messages are worded the way they are.</li>
 </ul>
-<p>None of this is new knowledge. You already have it. The shift is that you now need to externalize it — write it down in a form that agents can consume — instead of carrying it in your head and applying it implicitly as you code.</p>
+<p>None of this is new knowledge. You already have it. The shift is that you now need to externalize it, write it down in a form that agents can consume, instead of carrying it in your head and applying it implicitly as you code.</p>
 <hr>
 </section>
 <section id="your-three-roles" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="your-three-roles"><span class="header-section-number">10.3</span> Your Three Roles</h2>
 <p>When you work with AI agents, you occupy three roles simultaneously. Understanding which role you are in at any given moment is the difference between effective collaboration and expensive supervision.</p>
-<p><strong>Architect.</strong> Before any agent writes a line of code, you design the work. You decompose the task into pieces that fit within an agent’s context window. You sequence those pieces so dependencies are respected. You define the constraints — what the agent must do, must not do, and must preserve. You choose which files belong to which agent, because two agents editing the same file in the same pass will create conflicts. You decide the granularity: too coarse, and the agent loses track of the requirements; too fine, and you spend more time dispatching than the agent saves.</p>
+<p><strong>Architect.</strong> Before any agent writes a line of code, you design the work. You decompose the task into pieces that fit within an agent’s context window. You sequence those pieces so dependencies are respected. You define the constraints: what the agent must do, must not do, and must preserve. You choose which files belong to which agent, because two agents editing the same file in the same pass will create conflicts. You decide the granularity: too coarse, and the agent loses track of the requirements; too fine, and you spend more time dispatching than the agent saves.</p>
 <p>The architect role is where your leverage is highest. A well-decomposed plan with clear constraints produces reliable output from agents. A vague plan with implicit assumptions produces code that looks right until you review it carefully. Most failures in agentic development trace back to the planning phase, not the execution phase.</p>
 <p><strong>Reviewer.</strong> After the agent produces output, you evaluate it. This is not the same as traditional code review. In traditional review, you assess whether a human colleague made reasonable design decisions. In agentic review, you assess whether the agent stayed within the boundaries you defined and whether those boundaries were correct.</p>
 <p>Agent output has a specific failure signature: it is locally coherent and globally inconsistent. The function works. The tests pass. But the function uses a pattern your team abandoned six months ago, or it introduces a dependency you were trying to eliminate, or it handles errors in a way that is technically correct but inconsistent with every other error handler in the module. These failures are harder to catch than outright bugs because they look like working code.</p>
 <p>Effective review of agent output focuses on three questions: Did the agent follow the constraints I specified? Did my constraints miss anything important? Does this code fit with the rest of the system in ways the agent couldn’t have known? The first question catches agent failures. The second and third catch your own failures as an architect.</p>
-<p><strong>Escalation handler.</strong> This is the role that separates agentic development from automation. Agents will get stuck. They will encounter ambiguity that your specification did not resolve. They will produce output that fails tests in ways that require judgment, not just retrying. They will surface decisions that are genuinely yours to make — trade-offs between conflicting requirements, scope questions, architectural calls that have long-term consequences.</p>
-<p>Your job as escalation handler is to be available for these moments and to resolve them quickly. Not to prevent them — some ambiguity is irreducible, and attempting to specify every edge case in advance produces specifications that are longer than the code they describe. The goal is to handle escalations efficiently: understand the failure, make the call, update the specification if the failure reveals a gap, and re-dispatch.</p>
-<p>The ratio between these roles shifts as you gain experience. Early on, you spend most of your time reviewing — checking agent output carefully, catching failures, building intuition for what agents get wrong. As you develop better specifications and better instincts for decomposition, the review burden decreases and the architect role dominates. The escalation handler role remains roughly constant — some decisions always require a human.</p>
-<p><strong>These three roles are not theoretical categories.</strong> Chapter 13 traces a real pull request — <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>, 75 files changed, 90 minutes, 3 human interventions — and each intervention maps directly to one of these roles. The first intervention was a scope decision during planning: the practitioner assessed audit findings and decided to include all severity levels rather than deferring moderate issues. That was the Architect. The second was an agent recovery: an agent stalled mid-migration, and the practitioner diagnosed the failure mode, decided to split the remaining work across two replacement agents, and re-dispatched. That was the Escalation Handler. The third was test triage: a test failed after the recovery wave (Wave 2b), and the practitioner traced the cause to an ordering issue in the migration and directed a targeted fix. That was the Reviewer. Three interventions, three roles, no overlap. The full session — including two additional escalation events caught during checkpoint verification — is documented in <a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a> case study.</p>
+<p><strong>Escalation handler.</strong> This is the role that separates agentic development from automation. Agents will get stuck. They will encounter ambiguity that your specification did not resolve. They will produce output that fails tests in ways that require judgment, not just retrying. They will surface decisions that are genuinely yours to make: trade-offs between conflicting requirements, scope questions, architectural calls that have long-term consequences.</p>
+<p>Your job as escalation handler is to be available for these moments and to resolve them quickly. Not to prevent them; some ambiguity is irreducible, and attempting to specify every edge case in advance produces specifications that are longer than the code they describe. The goal is to handle escalations efficiently: understand the failure, make the call, update the specification if the failure reveals a gap, and re-dispatch.</p>
+<p>The ratio between these roles shifts as you gain experience. Early on, you spend most of your time reviewing, checking agent output carefully, catching failures, building intuition for what agents get wrong. As you develop better specifications and better instincts for decomposition, the review burden decreases and the architect role dominates. The escalation handler role remains roughly constant; some decisions always require a human.</p>
+<p><strong>These three roles are not theoretical categories.</strong> Chapter 13 traces a real pull request — <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>, 75 files changed, ~90 minutes of wave execution time (see the APM Overhaul case study for the full ~16-hour wall-clock breakdown), 3 human interventions — and each intervention maps directly to one of these roles. The first intervention was a scope decision during planning: the practitioner assessed audit findings and decided to include all severity levels rather than deferring moderate issues. That was the Architect. The second was an agent recovery: an agent stalled mid-migration, and the practitioner diagnosed the failure mode, decided to split the remaining work across two replacement agents, and re-dispatched. That was the Escalation Handler. The third was test triage: a test failed after the recovery wave (Wave 2b), and the practitioner traced the cause to an ordering issue in the migration and directed a targeted fix. That was the Reviewer. Three interventions, three roles, no overlap. The full session — including two additional escalation events caught during checkpoint verification — is documented in <a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a> case study.</p>
 <hr>
 </section>
 <section id="when-to-use-agents-and-when-to-code-manually" class="level2" data-number="10.4">
@@ -643,8 +644,8 @@ Figure&nbsp;10.1: Decision framework: when to use agents and when to code manual
 <p>The two-minute test is the entry point. If you could explain the task to a new team member in two minutes and they could complete it with access to the right files and a style guide, an agent can do it. If explaining it would require a thirty-minute whiteboard session with a senior engineer, you’ve reached a “NO” — code it yourself, or at least isolate the judgment-heavy core for manual work.</p>
 <p>The sections below unpack each path.</p>
 <p><strong>Use agents when the task is well-specified, repetitive, or parallelizable.</strong> Migrating call sites across 40 files to a new API. Adding structured logging to 15 endpoints that follow the same pattern. Generating test scaffolding for a module with a clear interface. Writing documentation for functions with well-defined contracts. These tasks have a clear transformation rule, a bounded scope, and a predictable structure. Agents execute them faster and more consistently than a human, because the agent does not get bored, does not skip edge cases out of fatigue, and does not introduce inconsistencies because it forgot what it did three files ago.</p>
-<p><strong>Use agents when you need to explore a codebase you don’t fully understand.</strong> Dispatching an agent to audit a module, summarize dependencies, or trace a call chain is often faster than doing it yourself — especially in unfamiliar code. The agent’s output is a starting point, not a conclusion. You validate it and use it to build your own understanding. This is where agents shine as research assistants.</p>
-<p><strong>Code manually when the task requires deep contextual judgment.</strong> Refactoring an API with subtle backward-compatibility constraints. Fixing a bug whose root cause spans three modules and two architectural layers. Making a design decision that involves trade-offs between performance, maintainability, and user experience. These tasks require you to hold the full context in your head — context that may not fit in any specification you could write for an agent, because the context includes your team’s priorities, your deployment constraints, and your own architectural taste.</p>
+<p><strong>Use agents when you need to explore a codebase you don’t fully understand.</strong> Dispatching an agent to audit a module, summarize dependencies, or trace a call chain is often faster than doing it yourself especially in unfamiliar code. The agent’s output is a starting point, not a conclusion. You validate it and use it to build your own understanding. This is where agents shine as research assistants.</p>
+<p><strong>Code manually when the task requires deep contextual judgment.</strong> Refactoring an API with subtle backward-compatibility constraints. Fixing a bug whose root cause spans three modules and two architectural layers. Making a design decision that involves trade-offs between performance, maintainability, and user experience. These tasks require you to hold the full context in your head, context that may not fit in any specification you could write for an agent, because the context includes your team’s priorities, your deployment constraints, and your own architectural taste.</p>
 <p><strong>Code manually when the specification would be longer than the implementation.</strong> If you need to write 200 words of instructions to produce 20 lines of code, and those 20 lines require precise judgment about the surrounding code, you are faster coding it yourself. The overhead of specifying, dispatching, reviewing, and potentially re-dispatching exceeds the cost of writing the code directly.</p>
 <p><strong>Code manually when you are learning.</strong> Agents are not a substitute for understanding your codebase. If you delegate a task you don’t understand to an agent, you cannot review the output effectively. You are not the architect — you are a rubber stamp. The agent’s output may be correct, and you have no way to know. This is acceptable for low-stakes tasks. It is dangerous for anything that touches core logic, security, or data integrity.</p>
 <p><strong>Code manually when the task is a one-off that you will never repeat.</strong> Agents pay off when the specification can be reused or when the task has enough volume to amortize the setup cost. A one-time, five-line fix in a file you already have open is faster to type than to specify. Not every task needs to be delegated to justify the investment in agentic tooling.</p>
@@ -655,9 +656,9 @@ Figure&nbsp;10.1: Decision framework: when to use agents and when to code manual
 <h2 data-number="10.5" class="anchored" data-anchor-id="the-cost-of-over-reliance"><span class="header-section-number">10.5</span> The Cost of Over-Reliance</h2>
 <p>There is a failure mode on the opposite end of the spectrum from “AI is just autocomplete.” It is the belief that agents should do everything, that the measure of sophistication is the percentage of code produced by AI, that manually writing code is a sign of inefficiency.</p>
 <p>This belief produces two specific pathologies.</p>
-<p><strong>Skill atrophy.</strong> If you stop writing code, you stop developing the judgment needed to review code. Code review is not a static skill — it depends on your ongoing familiarity with the patterns, idioms, and failure modes of the language and framework you work in. A reviewer who hasn’t written production code in six months catches fewer bugs, not more. The agent handles execution; you handle judgment. Judgment atrophies without practice.</p>
-<p>You can mitigate this deliberately. Reserve certain categories of work for manual implementation — the complex, the novel, the architecturally significant. Not because agents can’t attempt them, but because doing them yourself maintains the judgment you need to review everything else.</p>
-<p><strong>The “almost done” trap.</strong> An agent produces output that is 90% correct. You spend twenty minutes fixing the remaining 10%. The agent produces the next batch — 90% correct. You spend another twenty minutes. By the end of the day, you have spent more time fixing agent output than you would have spent writing the code from scratch, and you have produced code that is a patchwork of agent generation and manual fixes, with no single coherent author. The code works, but it is harder to maintain because no one — human or machine — thought through the whole thing.</p>
+<p><strong>Skill atrophy.</strong> If you stop writing code, you stop developing the judgment needed to review code. Code review is not a static skill; it depends on your ongoing familiarity with the patterns, idioms, and failure modes of the language and framework you work in. A reviewer who hasn’t written production code in six months catches fewer bugs, not more. The agent handles execution; you handle judgment. Judgment atrophies without practice.</p>
+<p>You can mitigate this deliberately. Reserve certain categories of work for manual implementation: the complex, the novel, the architecturally significant. Not because agents can’t attempt them, but because doing them yourself maintains the judgment you need to review everything else.</p>
+<p><strong>The “almost done” trap.</strong> An agent produces output that is 90% correct. You spend twenty minutes fixing the remaining 10%. The agent produces the next batch, 90% correct. You spend another twenty minutes. By the end of the day, you have spent more time fixing agent output than you would have spent writing the code from scratch, and you have produced code that is a patchwork of agent generation and manual fixes, with no single coherent author. The code works, but it is harder to maintain because no one, human or machine, thought through the whole thing.</p>
 <p>The trap is invisible because each individual fix feels small. You invested time dispatching the agent, and sunk-cost bias keeps you patching instead of starting over. The discipline is to recognize the pattern early: if you are making non-trivial corrections to more than 20–30% of an agent’s output on a given task, the specification was wrong or the task was wrong for an agent. Stop fixing. Either improve the specification and re-dispatch, or do the task yourself.</p>
 <hr>
 </section>
@@ -678,15 +679,34 @@ Figure&nbsp;10.1: Decision framework: when to use agents and when to code manual
 </section>
 <section id="the-mindset-in-practice" class="level2" data-number="10.7">
 <h2 data-number="10.7" class="anchored" data-anchor-id="the-mindset-in-practice"><span class="header-section-number">10.7</span> The Mindset in Practice</h2>
-<p>The shift this chapter describes is not about adopting a philosophy. It is about changing specific habits.</p>
-<p>When you sit down to work on a task, the first question changes. It is no longer “how do I implement this?” It is “can I specify this precisely enough for an agent to implement it correctly?” If yes, you write the specification and dispatch. If no, you either break the task into parts — some for agents, some for you — or you do it yourself.</p>
-<p>When you review code, you add a question. Beyond “is this correct?” and “is this maintainable?”, you ask: “did the agent have enough context to produce this, or did it get lucky?” Code that happens to be correct because the agent guessed well is fragile — it will not survive the next similar task where the agent guesses differently.</p>
-<p>When something fails, you fix the system, not the symptom. The agent produced wrong output because the instruction was ambiguous, or the specification missed a constraint, or the task was too broad for the context window. Fixing the generated code addresses this instance. Fixing the instruction, the specification, or the decomposition addresses every future instance.</p>
-<p>When you find yourself explaining a convention to an agent for the third time, you write it down — in a form that persists across sessions. A file in the repository, scoped to the right directory, expressed in terms the agent can act on. Your team’s accumulated knowledge becomes infrastructure, not oral tradition. This is context engineering, and it begins with the instrumented codebase described in the next chapter.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>TL;DR — Three Habit Changes
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Before starting a task</strong>, ask “can I specify this precisely enough for an agent?” If yes, write the specification and dispatch. If no, split the task or do it yourself.</li>
+<li><strong>When something fails</strong>, fix the context (the instruction, the specification, the decomposition), not just the generated code. Fix the system, not the symptom.</li>
+<li><strong>When you explain a convention for the third time</strong>, write it down in a file that persists across sessions. Your team’s accumulated knowledge becomes infrastructure, not oral tradition.</li>
+</ol>
+</div>
+</div>
 <p>The mindset is not complex. The AI is a capable, fast, amnesiac engineer. Your job is architect, reviewer, and escalation handler — the roles that require continuity, judgment, and accountability. The agent handles volume. You handle direction.</p>
 <p>The rest of Block 2 teaches you how.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The limitations of single-case methodology are well-documented. See Flyvbjerg, “Five Misunderstandings About Case-Study Research,” <em>Qualitative Inquiry</em> 12, no. 2 (2006): 219–245. Our approach follows his argument that a well-chosen single case can be decisive for theory development.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Sweller’s Cognitive Load Theory (1988) provides the theoretical basis for why reducing extraneous cognitive load improves performance. Agent-delegated execution reduces extraneous load (build mechanics, file navigation) while preserving germane load (architecture decisions, review).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -776,7 +796,7 @@ Figure&nbsp;10.1: Decision framework: when to use agents and when to code manual
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/agentic-sdlc-handbook\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1116,10 +1136,10 @@ Figure&nbsp;10.1: Decision framework: when to use agents and when to code manual
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="../apm-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="../agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">© 2025-2026 Daniel Meppiel · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color: #aaa;">CC BY-NC-ND 4.0</a></p>

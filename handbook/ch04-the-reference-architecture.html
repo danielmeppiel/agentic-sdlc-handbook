@@ -80,8 +80,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="../apm-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="../apm-handbook/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="../agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="../agentic-sdlc-handbook/apple-touch-icon.png">
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -302,7 +302,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
@@ -483,7 +483,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 62,500-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -542,7 +542,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#build-buy-or-compose" id="toc-build-buy-or-compose" class="nav-link" data-scroll-target="#build-buy-or-compose"><span class="header-section-number">6.6</span> Build, Buy, or Compose</a></li>
   <li><a href="#start-anywhere-expand-deliberately" id="toc-start-anywhere-expand-deliberately" class="nav-link" data-scroll-target="#start-anywhere-expand-deliberately"><span class="header-section-number">6.7</span> Start Anywhere, Expand Deliberately</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -572,8 +572,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="the-three-layers" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="the-three-layers"><span class="header-section-number">6.1</span> The Three Layers</h2>
 <p>At every phase of the software development lifecycle, work happens across three distinct layers. Understanding them is the difference between a coherent AI strategy and a collection of disconnected tool purchases.</p>
-<p><strong>The Human Layer</strong> is where judgment, accountability, and strategic decisions live. Humans set objectives, make architectural choices, define quality standards, and bear responsibility for what ships. No current AI system replaces these functions. The question is not whether humans remain in the loop — they do — but which decisions require human judgment and which are better delegated.</p>
-<p><strong>The Agent Layer</strong> is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy — from passive suggestion to autonomous task execution — but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.</p>
+<p><strong>The Human Layer</strong> is where judgment, accountability, and strategic decisions live. Humans set objectives, make architectural choices, define quality standards, and bear responsibility for what ships. No current AI system replaces these functions. The question is not whether humans remain in the loop (they do) but which decisions require human judgment and which are better delegated.</p>
+<p><strong>The Agent Layer</strong> is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy, from passive suggestion to autonomous task execution, but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.</p>
 <p><strong>The Platform Layer</strong> is the infrastructure that enables both humans and agents: source control, CI/CD pipelines, identity and access management, observability, artifact registries, and the APIs that connect them. This layer is often invisible in AI adoption conversations, which is precisely why adoption stalls. An agent that can generate code but cannot run tests, read build output, or access your dependency graph is an agent working blind.</p>
 <p>The layers are not independent. They form a stack where each depends on the one below it:</p>
 <div class="cell" data-fig-width="5" data-layout-align="default">
@@ -621,7 +621,7 @@ Figure&nbsp;6.1: The three-layer reference architecture: Human, Agent, Platform
 </section>
 <section id="mapping-the-layers-across-the-lifecycle" class="level2" data-number="6.2">
 <h2 data-number="6.2" class="anchored" data-anchor-id="mapping-the-layers-across-the-lifecycle"><span class="header-section-number">6.2</span> Mapping the Layers Across the Lifecycle</h2>
-<p>The three layers apply at every phase of software delivery. The table below maps what each layer does in each phase — and, critically, which capabilities are available today versus emerging or directional.</p>
+<p>The three layers apply at every phase of software delivery. The table below maps what each layer does in each phase and, critically, which capabilities are available today versus emerging or directional.</p>
 <p>Maturity tiers: <strong>Now</strong> = available across two or more vendors. <strong>Emerging</strong> = available in one or two tools, or in limited preview. <strong>Directional</strong> = announced, demonstrated, or on public roadmaps but not production-ready.</p>
 <div style="page-break-after: always;"></div>
 <div class="landscape">
@@ -712,9 +712,9 @@ Figure&nbsp;6.1: The three-layer reference architecture: Human, Agent, Platform
 </div>
 </div>
 <p>Executives do not need to think in eight phases. They need three buckets that map to planning cadences, budget lines, and organizational accountability:</p>
-<p><strong>Intent</strong> (Ideate + Plan) answers “what are we building and why?” Agent assistance here is mostly emerging. Research agents that surface prior art, planning agents that draft architecture decision records and decompose epics into tasks — these exist in early forms, but no tool reliably automates the judgment calls that make planning valuable.</p>
+<p><strong>Intent</strong> (Ideate + Plan) answers “what are we building and why?” Agent assistance here is mostly emerging. Research agents that surface prior art, planning agents that draft architecture decision records and decompose epics into tasks. These exist in early forms, but no tool reliably automates the judgment calls that make planning valuable.</p>
 <p><strong>Build</strong> (Code + Build + Test + Review) answers “how do we turn intent into verified software?” This is where agent capabilities are most mature. Code generation, build diagnostics, test generation, and automated code review all have production-ready implementations across multiple vendors. This is also where most organizations start, and where the Vibe Coding Cliff from Chapter 1 hits hardest if context is not structured.</p>
-<p><strong>Operate</strong> (Release + Operate) answers “how do we get software to users and keep it running?” Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions — these capabilities exist in point solutions (e.g., PagerDuty’s AIOps, Datadog’s Watchdog) but not yet in workflows integrated end-to-end with the development lifecycle.</p>
+<p><strong>Operate</strong> (Release + Operate) answers “how do we get software to users and keep it running?” Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions. These capabilities exist in point solutions (e.g., PagerDuty’s AIOps, Datadog’s Watchdog) but not yet in workflows integrated end-to-end with the development lifecycle.</p>
 <p>The practical implication: based on vendor maturity and published adoption patterns, most organizations appear to have concentrated investment in the Build bucket, with minimal coverage in Intent and almost none in Operate. This is not a failure. It reflects where the technology is mature. But it means the next high-value investments are in Plan, Test, and Review — where the work is expensive, the feedback loops are slow, and structured context makes the difference between useful automation and expensive noise.</p>
 <section id="three-tier-honesty" class="level3" data-number="6.2.1">
 <h3 data-number="6.2.1" class="anchored" data-anchor-id="three-tier-honesty"><span class="header-section-number">6.2.1</span> Three-Tier Honesty</h3>
@@ -844,15 +844,15 @@ Figure&nbsp;6.1: The three-layer reference architecture: Human, Agent, Platform
 </tbody>
 </table>
 </div>
-<p>The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the structural properties of language models described in Chapter 1 — they process and generate; they do not decide or bear responsibility.</p>
+<p>The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the fundamental properties of language models described in Chapter 1: they process and generate; they do not decide or bear responsibility.</p>
 <p>Chapter 6 covers the organizational design implications in detail: team structures, the junior pipeline, and new hiring profiles. Here, the point is architectural: the Human Layer does not shrink. It concentrates on the activities that require human judgment, and those activities become more visible and more important.</p>
 <hr>
 </section>
 <section id="the-context-moat" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="the-context-moat"><span class="header-section-number">6.4</span> The Context Moat</h2>
-<p>Your competitors have access to the same AI models you do. They can license the same coding tools. What they cannot replicate is your organization’s accumulated engineering knowledge — if you have made it machine-readable. If you have not, your AI tools are working with the same generic training data as everyone else’s. This is the context moat.</p>
+<p>Your competitors have access to the same AI models you do. They can license the same coding tools. What they cannot replicate is your organization’s accumulated engineering knowledge — if you have made it structured and agent-consumable. If you have not, your AI tools are working with the same generic training data as everyone else’s. This is the context moat.</p>
 <p><strong>Why context beats models.</strong> Model quality commoditizes. In 2022, OpenAI’s Codex was the dominant commercial code-generation offering. By mid-2025, several model families compete credibly (OpenAI, Anthropic, Google, Meta, Mistral, among others). Pricing has trended downward as competition increases. The model powering your agent is a procurement decision, not a strategic advantage. Context is the opposite: it is proprietary, it accumulates over time, and it directly determines the quality of every agent interaction.</p>
-<p>Consider two teams of similar size, working on codebases of similar complexity, using identical AI tools on the same underlying model. Team A has documented its coding conventions, API patterns, error-handling standards, and module boundaries in structured instruction files that agents load automatically. Team B has not — its conventions exist in senior engineers’ heads and scattered code comments.</p>
+<p>Consider two teams of similar size, working on codebases of similar complexity, using identical AI tools on the same underlying model. Team A has documented its coding conventions, API patterns, error-handling standards, and module boundaries in structured instruction files that agents load automatically. Team B has not; its conventions exist in senior engineers’ heads and scattered code comments.</p>
 <p>Team A’s agents generate code that passes linting on the first attempt, follows the internal API surface, and produces pull requests that reviewers approve with minor comments. Team B’s agents generate plausible code that calls deprecated APIs, invents its own error patterns, and produces pull requests that require substantial rework. The rework cost compounds across every developer, every day. Over six months, Team A’s context investment has paid for itself many times over, while Team B is still debating whether AI tools are “worth it.”</p>
 <p>The difference is not the tool. It is the context.</p>
 <p>Context operates across three domains, each with different characteristics:</p>
@@ -881,7 +881,7 @@ Figure&nbsp;6.1: The three-layer reference architecture: Human, Agent, Platform
 </tr>
 <tr class="even">
 <td><strong>Data Context</strong></td>
-<td>Business intelligence, domain models, analytics, ontologies</td>
+<td>Business intelligence, domain models, analytics, structured domain knowledge</td>
 <td>Data dictionaries, domain glossaries, schema docs</td>
 <td>BI platforms, data catalogs, knowledge graphs</td>
 </tr>
@@ -921,13 +921,13 @@ Figure&nbsp;6.2: The context compounding flywheel
 </div>
 </div>
 </div>
-<p>This flywheel means the gap between organizations that invest in context early and those that defer widens over time. It is not a linear gap. An organization that starts structuring context in 2025 does not just have two years’ head start over one that starts in 2027 — it has two years of compounding context that the late starter must build from scratch while the early adopter’s agents are already leveraging it.</p>
-<p><strong>Evidence: the 75-file PR.</strong> This book’s primary case study — a pull request touching 75 files, climbing from 2,829 to 2,897 tests, completed in roughly 90 minutes with three human interventions — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: documented coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global project rules down to directory-specific overrides. None of these artifacts existed at the start. Each was created when an agent interaction failed due to a context gap — a convention violation caught in review, a deprecated API called because no instruction excluded it, a test pattern that didn’t match the project’s framework. By the time the 75-file PR was attempted, the agent was operating with rich, structured context that had been refined through dozens of feedback cycles. Without that accumulated context, the same task on the same model would have produced 75 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1’s Vibe Coding Cliff. The delta between “75 files of rework” and “75 files merged in 90 minutes” <em>is</em> the context moat, demonstrated.</p>
+<p>This flywheel means the gap between organizations that invest in context early and those that defer widens over time. It is not a linear gap. An organization that starts structuring context in 2025 does not just have two years’ head start over one that starts in 2027; it has two years of compounding context that the late starter must build from scratch while the early adopter’s agents are already leveraging it.</p>
+<p><strong>Evidence: the 75-file PR.</strong> This book’s primary case study — a pull request touching 75 files, climbing from 2,829 to 2,897 tests, completed in roughly 90 minutes of wave execution time with 3 execution-phase interventions (5 total including verification) — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: documented coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global project rules down to directory-specific overrides. None of these artifacts existed at the start. Each was created when an agent interaction failed due to a context gap — a convention violation caught in review, a deprecated API called because no instruction excluded it, a test pattern that didn’t match the project’s framework. By the time the 75-file PR was attempted, the agent was operating with rich, structured context that had been refined through dozens of feedback cycles. Without that accumulated context, the same task on the same model would have produced 75 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1’s Vibe Coding Cliff. The delta between “75 files of rework” and “75 files merged in 90 minutes” <em>is</em> the context moat, demonstrated. (The canonical metrics for this PR are documented in <a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a> case study.)</p>
 </section>
 <section id="technical-debt-gets-a-new-cost" class="level3" data-number="6.4.2">
 <h3 data-number="6.4.2" class="anchored" data-anchor-id="technical-debt-gets-a-new-cost"><span class="header-section-number">6.4.2</span> Technical Debt Gets a New Cost</h3>
 <p>AI changes the ROI calculus for documentation debt, convention debt, and knowledge-base debt. Consider an illustrative example: in a representative scenario, documenting your API conventions might take two days of engineering time. Without that documentation, agents hallucinate your internal patterns. In teams we have observed, pull request reviews frequently caught three to five convention violations that required rework. With documentation, the agent generates convention-compliant code from the first attempt. The payback period in these cases was roughly two weeks.</p>
-<p>This recalculation applies across the codebase. Undocumented module boundaries, implicit architectural decisions, tribal knowledge stored only in senior engineers’ heads — all of these were always technical debt. AI makes the cost of that debt visible on every agent interaction, because the agent fails precisely where the documentation fails.</p>
+<p>This recalculation applies across the codebase. Undocumented module boundaries, implicit architectural decisions, tribal knowledge stored only in senior engineers’ heads: all of these were always technical debt. AI makes the cost of that debt visible on every agent interaction, because the agent fails precisely where the documentation fails.</p>
 <p>The implication for leaders: re-prioritize your backlog. Items that were perpetually deferred — “document the authentication flow,” “write down the module ownership model,” “formalize the error-handling conventions” — now have a concrete, measurable payoff that they did not have before AI tools existed. Chapter 11 provides the methodology for auditing and structuring this context systematically.</p>
 <hr>
 </section>
@@ -1048,7 +1048,7 @@ Figure&nbsp;6.2: The context compounding flywheel
 </tr>
 <tr class="even">
 <td><strong>Data context</strong></td>
-<td>Custom domain model documentation, internal ontologies</td>
+<td>Custom domain model documentation, internal domain taxonomies</td>
 <td>Data catalog platforms (Collibra, Alation, dbt)</td>
 <td>Federation layers that expose data definitions to coding agents</td>
 </tr>
@@ -1062,7 +1062,7 @@ Figure&nbsp;6.2: The context compounding flywheel
 </table>
 </div>
 <p>The pattern: work and data context often require building or composing because they are organization-specific. Code context is the most composable because the formats are increasingly standardized — custom instructions in GitHub Copilot, rule files in Cursor, <code>CLAUDE.md</code> in Claude Code — and community-shared configurations can provide a starting point that teams customize.</p>
-<p>No single vendor covers all three context domains comprehensively today. This is a structural observation, not a criticism — the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.</p>
+<p>No single vendor covers all three context domains comprehensively today. This is a practical observation, not a criticism; the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.</p>
 <hr>
 </section>
 <section id="start-anywhere-expand-deliberately" class="level2" data-number="6.7">
@@ -1168,7 +1168,7 @@ Figure&nbsp;6.2: The context compounding flywheel
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/agentic-sdlc-handbook\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1508,10 +1508,10 @@ Figure&nbsp;6.2: The context compounding flywheel
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="../apm-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="../agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">© 2025-2026 Daniel Meppiel · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color: #aaa;">CC BY-NC-ND 4.0</a></p>

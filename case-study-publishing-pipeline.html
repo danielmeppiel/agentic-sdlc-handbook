@@ -80,8 +80,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="./apm-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="./apm-handbook/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="./agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="./agentic-sdlc-handbook/apple-touch-icon.png">
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -302,7 +302,7 @@ ul.task-list li input[type="checkbox"] {
     <div class="sidebar-title mb-0 py-0">
       <a href="./">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
@@ -483,7 +483,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 62,500-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -534,10 +534,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#cicd-four-iterations-to-stability" id="toc-cicd-four-iterations-to-stability" class="nav-link" data-scroll-target="#cicd-four-iterations-to-stability">CI/CD: Four Iterations to Stability</a></li>
   <li><a href="#download-ux-seven-iterations-of-human-refinement" id="toc-download-ux-seven-iterations-of-human-refinement" class="nav-link" data-scroll-target="#download-ux-seven-iterations-of-human-refinement">Download UX: Seven Iterations of Human Refinement</a></li>
   <li><a href="#licensing-expert-panel-deliberation" id="toc-licensing-expert-panel-deliberation" class="nav-link" data-scroll-target="#licensing-expert-panel-deliberation">Licensing: Expert Panel Deliberation</a></li>
-  <li><a href="#the-authenticity-question" id="toc-the-authenticity-question" class="nav-link" data-scroll-target="#the-authenticity-question">The Authenticity Question</a></li>
   <li><a href="#what-this-case-study-shows" id="toc-what-this-case-study-shows" class="nav-link" data-scroll-target="#what-this-case-study-shows">What This Case Study Shows</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -562,7 +561,10 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><strong>How Copilot CLI orchestrated a 62,500-word book from manuscript to multi-format deployment</strong></p>
+<p><strong>Scope:</strong> Manuscript-to-deployment pipeline — HTML, PDF, EPUB output + CI/CD<br>
+<strong>Duration:</strong> Multiple waves within a single extended session<br>
+<strong>Theme:</strong> Infrastructure automation and the “Almost Done” cascade</p>
+<p><strong>How Copilot CLI orchestrated a 67,000-word book from manuscript to multi-format deployment</strong></p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Key Takeaways — The TL;DR">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -604,7 +606,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Created <code>index.qmd</code> with a reading guide and download callouts</li>
 <li>Created <code>.github/workflows/publish.yml</code> for CI auto-deploy</li>
 </ul>
-<p>HTML render: 16 files, zero errors, 15 Mermaid diagrams confirmed. The site went live on the <code>gh-pages</code> branch within the same wave.</p>
+<p>HTML render: 16 files, zero errors, 24 Mermaid diagrams confirmed. The site went live on the <code>gh-pages</code> branch within the same wave.</p>
 <div class="cell" data-fig-width="4.5" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-cs-conversion-wave" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -659,7 +661,7 @@ Figure&nbsp;19.2: The ‘Almost Done’ trap: cascading PDF rendering fixes
 </div>
 </div>
 <p><strong>Issue 1 — Narrow text.</strong> The <code>scrbook</code> document class has wide binding margins designed for physical books. Fix: switch to <code>scrreprt</code> with explicit geometry (25mm left/right, 30mm top/bottom).</p>
-<p><strong>Issue 2 — Missing Mermaid diagrams.</strong> All 15 chapters used GitHub-flavored <code>```mermaid</code> fences. Quarto requires <code>```{mermaid}</code> for PDF rendering via headless Chromium. This was <strong>Anti-Pattern #10: Not Fixing the Primitives</strong> — the syntax was wrong at the source level across every chapter. A bulk <code>sed</code> conversion fixed all 15 blocks; the PDF grew from 686KB to 3.8MB as rendered diagram PNGs appeared.</p>
+<p><strong>Issue 2 — Missing Mermaid diagrams.</strong> All 15 chapters used GitHub-flavored <code>```mermaid</code> fences. Quarto requires <code>```{mermaid}</code> for PDF rendering via headless Chromium. This was <strong>Anti-Pattern #10: Not Fixing the Primitives</strong> — the syntax was wrong at the source level across every chapter. A bulk <code>sed</code> conversion fixed all 24 blocks; the PDF grew from 686KB to 3.8MB as rendered diagram PNGs appeared.</p>
 <p><strong>Issue 3 — Duplicate heading numbers.</strong> Manual numbers in headings (<code>### 1. The Monolithic Prompt</code>) clashed with Quarto’s auto-numbering, producing <code>15.2.1 1.</code> in the PDF. Stripped manual numbers from 25 headings across two chapters.</p>
 <p><strong>Issue 4 — Margin overflow.</strong> Diagrams and code blocks exceeded the text area. Added <code>fig-width: 6.5</code>, <code>code-overflow: wrap</code>, and LaTeX packages (<code>fvextra</code>, <code>float</code>). Then discovered 6.5 inches exceeded the 6.3-inch usable width — reduced to 5.5 and created <code>preamble.tex</code> with <code>\small</code> font for long table environments.</p>
 <p><strong>Issue 5 — ASCII art table.</strong> Chapter 4 contained a complex ASCII art SDLC phases table that rendered as a code block in PDF. Converted to a proper 9-column markdown pipe table.</p>
@@ -777,18 +779,10 @@ Figure&nbsp;19.3: Final CI/CD architecture: CI pipeline and local render workflo
 <p>A three-expert panel (IP Attorney, Publishing Strategist, Growth Hacker) evaluated licensing options. The recommendation was unanimous: <strong>CC BY-NC-ND 4.0</strong>.</p>
 <p>The rationale maps to four properties: invites sharing (reach), requires attribution (authorship), prohibits commercial use (author’s brand), prohibits derivatives (one canonical version). Implementation touched four files – <code>LICENSE</code>, <code>README.md</code>, <code>index.qmd</code>, and the <code>_quarto.yml</code> footer.</p>
 </section>
-<section id="the-authenticity-question" class="level2">
-<h2 class="anchored" data-anchor-id="the-authenticity-question">The Authenticity Question</h2>
-<p>A separate three-expert panel (HN Skeptic, Thought Leadership Strategist, Meta-Authenticity Analyst) evaluated the risk of openly documenting the AI-assisted pipeline. The consensus: <strong>net positive</strong>. The key test:</p>
-<blockquote class="blockquote">
-<p><em>“Could this person have written a credible book without AI? If yes, AI reads as methodology demonstration.”</em></p>
-</blockquote>
-<p>The framing rule: <em>“built using the same methodology it teaches”</em> – never <em>“AI-written.”</em> Expected risk: some initial skepticism from readers who dismiss anything AI-assisted, but engaged readers find the transparency more impressive than the alternative.</p>
-<p>The README was rewritten to showcase the pipeline: an 11-agent team table, a 5-stage pipeline diagram, and links to review artifacts. <strong>Explicit knowledge over implicit knowledge</strong> — a property that held true here too. Hiding the process would contradict the book’s thesis.</p>
-</section>
 <section id="what-this-case-study-shows" class="level2">
 <h2 class="anchored" data-anchor-id="what-this-case-study-shows">What This Case Study Shows</h2>
 <p>The publishing pipeline compressed weeks of toolchain research, format debugging, and CI configuration into focused waves of agent execution guided by human judgment.</p>
+<p><strong>What Held True.</strong> The structural properties from the APM Overhaul held. The novel test: the “Almost Done” cascade demonstrated that checkpoint discipline prevents compounding rendering failures as effectively as it prevents compounding code failures.</p>
 <div class="callout callout-style-default callout-note callout-titled" title="Metrics">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -799,12 +793,12 @@ Figure&nbsp;19.3: Final CI/CD architecture: CI pipeline and local render workflo
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>3 output formats (HTML, PDF, EPUB) · 15 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy</p>
+<p>3 output formats (HTML, PDF, EPUB) · 36 Mermaid diagrams rendered · 5 PDF/EPUB rendering fixes (cascade) · 4 CI/CD iterations · 7 download UX iterations · 3 expert panel deliberations · 49-second CI deploy</p>
 </div>
 </div>
 <p>The division of labor was consistent: every design decision was human; every technical execution was agent.</p>
 <hr>
-<p><em>This case study documents the publishing pipeline for <a href="https://danielmeppiel.github.io/apm-handbook/">The Agentic SDLC Handbook</a>. The book, the pipeline, and this case study were all produced using the methodology described in Chapters 12–15.</em></p>
+<p><em>This case study documents the publishing pipeline for <a href="https://danielmeppiel.github.io/agentic-sdlc-handbook/">The Agentic SDLC Handbook</a>. The book, the pipeline, and this case study were all produced using the methodology described in Chapters 12–15.</em></p>
 
 
 </section>
@@ -896,7 +890,7 @@ Figure&nbsp;19.3: Final CI/CD architecture: CI pipeline and local render workflo
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/agentic-sdlc-handbook\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1225,8 +1219,8 @@ Figure&nbsp;19.3: Final CI/CD architecture: CI pipeline and local render workflo
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./case-study-handbook-writing.html" class="pagination-link" aria-label="Writing a 62,500-Word Book with Agent Fleets">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 62,500-Word Book with Agent Fleets</span></span>
+      <a href="./case-study-handbook-writing.html" class="pagination-link" aria-label="Writing a 67,000-Word Book with Agent Fleets">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
@@ -1236,10 +1230,10 @@ Figure&nbsp;19.3: Final CI/CD architecture: CI pipeline and local render workflo
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="./apm-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="./agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">© 2025-2026 Daniel Meppiel · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color: #aaa;">CC BY-NC-ND 4.0</a></p>

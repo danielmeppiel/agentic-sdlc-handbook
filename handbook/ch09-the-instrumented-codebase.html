@@ -115,8 +115,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
-<link rel="icon" type="image/svg+xml" href="../apm-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="../apm-handbook/apple-touch-icon.png">
+<link rel="icon" type="image/svg+xml" href="../agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="../agentic-sdlc-handbook/apple-touch-icon.png">
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -337,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="sidebar-title mb-0 py-0">
       <a href="../">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
-    <a href="https://github.com/danielmeppiel/apm-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
       <a href="" title="Share" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Share"><i class="bi bi-share"></i></a>
       <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
@@ -518,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 62,500-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -587,9 +587,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#what-the-numbers-look-like" id="toc-what-the-numbers-look-like" class="nav-link" data-scroll-target="#what-the-numbers-look-like"><span class="header-section-number">11.7.3</span> What the numbers look like</a></li>
   </ul></li>
   <li><a href="#the-feedback-loop" id="toc-the-feedback-loop" class="nav-link" data-scroll-target="#the-feedback-loop"><span class="header-section-number">11.8</span> The Feedback Loop</a></li>
-  <li><a href="#starting-points" id="toc-starting-points" class="nav-link" data-scroll-target="#starting-points"><span class="header-section-number">11.9</span> Starting Points</a></li>
+  <li><a href="#what-it-looks-like-an-annotated-session" id="toc-what-it-looks-like-an-annotated-session" class="nav-link" data-scroll-target="#what-it-looks-like-an-annotated-session"><span class="header-section-number">11.9</span> What It Looks Like: An Annotated Session</a></li>
+  <li><a href="#starting-points" id="toc-starting-points" class="nav-link" data-scroll-target="#starting-points"><span class="header-section-number">11.10</span> Starting Points</a></li>
   </ul>
-<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -614,20 +615,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>Open any repository that uses AI agents reliably and you’ll notice something before you read a single line of application code: the project is full of markdown files that aren’t documentation. They’re instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints — scattered through <code>.github/</code> directories and woven into the source tree. These files don’t ship to production. They don’t appear in the build output. But they determine whether an AI agent produces code that respects the project’s architecture or code that confidently violates it.</p>
+<p>Open any repository that uses AI agents reliably and you’ll notice something before you read a single line of application code: the project is full of markdown files that aren’t documentation. They’re instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints, scattered through <code>.github/</code> directories and woven into the source tree. These files don’t ship to production. They don’t appear in the build output. But they determine whether an AI agent produces code that respects the project’s architecture or code that confidently violates it.</p>
 <p>This chapter catalogs those files. It defines seven primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that’s ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?</p>
 <hr>
 <section id="what-instrumentation-means" class="level2" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="what-instrumentation-means"><span class="header-section-number">11.1</span> What Instrumentation Means</h2>
 <p>An instrumented codebase is one that has externalized its tacit knowledge into machine-readable artifacts.</p>
-<p>Every mature project carries two kinds of knowledge. The first kind is in the code itself — types, function signatures, directory structure, test assertions. Any agent can read this. The second kind is in the team’s heads — which authentication pattern is current and which is deprecated, why the logging module uses a custom wrapper instead of the standard library, what “follows the BaseIntegrator pattern” means in practice, why that one directory has different import rules than every other. An agent cannot read this. It will guess, and it will guess wrong.</p>
-<p>Instrumentation is the practice of converting the second kind of knowledge into structured files that an agent loads as context. The files are markdown. They version-control alongside the code they describe. They’re reviewed in pull requests. And they create a feedback loop: when an agent makes a mistake, you don’t fix the generated code — you fix the primitive that failed to prevent the mistake.</p>
-<p>The term “primitive” is deliberate. These artifacts are the atomic units of agentic behavior. Like functions in code, they do one thing, they compose with other primitives, and they’re testable in isolation. Unlike prompts typed into a chat window and forgotten, primitives persist, accumulate value, and improve through iteration.</p>
+<p>Every mature project carries two kinds of knowledge. The first kind is in the code itself (types, function signatures, directory structure, test assertions). Any agent can read this. The second kind is in the team’s heads: which authentication pattern is current and which is deprecated, why the logging module uses a custom wrapper instead of the standard library, what “follows the BaseIntegrator pattern” means in practice, why that one directory has different import rules than every other. An agent cannot read this. It will guess, and it will guess wrong.</p>
+<p>Instrumentation is the practice of converting the second kind of knowledge into structured files that an agent loads as context. The files are markdown. They version-control alongside the code they describe. They’re reviewed in pull requests. And they create a feedback loop: when an agent makes a mistake, you don’t fix the generated code; you fix the context file that failed to prevent the mistake.</p>
+<p>The term “primitive” is deliberate. These artifacts are the atomic units of agentic behavior. Like functions in code, they do one thing, they compose with other context files, and they’re testable in isolation. Unlike prompts typed into a chat window and forgotten, these artifacts persist, accumulate value, and improve through iteration.</p>
 <hr>
 </section>
 <section id="the-seven-primitive-types" class="level2" data-number="11.2">
 <h2 data-number="11.2" class="anchored" data-anchor-id="the-seven-primitive-types"><span class="header-section-number">11.2</span> The Seven Primitive Types</h2>
-<p>Seven categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what’s in the code and what an agent needs to know. Not every project needs all seven on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.</p>
+<p>Seven categories cover the full range of knowledge an agent needs. Each addresses a distinct gap between what’s in the code and what an agent needs to know. Not every project needs all seven on day one (the instrumentation audit later in this chapter helps you decide where to start) but understanding the complete set is necessary before making that decision.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-seven-primitives" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -655,7 +656,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 </div>
 <section id="instructions" class="level3" data-number="11.2.1">
 <h3 data-number="11.2.1" class="anchored" data-anchor-id="instructions"><span class="header-section-number">11.2.1</span> Instructions</h3>
-<p><strong>Purpose:</strong> Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular primitive — they tell an agent “when you touch code in this scope, follow these rules.”</p>
+<p><strong>Purpose:</strong> Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular context artifact; they tell an agent “when you touch code in this scope, follow these rules.”</p>
 <p><strong>File format:</strong> <code>.instructions.md</code> with frontmatter specifying scope.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">applyTo:</span><span class="co"> "src/api/**"</span></span>
@@ -677,11 +678,11 @@ Figure&nbsp;11.1: The seven APM primitive types
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All error responses use <span class="in">`APIError.from_exception()`</span> for consistent format.</span>
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never return raw exception messages to clients.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Design test:</strong> Can you state the scope in one <code>applyTo</code> pattern? Does every rule in the file apply to that scope? If you’re writing rules that apply to two unrelated domains, split the file. If you can’t express the scope as a glob, the knowledge probably belongs in an agent configuration or a skill instead.</p>
-<p><strong>What distinguishes a good instruction file from a bad one:</strong> length. If your instruction file exceeds 40-50 lines, it’s trying to do too much. The reason is mechanical — every line of instruction competes for attention with the source code the agent needs to read. A 200-line instruction file doesn’t give an agent more to work with. It gives it more to get lost in.</p>
+<p><strong>What distinguishes a good instruction file from a bad one:</strong> length. If your instruction file exceeds 40-50 lines, it’s trying to do too much. The reason is mechanical: every line of instruction competes for attention with the source code the agent needs to read. A 200-line instruction file doesn’t give an agent more to work with. It gives it more to get lost in.</p>
 </section>
 <section id="agents" class="level3" data-number="11.2.2">
 <h3 data-number="11.2.2" class="anchored" data-anchor-id="agents"><span class="header-section-number">11.2.2</span> Agents</h3>
-<p><strong>Purpose:</strong> Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to “who should work on this?” — not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.</p>
+<p><strong>Purpose:</strong> Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to “who should work on this?”, not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.</p>
 <p><strong>File format:</strong> <code>.agent.md</code> with frontmatter specifying the model, tools, and description.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">:</span><span class="at"> </span><span class="st">"Backend architecture specialist for Python services"</span></span>
@@ -711,15 +712,15 @@ Figure&nbsp;11.1: The seven APM primitive types
 <p>Four elements make an agent configuration effective:</p>
 <ol type="1">
 <li><strong>Domain expertise.</strong> Specific enough to constrain the agent’s decisions. “You are an expert Python developer” is too broad to be useful. “You specialize in CLI tool design using the Click framework with Rich terminal output” constrains the solution space meaningfully.</li>
-<li><strong>Named patterns.</strong> When the agent knows patterns by name — “BaseIntegrator,” “CredentialChain,” “CommandLogger” — it can reference them in its reasoning and produce code that uses them correctly.</li>
-<li><strong>Anti-patterns.</strong> What the agent must never do. These encode institutional memory — each item represents a mistake that happened at least once and cost the team time to fix.</li>
+<li><strong>Named patterns.</strong> When the agent knows patterns by name (“BaseIntegrator,” “CredentialChain,” “CommandLogger”) it can reference them in its reasoning and produce code that uses them correctly.</li>
+<li><strong>Anti-patterns.</strong> What the agent must never do. These encode institutional memory; each item represents a mistake that happened at least once and cost the team time to fix.</li>
 <li><strong>Tool boundaries.</strong> Which tools the agent can invoke. A documentation agent shouldn’t execute destructive commands. A frontend agent shouldn’t access backend databases. Tool boundaries are safety boundaries made concrete.</li>
 </ol>
-<p>Start with three to five agent configurations. An architect, a domain expert for your core business logic, and a documentation writer cover most tasks. Add configurations when you observe repeated corrections — that’s the signal that a new specialization has earned its place.</p>
+<p>Start with three to five agent configurations. An architect, a domain expert for your core business logic, and a documentation writer cover most tasks. Add configurations when you observe repeated corrections; that’s the signal that a new specialization has earned its place.</p>
 </section>
 <section id="skills" class="level3" data-number="11.2.3">
 <h3 data-number="11.2.3" class="anchored" data-anchor-id="skills"><span class="header-section-number">11.2.3</span> Skills</h3>
-<p><strong>Purpose:</strong> Package reusable decision frameworks that activate based on code patterns. A skill is more than a set of rules — it teaches an agent how to think about a specific domain.</p>
+<p><strong>Purpose:</strong> Package reusable decision frameworks that activate based on code patterns. A skill is more than a set of rules; it teaches an agent how to think about a specific domain.</p>
 <p><strong>File format:</strong> A directory containing a <code>SKILL.md</code> file, optionally with examples and supporting context.</p>
 <pre><code>.github/skills/
 └── cli-logging-ux/
@@ -763,7 +764,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 </section>
 <section id="prompts" class="level3" data-number="11.2.4">
 <h3 data-number="11.2.4" class="anchored" data-anchor-id="prompts"><span class="header-section-number">11.2.4</span> Prompts</h3>
-<p><strong>Purpose:</strong> Define reusable, parameterized workflows that orchestrate multi-step tasks. A prompt is a repeatable process — the agentic equivalent of a script or a makefile target.</p>
+<p><strong>Purpose:</strong> Define reusable, parameterized workflows that orchestrate multi-step tasks. A prompt is a repeatable process, the agentic equivalent of a script or a makefile target.</p>
 <p><strong>File format:</strong> <code>.prompt.md</code> with frontmatter specifying execution mode and tools.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">mode:</span><span class="co"> agent</span></span>
@@ -797,11 +798,11 @@ Figure&nbsp;11.1: The seven APM primitive types
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a><span class="fu">## Output Format</span></span>
 <span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>Provide findings grouped by severity (Critical / High / Medium / Low).</span>
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>For each finding: file, line, what's wrong, what to do instead.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Prompts are the bridge between ad-hoc chat and systematic workflows. Without them, every time a developer wants an agent to perform a code review, they type a slightly different request and get slightly different quality. With a prompt file, the process is consistent — the same phases, the same checks, the same output format. Quality becomes reproducible.</p>
+<p>Prompts are the bridge between ad-hoc chat and systematic workflows. Without them, every time a developer wants an agent to perform a code review, they type a slightly different request and get slightly different quality. With a prompt file, the process is consistent: the same phases, the same checks, the same output format. Quality becomes reproducible.</p>
 </section>
 <section id="memory" class="level3" data-number="11.2.5">
 <h3 data-number="11.2.5" class="anchored" data-anchor-id="memory"><span class="header-section-number">11.2.5</span> Memory</h3>
-<p><strong>Purpose:</strong> Preserve knowledge across sessions. Agents are stateless — every conversation starts from zero. Memory files give them access to accumulated decisions, resolved trade-offs, and project history that would otherwise vanish between sessions.</p>
+<p><strong>Purpose:</strong> Preserve knowledge across sessions. Agents are stateless; every conversation starts from zero. Memory files give them access to accumulated decisions, resolved trade-offs, and project history that would otherwise vanish between sessions.</p>
 <p><strong>File format:</strong> <code>.memory.md</code>, structured by domain.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Project Decisions</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -823,7 +824,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 <span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cache invalidation is event-driven (via message queue), not TTL-based.</span>
 <span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The /api/search endpoint has a 5-second timeout. This is intentional —</span>
 <span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  longer queries must use the async search endpoint.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Memory files capture the knowledge that doesn’t fit in instructions because it isn’t a rule — it’s context. The distinction matters: “use JWT for authentication” is a rule (instruction). “We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated” is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won’t.</p>
+<p>Memory files capture the knowledge that doesn’t fit in instructions because it isn’t a rule; it’s context. The distinction matters: “use JWT for authentication” is a rule (instruction). “We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated” is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won’t.</p>
 <p>Memory files are the most likely primitive to drift from reality. Include dates. Review them quarterly. If a section hasn’t been updated in six months, verify that it’s still accurate or remove it.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -835,14 +836,14 @@ Figure&nbsp;11.1: The seven APM primitive types
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>While this chapter describes memory as markdown files for portability, some tools implement memory as structured databases. GitHub Copilot, for example, stores memory in a database system rather than flat files. The principles are the same — persistence, discoverability, and staleness management — regardless of the storage mechanism.</p>
+<p>While this chapter describes memory as markdown files for portability, some tools implement memory as structured databases. GitHub Copilot, for example, stores memory in a database system rather than flat files. The principles are the same (persistence, discoverability, and staleness management) regardless of the storage mechanism.</p>
 </div>
 </div>
 </section>
 <section id="orchestration" class="level3" data-number="11.2.6">
 <h3 data-number="11.2.6" class="anchored" data-anchor-id="orchestration"><span class="header-section-number">11.2.6</span> Orchestration</h3>
-<p><strong>Purpose:</strong> Bridge planning and implementation by defining structured specifications that can be executed by humans or agents with the same precision. Orchestration primitives decompose large features into implementation-ready units.</p>
-<p><strong>File format:</strong> <code>.spec.md</code> for specifications, or workflow composition files that coordinate multiple primitives.</p>
+<p><strong>Purpose:</strong> Bridge planning and implementation by defining structured specifications that can be executed by humans or agents with the same precision. Orchestration files decompose large features into implementation-ready units.</p>
+<p><strong>File format:</strong> <code>.spec.md</code> for specifications, or workflow composition files that coordinate multiple context files.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Feature: Rate Limiting for Public API</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Problem Statement</span></span>
@@ -874,7 +875,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 </section>
 <section id="hooks" class="level3" data-number="11.2.7">
 <h3 data-number="11.2.7" class="anchored" data-anchor-id="hooks"><span class="header-section-number">11.2.7</span> Hooks</h3>
-<p><strong>Purpose:</strong> Define automated actions triggered by development events. Hooks bridge the gap between passive context (instructions, memory) and active behavior — making the instrumented codebase reactive rather than waiting to be queried.</p>
+<p><strong>Purpose:</strong> Define automated actions triggered by development events. Hooks bridge the gap between passive context (instructions, memory) and active behavior, making the instrumented codebase reactive rather than waiting to be queried.</p>
 <p><strong>File format:</strong> Configured via tool-specific hook mechanisms (e.g., VS Code tasks, GitHub Actions triggers, copilot hooks configuration) rather than a single portable file format.</p>
 <p><strong>Examples of what hooks automate:</strong></p>
 <ul>
@@ -883,14 +884,14 @@ Figure&nbsp;11.1: The seven APM primitive types
 <li>Auto-update memory files after a successful PR merge</li>
 <li>Run a security-reviewer agent on every change to <code>src/auth/</code></li>
 </ul>
-<p>Hooks complete the instrumentation model. Without them, every primitive is passive — it waits for an agent to be invoked and for the right context to load. With hooks, the context layer responds to events: a file save triggers a check, a new file triggers scaffolding, a merged PR triggers a memory update. The instrumented codebase stops being a library of reference material and starts behaving like an active participant in the development workflow.</p>
-<p>Start with one or two hooks — a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.</p>
+<p>Hooks complete the instrumentation model. Without them, every instrumentation file is passive; it waits for an agent to be invoked and for the right context to load. With hooks, the context layer responds to events: a file save triggers a check, a new file triggers scaffolding, a merged PR triggers a memory update. The instrumented codebase stops being a library of reference material and starts behaving like an active participant in the development workflow.</p>
+<p>Start with one or two hooks: a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.</p>
 <hr>
 </section>
 </section>
 <section id="tool-support-and-portability" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</h2>
-<p>The seven primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
+<p>The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
 <div data-tbl-colwidths="[16,28,18,20,18]">
 <table class="caption-top table">
 <colgroup>
@@ -962,24 +963,24 @@ Figure&nbsp;11.1: The seven APM primitive types
 </tbody>
 </table>
 </div>
-<p>“—” means the tool has no native format for that primitive type. The knowledge is still usable — you embed it in whatever instruction format the tool does support — but automatic activation and scoping are lost.</p>
+<p>“—” means the tool has no native format for that type. The knowledge is still usable (you embed it in whatever instruction format the tool does support) but automatic activation and scoping are lost.</p>
 <p>Three observations.</p>
-<p><strong>Instructions are the universal primitive.</strong> Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ — <code>applyTo</code> frontmatter, glob-based rule files, per-directory placement — but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.</p>
-<p><strong>Agent configurations are the least portable.</strong> Chat modes, model selection, and tool boundaries are defined differently in every tool and don’t transfer. The knowledge inside them — domain expertise, named patterns, anti-patterns — is just markdown and moves freely. The activation mechanism does not.</p>
-<p><strong>Most tools natively support two of seven.</strong> Instructions (in some form) and memory (via root-level markdown). The remaining five — skills, prompts, orchestration specs, agent configurations, and hooks — have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.</p>
+<p><strong>Instructions are the universal context file.</strong> Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ (<code>applyTo</code> frontmatter, glob-based rule files, per-directory placement) but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.</p>
+<p><strong>Agent configurations are the least portable.</strong> Chat modes, model selection, and tool boundaries are defined differently in every tool and don’t transfer. The knowledge inside them (domain expertise, named patterns, anti-patterns) is just markdown and moves freely. The activation mechanism does not.</p>
+<p><strong>Most tools natively support two of seven.</strong> Instructions (in some form) and memory (via root-level markdown). The remaining five (skills, prompts, orchestration specs, agent configurations, and hooks) have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.</p>
 <section id="what-happens-when-you-switch-tools" class="level3" data-number="11.3.1">
 <h3 data-number="11.3.1" class="anchored" data-anchor-id="what-happens-when-you-switch-tools"><span class="header-section-number">11.3.1</span> What happens when you switch tools</h3>
-<p>If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your primitives in two tiers:</p>
+<p>If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your instrumentation files in two tiers:</p>
 <p><strong>Portable tier</strong> (works everywhere with minor adaptation): - Instruction content — the rules themselves, as markdown prose - Memory files — decisions, deprecations, historical context - Orchestration specs — requirements, contracts, validation criteria - Skill knowledge — decision frameworks, anti-patterns, examples</p>
 <p><strong>Tool-specific tier</strong> (requires per-tool configuration): - Instruction scoping — how rules get matched to files (<code>applyTo</code> vs.&nbsp;glob frontmatter vs.&nbsp;directory placement) - Agent configurations — model selection, tool boundaries, persona activation - Prompt execution — how workflows are triggered and parameterized</p>
-<p>The portable tier is the knowledge — 80% of the value. The tool-specific tier is the wiring that connects knowledge to a particular editor. When you switch tools, you rewrite the wiring. That’s a few hours of adaptation, not a rewrite of what your team knows.</p>
+<p>The portable tier is the knowledge, 80% of the value. The tool-specific tier is the wiring that connects knowledge to a particular editor. When you switch tools, you rewrite the wiring. That’s a few hours of adaptation, not a rewrite of what your team knows.</p>
 <p>For teams working across multiple tools, the translation between formats can be handled manually by maintaining parallel directory structures, or automated with emerging tooling in this space.</p>
 <hr>
 </section>
 </section>
 <section id="directory-structure" class="level2" data-number="11.4">
 <h2 data-number="11.4" class="anchored" data-anchor-id="directory-structure"><span class="header-section-number">11.4</span> Directory Structure</h2>
-<p>The seven primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions — the most complete native implementation of all seven primitive types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.</p>
+<p>The seven primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions, the most complete native implementation of all seven types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize context files in a known location, separate by type, keep each type flat.</p>
 <pre><code>project/
 ├── .github/
 │   ├── copilot-instructions.md          # Global project principles
@@ -1019,14 +1020,14 @@ Figure&nbsp;11.1: The seven APM primitive types
 │   └── ...
 └── ...</code></pre>
 <p>Three observations about this structure.</p>
-<p><strong>Primitives live in <code>.github/</code></strong>, not scattered through the source tree. This centralizes the knowledge layer — a developer looking for the project’s AI configuration finds it in one place. The exceptions are <code>AGENTS.md</code> files, which live in the directories they describe, because they’re part of a discovery hierarchy (Chapter 11 explains this in detail).</p>
+<p><strong>Context files live in <code>.github/</code></strong>, not scattered through the source tree. This centralizes the knowledge layer; a developer looking for the project’s AI configuration finds it in one place. The exceptions are <code>AGENTS.md</code> files, which live in the directories they describe, because they’re part of a discovery hierarchy (Chapter 11 explains this in detail).</p>
 <p><strong>Each primitive type has its own directory.</strong> Instructions, agents, skills, prompts, specs, and hooks don’t mix. This makes it straightforward to audit what you have: how many instruction files exist, what domains they cover, which skills are defined. Mixed directories make this accounting harder than it needs to be.</p>
-<p><strong>The structure is flat within each directory.</strong> Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you’re probably over-engineering — most projects need 8-12 instruction files.</p>
+<p><strong>The structure is flat within each directory.</strong> Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you’re probably over-engineering; most projects need 8-12 instruction files.</p>
 <hr>
 </section>
 <section id="how-primitives-compose" class="level2" data-number="11.5">
 <h2 data-number="11.5" class="anchored" data-anchor-id="how-primitives-compose"><span class="header-section-number">11.5</span> How Primitives Compose</h2>
-<p>Primitives are not independent. They form a layered system where each type provides a different kind of guidance, and the agent’s effective context is the composition of all applicable primitives for the current task.</p>
+<p>Primitives are not independent. They form a layered system where each type provides a different kind of guidance, and the agent’s effective context is the composition of all applicable context files for the current task.</p>
 <p>The composition follows a hierarchy:</p>
 <pre><code>Global principles (copilot-instructions.md)
   └─ Scoped instructions (*.instructions.md, matched by applyTo)
@@ -1043,13 +1044,13 @@ Figure&nbsp;11.1: The seven APM primitive types
 <li><strong>Backend-dev agent</strong> — provides the persona, model selection, and tool constraints</li>
 <li><strong>Memory</strong> — the API versioning decisions, the deprecated authentication class, the rate limit timeout choice</li>
 </ol>
-<p>Each layer adds specificity. None contradicts the layer above — more specific primitives refine general guidance, they don’t override it. If a conflict exists, it indicates a design error in the primitives, not a resolution the agent should attempt.</p>
-<p>This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone’s head.</p>
+<p>Each layer adds specificity. None contradicts the layer above; more specific context files refine general guidance, they don’t override it. If a conflict exists, it indicates a design error in the instrumentation, not a resolution the agent should attempt.</p>
+<p>This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task, without requiring that information to fit in anyone’s head.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <hr>
 </section>
 <section id="the-instrumentation-audit" class="level2" data-number="11.6">
 <h2 data-number="11.6" class="anchored" data-anchor-id="the-instrumentation-audit"><span class="header-section-number">11.6</span> The Instrumentation Audit</h2>
-<p>Before you build any of this, you need to know what your codebase already has and what it’s missing. The instrumentation audit is a systematic inventory — not of your code, but of the knowledge your code depends on.</p>
+<p>Before you build any of this, you need to know what your codebase already has and what it’s missing. The instrumentation audit is a systematic inventory, not of your code, but of the knowledge your code depends on.</p>
 <p><strong>Step 1: List your conventions.</strong> Spend 30 minutes with your team. Write down every convention, pattern, and constraint that a new engineer would need to learn in their first two weeks. Don’t filter. Don’t organize.</p>
 <p>You’ll typically get 30-60 items. Examples:</p>
 <ul>
@@ -1144,12 +1145,12 @@ Figure&nbsp;11.1: The seven APM primitive types
 </tr>
 </tbody>
 </table>
-<p><strong>Step 5: Write your starter set.</strong> Begin with 3-5 primitives covering your critical items. Don’t aim for completeness — the feedback loop will guide you to what’s actually needed faster than upfront planning will.</p>
+<p><strong>Step 5: Write your starter set.</strong> Begin with 3-5 context files covering your critical items. Don’t aim for completeness; the feedback loop will guide you to what’s actually needed faster than upfront planning will.</p>
 <hr>
 </section>
 <section id="before-and-after" class="level2" data-number="11.7">
 <h2 data-number="11.7" class="anchored" data-anchor-id="before-and-after"><span class="header-section-number">11.7</span> Before and After</h2>
-<p>Consider a mid-size backend service — 80,000 lines of Python, a REST API, a message queue consumer, an authentication module with some technical debt, and a CLI for operations tasks. The team has five engineers who’ve been working on it for two years.</p>
+<p>Consider a mid-size backend service: 80,000 lines of Python, a REST API, a message queue consumer, an authentication module with some technical debt, and a CLI for operations tasks. The team has five engineers who’ve been working on it for two years.</p>
 <section id="before-uninstrumented" class="level3" data-number="11.7.1">
 <h3 data-number="11.7.1" class="anchored" data-anchor-id="before-uninstrumented"><span class="header-section-number">11.7.1</span> Before: uninstrumented</h3>
 <pre><code>project/
@@ -1169,10 +1170,10 @@ Figure&nbsp;11.1: The seven APM primitive types
 └── pyproject.toml</code></pre>
 <p>What happens when an agent is asked to “add a health check endpoint”:</p>
 <ul>
-<li>It creates a new route in the API directory, using Flask patterns it learned from training data — but this project uses FastAPI</li>
+<li>It creates a new route in the API directory, using Flask patterns it learned from training data, but this project uses FastAPI</li>
 <li>It imports a database connection check, but uses a raw connection instead of the project’s <code>HealthChecker</code> service</li>
 <li>It returns a plain JSON response, ignoring the project’s standard response envelope (<code>{"status": ..., "data": ..., "meta": ...}</code>)</li>
-<li>It writes a test that passes, using inline object construction — violating the factory pattern the team uses everywhere else</li>
+<li>It writes a test that passes, using inline object construction, violating the factory pattern the team uses everywhere else</li>
 <li>It doesn’t register the route in the middleware pipeline because it doesn’t know the pipeline exists</li>
 </ul>
 <p>Everything compiles. Tests pass. The PR gets three review comments, all of the form “we don’t do it that way here.” The reviewer rewrites 60% of the code. The agent saved time on a first draft and cost time on corrections.</p>
@@ -1232,7 +1233,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 </section>
 <section id="what-the-numbers-look-like" class="level3" data-number="11.7.3">
 <h3 data-number="11.7.3" class="anchored" data-anchor-id="what-the-numbers-look-like"><span class="header-section-number">11.7.3</span> What the numbers look like</h3>
-<p>In the author’s experience, based on projects that have undergone this transformation — including the reference case documented throughout this book:</p>
+<p>In the author’s experience, based on projects that have undergone this transformation, including the reference case documented throughout this book:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 22%">
@@ -1269,7 +1270,12 @@ Figure&nbsp;11.1: The seven APM primitive types
 </tr>
 </tbody>
 </table>
-<p>These numbers are directional, not guaranteed. They depend on the quality of your primitives and the complexity of your conventions. But the direction is consistent: instrumented codebases produce dramatically more reliable agent output than uninstrumented ones, with the same models, the same tools, and the same tasks.</p>
+<dl>
+<dt>These numbers are directional, not guaranteed. They depend on the quality of your context files and the complexity of your conventions. But the direction is consistent: instrumented codebases produce dramatically more reliable agent output than uninstrumented ones, with the same models, the same tools, and the same tasks.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></dt>
+<dd>
+<p>Based on the author’s experience across instrumented projects. Results will vary by codebase complexity, model, and instrumentation maturity.</p>
+</dd>
+</dl>
 <hr>
 </section>
 </section>
@@ -1280,7 +1286,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 <pre><code>Failure observed
     |
     v
-Root cause: which primitive failed?
+Root cause: which context file failed?
     |
     +-- Agent too generic?          --&gt; Add domain knowledge to agent config
     +-- Skill rules incomplete?     --&gt; Add the missing case to the skill
@@ -1288,7 +1294,7 @@ Root cause: which primitive failed?
     +-- No decision framework?      --&gt; Extract a new skill
     +-- Context gap?                --&gt; Update the memory file
     +-- No repeatable process?      --&gt; Create a prompt</code></pre>
-<p>Four examples from a real project, where fixing the primitive fixed the class of error permanently:</p>
+<p>Four examples from a real project, where fixing the instrumentation file fixed the class of error permanently:</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 25%">
@@ -1299,7 +1305,7 @@ Root cause: which primitive failed?
 <tr class="header">
 <th>Failure</th>
 <th>Root cause</th>
-<th>Primitive fix</th>
+<th>Context fix</th>
 </tr>
 </thead>
 <tbody>
@@ -1325,25 +1331,144 @@ Root cause: which primitive failed?
 </tr>
 </tbody>
 </table>
-<p>This feedback loop is how primitive quality compounds over time. Every failure you diagnose and fix is a failure that never recurs. After 20-30 iterations, your primitive set covers the conventions that actually matter — not the ones you theorized about, but the ones agents actually violate. That practical grounding is what makes an instrumented codebase effective.</p>
+<p>This feedback loop is how context file quality compounds over time. Every failure you diagnose and fix is a failure that never recurs. After 20-30 iterations, your instrumentation set covers the conventions that actually matter, not the ones you theorized about, but the ones agents actually violate. That practical grounding is what makes an instrumented codebase effective.</p>
 <hr>
 </section>
-<section id="starting-points" class="level2" data-number="11.9">
-<h2 data-number="11.9" class="anchored" data-anchor-id="starting-points"><span class="header-section-number">11.9</span> Starting Points</h2>
+<section id="what-it-looks-like-an-annotated-session" class="level2" data-number="11.9">
+<h2 data-number="11.9" class="anchored" data-anchor-id="what-it-looks-like-an-annotated-session"><span class="header-section-number">11.9</span> What It Looks Like: An Annotated Session</h2>
+<p>The concepts above are concrete, but seeing them in action makes the feedback loop tangible. The session below is a realistic reconstruction based on the APM PR #394 pattern (documented in Part IV). It shows a developer orchestrating a multi-agent code change across a module, with context files shaping every step.</p>
+<pre><code># ──────────────────────────────────────────────────
+# WAVE 1: Foundation — Auth module consolidation
+# The plan calls for three agents on separate file scopes.
+# Each agent gets scoped instructions automatically.
+# ──────────────────────────────────────────────────
+
+$ copilot-cli dispatch --scope src/auth/ --plan wave1-auth.yaml
+  → Agent reads: .github/copilot-instructions.md       (global rules)
+  → Agent reads: src/auth/.instructions.md              (module-scoped)
+  → Agent reads: specs/auth-consolidation.prompt.md     (task spec)
+  Agent working...  ████████████████████████  done (47s)
+
+$ copilot-cli dispatch --scope src/middleware/ --plan wave1-middleware.yaml
+  Agent working...  ████████████████████████  done (31s)
+
+$ copilot-cli dispatch --scope tests/auth/ --plan wave1-tests.yaml
+  Agent working...  ████████████████████████  done (52s)
+
+# ──────────────────────────────────────────────────
+# REVIEW CHECKPOINT — Developer reviews Wave 1 output
+# This is the Reviewer role from Chapter 8.
+# ──────────────────────────────────────────────────
+
+$ git diff --stat
+ src/auth/provider.py       | 47 +++++++++-------
+ src/auth/middleware.py      | 23 ++------
+ src/auth/token_service.py   | 18 +++++++
+ src/middleware/rate_limit.py | 11 ++--
+ tests/auth/test_provider.py | 31 ++++++++++++
+ tests/auth/test_tokens.py   | 29 ++++++++++++
+ 6 files changed, 119 insertions(+), 40 deletions(-)
+
+# Tests pass:
+$ pytest tests/auth/ -q
+ 6 passed in 1.4s
+
+# ──────────────────────────────────────────────────
+# THE CATCH — A silent failure (Anti-Pattern #6 from Ch14)
+# Tests pass. But the developer spots something in the diff:
+# the agent used the OLD token validation pattern.
+#
+# Why this matters: the test fixtures also use the old pattern,
+# so old code + old fixtures = green tests, wrong behavior.
+# This is exactly the "Silent Semantic Failure" pattern —
+# the output is locally coherent and globally wrong.
+# ──────────────────────────────────────────────────
+
+$ git diff src/auth/token_service.py | head -20
+ +    decoded = jwt.decode(token, key, algorithms=["RS256"],
+ +                         options={"verify_signature": False})
+ #                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+ #    WRONG — the legacy pattern. Production requires verify=True.
+ #    The agent didn't know because the deprecation wasn't in scope.
+
+# ──────────────────────────────────────────────────
+# CONTEXT FIX — Not a code fix. A primitive fix.
+# This is the feedback loop: fix the context file so this
+# class of error never recurs. (See "The Feedback Loop"
+# section earlier in this chapter.)
+# ──────────────────────────────────────────────────
+
+$ cat &gt;&gt; src/auth/.instructions.md &lt;&lt; 'EOF'
+
+## Token Validation (Critical)
+- ALWAYS use jwt.decode() with verify_signature=True.
+- The legacy pattern (verify=False) is DEPRECATED.
+- If you see verify=False in existing code, flag it — do not copy it.
+- See: docs/auth-migration.md for the migration timeline.
+EOF
+
+# ──────────────────────────────────────────────────
+# RE-DISPATCH — Agent now reads the updated instruction file.
+# This is the Escalation Handler role: diagnose the failure,
+# fix the context, re-dispatch. (Chapter 8, "Your Three Roles")
+# ──────────────────────────────────────────────────
+
+$ copilot-cli dispatch --scope src/auth/ --plan wave1-auth.yaml --retry
+  → Agent reads: src/auth/.instructions.md  (NOW INCLUDES token rule)
+  → Agent reads: specs/auth-consolidation.prompt.md
+  Agent working...  ████████████████████████  done (39s)
+
+$ git diff src/auth/token_service.py | head -10
+ +    decoded = jwt.decode(token, key, algorithms=["RS256"],
+ +                         options={"verify_signature": True})
+ #    ✓ Correct pattern. The updated instruction prevented the mistake.
+
+# ──────────────────────────────────────────────────
+# WAVE 2: Dependent work — the middleware integration
+# Now that auth is solid, dispatch the next wave.
+# This is orchestrated composition (Chapter 10, Constraint O):
+# Wave 2 agents consume Wave 1's committed output as context.
+# ──────────────────────────────────────────────────
+
+$ git add -A &amp;&amp; git commit -m "feat(auth): consolidate provider, add token service"
+$ copilot-cli dispatch --scope src/api/ --plan wave2-api-integration.yaml
+  Agent working...  ████████████████████████  done (44s)
+
+$ pytest tests/ -q
+ 31 passed in 4.2s
+
+# All green. PR ready for human review.
+# Total: ~5 min hands-on, ~3 min agent execution, 1 context fix.
+# The context fix is the lasting value — it prevents the same
+# mistake on every future auth task, for every developer.</code></pre>
+<p>Three things to notice.</p>
+<p><strong>The developer never wrote application code.</strong> Every line of <code>src/</code> was produced by agents. The developer’s contributions were the plan, the review, and the context fix. This is the role shift Chapter 8 described: architect, reviewer, escalation handler.</p>
+<p><strong>The fix was to the instruction file, not the generated code.</strong> A developer working without instrumentation would have fixed <code>token_service.py</code> and moved on. The same mistake would recur next week, with a different agent, on a different task. Fixing the context file (the scoped <code>.instructions.md</code>) prevents the entire class of error, permanently. This is the feedback loop that makes instrumentation compound over time.</p>
+<p><strong>The silent failure was caught by a human, not a test.</strong> The tests passed because the test fixtures encoded the same wrong assumption the agent did. This is Anti-Pattern #6 from Chapter 14: <em>Silent Semantic Failure</em>. Automated checks are necessary but not sufficient. The developer’s domain knowledge (knowing that <code>verify=False</code> is deprecated) was the safety net. Agent-augmented development does not eliminate the need for human judgment; it changes where that judgment is applied.</p>
+<hr>
+</section>
+<section id="starting-points" class="level2" data-number="11.10">
+<h2 data-number="11.10" class="anchored" data-anchor-id="starting-points"><span class="header-section-number">11.10</span> Starting Points</h2>
 <p>The seven primitives and the full directory structure represent a mature instrumented codebase. You don’t need to build all of it at once. Start where the leverage is highest.</p>
 <p><strong>Week one.</strong> Write three files: 1. Global instructions (10-15 lines) — your non-negotiable principles 2. One scoped instruction file for your most-edited module 3. One agent configuration for the task agents perform most often</p>
-<p><strong>Week two.</strong> Use these primitives on real work. When the agent violates a convention not covered by your files, add it. When it does something right that surprised you, check whether your primitives contributed. Update the memory file with the decisions and trade-offs you resolved this week.</p>
-<p><strong>Week three.</strong> Extract the first skill. You’ll know it’s time because you’ve written the same guidance in two different instruction files. Package the shared knowledge as a skill with a decision framework. Create your first prompt file for a task you’ve now asked an agent to do three or more times.</p>
-<p><strong>Ongoing.</strong> Review primitives monthly. Remove rules that never trigger. Tighten rules that trigger but don’t prevent the failure. Add new rules only in response to observed failures. Treat your primitive set like a test suite — it should grow with the codebase, stay accurate, and never contain dead rules.</p>
-<p>The instrumented codebase is not a finished state. It’s a practice — an ongoing investment in making machine-readable what your team already knows. Chapter 10 defines the constraints that make these primitives effective. Chapter 11 teaches the context engineering discipline that determines how and when they load. This chapter showed you the artifacts themselves.</p>
-<p>The directory structure and primitive types in this chapter can be built by hand — and for a first project, doing so builds understanding. For subsequent projects, or for teams standardizing across repositories, the mechanical work of scaffolding and primitive sharing benefits from a distribution mechanism — the same pattern npm brought to JavaScript modules. This category of tooling is new. One open-source implementation is APM (Agent Package Manager), built by the author of this book. You can build everything in this chapter without it; tooling reduces the scaffolding work from hours to seconds.</p>
+<p><strong>Week two.</strong> Use these files on real work. When the agent violates a convention not covered by your files, add it. When it does something right that surprised you, check whether your instrumentation contributed. Update the memory file with the decisions and trade-offs you resolved this week.</p>
+<p><strong>Week three.</strong> Extract the first skill. You’ll know it’s time because you’ve written the same guidance in two different instruction files. Package the shared knowledge as a skill with a decision framework. Create your first prompt file for a task you’ve now asked an agent to do three or more times. <strong>Ongoing.</strong> Review context files monthly. Remove rules that never trigger. Tighten rules that trigger but don’t prevent the failure. Add new rules only in response to observed failures. Treat your instrumentation like a test suite; it should grow with the codebase, stay accurate, and never contain dead rules.</p>
+<p>The instrumented codebase is not a finished state. It’s a practice, an ongoing investment in making machine-readable what your team already knows. Chapter 10 defines the constraints that make these context artifacts effective. Chapter 11 teaches the context engineering discipline that determines how and when they load. This chapter showed you the artifacts themselves.</p>
+<p>The directory structure and primitive types in this chapter can be built by hand, and for a first project, doing so builds understanding. For subsequent projects, or for teams standardizing across repositories, the mechanical work of scaffolding and sharing benefits from a distribution mechanism, the same pattern npm brought to JavaScript modules. This category of tooling is new. One open-source implementation is APM (Agent Package Manager), built by the author of this book. You can build everything in this chapter without it; tooling reduces the scaffolding work from hours to seconds.</p>
 <blockquote class="blockquote">
 <p><strong>Shortcut: scaffolding with a package manager</strong></p>
-<p><code>apm init</code> generates <code>copilot-instructions.md</code>, one scoped instruction file, and one agent configuration — the Week One starter set from this chapter. <code>apm install</code> pulls shared primitives from any Git repository into your project.</p>
+<p><code>apm init</code> generates <code>copilot-instructions.md</code>, one scoped instruction file, and one agent configuration, the Week One starter set from this chapter. <code>apm install</code> pulls shared context files from any Git repository into your project.</p>
 </blockquote>
 <p>Now you know what to build. What follows is how to make it work.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The principle of scoped, hierarchical configuration mirrors established patterns in software engineering — from CSS specificity to Git’s nested .gitignore files. The key insight is that agents benefit from the same locality-of-reference that makes these patterns effective for humans.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Failures in Chapter 14.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -1433,7 +1558,7 @@ Root cause: which primitive failed?
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/apm-handbook\/");
+        var filterRegex = new RegExp("https:\/\/danielmeppiel\.github\.io\/agentic-sdlc-handbook\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -1773,10 +1898,10 @@ Root cause: which primitive failed?
   </div>
 </nav>
 </div> <!-- /content -->
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/apm-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="../apm-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="../agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">© 2025-2026 Daniel Meppiel · <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" style="color: #aaa;">CC BY-NC-ND 4.0</a></p>
