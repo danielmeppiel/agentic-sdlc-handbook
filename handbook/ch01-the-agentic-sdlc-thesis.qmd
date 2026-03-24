@@ -54,7 +54,7 @@ In 2000, Roy Fielding didn't build a web framework. He published a dissertation 
 
 REST didn't immediately replace SOAP or RPC. It didn't prescribe a technology stack. It defined an architectural style: a coherent set of constraints that, applied to the problem of distributed systems, induced properties that individual tools and protocols couldn't guarantee on their own.
 
-**PROSE** occupies the same position for AI-native development. It defines five architectural constraints for human-AI collaboration that, applied together, address the structural failures described above. It is not a tool, not a file format, not a prompting technique. It is an architectural approach.
+**PROSE** occupies the same position for AI-native development. It defines five architectural constraints for human-AI collaboration that, applied together, address the systemic failures described above. It is not a tool, not a file format, not a prompting technique. It is an architectural approach.
 
 The five constraints, and the failure modes each addresses:
 
@@ -72,7 +72,7 @@ The five constraints, and the failure modes each addresses:
 
 Each constraint is necessary to address its failure mode. Together, these five constraints cover the failure modes we've observed in every production codebase we've studied.
 
-These constraints sound abstract. Later in this book, we trace a single pull request — [75 files changed, 2,897 tests passing, 3 execution-phase interventions (5 total including verification), roughly 90 minutes of wave execution time](https://github.com/microsoft/apm/pull/394) — that demonstrates what they produce in practice. That case study shows both what worked and what required human escalation. It is evidence, not a sales pitch.
+These constraints sound abstract. Later in this book, we trace a single pull request — [75 files changed, 2,897 tests passing, 3 execution-phase interventions (5 total including verification), roughly 90 minutes of wave execution time](https://github.com/microsoft/apm/pull/394) — that demonstrates what they produce in practice. That case study shows both what worked and what required human escalation. It is evidence, not a sales pitch. The full metrics are in [The APM Auth + Logging Overhaul](case-study-apm-overhaul.qmd) case study.
 
 **The REST parallel is specific, not decorative.** REST's statelessness constraint meant servers didn't maintain session state between requests — which seemed limiting, but induced scalability. PROSE's Reduced Scope constraint means complex work is decomposed into tasks sized to fit available context — which seems slower, but induces consistent quality. REST's uniform interface meant all resources were accessed the same way — which seemed rigid, but induced independent evolution. PROSE's Explicit Hierarchy means instructions form a global-to-local tree — which seems bureaucratic, but induces domain adaptation without context pollution.
 
@@ -133,7 +133,7 @@ The appropriate claim is not "PROSE is the only way" but "PROSE articulates cons
 
 This book serves two audiences who need different things from the same shift.
 
-**If you lead engineering teams** — VP Engineering, CTO, Chief Architect — you need to understand what changes about organizational strategy when AI agents become participants in your software delivery lifecycle. Not the hype version. Not the vendor pitch. The structural version: what happens to team composition, how governance changes, where the new risks live, and how to evaluate ROI honestly.
+**If you lead engineering teams** — VP Engineering, CTO, Chief Architect — you need to understand what changes about organizational strategy when AI agents become participants in your software delivery lifecycle. Not the hype version. Not the vendor pitch. The concrete version: what happens to team composition, how governance changes, where the new risks live, and how to evaluate ROI honestly.
 
 Block 1 of this book (Chapters 2–7) answers those questions. It covers the market landscape and why "wait and see" is itself a decision with competitive consequences. It presents a reference architecture — a three-layer model that maps human roles, agent capabilities, and platform infrastructure across the full software lifecycle. It addresses the hard organizational questions: how team structures change, what governance looks like when agents produce code, and how to build an honest business case that doesn't rely on inflated productivity claims. Chapter 3 builds that business case, including what the productivity claims get wrong, what adoption actually costs, and when to expect returns. Every chapter produces a deliverable: an evaluation framework, a decision matrix, a governance checklist, a planning template.
 
@@ -181,7 +181,7 @@ The constraints are the point. Let's see what they produce.
 
 ::: {.content-hidden when-format="html"}
 ::: {.callout-tip appearance="simple" icon=false}
-**Found this useful?** Read the latest version at [danielmeppiel.github.io/apm-handbook](https://danielmeppiel.github.io/apm-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+**Found this useful?** Read the latest version at [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
 :::
 :::
 

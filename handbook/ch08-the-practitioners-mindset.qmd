@@ -4,7 +4,7 @@ title: "The Practitioner's Mindset"
 
 Block 1 answered what to decide. Block 2 answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.
 
-*The practitioner chapters that follow draw primarily from the author's direct experience building and using agentic development workflows. Where claims derive from the reference case study (PR #394, documented in Part IV), this is noted. Where heuristics are offered (such as thresholds or timing estimates), they reflect observed patterns from this practice, not controlled experiments. The reader should treat specific numbers as starting points for their own calibration, not as industry benchmarks.*
+*The practitioner chapters that follow draw primarily from the author's direct experience building and using agentic development workflows. Where claims derive from the reference case study (PR #394, documented in Part IV), this is noted. Where heuristics are offered (such as thresholds or timing estimates), they reflect observed patterns from this practice, not controlled experiments. The reader should treat specific numbers as starting points for their own calibration, not as industry benchmarks.*[^ch8-n1]
 
 ---
 
@@ -22,7 +22,7 @@ A junior engineer who joins your team does not automatically know your authentic
 
 An AI agent is that junior engineer, every single session. It has no persistent memory of your codebase. It cannot learn from last week's code review. Every time you dispatch it, it starts from zero. The difference is speed: a junior engineer takes days to produce code that violates your conventions. An agent does it in minutes, at scale, across dozens of files. The damage from poor onboarding compounds faster.
 
-This is the mental model that works: AI is a capable but amnesiac engineer that needs explicit context to do useful work. Your job is to supply that context: reliably, structurally, and at the right level of detail for the task at hand.
+This is the mental model that works: AI is a capable but amnesiac engineer that needs explicit context to do useful work. Your job is to supply that context: reliably, systematically, and at the right level of detail for the task at hand.
 
 ---
 
@@ -30,7 +30,7 @@ This is the mental model that works: AI is a capable but amnesiac engineer that 
 
 In traditional development, your primary output is code. You read requirements, you think through the design, you type the implementation. The artifact is source files. Your skill is measured by the quality of what you write.
 
-In agentic development, your primary output shifts. You still write code, but the most leveraged thing you write is context. The instructions that tell agents what your system looks like, the constraints that prevent them from violating your architecture, the decomposition that breaks work into pieces sized for an agent's context window. The artifact is still source files, but the source files are produced by agents operating within the boundaries you defined. Your skill is measured by the quality of the boundaries.
+In agentic development, your primary output shifts. You still write code, but the most leveraged thing you write is context. The instructions that tell agents what your system looks like, the constraints that prevent them from violating your architecture, the decomposition that breaks work into pieces sized for an agent's context window. The artifact is still source files, but the source files are produced by agents operating within the boundaries you defined. Your skill is measured by the quality of the boundaries.[^ch8-cognitive]
 
 This is not a soft claim about "thinking at a higher level." It is a concrete change in where your time goes.
 

@@ -177,4 +177,4 @@ The division of labor was consistent: every design decision was human; every tec
 
 ---
 
-*This case study documents the publishing pipeline for [The Agentic SDLC Handbook](https://danielmeppiel.github.io/apm-handbook/). The book, the pipeline, and this case study were all produced using the methodology described in Chapters 12–15.*
+*This case study documents the publishing pipeline for [The Agentic SDLC Handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/). The book, the pipeline, and this case study were all produced using the methodology described in Chapters 12–15.*

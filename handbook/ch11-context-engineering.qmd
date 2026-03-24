@@ -346,7 +346,7 @@ If the audit feels like a large undertaking, start smaller. The minimum viable c
 | One domain instruction | Your most-edited module | The patterns and constraints specific to where agents will work most |
 | One agent configuration | Your most common task type | The expertise and behavioral constraints for the work agents do daily |
 
-Write these three files. Use the agent on a real task. Observe what goes wrong. Fix the primitives. Repeat. Within a few iteration cycles you'll have a context architecture that's shaped by actual failure modes rather than theoretical completeness, and that architecture will be more effective than any comprehensive upfront design.
+Write these three files. Use the agent on a real task. Observe what goes wrong. Fix the context files. Repeat. Within a few iteration cycles you'll have a context architecture that's shaped by actual failure modes rather than theoretical completeness, and that architecture will be more effective than any comprehensive upfront design.
 
 Context engineering is not about making agents smarter. It is about making the information available to agents accurate, relevant, and proportional to the task. The model doesn't change. The context does. And that is where the leverage is.
 

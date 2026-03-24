@@ -12,7 +12,7 @@ The most common justification for AI coding tools goes like this: developers rep
 
 **The denominator problem.** Productivity metrics for AI tools almost always measure the coding phase, writing and editing code in an editor. But coding is 20–35% of a developer's working time.[^ch3-time] The rest is reading code, reviewing pull requests, debugging, communicating, designing, and waiting for builds. A 50% improvement on 30% of work time is a 15% improvement on total work time. That's still significant. It's not 10×. Reporting it as 10× invites the CFO to ask why headcount hasn't decreased by 90%, and when the answer is an awkward silence, the credibility of every subsequent AI investment is damaged.
 
-**The quality discount.** Raw speed metrics count code produced. They don't count code reworked, reverted, or debugged downstream. Cross-referencing the 2025 Stack Overflow survey and GitClear's code churn analysis suggests roughly 30–60% of AI-generated code on complex tasks requires significant rework, though no controlled study has established a definitive figure.[^ch3-rework] This means structural changes, convention fixes, and security remediation, not cosmetic edits. If an agent produces a function in 30 seconds that takes 20 minutes to correct, the net productivity may be negative. Measuring production without measuring rework is measuring revenue without measuring returns.
+**The quality discount.** Raw speed metrics count code produced. They don't count code reworked, reverted, or debugged downstream. Cross-referencing the 2025 Stack Overflow survey and GitClear's code churn analysis suggests roughly 30–60% of AI-generated code on complex tasks requires significant rework, though no controlled study has established a definitive figure.[^ch3-rework] This means architectural changes, convention fixes, and security remediation, not cosmetic edits. If an agent produces a function in 30 seconds that takes 20 minutes to correct, the net productivity may be negative. Measuring production without measuring rework is measuring revenue without measuring returns.
 
 **The attribution problem.** When a developer uses an AI tool, which parts of the resulting code are "AI-generated"? The developer writes a prompt, the agent produces code, the developer edits it, asks for revisions, edits again, and commits. Attributing the final result to the AI overstates its contribution. Attributing it to the developer understates the tool's value. The honest answer, that the output is a collaboration whose proportions vary by task, doesn't fit neatly into a productivity spreadsheet. This ambiguity is inherent, not a measurement failure.
 
@@ -288,6 +288,19 @@ Chapter 2 made the strategic argument: inaction is itself a decision, with conse
 Using the moderate scenario modeled above, a 12-month delay for a 50-person team could represent $1.5–2.5M in forgone throughput improvement. This figure is illustrative, not predictive: it applies the model's assumptions in reverse, which compounds estimation error. It also omits the unquantified but real costs of competitive position and hiring friction. "Wait and see" is itself a decision with a price. Your board will ask "what if we wait a year?" This section is the answer.
 
 ---
+
+::: {.callout-note title="Adoption Cost Framework"}
+The business case above models the *benefit* side. Here's the cost side:
+
+| Phase | Duration | Investment | Risk |
+|-------|----------|-----------|------|
+| **Pilot** (1 team, 1 sprint) | 2-4 weeks | Tool licenses + 20% productivity dip | Low — contained blast radius |
+| **Instrumentation** (context files, CI gates) | 2-4 weeks | 1-2 engineers full-time | Low — improves codebase regardless |
+| **Expansion** (3-5 teams) | 1-3 months | Training + process adaptation | Medium — coordination overhead |
+| **Institutionalization** (org-wide) | 3-6 months | Governance framework + tooling | Medium-high — cultural resistance |
+
+*The pilot phase is designed to be reversible. If it doesn't work for your codebase, the only cost is a few weeks of reduced velocity. The instrumentation investment (Chapter 9) pays dividends even without agentic workflows.*
+:::
 
 ## The Honest Version
 

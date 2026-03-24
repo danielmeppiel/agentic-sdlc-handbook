@@ -39,7 +39,7 @@ Each phase has a specific purpose, a specific human decision, and a specific out
 
 **Purpose.** Build a multi-perspective understanding of the code you are about to change. The audit surfaces what you know, what you've forgotten, and what you never knew.
 
-**How it works.** You dispatch expert agents, typically 2 to 4 running in parallel, each with a distinct audit lens. An architecture expert examines structural patterns, coupling, and separation of concerns. A domain expert examines the specific subsystem (logging conventions, auth flows, API contracts). A security expert checks for vulnerabilities. Each agent produces ranked findings with severity levels, exact file-and-line citations, and remediation guidance.
+**How it works.** You dispatch expert agents, typically 2 to 4 running in parallel, each with a distinct audit lens. An architecture expert examines architectural patterns, coupling, and separation of concerns. A domain expert examines the specific subsystem (logging conventions, auth flows, API contracts). A security expert checks for vulnerabilities. Each agent produces ranked findings with severity levels, exact file-and-line citations, and remediation guidance.
 
 **The human decision.** You review the audit reports and decide what matters. Not every finding warrants action. Some are informational. Some are follow-up items for a different PR. The audit gives you the information; the plan reflects your judgment about which findings to act on now.
 
@@ -196,7 +196,7 @@ The meta-process is abstract until you see it execute. This section summarizes a
 | Plan iterations | 8 (v1 → v8 before execution began) |
 | Wall-clock time | ~90 minutes (wave execution phase) |
 
-**A note on timing.** The 90-minute figure reflects an experienced practitioner working with mature primitives: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.
+**A note on timing.** The 90-minute figure reflects an experienced practitioner working with mature instrumentation: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.
 
 ### Timeline
 
@@ -301,7 +301,7 @@ For changes that span a significant portion of the codebase (a framework migrati
 
 - **Audit** uses more expert agents (4-6), each covering a different subsystem or concern.
 - **Plan** requires more waves (6-10), with careful dependency mapping and explicit scope boundaries for each.
-- **Execution** may use a two-team structure with distinct agent personas: an architecture team for structural changes and a domain team for concern-specific changes.
+- **Execution** may use a two-team structure with distinct agent personas: an architecture team for cross-cutting changes and a domain team for concern-specific changes.
 - **The ADAPT loop** is more likely to fire, and the plan should anticipate it. Leave slack in the wave structure for recovery waves.
 
 The scaling property to preserve: each wave remains independently verifiable. If a 200-file change is decomposed into 8 waves of 25 files each, each wave is still a self-contained, testable unit. The total complexity grows; the complexity of any single checkpoint does not.
@@ -316,7 +316,7 @@ When followed, the meta-process produces four things that manual development typ
 
 **Auditable decisions.** The plan documents what was decided and why. The checkpoint records document what happened at each validation point. The escalation records document what required human judgment and what the judgment was. A reviewer reading the PR has a complete record of the decision chain, not just the final code.
 
-**Reproducible process.** The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same primitives, and the same plan, would produce substantially similar output. This is our hypothesis, not a tested claim. Controlled reproducibility experiments would strengthen it. The non-determinism of AI agents is bounded by the determinism of the process around them.
+**Reproducible process.** The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same context files, and the same plan, would produce substantially similar output. This is our hypothesis, not a tested claim. Controlled reproducibility experiments would strengthen it. The non-determinism of AI agents is bounded by the determinism of the process around them.
 
 **Proportional cost.** The time spent scales with the change scope, not the full codebase size — though we have verified this only at the scale documented in the reference case study. A 75-file change took ~90 minutes of total elapsed time regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.
 

@@ -4,7 +4,7 @@ title: "Team Structures for AI-Augmented Delivery"
 
 The question every VP of Engineering asks privately: "If AI agents write most of the code, what happens to my team?" The honest answer is more nuanced, and more urgent, than either "nothing changes" or "everyone's replaced."
 
-Agentic development does not eliminate engineering roles. It restructures how teams coordinate, what skills matter, and where humans add irreplaceable value. Organizations that plan this shift tend to navigate it more successfully than those that let it happen accidentally. This chapter provides the structural framework for that deliberate design.
+Agentic development does not eliminate engineering roles. It restructures how teams coordinate, what skills matter, and where humans add irreplaceable value. Organizations that plan this shift tend to navigate it more successfully than those that let it happen accidentally. This chapter provides the organizational framework for that deliberate design.
 
 ---
 
@@ -135,7 +135,7 @@ Team Topologies, the framework by Matthew Skelton and Manuel Pais, provides a us
 
 **Stream-aligned teams with embedded context engineering.** The most effective pattern is the simplest: existing product teams that add context engineering to their responsibilities. The team that owns the code also owns the context layer for that code. This preserves domain knowledge proximity: the people who understand the system best are the ones encoding that understanding for agents. Context engineering is a team responsibility, not a separate function.
 
-**A platform team that provides shared context infrastructure.** Organization-wide conventions, common patterns, and cross-cutting context assets (authentication patterns, logging standards, API design guidelines) are better maintained centrally than duplicated across teams. A platform team (or a developer experience team, depending on your vocabulary) owns these shared primitives. Stream-aligned teams consume them and add domain-specific context on top. This mirrors the Explicit Hierarchy constraint from Chapter 1: global rules flow down, domain specifics are local.
+**A platform team that provides shared context infrastructure.** Organization-wide conventions, common patterns, and cross-cutting context assets (authentication patterns, logging standards, API design guidelines) are better maintained centrally than duplicated across teams. A platform team (or a developer experience team, depending on your vocabulary) owns these shared assets. Stream-aligned teams consume them and add domain-specific context on top. This mirrors the Explicit Hierarchy constraint from Chapter 1: global rules flow down, domain specifics are local.
 
 **Enabling teams for adoption support.** During the transition period (which is what Chapter 7 plans in detail), a small enabling team that coaches other teams through adoption, maintains best practices documentation, and provides hands-on support is the most effective accelerant. This team has a finite lifespan. Once adoption is mature, its responsibilities fold into the platform team or dissolve.
 
@@ -273,9 +273,9 @@ The worksheet is not a one-time exercise. Reassess quarterly during your first y
 
 ---
 
-The structural changes described in this chapter take time. They are not a reorganization to announce on Monday. They are a set of shifts to design for, measure against, and adjust as your team learns what works in your context.
+The organizational changes described in this chapter take time. They are not a reorganization to announce on Monday. They are a set of shifts to design for, measure against, and adjust as your team learns what works in your context.
 
-Chapter 7 takes these structural insights and builds the operational plan — the phased transition from pilot to full adoption, with concrete criteria for each stage and honest metrics for tracking progress.
+Chapter 7 takes these organizational insights and builds the operational plan — the phased transition from pilot to full adoption, with concrete criteria for each stage and honest metrics for tracking progress.
 
 [^ch6-time]: Pre-agentic ranges are composites drawn from multiple industry surveys (2019–2023); no single source produces this exact breakdown. The closest empirical data: Tidelift/New Stack (2019, n≈400) found 32% of time on writing/improving code, 19% on maintenance, 12% on testing. Meyer et al. at Microsoft Research (2019, n=5,971) confirmed developers "spend little time on development." Agentic-era projections are based on early adopter reports and the author's observations. See [thenewstack.io](https://thenewstack.io/how-much-time-do-developers-spend-actually-writing-code/) and [Microsoft Research](https://www.microsoft.com/en-us/research/publication/today-was-a-good-day-the-daily-life-of-software-developers/).
 

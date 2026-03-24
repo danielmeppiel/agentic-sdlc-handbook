@@ -2,7 +2,7 @@
 title: "The PROSE Specification"
 ---
 
-You've been using agent instructions for a few weeks. Some tasks produce clean output; others produce confident garbage. The difference isn't the model or the prompt — it's whether your setup follows five structural constraints that determine how agents handle scope, context, and boundaries. This chapter specifies each one.
+You've been using agent instructions for a few weeks. Some tasks produce clean output; others produce confident garbage. The difference isn't the model or the prompt — it's whether your setup follows five core constraints that determine how agents handle scope, context, and boundaries. This chapter specifies each one.
 
 This is the reference chapter. Return to it when you are designing your instruction hierarchy, sizing a task for an agent, or debugging why a workflow that used to be reliable has started producing inconsistent results.
 
@@ -10,7 +10,7 @@ This is the reference chapter. Return to it when you are designing your instruct
 
 ## The Constraint Model
 
-PROSE defines five constraints. Each addresses a structural property of language models (finite context, stateless reasoning, probabilistic output) and each induces a desirable property in the system that follows it. The constraints are independent in definition and interdependent in practice.
+PROSE defines five constraints. Each addresses a fundamental property of language models (finite context, stateless reasoning, probabilistic output) and each induces a desirable property in the system that follows it. The constraints are independent in definition and interdependent in practice.[^ch10-constraints]
 
 | Constraint | Addresses | Induces |
 |---|---|---|
@@ -160,7 +160,7 @@ By the fourth request, the agent is operating with the accumulated context of fo
 
 **Definition.** Favor small, chainable primitives over monolithic frameworks. Build complex behaviors by composing simple, well-defined units.
 
-**Why it matters.** A 3,000-word mega-prompt that covers role definition, coding standards, error handling, testing requirements, security rules, documentation format, and output structure is not a well-specified agent. It is an unpredictable one. Small changes to any section produce unexpected changes in behavior across all sections, because the model processes the entire block as a single context. Composition preserves clarity. Each primitive is small enough to understand, test, and debug independently. Complex behavior emerges from combining primitives, not from making any single primitive more complex.
+**Why it matters.** A 3,000-word mega-prompt that covers role definition, coding standards, error handling, testing requirements, security rules, documentation format, and output structure is not a well-specified agent. It is an unpredictable one. Small changes to any section produce unexpected changes in behavior across all sections, because the model processes the entire block as a single context. Composition preserves clarity. Each primitive is small enough to understand, test, and debug independently. Complex behavior emerges from combining primitives, not from making any single unit more complex.
 
 ### Implementation patterns
 
@@ -182,9 +182,9 @@ By the fourth request, the agent is operating with the accumulated context of fo
         └── SKILL.md                 # Auto-activated by relevance
 ```
 
-Each file has a single responsibility. The frontend instructions do not contain backend rules. The architect agent does not have implementation tools. The feature workflow composes these primitives without duplicating their content.
+Each file has a single responsibility. The frontend instructions do not contain backend rules. The architect agent does not have implementation tools. The feature workflow composes these building blocks without duplicating their content.
 
-**Workflows as compositions.** A prompt file orchestrates multiple primitives into a sequence:
+**Workflows as compositions.** A prompt file orchestrates multiple instruction files into a sequence:
 
 ```markdown
 # Feature Implementation Workflow
@@ -196,7 +196,7 @@ Each file has a single responsibility. The frontend instructions do not contain 
 5. **STOP** — present implementation summary for human review
 ```
 
-The workflow does not restate the coding standards; the instruction files handle that. It does not redefine the agent's role; the agent configuration handles that. It composes existing primitives into a sequence.
+The workflow does not restate the coding standards; the instruction files handle that. It does not redefine the agent's role; the agent configuration handles that. It composes existing building blocks into a sequence.
 
 ### Anti-pattern: Monolithic prompt
 
@@ -337,7 +337,7 @@ More specific patterns override or extend less specific ones. The authentication
 
 **Compilation for portability.** Instruction files authored in tool-specific formats (`.instructions.md` with `applyTo`) can be compiled into hierarchical `AGENTS.md` files for universal portability. The source of truth is the authored instructions. The compiled output is the portable delivery format. This separation means the hierarchy works regardless of which AI coding tool the developer uses.
 
-This hierarchical structure is what makes primitives distributable. Package managers for agent primitives — such as APM — automate the scaffolding and sharing of instruction hierarchies across repositories and teams. The constraint (hierarchical context) drives the tooling, not the reverse.
+This hierarchical structure is what makes context files distributable. Package managers for agent primitives — such as APM — automate the scaffolding and sharing of instruction hierarchies across repositories and teams. The constraint (hierarchical context) drives the tooling, not the reverse.
 
 ### Anti-pattern: Flat instructions
 
@@ -538,7 +538,7 @@ Use this checklist to evaluate whether your current setup satisfies PROSE constr
 | R1 | Reduced Scope | Can you state each agent task in one sentence with a single deliverable? | |
 | R2 | Reduced Scope | Do multi-step workflows start each phase with a fresh context (no accumulated session state)? | |
 | O1 | Orchestrated Composition | Does each instruction file address exactly one concern (check: could you name the file after its single topic)? | |
-| O2 | Orchestrated Composition | Do workflow prompts reference shared primitives by link rather than pasting their content? | |
+| O2 | Orchestrated Composition | Do workflow prompts reference shared instruction files by link rather than pasting their content? | |
 | S1 | Safety Boundaries | Does every agent configuration have an explicit `tools` list (no wildcards)? | |
 | S2 | Safety Boundaries | Is there a `**STOP**` gate before every operation that modifies auth, database schemas, or production config? | |
 | S3 | Safety Boundaries | Does every agent have a file-path boundary (explicit list of directories it may modify)? | |
@@ -549,13 +549,13 @@ Use this checklist to evaluate whether your current setup satisfies PROSE constr
 
 **If you fail S1, S2, or S3** — start there regardless of your total score. Safety gaps have the highest blast radius and are the fastest to close (one YAML change per agent).
 
-**If you fail E1 or E2** — address these next. Hierarchy is the fastest structural change to implement (create two scoped files and you have three levels).
+**If you fail E1 or E2** — address these next. Hierarchy is the fastest architectural change to implement (create two scoped files and you have three levels).
 
 **If you fail P1, P2, R1, R2, O1, or O2** — these are discipline and refactoring issues. Prioritize whichever constraint maps to the failure mode you are currently experiencing. Scope creep? Fix R1/R2. Context dilution? Fix P1/P2. Debugging nightmares? Fix O1/O2.
 
 ---
 
-The five constraints are the specification. The chapters that follow (context engineering in Chapter 11, multi-agent orchestration in Chapter 12, and the execution meta-process in Chapter 13) are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.
+The five constraints are the specification. The chapters that follow (context engineering in Chapter 11, multi-agent orchestration in Chapter 12, and the execution meta-process in Chapter 13) are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.[^ch10-spec]
 
 ---
 
@@ -571,6 +571,6 @@ Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../downloa
 ::: {.callout-tip appearance="simple" icon=false}
 **Deploy PROSE in your repo now**: `pip install apm-cli && apm init` -- [APM on GitHub](https://github.com/microsoft/apm)
 
-Read the latest version at [danielmeppiel.github.io/apm-handbook](https://danielmeppiel.github.io/apm-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+Read the latest version at [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
 :::
 :::

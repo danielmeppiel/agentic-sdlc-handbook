@@ -1,8 +1,8 @@
-# Copilot Instructions — apm-handbook
+# Copilot Instructions — agentic-sdlc-handbook
 
 ## Project overview
 
-This is a Quarto book ("The Agentic SDLC Handbook") published to GitHub Pages at `danielmeppiel.github.io/apm-handbook/`. It covers AI-native software development methodology, the PROSE framework, and APM.
+This is a Quarto book ("The Agentic SDLC Handbook") published to GitHub Pages at `danielmeppiel.github.io/agentic-sdlc-handbook/`. It covers AI-native software development methodology, the PROSE framework, and APM.
 
 ## Build & deploy workflow
 
@@ -32,9 +32,9 @@ git checkout main && git stash pop
 
 ### Download URLs (stable, always latest)
 
-- PDF: `https://danielmeppiel.github.io/apm-handbook/The-Agentic-SDLC-Handbook.pdf`
-- EPUB: `https://danielmeppiel.github.io/apm-handbook/The-Agentic-SDLC-Handbook.epub`
-- Online: `https://danielmeppiel.github.io/apm-handbook/`
+- PDF: `https://danielmeppiel.github.io/agentic-sdlc-handbook/The-Agentic-SDLC-Handbook.pdf`
+- EPUB: `https://danielmeppiel.github.io/agentic-sdlc-handbook/The-Agentic-SDLC-Handbook.epub`
+- Online: `https://danielmeppiel.github.io/agentic-sdlc-handbook/`
 
 ## Key files
 

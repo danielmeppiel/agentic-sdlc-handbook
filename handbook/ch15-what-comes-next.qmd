@@ -30,9 +30,9 @@ These predictions are directional. The author believes they describe where the f
 
 **Full lifecycle agent participation becomes achievable.** The eight-phase lifecycle from Chapter 3 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.
 
-**Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and deployment. Context infrastructure (the primitives, instruction hierarchies, and knowledge bases that make agents effective) will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," the same way organizations without CI concluded automated testing "doesn't work at our scale."
+**Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and deployment. Context infrastructure (the context files, instruction hierarchies, and knowledge bases that make agents effective) will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," the same way organizations without CI concluded automated testing "doesn't work at our scale."
 
-Early implementations already exist. Open-source tools provide manifest-based dependency resolution and security scanning for agent primitives — the same architecture as npm or pip, applied to agent configuration rather than runtime code.
+Early implementations already exist. Open-source tools provide manifest-based dependency resolution and security scanning for agent configuration — the same architecture as npm or pip, applied to agent configuration rather than runtime code.
 
 ```{mermaid}
 %%| fig-width: 4.5
@@ -73,7 +73,7 @@ These are the things the author is most confident about, precisely because they 
 
 **Composition will remain necessary.** No single agent will hold an entire large system in focus. The tools for composition will improve; the need for it will not diminish.
 
-These five properties map directly to the PROSE constraints from Chapter 1. The constraints were not designed for today's models; they were designed for the structural properties of human-AI collaboration.
+These five properties map directly to the PROSE constraints from Chapter 1. The constraints were not designed for today's models; they were designed for the fundamental properties of human-AI collaboration.
 
 ---
 
@@ -87,7 +87,7 @@ These five properties map directly to the PROSE constraints from Chapter 1. The 
 | Specification replaces implementation as the core skill | Emerging | Medium — direction clear, timeline uncertain |
 | Full lifecycle agent coverage becomes operational | Directional | Low-to-medium — plausible, not inevitable |
 | Context infrastructure becomes as foundational as CI/CD | Directional | Medium — trajectory clear, timeline 5+ years |
-| The five structural constraints hold | Structural | High — properties of the problem |
+| The five core constraints hold | Structural | High — properties of the problem |
 
 The reader should calibrate accordingly. Invest confidently in the "available now" tier. Prepare for the "emerging" tier. Be aware of the "directional" tier without betting the organization on specific timelines.
 
@@ -99,7 +99,7 @@ Not every task benefits from agent orchestration. Applying the methodology where
 
 **The task requires fewer than 50 lines of change.** If you can hold the full scope in your head, the overhead of persona design, wave planning, and checkpoint discipline is not worth it. Just write the code.
 
-**The domain knowledge is entirely implicit.** If the conventions, constraints, and trade-offs cannot be externalized into instruction primitives -- because they depend on political context, unwritten relationships, or organizational history that resists documentation -- agents will produce plausible but wrong output. Instrument the codebase first (Chapter 9), then apply agents.
+**The domain knowledge is entirely implicit.** If the conventions, constraints, and trade-offs cannot be externalized into instruction files -- because they depend on political context, unwritten relationships, or organizational history that resists documentation -- agents will produce plausible but wrong output. Instrument the codebase first (Chapter 9), then apply agents.
 
 **The cost of failure is low and iteration is cheap.** For throwaway scripts, prototyping, and exploratory work, a single agent prompt with no orchestration is faster and sufficient. The methodology exists for production-grade work where reliability matters.
 
@@ -123,25 +123,25 @@ Pick the module your team changes most frequently. Not the biggest module, the m
 
 ### Day 2: Write Your First Three Primitives
 
-Take the top three conventions from yesterday's audit. Write each as an instruction primitive — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 9, under the constraints from Chapter 10: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
+Take the top three conventions from yesterday's audit. Write each as an instruction file — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 9, under the constraints from Chapter 10: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
 
 **Deliverable:** Three instruction files, committed to your repository.
 
 ### Day 3: Test Against a Real Task
 
-Pick a task from your current sprint — something an agent would plausibly handle. Run it twice: once without your new primitives, once with them. Compare the output. Did the primitives prevent the mistakes you predicted? Did they cause new problems? Record the before-and-after. This is your first data point, not your conclusion.
+Pick a task from your current sprint — something an agent would plausibly handle. Run it twice: once without your new context files, once with them. Compare the output. Did the context files prevent the mistakes you predicted? Did they cause new problems? Record the before-and-after. This is your first data point, not your conclusion.
 
 **Deliverable:** A before-and-after comparison with specific examples of what changed.
 
 ### Day 4: Measure and Adjust
 
-Review yesterday's comparison honestly. Which primitives made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn't land. This is the calibration loop from Chapter 11: primitives are not documentation, they are engineering artifacts that need testing and iteration like any other code.
+Review yesterday's comparison honestly. Which files made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn't land. This is the calibration loop from Chapter 11: context files are not documentation, they are engineering artifacts that need testing and iteration like any other code.
 
-**Deliverable:** Revised primitives based on observed agent behavior.
+**Deliverable:** Revised instruction files based on observed agent behavior.
 
 ### Day 5: Share and Plan
 
-Show your team the before-and-after. Not a presentation — a 15-minute demo at standup. Show the worst agent output without primitives and the improved output with them. Then plan: which modules get instrumented next? Who owns which instruction files? How do you keep them current as the code evolves?
+Show your team the before-and-after. Not a presentation — a 15-minute demo at standup. Show the worst agent output without instrumentation and the improved output with it. Then plan: which modules get instrumented next? Who owns which instruction files? How do you keep them current as the code evolves?
 
 **Deliverable:** A team agreement on next steps and ownership.
 
@@ -171,7 +171,7 @@ Intellectual honesty requires identifying where this book's assumptions are most
 
 Accept that you are early. The field is moving faster than any book can capture. The specific tools will change. The formats will evolve. The capabilities will exceed what is described here.
 
-Use the principles, not the specifics. Structure your context, scope your tasks, compose simple primitives, enforce safety boundaries, and organize your knowledge hierarchically. These disciplines work regardless of which model runs underneath or which tool wraps around it.
+Use the principles, not the specifics. Structure your context, scope your tasks, compose simple building blocks, enforce safety boundaries, and organize your knowledge hierarchically. These disciplines work regardless of which model runs underneath or which tool wraps around it.
 
 REST did not make HTTP better. It gave engineers constraints to reason about distributed systems. Twenty-five years later, the constraints still hold, even though every specific technology from that era has been replaced. The aspiration for the architectural constraints in this book is the same: durable reasoning tools for a field that will not stop changing.
 

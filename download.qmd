@@ -29,7 +29,7 @@ Prefer to read online? [Start with the thesis -->](handbook/ch01-the-agentic-sdl
 
 You're reading the offline version. Visit the website for the latest updates and additional resources:
 
-- **Read online:** [danielmeppiel.github.io/apm-handbook](https://danielmeppiel.github.io/apm-handbook/)
+- **Read online:** [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/)
 - **APM on GitHub:** [github.com/microsoft/apm](https://github.com/microsoft/apm)
 - **Follow the author:** [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
 

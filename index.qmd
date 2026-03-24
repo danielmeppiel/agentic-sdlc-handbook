@@ -16,7 +16,7 @@ number-sections: false
 
 ::: {.content-hidden when-format="html"}
 ::: {.callout-note appearance="minimal" icon=false}
-**Read the latest version online:** [danielmeppiel.github.io/apm-handbook](https://danielmeppiel.github.io/apm-handbook/) · **Follow the author:** [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+**Read the latest version online:** [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/) · **Follow the author:** [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
 :::
 :::
 
@@ -48,6 +48,16 @@ You don't need to read sequentially. Start with whichever part matches your role
 - **Part II** (Chapters 2-7): The business case, reference architecture, governance, team structures, and transition planning
 - **Part III** (Chapters 8-14): The practitioner's mindset, instrumented codebase, PROSE specification, context engineering, multi-agent orchestration, execution meta-process, and anti-patterns
 - **Closing** (Chapter 15): What comes next
+
+::: {.callout-tip title="Reading Paths"}
+**Executive scan (45 min):** Ch1 → Ch3 → Ch5 → Ch15 — thesis, business case, governance guardrails, what's next.
+
+**Tech lead deep-dive (3 hours):** Ch1 → Ch8 → Ch9 → Ch13 → Ch14 → APM Overhaul case study — the full practitioner arc from mindset through execution to failure modes.
+
+**"Convince my CTO" path (30 min):** Ch3 → Ch6 → APM Overhaul case study — business case, team impact, and proof it works.
+
+**"I start Monday" path (1 hour):** Ch9 → Ch10 → Ch13 → Ch14 — instrumentation, specification, execution, and what goes wrong.
+:::
 
 ## About the Author
 

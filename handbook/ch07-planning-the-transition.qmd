@@ -4,7 +4,7 @@ title: "Planning the Transition"
 
 Your pilot went well. Three developers spent two weeks using agentic coding tools on a greenfield microservice. They reported a "huge" productivity boost. Leadership saw the demo and approved a wider rollout.
 
-Six months later, half the engineering organization has licenses. Adoption is uneven. Two teams swear by it. Three teams tried it and reverted to their previous workflow. One team is producing code faster but spending more time in review because no one trusts the output. Your per-seat costs are climbing. Your productivity metrics are ambiguous. And the executive who approved the budget is asking for evidence that the investment is working.
+Six months later, half the engineering organization has licenses. Adoption is uneven.[^ch7-shadow] Two teams swear by it. Three teams tried it and reverted to their previous workflow. One team is producing code faster but spending more time in review because no one trusts the output. Your per-seat costs are climbing. Your productivity metrics are ambiguous. And the executive who approved the budget is asking for evidence that the investment is working.
 
 This is a common adoption trajectory we see repeatedly with agentic development tools. Not failure, but something worse. Inconclusive results that neither justify expanding the investment nor provide grounds for canceling it.
 
@@ -157,7 +157,7 @@ The rollback process: revert affected teams to their pre-pilot workflow. Preserv
 
 **Activities.**
 - Pilot team members become internal coaches. Each expanding team should have access to someone who went through the pilot; the tacit knowledge from Phase 1 is the most valuable asset for Phase 2.
-- Build shared context assets. The pilot team's context layer was project-specific. Now you need organizational primitives: shared coding standards, common architectural patterns, cross-project conventions. This is the context moat from Chapter 4, the compounding asset that makes every subsequent adoption cheaper.
+- Build shared context assets. The pilot team's context layer was project-specific. Now you need organizational context assets: shared coding standards, common architectural patterns, cross-project conventions. This is the context moat from Chapter 4, the compounding asset that makes every subsequent adoption cheaper.
 - Establish governance processes for agent-generated code at organizational scale. The pilot used whatever review process the team already had. At this scale, you need explicit policies: what requires human review, what can be auto-merged with sufficient test coverage, how agent-generated changes are attributed. Chapter 5 provides the framework.
 - Begin tracking organizational metrics, not just team metrics. The metrics section below specifies what to measure.
 
@@ -170,7 +170,7 @@ The rollback process: revert affected teams to their pre-pilot workflow. Preserv
 
 The rollback process: teams that are not self-sufficient revert to their pre-adoption workflow. Teams that are functioning well continue. Coaching resources concentrate on fewer teams. The goal is to shrink to a sustainable expansion rate, not to abandon the transition.
 
-**Common failure.** Expanding too fast. The instinct after a successful pilot is to "accelerate the rollout." Every team added without readiness or support becomes a negative data point, and as most managers have observed, negative data points spread faster than positive ones. A team that has a bad experience with agentic tools will resist for months. Three to five teams in Phase 2 is a deliberate constraint.
+**Common failure.** Expanding too fast. The instinct after a successful pilot is to "accelerate the rollout." Every team added without readiness or support becomes a negative data point, and as most managers have observed, negative data points spread faster than positive ones.[^ch7-bad] A team that has a bad experience with agentic tools will resist for months. Three to five teams in Phase 2 is a deliberate constraint.
 
 ### Phase 3: Scale (6–24 months from project start)
 
@@ -191,7 +191,7 @@ The rollback process: teams that are not self-sufficient revert to their pre-ado
 
 **Rollback criteria.** Phase 3 rollback is not all-or-nothing. It is selective:
 - **Individual teams that show sustained negative trends** — rising intervention rates, declining satisfaction, increasing rework — after eight weeks of active adoption should pause and receive targeted support. Do not force adoption on a team producing worse outcomes with the tools than without them.
-- **If organizational-level metrics plateau or decline for a full quarter,** halt further expansion and conduct a structural review. The most common cause is context asset decay — the shared assets that worked for early adopters become stale as more teams rely on them. The fix is investment in maintenance, not more rollout.
+- **If organizational-level metrics plateau or decline for a full quarter,** halt further expansion and conduct a systemic review. The most common cause is context asset decay — the shared assets that worked for early adopters become stale as more teams rely on them. The fix is investment in maintenance, not more rollout.
 - **Kill criteria for the program.** If, after a full Phase 1 and Phase 2 cycle, fewer than 40% of participating teams show measurable improvement on quality or efficiency metrics (a suggested threshold; adjust based on your organization's risk tolerance), the transition is not producing organizational value. This does not mean the tools are useless; it may mean your codebase, your team composition, or your domain is not yet a good fit. Document what you learned, preserve what worked at the team level, and revisit when conditions change. A transition plan without a kill switch is an escalation of commitment.
 
 **Exit signals.** Phase 3 does not have an endpoint; it is the steady state. The signal is not that everyone is using the tools. It is that the tools produce measurable value, the organization can sustain and improve that value, and the transition is no longer a "project" but an ongoing capability.
@@ -202,7 +202,7 @@ The rollback process: teams that are not self-sufficient revert to their pre-ado
 
 Different roles need different skills. A one-size-fits-all training program wastes time for everyone.
 
-**Senior engineers and tech leads** need context engineering skills: how to build instruction hierarchies, how to design agent primitives, how to evaluate agent output against architectural requirements. They also need to understand the failure modes from Chapter 14 — not because they'll hit every one, but because recognizing a failure mode early prevents hours of debugging. This is the highest-priority training investment.
+**Senior engineers and tech leads** need context engineering skills: how to build instruction hierarchies, how to design instruction hierarchies, how to evaluate agent output against architectural requirements. They also need to understand the failure modes from Chapter 14 — not because they'll hit every one, but because recognizing a failure mode early prevents hours of debugging. This is the highest-priority training investment.
 
 **Mid-level developers** need effective delegation skills: how to scope tasks for agents, how to provide sufficient context for a specific interaction, how to iterate when agent output is wrong rather than starting over. They also need calibrated trust, understanding when agent output is likely reliable and when it requires careful verification. The meta-process in Chapter 10 provides the methodology.
 
@@ -254,7 +254,7 @@ A metric you cannot measure is a vanity metric in disguise. Here is how to actua
 
 Six patterns that derail transitions. Each is predictable and preventable.
 
-**1. The premature rollout.** Scaling before the pilot has produced structural lessons — a working context layer, a validated review process, metrics that show a trend. Premature acceleration typically costs multiples of the time saved in later remediation when unprepared teams have bad experiences.
+**1. The premature rollout.** Scaling before the pilot has produced foundational lessons — a working context layer, a validated review process, metrics that show a trend. Premature acceleration typically costs multiples of the time saved in later remediation when unprepared teams have bad experiences.
 **2. The mandate without infrastructure.** Leadership announces all teams will use agentic tools by Q3. No investment in context engineering. No training. No governance updates. Developers receive a tool and a deadline. Adoption is shallow and resentful.
 
 **3. The wrong metric.** Measuring lines of code, PR volume, or tool usage frequency instead of quality and effectiveness metrics. Teams optimize for whatever is measured, and optimizing for volume with generative AI tools produces more code, not better software.
