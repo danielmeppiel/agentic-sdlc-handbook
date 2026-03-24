@@ -645,122 +645,111 @@ This feedback loop is how context file quality compounds over time. Every failur
 
 ## What It Looks Like: An Annotated Session
 
-The concepts above are concrete, but seeing them in action makes the feedback loop tangible. The session below is a realistic reconstruction based on the APM PR #394 pattern (documented in Part IV). It shows a developer orchestrating a multi-agent code change across a module, with context files shaping every step.
+The following excerpts are from a real Copilot CLI session — not a reconstruction, not a sanitized demo. They are lightly trimmed for length but not edited for voice. The typos and urgency are part of the record.
 
-```
-# ──────────────────────────────────────────────────
-# WAVE 1: Foundation — Auth module consolidation
-# The plan calls for three agents on separate file scopes.
-# Each agent gets scoped instructions automatically.
-# ──────────────────────────────────────────────────
+::: {.callout-note}
+## Session `d89b3ccc`
 
-$ copilot-cli dispatch --scope src/auth/ --plan wave1-auth.yaml
-  → Agent reads: .github/copilot-instructions.md       (global rules)
-  → Agent reads: src/auth/.instructions.md              (module-scoped)
-  → Agent reads: specs/auth-consolidation.prompt.md     (task spec)
-  Agent working...  ████████████████████████  done (47s)
+**Repository:** microsoft/apm · **Branch:** `feat/auth-logging-architecture-393`
+**Result:** PR #394 — 75 files changed, 2,829 → 2,897 tests · **Duration:** 207 turns, single session
+:::
 
-$ copilot-cli dispatch --scope src/middleware/ --plan wave1-middleware.yaml
-  Agent working...  ████████████████████████  done (31s)
+**Turn 0 — The messy start.** The session opens with the developer pasting raw terminal output of an authentication failure and role-casting the agent in a single breath. This is the Architect role from Chapter 8 — not writing a plan document, but framing the problem and the expertise needed to solve it:
 
-$ copilot-cli dispatch --scope tests/auth/ --plan wave1-tests.yaml
-  Agent working...  ████████████████████████  done (52s)
+> "So I try to install a package from a GitHub EMU organization (requires auth) and it goes as: `apm install mcaps-microsoft/mcaps-software-poya#v1.0.0` Validating 1 package(s)... ✗ mcaps-microsoft/mcaps-software-poya#v1.0.0 - not accessible or doesn't exist [...] Can you think as a world class UX expert and work with an APM logging mechanism implementation expert on what is going on here and how to fix the experience as a whole"
 
-# ──────────────────────────────────────────────────
-# REVIEW CHECKPOINT — Developer reviews Wave 1 output
-# This is the Reviewer role from Chapter 8.
-# ──────────────────────────────────────────────────
+No YAML plan. No schema. A bug report, a role assignment, and a quality bar — all in natural language.
 
-$ git diff --stat
- src/auth/provider.py       | 47 +++++++++-------
- src/auth/middleware.py      | 23 ++------
- src/auth/token_service.py   | 18 +++++++
- src/middleware/rate_limit.py | 11 ++--
- tests/auth/test_provider.py | 31 ++++++++++++
- tests/auth/test_tokens.py   | 29 ++++++++++++
- 6 files changed, 119 insertions(+), 40 deletions(-)
+**Turn 3 — Fleet deployment in six words.** Once the agent drafted a plan, the developer's entire orchestration command was:
 
-# Tests pass:
-$ pytest tests/auth/ -q
- 6 passed in 1.4s
+> "Fleet deployed: create an issue to track this Epic and then implement on a new branch"
 
-# ──────────────────────────────────────────────────
-# THE CATCH — A silent failure (Anti-Pattern #6 from Ch14)
-# Tests pass. But the developer spots something in the diff:
-# the agent used the OLD token validation pattern.
-#
-# Why this matters: the test fixtures also use the old pattern,
-# so old code + old fixtures = green tests, wrong behavior.
-# This is exactly the "Silent Semantic Failure" pattern —
-# the output is locally coherent and globally wrong.
-# ──────────────────────────────────────────────────
+The agent responded with 17 of 25 planned tasks completed, a GitHub issue created, and a feature branch pushed. Contrast this with the fabricated `copilot-cli dispatch --scope` commands that populate synthetic demos. Real orchestration is natural language with clear intent, not CLI flags.
 
-$ git diff src/auth/token_service.py | head -20
- +    decoded = jwt.decode(token, key, algorithms=["RS256"],
- +                         options={"verify_signature": False})
- #                                  ^^^^^^^^^^^^^^^^^^^^^^^^
- #    WRONG — the legacy pattern. Production requires verify=True.
- #    The agent didn't know because the deprecation wasn't in scope.
+**Turns 4–5 — The feedback loop catches a silent semantic failure.** The agent's initial plan assumed EMU (Enterprise Managed Users) meant `*.ghe.com` hosts — a reasonable inference from the documentation, and one no test would flag. The developer caught it:
 
-# ──────────────────────────────────────────────────
-# CONTEXT FIX — Not a code fix. A primitive fix.
-# This is the feedback loop: fix the context file so this
-# class of error never recurs. (See "The Feedback Loop"
-# section earlier in this chapter.)
-# ──────────────────────────────────────────────────
+> "Note that in the docs the doc writer seems to think EMU = \*.ghe.com. But that's not the only case. A github.com instance may be an EMU. \*.ghe.com is for the Data Resident EMU offering. Hopefully this does not reflect faulty auth code and cases."
 
-$ cat >> src/auth/.instructions.md << 'EOF'
+One turn later, the correction sharpened into an instrumentation fix — not just correcting the code, but ordering the context file updated:
 
-## Token Validation (Critical)
-- ALWAYS use jwt.decode() with verify_signature=True.
-- The legacy pattern (verify=False) is DEPRECATED.
-- If you see verify=False in existing code, flag it — do not copy it.
-- See: docs/auth-migration.md for the migration timeline.
-EOF
+> "Sorry but I do not think 'ghu\_' is identifying EMUs. I have a 'github\_pat\_' starting token and it comes from an EMU, it's fine grained. It's rather ghp (classic PAT) and github\_pat (fine grained pat) prefixes. 'ghu\_' is for OAuth User Tokens. This is critical knowledge for the auth expert agent.md to be updated."
 
-# ──────────────────────────────────────────────────
-# RE-DISPATCH — Agent now reads the updated instruction file.
-# This is the Escalation Handler role: diagnose the failure,
-# fix the context, re-dispatch. (Chapter 8, "Your Three Roles")
-# ──────────────────────────────────────────────────
+That last sentence is this chapter's entire thesis in twelve words. The developer didn't just fix the code — they fixed the context file so every future agent inherits the correction. This is Anti-Pattern #6 from Chapter 14 (*Silent Semantic Failure*) caught and resolved at the primitive layer.
 
-$ copilot-cli dispatch --scope src/auth/ --plan wave1-auth.yaml --retry
-  → Agent reads: src/auth/.instructions.md  (NOW INCLUDES token rule)
-  → Agent reads: specs/auth-consolidation.prompt.md
-  Agent working...  ████████████████████████  done (39s)
+**Turn 23 — Multi-agent debugging with real output.** After initial fixes, auth still failed. The developer invoked the agent team and pasted verbose terminal output showing the full authentication resolution chain:
 
-$ git diff src/auth/token_service.py | head -10
- +    decoded = jwt.decode(token, key, algorithms=["RS256"],
- +                         options={"verify_signature": True})
- #    ✓ Correct pattern. The updated instruction prevented the mistake.
+> "It's better but auth still does not work. Please work together with the agent team (auth expert, logging expert, doc expert) find the rca"
 
-# ──────────────────────────────────────────────────
-# WAVE 2: Dependent work — the middleware integration
-# Now that auth is solid, dispatch the next wave.
-# This is orchestrated composition (Chapter 10, Constraint O):
-# Wave 2 agents consume Wave 1's committed output as context.
-# ──────────────────────────────────────────────────
+The agent traced the failure through real debug logs: `Auth resolved → Trying unauthenticated → failed → retrying with token → 403 → trying credential fill → failed`. Root cause: the `x-access-token:{token}@host` URL format sends Basic auth, which GitHub rejects with a 403 for fine-grained PATs. The fix was to switch to `git -c http.extraHeader='Authorization: Bearer {token}'`. Verbose instrumentation made the failure chain legible. Without it, the 403 would have been a mystery.
 
-$ git add -A && git commit -m "feat(auth): consolidate provider, add token service"
-$ copilot-cli dispatch --scope src/api/ --plan wave2-api-integration.yaml
-  Agent working...  ████████████████████████  done (44s)
+**Turn 50 — Escalation to named agents.** When single-agent debugging hit diminishing returns, the developer restructured the working group:
 
-$ pytest tests/ -q
- 31 passed in 4.2s
+> "considering the implementation you've already started, and realizing you've been hitting roadblocks, I want you now to work in plan mode with our custom .agent.md software architect and the logging expert with the related skill. These are 2 subagents that will work with you on the planning task."
 
-# All green. PR ready for human review.
-# Total: ~5 min hands-on, ~3 min agent execution, 1 context fix.
-# The context fix is the lasting value — it prevents the same
-# mistake on every future auth task, for every developer.
+This is instrumentation at the orchestration layer. The developer didn't write more code or more tests — they changed which agents were in the room and how they coordinated. The custom `.agent.md` files (described below) gave each agent persistent domain knowledge that outlives the session.
+
+**Turn 71 — Granular review, then delegation.** The developer shifted into the Reviewer role (Chapter 8) at its most specific, then handed off to specialists:
+
+> "you are printing the hashes twice? [...] And if we are in verbose mode, why aren't you printing live in the logs the 22 files we skipped? [...] I'll let the logging expert and UX expert on world class logs plan and decide. This expert agent needs to look at each of these commands with a team of clone subagents working for him and assess whether this is really killer full verbose logs"
+
+The pattern: review at the level of individual log lines, then delegate the fix to an agent whose `.agent.md` defines the quality bar. The developer sets the standard; the agents implement it.
+
+**Turn 73 — The instrumentation payoff.** This is the moment that distinguishes a good session from a lasting one:
+
+> "you must ensure you update the logging skill so that such architectural concerns and patterns are enshrined — not as unmovable, but as current art and baseline"
+
+Not a code fix. A *primitive fix*. The developer updated the logging skill file so that every future agent working on logging — in this session, in next month's session, by a different developer — inherits the patterns discovered here. One fix, permanent prevention. This is the feedback loop described earlier in this chapter, operating at production scale.
+
+**What the agent files look like.** The `.agent.md` files referenced throughout this session are not abstractions. Here is the auth expert, created during the session and refined across turns 4–5:
+
+```yaml
+---
+name: auth-expert
+description: >-
+  Expert on GitHub authentication, EMU, GHE, ADO, and APM's
+  AuthResolver architecture. Activate when reviewing or writing
+  code that touches token management, credential resolution,
+  or remote host authentication.
+model: claude-opus-4.6
+---
 ```
 
-Three things to notice.
+```markdown
+# Auth Expert
 
-**The developer never wrote application code.** Every line of `src/` was produced by agents. The developer's contributions were the plan, the review, and the context fix. This is the role shift Chapter 8 described: architect, reviewer, escalation handler.
+You are an expert on Git hosting authentication across
+GitHub.com, GitHub Enterprise (*.ghe.com, GHES), Azure DevOps,
+and generic Git hosts.
 
-**The fix was to the instruction file, not the generated code.** A developer working without instrumentation would have fixed `token_service.py` and moved on. The same mistake would recur next week, with a different agent, on a different task. Fixing the context file (the scoped `.instructions.md`) prevents the entire class of error, permanently. This is the feedback loop that makes instrumentation compound over time.
+## Core Knowledge
 
-**The silent failure was caught by a human, not a test.** The tests passed because the test fixtures encoded the same wrong assumption the agent did. This is Anti-Pattern #6 from Chapter 14: *Silent Semantic Failure*. Automated checks are necessary but not sufficient. The developer's domain knowledge (knowing that `verify=False` is deprecated) was the safety net. Agent-augmented development does not eliminate the need for human judgment; it changes where that judgment is applied.
+- **Token prefixes**: Fine-grained PATs (`github_pat_`),
+  classic PATs (`ghp_`), OAuth user tokens (`ghu_`)...
+- **EMU**: Use standard PAT prefixes. No special prefix —
+  it's a property of the account, not the token.
+- **Host classification**: github.com (public), *.ghe.com
+  (no public repos), GHES, ADO
+```
+
+This is what "update the auth expert agent.md" means in practice. The domain correction from Turn 5 — that EMU tokens use standard PAT prefixes, not a special `ghu_` prefix — lives here permanently. Every agent that activates this file inherits that knowledge without being told twice.
+
+::: {.callout-tip}
+## Turn 52 — The meta-moment
+
+Midway through the session, the developer paused and recognized the pattern:
+
+> "Look at the planning and agent teams orchestration pattern we used, with waves, with task dependencies, with checkpoints that include panel discussions [...] with the specific skills and custom agent files used to instantiate the different flavor of specialized subagents [...] This should become a handbook for AI Engineers to leverage."
+
+This book was partly born from the patterns it describes. By Turn 79, the developer applied the same orchestration structure — specialized agents, panel review, escalation gates — to set up a documentation team for this handbook itself. The pattern is fractal: it works for code, for knowledge work, for any domain where quality requires multiple perspectives and persistent context.
+:::
+
+**Three things to notice.**
+
+**The developer's value was domain knowledge, not keystrokes.** Across 207 turns and 75 changed files, the developer wrote no application code. Their contributions were the problem frame (Turn 0), the domain corrections (Turns 4–5), the team composition decisions (Turns 50, 71), and the context file fixes (Turns 5, 73). This is the role shift Chapter 8 described: architect, reviewer, escalation handler — operating through instrumentation rather than implementation.
+
+**Every correction became a permanent artifact.** A developer without instrumentation would have fixed the auth code and moved on. The same EMU confusion would recur next month, with a different agent, on a different task. Instead, the correction went into the `auth-expert.agent.md` (Turn 5) and the logging skill (Turn 73) — context files that prevent the *class* of error, not just the instance. This is the feedback loop that makes instrumentation compound over time.
+
+**The hardest bugs were semantic, not syntactic.** The agent's assumption that EMU means `*.ghe.com` was plausible, consistent with documentation, and wrong. No linter catches that. No test catches it unless the test author already knows the correct answer — in which case you don't need the test. This is Anti-Pattern #6 from Chapter 14: *Silent Semantic Failure*. The safety net was a human with domain expertise reviewing agent output with enough context (verbose logs, Turn 23) to see where the reasoning broke. Agent-augmented development does not eliminate the need for human judgment. It changes *where* that judgment is applied — and instrumentation determines whether it has lasting effect.
 
 ---
 
