@@ -104,6 +104,7 @@ format:
     documentclass: scrreprt
     papersize: a4
     toc: true
+    toc-depth: 2
     number-sections: true
     colorlinks: true
     geometry:
