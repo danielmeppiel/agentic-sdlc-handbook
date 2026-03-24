@@ -2,7 +2,7 @@
 title: "The Instrumented Codebase"
 ---
 
-Open any repository that uses AI agents reliably and you'll notice something before you read a single line of application code: the project is full of markdown files that aren't documentation. They're instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints — scattered through `.github/` directories and woven into the source tree. These files don't ship to production. They don't appear in the build output. But they determine whether an AI agent produces code that respects the project's architecture or code that confidently violates it.
+Open any repository that uses AI agents reliably and you'll notice something before you read a single line of application code: the project is full of markdown files that aren't documentation. They're instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints, scattered through `.github/` directories and woven into the source tree. These files don't ship to production. They don't appear in the build output. But they determine whether an AI agent produces code that respects the project's architecture or code that confidently violates it.
 
 This chapter catalogs those files. It defines seven primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that's ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?
 
@@ -12,17 +12,17 @@ This chapter catalogs those files. It defines seven primitive types, shows what 
 
 An instrumented codebase is one that has externalized its tacit knowledge into machine-readable artifacts.
 
-Every mature project carries two kinds of knowledge. The first kind is in the code itself — types, function signatures, directory structure, test assertions. Any agent can read this. The second kind is in the team's heads — which authentication pattern is current and which is deprecated, why the logging module uses a custom wrapper instead of the standard library, what "follows the BaseIntegrator pattern" means in practice, why that one directory has different import rules than every other. An agent cannot read this. It will guess, and it will guess wrong.
+Every mature project carries two kinds of knowledge. The first kind is in the code itself (types, function signatures, directory structure, test assertions). Any agent can read this. The second kind is in the team's heads: which authentication pattern is current and which is deprecated, why the logging module uses a custom wrapper instead of the standard library, what "follows the BaseIntegrator pattern" means in practice, why that one directory has different import rules than every other. An agent cannot read this. It will guess, and it will guess wrong.
 
-Instrumentation is the practice of converting the second kind of knowledge into structured files that an agent loads as context. The files are markdown. They version-control alongside the code they describe. They're reviewed in pull requests. And they create a feedback loop: when an agent makes a mistake, you don't fix the generated code — you fix the primitive that failed to prevent the mistake.
+Instrumentation is the practice of converting the second kind of knowledge into structured files that an agent loads as context. The files are markdown. They version-control alongside the code they describe. They're reviewed in pull requests. And they create a feedback loop: when an agent makes a mistake, you don't fix the generated code; you fix the context file that failed to prevent the mistake.
 
-The term "primitive" is deliberate. These artifacts are the atomic units of agentic behavior. Like functions in code, they do one thing, they compose with other primitives, and they're testable in isolation. Unlike prompts typed into a chat window and forgotten, primitives persist, accumulate value, and improve through iteration.
+The term "primitive" is deliberate. These artifacts are the atomic units of agentic behavior. Like functions in code, they do one thing, they compose with other context files, and they're testable in isolation. Unlike prompts typed into a chat window and forgotten, these artifacts persist, accumulate value, and improve through iteration.
 
 ---
 
 ## The Seven Primitive Types
 
-Seven categories of primitives cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all seven on day one — the instrumentation audit later in this chapter helps you decide where to start — but understanding the complete set is necessary before making that decision.
+Seven categories cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all seven on day one (the instrumentation audit later in this chapter helps you decide where to start) but understanding the complete set is necessary before making that decision.
 
 ```{mermaid}
 %%| label: fig-seven-primitives
@@ -41,7 +41,7 @@ block-beta
 
 ### Instructions
 
-**Purpose:** Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular primitive — they tell an agent "when you touch code in this scope, follow these rules."
+**Purpose:** Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular context artifact; they tell an agent "when you touch code in this scope, follow these rules."
 
 **File format:** `.instructions.md` with frontmatter specifying scope.
 
@@ -69,11 +69,11 @@ description: "API layer conventions for endpoint implementation"
 
 **Design test:** Can you state the scope in one `applyTo` pattern? Does every rule in the file apply to that scope? If you're writing rules that apply to two unrelated domains, split the file. If you can't express the scope as a glob, the knowledge probably belongs in an agent configuration or a skill instead.
 
-**What distinguishes a good instruction file from a bad one:** length. If your instruction file exceeds 40-50 lines, it's trying to do too much. The reason is mechanical — every line of instruction competes for attention with the source code the agent needs to read. A 200-line instruction file doesn't give an agent more to work with. It gives it more to get lost in.
+**What distinguishes a good instruction file from a bad one:** length. If your instruction file exceeds 40-50 lines, it's trying to do too much. The reason is mechanical: every line of instruction competes for attention with the source code the agent needs to read. A 200-line instruction file doesn't give an agent more to work with. It gives it more to get lost in.
 
 ### Agents
 
-**Purpose:** Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to "who should work on this?" — not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.
+**Purpose:** Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to "who should work on this?", not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.
 
 **File format:** `.agent.md` with frontmatter specifying the model, tools, and description.
 
@@ -111,15 +111,15 @@ and modular service architecture.
 Four elements make an agent configuration effective:
 
 1. **Domain expertise.** Specific enough to constrain the agent's decisions. "You are an expert Python developer" is too broad to be useful. "You specialize in CLI tool design using the Click framework with Rich terminal output" constrains the solution space meaningfully.
-2. **Named patterns.** When the agent knows patterns by name — "BaseIntegrator," "CredentialChain," "CommandLogger" — it can reference them in its reasoning and produce code that uses them correctly.
-3. **Anti-patterns.** What the agent must never do. These encode institutional memory — each item represents a mistake that happened at least once and cost the team time to fix.
+2. **Named patterns.** When the agent knows patterns by name ("BaseIntegrator," "CredentialChain," "CommandLogger") it can reference them in its reasoning and produce code that uses them correctly.
+3. **Anti-patterns.** What the agent must never do. These encode institutional memory; each item represents a mistake that happened at least once and cost the team time to fix.
 4. **Tool boundaries.** Which tools the agent can invoke. A documentation agent shouldn't execute destructive commands. A frontend agent shouldn't access backend databases. Tool boundaries are safety boundaries made concrete.
 
-Start with three to five agent configurations. An architect, a domain expert for your core business logic, and a documentation writer cover most tasks. Add configurations when you observe repeated corrections — that's the signal that a new specialization has earned its place.
+Start with three to five agent configurations. An architect, a domain expert for your core business logic, and a documentation writer cover most tasks. Add configurations when you observe repeated corrections; that's the signal that a new specialization has earned its place.
 
 ### Skills
 
-**Purpose:** Package reusable decision frameworks that activate based on code patterns. A skill is more than a set of rules — it teaches an agent how to think about a specific domain.
+**Purpose:** Package reusable decision frameworks that activate based on code patterns. A skill is more than a set of rules; it teaches an agent how to think about a specific domain.
 
 **File format:** A directory containing a `SKILL.md` file, optionally with examples and supporting context.
 
@@ -172,7 +172,7 @@ Skills differ from instructions in an important way: they provide *decision fram
 
 ### Prompts
 
-**Purpose:** Define reusable, parameterized workflows that orchestrate multi-step tasks. A prompt is a repeatable process — the agentic equivalent of a script or a makefile target.
+**Purpose:** Define reusable, parameterized workflows that orchestrate multi-step tasks. A prompt is a repeatable process, the agentic equivalent of a script or a makefile target.
 
 **File format:** `.prompt.md` with frontmatter specifying execution mode and tools.
 
@@ -211,11 +211,11 @@ Provide findings grouped by severity (Critical / High / Medium / Low).
 For each finding: file, line, what's wrong, what to do instead.
 ```
 
-Prompts are the bridge between ad-hoc chat and systematic workflows. Without them, every time a developer wants an agent to perform a code review, they type a slightly different request and get slightly different quality. With a prompt file, the process is consistent — the same phases, the same checks, the same output format. Quality becomes reproducible.
+Prompts are the bridge between ad-hoc chat and systematic workflows. Without them, every time a developer wants an agent to perform a code review, they type a slightly different request and get slightly different quality. With a prompt file, the process is consistent: the same phases, the same checks, the same output format. Quality becomes reproducible.
 
 ### Memory
 
-**Purpose:** Preserve knowledge across sessions. Agents are stateless — every conversation starts from zero. Memory files give them access to accumulated decisions, resolved trade-offs, and project history that would otherwise vanish between sessions.
+**Purpose:** Preserve knowledge across sessions. Agents are stateless; every conversation starts from zero. Memory files give them access to accumulated decisions, resolved trade-offs, and project history that would otherwise vanish between sessions.
 
 **File format:** `.memory.md`, structured by domain.
 
@@ -242,13 +242,13 @@ Prompts are the bridge between ad-hoc chat and systematic workflows. Without the
   longer queries must use the async search endpoint.
 ```
 
-Memory files capture the knowledge that doesn't fit in instructions because it isn't a rule — it's context. The distinction matters: "use JWT for authentication" is a rule (instruction). "We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated" is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won't.
+Memory files capture the knowledge that doesn't fit in instructions because it isn't a rule; it's context. The distinction matters: "use JWT for authentication" is a rule (instruction). "We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated" is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won't.
 
 Memory files are the most likely primitive to drift from reality. Include dates. Review them quarterly. If a section hasn't been updated in six months, verify that it's still accurate or remove it.
 
 ::: {.callout-note}
 ## Memory Storage Varies by Tool
-While this chapter describes memory as markdown files for portability, some tools implement memory as structured databases. GitHub Copilot, for example, stores memory in a database system rather than flat files. The principles are the same — persistence, discoverability, and staleness management — regardless of the storage mechanism.
+While this chapter describes memory as markdown files for portability, some tools implement memory as structured databases. GitHub Copilot, for example, stores memory in a database system rather than flat files. The principles are the same (persistence, discoverability, and staleness management) regardless of the storage mechanism.
 :::
 
 ### Orchestration
@@ -291,7 +291,7 @@ Specification files matter because they make the "Reduced Scope" constraint oper
 
 ### Hooks
 
-**Purpose:** Define automated actions triggered by development events. Hooks bridge the gap between passive context (instructions, memory) and active behavior — making the instrumented codebase reactive rather than waiting to be queried.
+**Purpose:** Define automated actions triggered by development events. Hooks bridge the gap between passive context (instructions, memory) and active behavior, making the instrumented codebase reactive rather than waiting to be queried.
 
 **File format:** Configured via tool-specific hook mechanisms (e.g., VS Code tasks, GitHub Actions triggers, copilot hooks configuration) rather than a single portable file format.
 
@@ -302,15 +302,15 @@ Specification files matter because they make the "Reduced Scope" constraint oper
 - Auto-update memory files after a successful PR merge
 - Run a security-reviewer agent on every change to `src/auth/`
 
-Hooks complete the instrumentation model. Without them, every primitive is passive — it waits for an agent to be invoked and for the right context to load. With hooks, the context layer responds to events: a file save triggers a check, a new file triggers scaffolding, a merged PR triggers a memory update. The instrumented codebase stops being a library of reference material and starts behaving like an active participant in the development workflow.
+Hooks complete the instrumentation model. Without them, every instrumentation file is passive; it waits for an agent to be invoked and for the right context to load. With hooks, the context layer responds to events: a file save triggers a check, a new file triggers scaffolding, a merged PR triggers a memory update. The instrumented codebase stops being a library of reference material and starts behaving like an active participant in the development workflow.
 
-Start with one or two hooks — a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.
+Start with one or two hooks: a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.
 
 ---
 
 ## Tool Support and Portability
 
-The seven primitives are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025 — the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.
+The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.
 
 ::: {tbl-colwidths="[16,28,18,20,18]"}
 
@@ -326,19 +326,19 @@ The seven primitives are conceptual categories, not file format specifications. 
 
 :::
 
-"—" means the tool has no native format for that primitive type. The knowledge is still usable — you embed it in whatever instruction format the tool does support — but automatic activation and scoping are lost.
+"—" means the tool has no native format for that type. The knowledge is still usable (you embed it in whatever instruction format the tool does support) but automatic activation and scoping are lost.
 
 Three observations.
 
-**Instructions are the universal primitive.** Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ — `applyTo` frontmatter, glob-based rule files, per-directory placement — but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.
+**Instructions are the universal context file.** Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ (`applyTo` frontmatter, glob-based rule files, per-directory placement) but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.
 
-**Agent configurations are the least portable.** Chat modes, model selection, and tool boundaries are defined differently in every tool and don't transfer. The knowledge inside them — domain expertise, named patterns, anti-patterns — is just markdown and moves freely. The activation mechanism does not.
+**Agent configurations are the least portable.** Chat modes, model selection, and tool boundaries are defined differently in every tool and don't transfer. The knowledge inside them (domain expertise, named patterns, anti-patterns) is just markdown and moves freely. The activation mechanism does not.
 
-**Most tools natively support two of seven.** Instructions (in some form) and memory (via root-level markdown). The remaining five — skills, prompts, orchestration specs, agent configurations, and hooks — have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.
+**Most tools natively support two of seven.** Instructions (in some form) and memory (via root-level markdown). The remaining five (skills, prompts, orchestration specs, agent configurations, and hooks) have native support primarily in GitHub Copilot. In other tools, the content is still valuable; the automatic wiring is manual.
 
 ### What happens when you switch tools
 
-If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your primitives in two tiers:
+If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your instrumentation files in two tiers:
 
 **Portable tier** (works everywhere with minor adaptation):
 - Instruction content — the rules themselves, as markdown prose
@@ -351,7 +351,7 @@ If your team uses one tool, optimize for its native formats. If you use multiple
 - Agent configurations — model selection, tool boundaries, persona activation
 - Prompt execution — how workflows are triggered and parameterized
 
-The portable tier is the knowledge — 80% of the value. The tool-specific tier is the wiring that connects knowledge to a particular editor. When you switch tools, you rewrite the wiring. That's a few hours of adaptation, not a rewrite of what your team knows.
+The portable tier is the knowledge, 80% of the value. The tool-specific tier is the wiring that connects knowledge to a particular editor. When you switch tools, you rewrite the wiring. That's a few hours of adaptation, not a rewrite of what your team knows.
 
 For teams working across multiple tools, the translation between formats can be handled manually by maintaining parallel directory structures, or automated with emerging tooling in this space.
 
@@ -359,7 +359,7 @@ For teams working across multiple tools, the translation between formats can be 
 
 ## Directory Structure
 
-The seven primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions — the most complete native implementation of all seven primitive types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.
+The seven primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions, the most complete native implementation of all seven types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize primitives in a known location, separate by type, keep each type flat.
 
 ```
 project/
@@ -404,17 +404,17 @@ project/
 
 Three observations about this structure.
 
-**Primitives live in `.github/`**, not scattered through the source tree. This centralizes the knowledge layer — a developer looking for the project's AI configuration finds it in one place. The exceptions are `AGENTS.md` files, which live in the directories they describe, because they're part of a discovery hierarchy (Chapter 11 explains this in detail).
+**Context files live in `.github/`**, not scattered through the source tree. This centralizes the knowledge layer; a developer looking for the project's AI configuration finds it in one place. The exceptions are `AGENTS.md` files, which live in the directories they describe, because they're part of a discovery hierarchy (Chapter 11 explains this in detail).
 
 **Each primitive type has its own directory.** Instructions, agents, skills, prompts, specs, and hooks don't mix. This makes it straightforward to audit what you have: how many instruction files exist, what domains they cover, which skills are defined. Mixed directories make this accounting harder than it needs to be.
 
-**The structure is flat within each directory.** Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you're probably over-engineering — most projects need 8-12 instruction files.
+**The structure is flat within each directory.** Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you're probably over-engineering; most projects need 8-12 instruction files.
 
 ---
 
 ## How Primitives Compose
 
-Primitives are not independent. They form a layered system where each type provides a different kind of guidance, and the agent's effective context is the composition of all applicable primitives for the current task.
+Primitives are not independent. They form a layered system where each type provides a different kind of guidance, and the agent's effective context is the composition of all applicable context files for the current task.
 
 The composition follows a hierarchy:
 
@@ -436,15 +436,15 @@ When an agent is asked to modify `src/api/users.py`, the effective context assem
 4. **Backend-dev agent** — provides the persona, model selection, and tool constraints
 5. **Memory** — the API versioning decisions, the deprecated authentication class, the rate limit timeout choice
 
-Each layer adds specificity. None contradicts the layer above — more specific primitives refine general guidance, they don't override it. If a conflict exists, it indicates a design error in the primitives, not a resolution the agent should attempt.
+Each layer adds specificity. None contradicts the layer above; more specific context files refine general guidance, they don't override it. If a conflict exists, it indicates a design error in the instrumentation, not a resolution the agent should attempt.
 
-This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone's head.
+This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task, without requiring that information to fit in anyone's head.
 
 ---
 
 ## The Instrumentation Audit
 
-Before you build any of this, you need to know what your codebase already has and what it's missing. The instrumentation audit is a systematic inventory — not of your code, but of the knowledge your code depends on.
+Before you build any of this, you need to know what your codebase already has and what it's missing. The instrumentation audit is a systematic inventory, not of your code, but of the knowledge your code depends on.
 
 **Step 1: List your conventions.** Spend 30 minutes with your team. Write down every convention, pattern, and constraint that a new engineer would need to learn in their first two weeks. Don't filter. Don't organize.
 
@@ -487,13 +487,13 @@ The "in heads" column is your instrumentation debt. Every item there is a conven
 | Specifies a feature with components and success criteria | A specification |
 | Defines an automated response to a development event | A hook |
 
-**Step 5: Write your starter set.** Begin with 3-5 primitives covering your critical items. Don't aim for completeness — the feedback loop will guide you to what's actually needed faster than upfront planning will.
+**Step 5: Write your starter set.** Begin with 3-5 context files covering your critical items. Don't aim for completeness; the feedback loop will guide you to what's actually needed faster than upfront planning will.
 
 ---
 
 ## Before and After
 
-Consider a mid-size backend service — 80,000 lines of Python, a REST API, a message queue consumer, an authentication module with some technical debt, and a CLI for operations tasks. The team has five engineers who've been working on it for two years.
+Consider a mid-size backend service: 80,000 lines of Python, a REST API, a message queue consumer, an authentication module with some technical debt, and a CLI for operations tasks. The team has five engineers who've been working on it for two years.
 
 ### Before: uninstrumented
 
@@ -517,10 +517,10 @@ project/
 
 What happens when an agent is asked to "add a health check endpoint":
 
-- It creates a new route in the API directory, using Flask patterns it learned from training data — but this project uses FastAPI
+- It creates a new route in the API directory, using Flask patterns it learned from training data, but this project uses FastAPI
 - It imports a database connection check, but uses a raw connection instead of the project's `HealthChecker` service
 - It returns a plain JSON response, ignoring the project's standard response envelope (`{"status": ..., "data": ..., "meta": ...}`)
-- It writes a test that passes, using inline object construction — violating the factory pattern the team uses everywhere else
+- It writes a test that passes, using inline object construction, violating the factory pattern the team uses everywhere else
 - It doesn't register the route in the middleware pipeline because it doesn't know the pipeline exists
 
 Everything compiles. Tests pass. The PR gets three review comments, all of the form "we don't do it that way here." The reviewer rewrites 60% of the code. The agent saved time on a first draft and cost time on corrections.
@@ -583,7 +583,7 @@ The difference is not the model. In the case documented in this book, the differ
 
 ### What the numbers look like
 
-In the author's experience, based on projects that have undergone this transformation — including the reference case documented throughout this book:
+In the author's experience, based on projects that have undergone this transformation, including the reference case documented throughout this book:
 
 | Metric | Uninstrumented | Instrumented |
 |--------|---------------|-------------|
@@ -593,6 +593,8 @@ In the author's experience, based on projects that have undergone this transform
 | Time from agent output to merge | Hours (review + rework) | Minutes (spot-check) |
 
 These numbers are directional, not guaranteed. They depend on the quality of your primitives and the complexity of your conventions. But the direction is consistent: instrumented codebases produce dramatically more reliable agent output than uninstrumented ones, with the same models, the same tools, and the same tasks.
+
+: Based on the author's experience across instrumented projects. Results will vary by codebase complexity, model, and instrumentation maturity.
 
 ---
 
@@ -606,7 +608,7 @@ When an agent produces incorrect output, the diagnosis follows a consistent patt
 Failure observed
     |
     v
-Root cause: which primitive failed?
+Root cause: which context file failed?
     |
     +-- Agent too generic?          --> Add domain knowledge to agent config
     +-- Skill rules incomplete?     --> Add the missing case to the skill
@@ -616,16 +618,137 @@ Root cause: which primitive failed?
     +-- No repeatable process?      --> Create a prompt
 ```
 
-Four examples from a real project, where fixing the primitive fixed the class of error permanently:
+Four examples from a real project, where fixing the instrumentation file fixed the class of error permanently:
 
-| Failure | Root cause | Primitive fix |
+| Failure | Root cause | Context fix |
 |---------|-----------|---------------|
 | Agent used `_rich_info()` directly instead of `logger.progress()` | Skill didn't explicitly ban direct calls | Added "never call `_rich_*` directly in commands" to CLI skill |
 | Agent invented a new collision detection pattern | Instructions didn't list all base-class methods | Added "use, don't reimplement" table to integrator instructions |
 | Agent produced inconsistent Unicode symbols in output | No single source of truth for status symbols | Created `STATUS_SYMBOLS` reference in skill, added to anti-patterns |
 | Agent used deprecated `SessionAuth` in new code | Memory file didn't record the deprecation | Added deprecation notice with migration tracking reference |
 
-This feedback loop is how primitive quality compounds over time. Every failure you diagnose and fix is a failure that never recurs. After 20-30 iterations, your primitive set covers the conventions that actually matter — not the ones you theorized about, but the ones agents actually violate. That practical grounding is what makes an instrumented codebase effective.
+This feedback loop is how context file quality compounds over time. Every failure you diagnose and fix is a failure that never recurs. After 20-30 iterations, your instrumentation set covers the conventions that actually matter, not the ones you theorized about, but the ones agents actually violate. That practical grounding is what makes an instrumented codebase effective.
+
+---
+
+## What It Looks Like: An Annotated Session
+
+The concepts above are concrete, but seeing them in action makes the feedback loop tangible. The session below is a realistic reconstruction based on the APM PR #394 pattern (documented in Part IV). It shows a developer orchestrating a multi-agent code change across a module, with context files shaping every step.
+
+```
+# ──────────────────────────────────────────────────
+# WAVE 1: Foundation — Auth module consolidation
+# The plan calls for three agents on separate file scopes.
+# Each agent gets scoped instructions automatically.
+# ──────────────────────────────────────────────────
+
+$ copilot-cli dispatch --scope src/auth/ --plan wave1-auth.yaml
+  → Agent reads: .github/copilot-instructions.md       (global rules)
+  → Agent reads: src/auth/.instructions.md              (module-scoped)
+  → Agent reads: specs/auth-consolidation.prompt.md     (task spec)
+  Agent working...  ████████████████████████  done (47s)
+
+$ copilot-cli dispatch --scope src/middleware/ --plan wave1-middleware.yaml
+  Agent working...  ████████████████████████  done (31s)
+
+$ copilot-cli dispatch --scope tests/auth/ --plan wave1-tests.yaml
+  Agent working...  ████████████████████████  done (52s)
+
+# ──────────────────────────────────────────────────
+# REVIEW CHECKPOINT — Developer reviews Wave 1 output
+# This is the Reviewer role from Chapter 8.
+# ──────────────────────────────────────────────────
+
+$ git diff --stat
+ src/auth/provider.py       | 47 +++++++++-------
+ src/auth/middleware.py      | 23 ++------
+ src/auth/token_service.py   | 18 +++++++
+ src/middleware/rate_limit.py | 11 ++--
+ tests/auth/test_provider.py | 31 ++++++++++++
+ tests/auth/test_tokens.py   | 29 ++++++++++++
+ 6 files changed, 119 insertions(+), 40 deletions(-)
+
+# Tests pass:
+$ pytest tests/auth/ -q
+ 6 passed in 1.4s
+
+# ──────────────────────────────────────────────────
+# THE CATCH — A silent failure (Anti-Pattern #6 from Ch14)
+# Tests pass. But the developer spots something in the diff:
+# the agent used the OLD token validation pattern.
+#
+# Why this matters: the test fixtures also use the old pattern,
+# so old code + old fixtures = green tests, wrong behavior.
+# This is exactly the "Silent Semantic Failure" pattern —
+# the output is locally coherent and globally wrong.
+# ──────────────────────────────────────────────────
+
+$ git diff src/auth/token_service.py | head -20
+ +    decoded = jwt.decode(token, key, algorithms=["RS256"],
+ +                         options={"verify_signature": False})
+ #                                  ^^^^^^^^^^^^^^^^^^^^^^^^
+ #    WRONG — the legacy pattern. Production requires verify=True.
+ #    The agent didn't know because the deprecation wasn't in scope.
+
+# ──────────────────────────────────────────────────
+# CONTEXT FIX — Not a code fix. A primitive fix.
+# This is the feedback loop: fix the context file so this
+# class of error never recurs. (See "The Feedback Loop"
+# section earlier in this chapter.)
+# ──────────────────────────────────────────────────
+
+$ cat >> src/auth/.instructions.md << 'EOF'
+
+## Token Validation (Critical)
+- ALWAYS use jwt.decode() with verify_signature=True.
+- The legacy pattern (verify=False) is DEPRECATED.
+- If you see verify=False in existing code, flag it — do not copy it.
+- See: docs/auth-migration.md for the migration timeline.
+EOF
+
+# ──────────────────────────────────────────────────
+# RE-DISPATCH — Agent now reads the updated instruction file.
+# This is the Escalation Handler role: diagnose the failure,
+# fix the context, re-dispatch. (Chapter 8, "Your Three Roles")
+# ──────────────────────────────────────────────────
+
+$ copilot-cli dispatch --scope src/auth/ --plan wave1-auth.yaml --retry
+  → Agent reads: src/auth/.instructions.md  (NOW INCLUDES token rule)
+  → Agent reads: specs/auth-consolidation.prompt.md
+  Agent working...  ████████████████████████  done (39s)
+
+$ git diff src/auth/token_service.py | head -10
+ +    decoded = jwt.decode(token, key, algorithms=["RS256"],
+ +                         options={"verify_signature": True})
+ #    ✓ Correct pattern. The updated instruction prevented the mistake.
+
+# ──────────────────────────────────────────────────
+# WAVE 2: Dependent work — the middleware integration
+# Now that auth is solid, dispatch the next wave.
+# This is orchestrated composition (Chapter 10, Constraint O):
+# Wave 2 agents consume Wave 1's committed output as context.
+# ──────────────────────────────────────────────────
+
+$ git add -A && git commit -m "feat(auth): consolidate provider, add token service"
+$ copilot-cli dispatch --scope src/api/ --plan wave2-api-integration.yaml
+  Agent working...  ████████████████████████  done (44s)
+
+$ pytest tests/ -q
+ 31 passed in 4.2s
+
+# All green. PR ready for human review.
+# Total: ~5 min hands-on, ~3 min agent execution, 1 context fix.
+# The context fix is the lasting value — it prevents the same
+# mistake on every future auth task, for every developer.
+```
+
+Three things to notice.
+
+**The developer never wrote application code.** Every line of `src/` was produced by agents. The developer's contributions were the plan, the review, and the context fix. This is the role shift Chapter 8 described: architect, reviewer, escalation handler.
+
+**The fix was to the instruction file, not the generated code.** A developer working without instrumentation would have fixed `token_service.py` and moved on. The same mistake would recur next week, with a different agent, on a different task. Fixing the context file (the scoped `.instructions.md`) prevents the entire class of error, permanently. This is the feedback loop that makes instrumentation compound over time.
+
+**The silent failure was caught by a human, not a test.** The tests passed because the test fixtures encoded the same wrong assumption the agent did. This is Anti-Pattern #6 from Chapter 14: *Silent Semantic Failure*. Automated checks are necessary but not sufficient. The developer's domain knowledge (knowing that `verify=False` is deprecated) was the safety net. Agent-augmented development does not eliminate the need for human judgment; it changes where that judgment is applied.
 
 ---
 
@@ -638,19 +761,18 @@ The seven primitives and the full directory structure represent a mature instrum
 2. One scoped instruction file for your most-edited module
 3. One agent configuration for the task agents perform most often
 
-**Week two.** Use these primitives on real work. When the agent violates a convention not covered by your files, add it. When it does something right that surprised you, check whether your primitives contributed. Update the memory file with the decisions and trade-offs you resolved this week.
+**Week two.** Use these primitives on real work. When the agent violates a convention not covered by your files, add it. When it does something right that surprised you, check whether your instrumentation contributed. Update the memory file with the decisions and trade-offs you resolved this week.
 
 **Week three.** Extract the first skill. You'll know it's time because you've written the same guidance in two different instruction files. Package the shared knowledge as a skill with a decision framework. Create your first prompt file for a task you've now asked an agent to do three or more times.
+**Ongoing.** Review context files monthly. Remove rules that never trigger. Tighten rules that trigger but don't prevent the failure. Add new rules only in response to observed failures. Treat your instrumentation like a test suite; it should grow with the codebase, stay accurate, and never contain dead rules.
 
-**Ongoing.** Review primitives monthly. Remove rules that never trigger. Tighten rules that trigger but don't prevent the failure. Add new rules only in response to observed failures. Treat your primitive set like a test suite — it should grow with the codebase, stay accurate, and never contain dead rules.
+The instrumented codebase is not a finished state. It's a practice, an ongoing investment in making machine-readable what your team already knows. Chapter 10 defines the constraints that make these context artifacts effective. Chapter 11 teaches the context engineering discipline that determines how and when they load. This chapter showed you the artifacts themselves.
 
-The instrumented codebase is not a finished state. It's a practice — an ongoing investment in making machine-readable what your team already knows. Chapter 10 defines the constraints that make these primitives effective. Chapter 11 teaches the context engineering discipline that determines how and when they load. This chapter showed you the artifacts themselves.
-
-The directory structure and primitive types in this chapter can be built by hand — and for a first project, doing so builds understanding. For subsequent projects, or for teams standardizing across repositories, the mechanical work of scaffolding and primitive sharing benefits from a distribution mechanism — the same pattern npm brought to JavaScript modules. This category of tooling is new. One open-source implementation is APM (Agent Package Manager), built by the author of this book. You can build everything in this chapter without it; tooling reduces the scaffolding work from hours to seconds.
+The directory structure and primitive types in this chapter can be built by hand, and for a first project, doing so builds understanding. For subsequent projects, or for teams standardizing across repositories, the mechanical work of scaffolding and sharing benefits from a distribution mechanism, the same pattern npm brought to JavaScript modules. This category of tooling is new. One open-source implementation is APM (Agent Package Manager), built by the author of this book. You can build everything in this chapter without it; tooling reduces the scaffolding work from hours to seconds.
 
 > **Shortcut: scaffolding with a package manager**
 >
-> `apm init` generates `copilot-instructions.md`, one scoped instruction file, and one agent configuration — the Week One starter set from this chapter.
+> `apm init` generates `copilot-instructions.md`, one scoped instruction file, and one agent configuration, the Week One starter set from this chapter.
 > `apm install` pulls shared primitives from any Git repository into your project.
 
 Now you know what to build. What follows is how to make it work.

@@ -2,7 +2,7 @@
 title: "The PROSE Specification"
 ---
 
-Chapter 1 introduced five architectural constraints for human-AI collaboration and gave each a name. This chapter gives each a specification — what it means, how to implement it, what violation looks like, and what breaks when two constraints interact and one is missing.
+You've been using agent instructions for a few weeks. Some tasks produce clean output; others produce confident garbage. The difference isn't the model or the prompt — it's whether your setup follows five structural constraints that determine how agents handle scope, context, and boundaries. This chapter specifies each one.
 
 This is the reference chapter. Return to it when you are designing your instruction hierarchy, sizing a task for an agent, or debugging why a workflow that used to be reliable has started producing inconsistent results.
 
@@ -10,7 +10,7 @@ This is the reference chapter. Return to it when you are designing your instruct
 
 ## The Constraint Model
 
-PROSE defines five constraints. Each addresses a structural property of language models — finite context, stateless reasoning, probabilistic output — and each induces a desirable property in the system that follows it. The constraints are independent in definition and interdependent in practice.
+PROSE defines five constraints. Each addresses a structural property of language models (finite context, stateless reasoning, probabilistic output) and each induces a desirable property in the system that follows it. The constraints are independent in definition and interdependent in practice.
 
 | Constraint | Addresses | Induces |
 |---|---|---|
@@ -20,19 +20,19 @@ PROSE defines five constraints. Each addresses a structural property of language
 | **S**afety Boundaries | Unbounded autonomy | Reliability, verifiability |
 | **E**xplicit Hierarchy | Flat guidance | Modularity, domain adaptation |
 
-The remainder of this chapter specifies each constraint: definition, implementation patterns, anti-patterns, and — in the final section — what goes wrong when constraints are missing in combination.
+The remainder of this chapter specifies each constraint: definition, implementation patterns, anti-patterns, and, in the final section, what goes wrong when constraints are missing in combination.
 
 ---
 
 ## P — Progressive Disclosure
 
-**Definition.** Structure information to reveal complexity progressively. Context arrives just-in-time — loaded when the agent needs it for the current task — not just-in-case, where everything is loaded upfront on the assumption it might be relevant.
+**Definition.** Structure information to reveal complexity progressively. Context arrives just-in-time (loaded when the agent needs it for the current task) not just-in-case, where everything is loaded upfront on the assumption it might be relevant.
 
-**Why it matters.** Chapter 1 established that context is finite and attention degrades under load. Here is how to implement that insight. The issue is not capacity — context windows keep growing — but attention. Information competes for focus, and material far from the active task gets deprioritized. A context window packed with architecture documents, coding standards, API specifications, and every source file that *might* be relevant is not a well-informed agent. It is a diluted one. The signal-to-noise ratio determines quality, not the volume of signal.
+**Why it matters.** Context is finite and attention degrades under load. Here is how to implement that insight. The issue is not capacity (context windows keep growing) but attention. Information competes for focus, and material far from the active task gets deprioritized. A context window packed with architecture documents, coding standards, API specifications, and every source file that *might* be relevant is not a well-informed agent. It is a diluted one. The signal-to-noise ratio determines quality, not the volume of signal.
 
 ### Implementation patterns
 
-**Markdown links as lazy-loading pointers.** The simplest mechanism for progressive disclosure is a link. When an instruction file references `[authentication patterns](../../docs/auth-patterns.md)` rather than inlining the full authentication guide, the agent loads that content only when the current task involves authentication. The link acts as a pointer — a declaration that deeper context exists, with a path to reach it.
+**Markdown links as lazy-loading pointers.** The simplest mechanism for progressive disclosure is a link. When an instruction file references `[authentication patterns](../../docs/auth-patterns.md)` rather than inlining the full authentication guide, the agent loads that content only when the current task involves authentication. The link acts as a pointer, a declaration that deeper context exists, with a path to reach it.
 
 ```markdown
 # API Development Guidelines
@@ -49,7 +49,7 @@ endpoint must return structured error responses.
 
 The agent reads the guidelines. If the task involves authentication, it follows the link. If the task involves error handling, it follows a different link. Neither loads material for the other.
 
-**Descriptive labels for relevance assessment.** Links work only when the agent can determine whether to follow them. Descriptive text — not just a filename, but a statement of what the linked content contains — enables the agent to assess relevance before loading.
+**Descriptive labels for relevance assessment.** Links work only when the agent can determine whether to follow them. Descriptive text (not just a filename, but a statement of what the linked content contains) enables the agent to assess relevance before loading.
 
 Bad: `See [docs](./docs/auth.md).`
 
@@ -57,7 +57,7 @@ Good: `See [JWT validation and refresh token rotation patterns](./docs/auth.md) 
 
 The second version gives the agent enough information to decide whether the link is relevant to the current task without following it.
 
-**Skills metadata as capability indexes.** A skill's frontmatter describes what it does and when to activate. This metadata acts as an index — the agent reads the description, determines relevance, and loads the full skill content only when the task matches.
+**Skills metadata as capability indexes.** A skill's frontmatter describes what it does and when to activate. This metadata acts as an index: the agent reads the description, determines relevance, and loads the full skill content only when the task matches.
 
 ```yaml
 ---
@@ -73,7 +73,7 @@ The agent working on a database migration sees this description and skips it. Th
 
 ### Anti-pattern: Context dumping
 
-The most common violation of Progressive Disclosure is loading everything upfront. A single instruction file that inlines the full coding standards, the complete API reference, the authentication guide, and the error taxonomy — all in one document — wastes context capacity on material that is irrelevant to most tasks. The agent's attention spreads across thousands of tokens of guidance, most of which do not apply.
+The most common violation of Progressive Disclosure is loading everything upfront. A single instruction file that inlines the full coding standards, the complete API reference, the authentication guide, and the error taxonomy, all in one document, wastes context capacity on material that is irrelevant to most tasks. The agent's attention spreads across thousands of tokens of guidance, most of which do not apply.
 
 **Before** — everything inlined in one file:
 
@@ -112,7 +112,7 @@ Same information. Fraction of the context cost per task.
 
 Three examples of tasks that were too big, and how they got split:
 
-- **"Add JWT authentication."** Too big — spans token schema, middleware, refresh endpoint, tests, and frontend. Split into five sessions (one per component), each with fresh context and a single deliverable.
+- **"Add JWT authentication."** Too big: spans token schema, middleware, refresh endpoint, tests, and frontend. Split into five sessions (one per component), each with fresh context and a single deliverable.
 - **"Fix the login bug and update the session tests."** Two domains in one session. The bug fix accumulates context that degrades the quality of the test updates. Split: fix in one session, test updates in a follow-up with the fix already committed.
 - **"Refactor the payment service to use the new API client."** The agent needs to understand the old client, the new client, every call site, and the test suite simultaneously. Split by call site: each session migrates one module, with only the old→new API mapping and the target module's source files in context.
 
@@ -136,7 +136,7 @@ Phase 3: Validate
 
 Each phase operates with a clean context. The diagnosis phase does not carry the implementation context. The validation phase does not carry the diagnosis context. Quality remains consistent across phases because attention is never split.
 
-**Session splitting across domains.** When a change spans multiple domains — frontend, backend, database — use separate sessions for each. A backend agent does not need the frontend component tree in its context. A database migration agent does not need the UI routing logic.
+**Session splitting across domains.** When a change spans multiple domains (frontend, backend, database) use separate sessions for each. A backend agent does not need the frontend component tree in its context. A database migration agent does not need the UI routing logic.
 
 ### Anti-pattern: Scope creep
 
@@ -150,7 +150,7 @@ User: While you're at it, refactor the token refresh logic.
 User: And can you add the new /logout endpoint?
 ```
 
-By the fourth request, the agent is operating with the accumulated context of four different tasks, attention split across all of them. The quality of the logout endpoint — the newest and least-contextualized task — is significantly lower than the quality of the original bug fix.
+By the fourth request, the agent is operating with the accumulated context of four different tasks, attention split across all of them. The quality of the logout endpoint, the newest and least-contextualized task, is significantly lower than the quality of the original bug fix.
 
 **Fix:** Each of those requests becomes its own session. The cost is four sessions instead of one. The benefit is four tasks done well instead of four tasks done poorly.
 
@@ -196,11 +196,11 @@ Each file has a single responsibility. The frontend instructions do not contain 
 5. **STOP** — present implementation summary for human review
 ```
 
-The workflow does not restate the coding standards — the instruction files handle that. It does not redefine the agent's role — the agent configuration handles that. It composes existing primitives into a sequence.
+The workflow does not restate the coding standards; the instruction files handle that. It does not redefine the agent's role; the agent configuration handles that. It composes existing primitives into a sequence.
 
 ### Anti-pattern: Monolithic prompt
 
-All guidance in a single block. Role, rules, examples, constraints, output format — everything in one prompt:
+All guidance in a single block. Role, rules, examples, constraints, output format, everything in one prompt:
 
 ```markdown
 You are an expert Python developer who follows PEP 8 and uses type hints
@@ -222,11 +222,11 @@ This works until it does not. When the agent produces incorrect output, which in
 
 **Definition.** Every agent operates within explicit boundaries: what tools are available (capability), what context is loaded (knowledge), and what requires human approval (authority).
 
-**Why it matters.** Chapter 1 established that output is probabilistic — variance is inherent, not a bug. Here is how to constrain it. When a non-deterministic system has unbounded authority, the variance in its outputs translates directly into variance in its effects. Boundaries do not reduce the agent's usefulness. They constrain its blast radius. An agent that can modify backend code but not frontend assets, that can run tests but not deploy to production, that must pause for approval before deleting files — this agent is both more useful and more trustworthy than one with no restrictions.
+**Why it matters.** Chapter 1 established that output is probabilistic; variance is inherent, not a bug. Here is how to constrain it. When a non-deterministic system has unbounded authority, the variance in its outputs translates directly into variance in its effects. Boundaries do not reduce the agent's usefulness. They constrain its blast radius. An agent that can modify backend code but not frontend assets, that can run tests but not deploy to production, that must pause for approval before deleting files — this agent is both more useful and more trustworthy than one with no restrictions.
 
 ### Standard role boundaries
 
-The table below defines four common agent roles with concrete capability, knowledge, and authority boundaries. Adapt these for your team — the specific tools will vary by platform, but the *shape* of each boundary should not.
+The table below defines four common agent roles with concrete capability, knowledge, and authority boundaries. Adapt these for your team; the specific tools will vary by platform, but the *shape* of each boundary should not.
 
 ::: {tbl-colwidths="[12,28,28,32]"}
 
@@ -239,7 +239,7 @@ The table below defines four common agent roles with concrete capability, knowle
 
 :::
 
-A planning agent (architect chatmode) is a special case: it gets `readFiles` and `search` only — no write tools at all. Its output is a plan, not code. The implementation agent consumes that plan in a separate session.
+A planning agent (architect chatmode) is a special case: it gets `readFiles` and `search` only, no write tools at all. Its output is a plan, not code. The implementation agent consumes that plan in a separate session.
 
 ### Implementation patterns
 
@@ -254,7 +254,7 @@ tools: ["editFiles", "runCommands", "search", "testRunner"]
 
 The backend agent cannot access deployment tools. It cannot modify CI/CD configuration. Its capability boundary is explicit and auditable.
 
-**Validation gates requiring human approval.** Critical decisions — architectural changes, security-sensitive modifications, data migrations — require the agent to stop and present its plan before proceeding:
+**Validation gates requiring human approval.** Critical decisions (architectural changes, security-sensitive modifications, data migrations) require the agent to stop and present its plan before proceeding:
 
 ```markdown
 ## Validation Gate
@@ -268,9 +268,9 @@ The gate is part of the instruction, not an external enforcement mechanism. The 
 
 **Knowledge scoping.** Instructions load only when the agent is working on matching files. Backend security rules do not load when the agent edits CSS. Frontend accessibility requirements do not load during database migrations.
 
-Note: the `applyTo` pattern serves double duty. It is primarily an Explicit Hierarchy mechanism (see next section) — defining *which rules apply where*. But it also functions as a knowledge boundary, constraining *what the agent knows* during a given task. The hierarchy section defines how `applyTo` works; this section explains why constraining knowledge matters for safety.
+Note: the `applyTo` pattern serves double duty. It is primarily an Explicit Hierarchy mechanism (see next section), defining *which rules apply where*. But it also functions as a knowledge boundary, constraining *what the agent knows* during a given task. The hierarchy section defines how `applyTo` works; this section explains why constraining knowledge matters for safety.
 
-**Deterministic tools as truth anchors.** When an agent claims a test passes, a boundary-constrained system requires the agent to actually run the test and report the deterministic result. Code execution, API calls, file system operations — these are deterministic tools that ground probabilistic generation in verifiable reality.
+**Deterministic tools as truth anchors.** When an agent claims a test passes, a boundary-constrained system requires the agent to actually run the test and report the deterministic result. Code execution, API calls, file system operations: these are deterministic tools that ground probabilistic generation in verifiable reality.
 
 ### Anti-pattern: Unbounded agent
 
@@ -283,7 +283,7 @@ tools: ["*"]
 ---
 ```
 
-This agent can modify production configuration, delete test fixtures, rewrite CI pipelines, and access credentials — all without human oversight. When (not if) it produces an unexpected output, the blast radius is the entire repository.
+This agent can modify production configuration, delete test fixtures, rewrite CI pipelines, and access credentials, all without human oversight. When (not if) it produces an unexpected output, the blast radius is the entire repository.
 
 **Fix:** Start with the role table above. Find the closest match, copy its boundaries, and tighten from there. The minimum set of tools is always fewer than you think.
 
@@ -372,11 +372,11 @@ Every agent, regardless of what it is working on, loads all of this. The Python 
 
 The five constraints are defined independently but produce their strongest effects in combination. Theory says each pair closes a gap that neither constraint addresses alone. Practice is more memorable. Here are three teams that had one constraint in place and discovered the hard way what the missing partner cost them.
 
-**The team with hierarchy but no progressive disclosure.** A fintech startup built a meticulous instruction hierarchy: global rules at the root, domain rules per service, module-specific rules for payments and auth. Textbook Explicit Hierarchy. But every instruction file was self-contained — the auth instructions inlined the full OWASP token reference (1,400 words), the complete session management spec (900 words), and the rate-limiting policy (600 words). When an agent worked on a simple token-validation bugfix, it loaded the auth-level file and received nearly 3,000 words of guidance for a 15-line change. The agent "solved" the bug by refactoring the token validation to also implement a rate-limiting improvement mentioned in the same file — a change no one asked for, that introduced a subtle race condition in the refresh flow. The hierarchy got the *right rules* to the agent. Without progressive disclosure, it got all of them at once, and the agent could not distinguish the relevant from the adjacent.
+**The team with hierarchy but no progressive disclosure.** A fintech startup (12 engineers, 18 months into their product) built a meticulous instruction hierarchy: global rules at the root, domain rules per service, module-specific rules for payments and auth. Textbook Explicit Hierarchy. But every instruction file was self-contained — the auth instructions inlined the full OWASP token reference (1,400 words), the complete session management spec (900 words), and the rate-limiting policy (600 words). When an agent worked on a simple token-validation bugfix, it loaded the auth-level file and received nearly 3,000 words of guidance for a 15-line change. The agent "solved" the bug by refactoring the token validation to also implement a rate-limiting improvement mentioned in the same file, a change no one asked for that introduced a subtle race condition in the refresh flow. The hierarchy got the *right rules* to the agent. Without progressive disclosure, it got all of them at once, and the agent could not distinguish the relevant from the adjacent.
 
-**The team with reduced scope but no composition.** A platform team was disciplined about task sizing — every agent session had a single, focused objective, fresh context, clean scope. Textbook Reduced Scope. But they had no composition layer. Each task carried its own copy of the coding standards, the error-handling patterns, and the testing requirements — pasted into the prompt, not referenced from shared primitives. When the team updated their error format from string messages to structured error objects, they updated the canonical doc but missed the pasted copies in four prompt templates. For two weeks, agents working on different services produced two different error formats depending on which prompt they received. The scope constraint kept each task reliable in isolation. Without composition, there was no single source of truth to keep them consistent with each other.
+**The team with reduced scope but no composition.** A platform team (8 engineers supporting 40+ microservices) was disciplined about task sizing — every agent session had a single, focused objective, fresh context, clean scope. Textbook Reduced Scope. But they had no composition layer. Each task carried its own copy of the coding standards, the error-handling patterns, and the testing requirements, pasted into the prompt rather than referenced from shared context files. When the team updated their error format from string messages to structured error objects, they updated the canonical doc but missed the pasted copies in four prompt templates. For two weeks, agents working on different services produced two different error formats depending on which prompt they received. The scope constraint kept each task reliable in isolation. Without composition, there was no single source of truth to keep them consistent with each other.
 
-**The team with safety boundaries but no reduced scope.** An enterprise team enforced strict boundaries — tool whitelists per agent, mandatory approval gates for security-sensitive files, knowledge scoping via `applyTo`. Textbook Safety Boundaries. But they routinely dispatched broad tasks: "implement the full OAuth2 integration," spanning token exchange, PKCE flow, session management, and error handling in one session. The agent operated within its tool boundaries but accumulated so much context over the long session that its attention degraded. Late in the session, it generated a refresh-token endpoint that stored tokens in a client-accessible cookie — a pattern explicitly forbidden by the security instructions loaded at session start, now buried under 40,000 tokens of accumulated implementation context. The safety boundaries constrained what the agent *could* do. Without reduced scope, they could not ensure the agent still *remembered* what it should not do.
+**The team with safety boundaries but no reduced scope.** An enterprise team (200+ engineers, regulated healthcare domain) enforced strict boundaries — tool whitelists per agent, mandatory approval gates for security-sensitive files, knowledge scoping via `applyTo`. Textbook Safety Boundaries. But they routinely dispatched broad tasks: "implement the full OAuth2 integration," spanning token exchange, PKCE flow, session management, and error handling in one session. The agent operated within its tool boundaries but accumulated so much context over the long session that its attention degraded. Late in the session, it generated a refresh-token endpoint that stored tokens in a client-accessible cookie, a pattern explicitly forbidden by the security instructions loaded at session start, now buried under 40,000 tokens of accumulated implementation context. The safety boundaries constrained what the agent *could* do. Without reduced scope, they could not ensure the agent still *remembered* what it should not do.
 
 The general pattern: each constraint addresses one failure mode, and each partner constraint catches the failures the first one cannot see.
 
@@ -555,7 +555,7 @@ Use this checklist to evaluate whether your current setup satisfies PROSE constr
 
 ---
 
-The five constraints are the specification. The chapters that follow — context engineering (Chapter 11), multi-agent orchestration (Chapter 12), and the execution meta-process (Chapter 13) — are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.
+The five constraints are the specification. The chapters that follow (context engineering in Chapter 11, multi-agent orchestration in Chapter 12, and the execution meta-process in Chapter 13) are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.
 
 ---
 
