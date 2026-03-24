@@ -54,7 +54,6 @@ Most organizations operating at Phase 3 (agentic coding, as described in Chapter
 %%| fig-cap: "Governance capability quick-start assessment"
 %%| fig-alt: "A top-down decision flowchart for governance assessment. Starting at 'Assess 6 governance capabilities', it flows to a decision diamond: 'Any capability at None?' If Yes, go to 'Start here: Audit Trails + Access Controls' (red, indicating urgency). If No, check 'All at Basic or above?' If Yes, go to 'Safe to expand agent adoption' (green, indicating success), then to 'Invest toward Enterprise per regulatory scope' (blue). If No at the second decision, also go to the Audit Trails step. From Audit Trails, flow to 'Reassess quarterly', which loops back to the initial assessment."
 %%| label: fig-governance-assessment
-%%{init: {'theme': 'neutral'}}%%
 flowchart TD
     START["Assess 6<br/>governance capabilities"] --> Q1{"Any capability<br/>at 'None'?"}
     Q1 -->|Yes| FIX["Start here:<br/>Audit Trails +<br/>Access Controls"]
@@ -65,7 +64,6 @@ flowchart TD
     EXPAND --> MATURE["Invest toward<br/>'Enterprise' per<br/>regulatory scope"]
     REASSESS --> Q1
 
-    style FIX fill:#fce4e4,stroke:#c0392b,color:#922b21
 ```
 
 > *The governance floor: no capability at "None" before expanding agent adoption. Start with audit trails and access controls — they unblock everything else.*

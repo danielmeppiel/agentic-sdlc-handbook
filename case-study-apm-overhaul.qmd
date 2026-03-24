@@ -179,7 +179,6 @@ asserted on verbose output.
 %%| fig-cap: "Sequence showing how a NameError was silently swallowed"
 %%| fig-alt: "Sequence diagram showing the silent NameError bug. The User calls CLI with 'apm install pkg --verbose'. The CLI calls verbose_log with 'Resolving...'. verbose_log calls _rich_echo with 'Resolving...'. _rich_echo throws a NameError because it is not defined. The exception is silently swallowed by verbose_log, which returns to CLI without error. The CLI shows silent failure to the User with no verbose output."
 %%| label: fig-cs-silent-nameerror
-%%{init: {'theme': 'neutral'}}%%
 sequenceDiagram
     participant User
     participant CLI as CLI (--verbose)

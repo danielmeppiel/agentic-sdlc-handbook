@@ -85,7 +85,6 @@ The decision is not intuitive at first, so here is the flowchart. When a task ar
 %%| label: fig-agent-decision
 %%| fig-cap: "Decision framework: when to use agents and when to code manually"
 %%| fig-alt: "Top-down decision tree flowchart. A task arrives at the first question: 'Can you specify it clearly in under 2 minutes?' Yes leads to 'Is the spec shorter than the code?' which if Yes leads to 'Is the scope bounded?' — Yes results in 'DELEGATE to agent' (green, success). If the spec is not shorter, outcome is 'CODE IT YOURSELF' (neutral). If scope is not bounded, outcome is 'CODE IT YOURSELF' (neutral). If you cannot specify clearly, the question 'Can you split it into agent plus manual parts?' appears — Yes leads to 'SPLIT: bounded parts to agent, judgment parts to you' (green, success); No leads to 'CODE IT YOURSELF' (neutral). Three manual outcomes and two agent outcomes total."
-%%{init: {'theme': 'neutral'}}%%
 flowchart TD
     START([Task arrives]) --> Q1{Can you specify it clearly\nin under 2 minutes?}
 

@@ -34,7 +34,6 @@ The orchestrator designed an 8-persona expert panel at project inception, then d
 %%| fig-cap: "Agent team topology: 11 personas organized in four pods"
 %%| fig-alt: "Diagram showing four pods. The Editorial Pod contains Chief Editor (cross-chapter coherence) and Thought Leadership Advisor (positioning and differentiation). The Domain Expert Pod contains C-Suite Strategist (executive lens, ROI framing), Practitioner Authority (engineering credibility), Market Analyst (competitive landscape), and Platform Strategist (architecture patterns). The Review Pod contains CTO Proxy (would I buy this for my team?) and Dev Lead Proxy (would my engineers use this?). The Audit Pod, dynamically created, contains Illustrator (visual strategist), Fact-Ref-Checker (claims auditor), and Publishing Advisor (distribution strategy). Chief Editor connects to CTO Proxy, Dev Lead Proxy, Illustrator, and Fact-Ref-Checker."
 %%| label: fig-cs-team-topology
-%%{init: {'theme': 'neutral'}}%%
 graph TB
     subgraph Editorial["Editorial Pod"]
         CE[Chief Editor<br/>Cross-chapter coherence]
@@ -79,11 +78,6 @@ The manuscript was produced in a phased pipeline: corpus audit → architecture 
 %%| fig-cap: "Manuscript production pipeline: four writing waves plus integration"
 %%| fig-alt: "Gantt chart showing six phases of manuscript production. Phase 0: Corpus Audit by 4 agents followed by Editor Synthesis. Phase 1: Architecture Attempt 1 which failed, then Architecture Split across 2 agents. Wave 0: Chapter 1 Draft, 3 Reviews, and Revision. Wave 1: 4 Drafts, 4 Reviews, 4 Revisions. Wave 2: 5 Drafts, 2 Reviews, 5 Revisions. Wave 3: 5 Drafts, 2 Reviews, 2 Revisions. Integration phase: Block 1 and 2 Reviews, 2 Fix Agents, and Polish plus README. Each phase runs sequentially with tasks within each phase also sequential."
 %%| label: fig-cs-production-pipeline
----
-config:
-  gantt:
-    fontSize: 12
----
 gantt
     title Manuscript Production Pipeline
     dateFormat X
@@ -136,7 +130,6 @@ Every chapter passed through an identical three-stage pipeline. This is the core
 %%| fig-cap: "The draft, review, revise cycle for each chapter"
 %%| fig-alt: "Sequence diagram showing the chapter production cycle. The Orchestrator dispatches a chapter writing task with architecture spec and source material to the Draft Agent (Domain Specialist), who returns a 3,000 to 5,000 word draft. The Orchestrator then dispatches three parallel reviews: CTO Proxy reviews for executive audience, Dev Lead Proxy reviews for practitioner audience, and Chief Editor reviews for coherence and voice. All three return REVISE verdicts with fixes. The Orchestrator synthesizes consensus fixes, then dispatches the Revision Agent to apply the fixes. The Revision Agent returns the revised chapter, and the Orchestrator creates a checkpoint commit."
 %%| label: fig-cs-draft-review-cycle
-%%{init: {'theme': 'neutral'}}%%
 sequenceDiagram
     participant O as Orchestrator
     participant D as Draft Agent (Domain Specialist)
@@ -177,7 +170,6 @@ Three of the eleven personas did not exist at project inception. They were creat
 %%| fig-cap: "Dynamic persona creation in response to process gaps"
 %%| fig-alt: "Flowchart showing three process gaps that triggered dynamic persona creation. First path: Integration Review where editor reads all 15 chapters leads to a decision node asking if visual anchors are missing. Yes leads to creating the Illustrator Agent (Visual Strategist persona), which produces a fleet of 2 agents finding 40 visual opportunities and embedding 15 Mermaid diagrams. Second path: Integration Review leads to a decision node asking if inconsistent statistics exist across chapters. Yes leads to creating the Fact-Ref-Checker (Claims Auditor persona), which produces a fleet of 2 agents finding 75 flags including 5 critical ones. Third path: The question 'How to publish?' leads to a decision node asking if publishing expertise is needed. Yes leads to creating the Publishing Advisor, which evaluates 5 paths and recommends Open Core plus Premium model."
 %%| label: fig-cs-dynamic-personas
-%%{init: {'theme': 'neutral'}}%%
 flowchart TD
     A[Integration Review<br/>Editor reads all 15 chapters] --> B{Visual anchors<br/>missing?}
     B -->|Yes| C[Create Illustrator Agent<br/>Visual Strategist persona]
