@@ -483,7 +483,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -632,7 +632,44 @@ ul.task-list li input[type="checkbox"] {
 <p>The total cost of ownership for agentic development has six components. The first is the only one your vendor will mention.</p>
 <section id="tool-licenses" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="tool-licenses"><span class="header-section-number">5.2.1</span> Tool licenses</h3>
-<p>The visible cost. Per-seat subscriptions for AI coding tools range from $10–40/month per developer for individual tiers; enterprise tiers with SSO, audit logs, and data residency controls run 2–3× higher. If you’re evaluating platform-level tools (not just editor plugins), add platform licensing. Budget $200–600 per developer per year for team tiers; enterprise agreements typically run $500–1,500. This is the easy part.</p>
+<p>The visible cost — and the only one vendors emphasize. Pricing models vary across tools and are evolving rapidly, but as of early 2025, representative price points for the major agentic coding platforms illustrate the range<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Tool</th>
+<th>Individual</th>
+<th>Team / Business</th>
+<th>Enterprise</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>GitHub Copilot</td>
+<td>Free / $10 Pro / $39 Pro+</td>
+<td>$19/user/mo</td>
+<td>$39/user/mo</td>
+</tr>
+<tr class="even">
+<td>Cursor</td>
+<td>Free / $20 Pro / $60 Pro+</td>
+<td>$40/user/mo</td>
+<td>Custom</td>
+</tr>
+<tr class="odd">
+<td>Claude (Anthropic)</td>
+<td>Free / $20 Pro / $100+ Max</td>
+<td>$25/seat/mo</td>
+<td>$20/seat + usage</td>
+</tr>
+</tbody>
+</table>
+<p>Enterprise tiers add SSO, audit logs, data residency, and admin controls. Note that most platforms are shifting toward <strong>usage-based pricing</strong> — GitHub Copilot Enterprise includes 1,000 premium requests per user per month (a single request to a frontier model like Claude Opus 4.6 consumes multiple premium requests), while others bill by token consumption. The actual license cost depends heavily on how aggressively your teams use agentic workflows with premium models. For a team of 10 on enterprise tiers, expect $2,400–5,000/year per developer in license costs alone — before token overages.</p>
 </section>
 <section id="context-engineering-investment" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="context-engineering-investment"><span class="header-section-number">5.2.2</span> Context engineering investment</h3>
@@ -674,8 +711,8 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>Tool licenses</td>
-<td>$6,000–30,000</td>
-<td>Enterprise governance tier premium</td>
+<td>$24,000–50,000</td>
+<td>Enterprise tier + premium model usage overages</td>
 </tr>
 <tr class="even">
 <td>Context engineering</td>
@@ -704,8 +741,8 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="odd">
 <td><strong>Year 1 total</strong></td>
-<td><strong>$77,000–229,000</strong></td>
-<td>Tool licenses are 8–13% of total</td>
+<td><strong>$95,000–249,000</strong></td>
+<td>Tool licenses are 20–25% of total</td>
 </tr>
 </tbody>
 </table>
@@ -717,7 +754,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="where-value-actually-accrues" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="where-value-actually-accrues"><span class="header-section-number">5.3</span> Where Value Actually Accrues</h2>
 <p>If the cost side is underestimated, the value side is measured wrong. Most business cases for AI coding tools claim value in “developer productivity” — a term so vague it can mean anything and therefore means nothing. Here is where measurable value actually appears when agentic development works.</p>
-<p><strong>Cycle time compression.</strong> The most defensible metric. Time from issue opened to code merged and deployed. When agents handle implementation of well-specified tasks — generating code, writing tests, updating documentation — the human developer’s role shifts from author to reviewer. For tasks within the agent’s reliable capability range, this can compress task completion time by 25–55%<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> — though end-to-end cycle time improvement depends on non-coding bottlenecks such as code review and deployment processes. Note the qualifier: <em>within the agent’s reliable capability range.</em> Not all tasks. Not even most tasks, initially. The tasks where agents are reliable expands as your context engineering matures.</p>
+<p><strong>Cycle time compression.</strong> The most defensible metric. Time from issue opened to code merged and deployed. When agents handle implementation of well-specified tasks — generating code, writing tests, updating documentation — the human developer’s role shifts from author to reviewer. For tasks within the agent’s reliable capability range, this can compress task completion time by 25–55%<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> — though end-to-end cycle time improvement depends on non-coding bottlenecks such as code review and deployment processes. Note the qualifier: <em>within the agent’s reliable capability range.</em> Not all tasks. Not even most tasks, initially. The tasks where agents are reliable expands as your context engineering matures.</p>
 <p><strong>Defect reduction.</strong> Counterintuitive, because agents introduce defects too. But structured context — explicit conventions, required patterns, documented boundaries — catches errors that human developers miss through familiarity blindness. When the linter, the test suite, and the agent’s instructions all encode the same standards, violations surface earlier. Teams with mature context engineering report fewer convention-violation defects in code review, not because the agent is smarter than a human, but because the standards are enforced consistently rather than recalled from memory.</p>
 <p><strong>Knowledge retention.</strong> The most undervalued benefit, and the one with the longest payback period. Every instruction file, every documented convention, every machine-readable architecture decision is an organizational asset that survives employee turnover. When a senior engineer leaves, their knowledge of “how we do things here” typically walks out the door with them. When that knowledge is encoded in context artifacts, it persists — usable by both human developers and AI agents. This doesn’t show up in a quarterly report. It shows up when onboarding a new hire can take weeks instead of months because the codebase is self-documenting.</p>
 <p><strong>Attention reallocation.</strong> Not “developers do more work” but “developers do different work.” When routine implementation is delegated, developer attention shifts to design decisions, architecture, code review, and the complex problems that humans still do better than any model. The value is not more output — it is higher-quality attention on the problems that matter most. This is hard to quantify and easy to feel. Teams that adopt agentic development well report higher job satisfaction not because the work is easier, but because it is more interesting.</p>
@@ -748,7 +785,7 @@ ul.task-list li input[type="checkbox"] {
 <td>Defect reduction</td>
 <td>Review rejection rate, post-deploy defects</td>
 <td>Months 6–9</td>
-<td>15–30% reduction in convention violations<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></td>
+<td>15–30% reduction in convention violations<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></td>
 </tr>
 <tr class="odd">
 <td>Knowledge retention</td>
@@ -770,7 +807,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="the-adoption-timeline" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="the-adoption-timeline"><span class="header-section-number">5.4</span> The Adoption Timeline</h2>
-<p>Every adoption plan that shows a smooth upward curve is lying. Real adoption follows a pattern that technology change management research has documented repeatedly.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Agentic development is no different.</p>
+<p>Every adoption plan that shows a smooth upward curve is lying. Real adoption follows a pattern that technology change management research has documented repeatedly.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> Agentic development is no different.</p>
 <p><strong>Months 1–2: Setup investment.</strong> Tool procurement, governance configuration, initial context engineering. Developers begin experimenting. Enthusiasm is high because the demos are impressive. Actual productivity impact is near zero or slightly negative — the team is investing, not yet extracting value.</p>
 <p><strong>Months 2–4: The valley.</strong> Reality sets in. Agent output requires more rework than expected. The context isn’t rich enough yet. Developers hit the Vibe Coding Cliff on their specific codebase and wonder whether the tools actually work. Some revert to manual coding. Leadership, if unprepared, questions the investment. This valley is normal. It is the period where the team is learning which tasks to delegate, how to structure prompts, and — critically — where the context gaps are. Every context gap the team discovers and fills during this phase makes the tools permanently more effective.</p>
 <p><em>Organizational signals you’re in the valley:</em> developers complain that “the AI doesn’t understand our codebase.” Review rejection rates for agent-generated code spike. Someone suggests restricting tools to autocomplete only. These are symptoms of context debt, not tool failure.</p>
@@ -1012,7 +1049,7 @@ from project start, depending on cost position and adoption speed.</code></pre>
 <p>Every business case has an implicit comparison: the investment versus the status quo. Most business cases for agentic development model the investment side. Few price the alternative.</p>
 <p>Chapter 2 made the strategic argument: inaction is itself a decision, with consequences for talent, shadow IT, context accumulation, and competitive position. Here, we put a number on it.</p>
 <p><strong>The context gap compounds in reverse.</strong> The same flywheel that rewards early context investment penalizes delay. While your team debates whether AI tools are worth it, competitors who started six months earlier have accumulated six months of machine-readable conventions, structured architecture decisions, and documented patterns. Their agents improve with every sprint. Yours, when you eventually adopt, start from zero. The gap is not six months of calendar time — it is six months of compounding context quality that you must build from scratch while the early adopter’s agents are already leveraging it.</p>
-<p>Using the moderate scenario modeled above, a 12-month delay for a 50-person team could represent $1.5–2.5M in forgone throughput improvement. This figure is illustrative, not predictive: it applies the model’s assumptions in reverse, which compounds estimation error. It also omits the unquantified but real costs of competitive position and hiring friction. “Wait and see” is itself a decision with a price. Your board will ask “what if we wait a year?” This section is the answer.</p>
+<p>The methodology matters more than any specific number here. If you apply the moderate scenario modeled above in reverse — projecting what a 50-person team forgoes by delaying 12 months — the model yields a figure in the range of $1.5–2.5M in throughput improvement not realized. That figure is illustrative, not predictive: it compounds the model’s existing estimation error by running the assumptions backward, and it omits the unquantified but real costs of competitive position and hiring friction. The value of this exercise is not the dollar amount; it is the framing. “Wait and see” is itself a decision with a price. Your board will ask “what if we wait a year?” The answer is this methodology applied to your own numbers, not someone else’s estimate.</p>
 <hr>
 <div class="callout callout-style-default callout-note callout-titled" title="Adoption Cost Framework">
 <div class="callout-header d-flex align-content-center">
@@ -1086,9 +1123,10 @@ from project start, depending on cost position and adoption speed.</code></pre>
 <ol>
 <li id="fn1"><p>Across multiple industry surveys — including Tidelift/New Stack (2019, n≈400, finding 32% on writing/improving code), Meyer et al.&nbsp;at Microsoft Research (2019, n=5,971), and Stripe’s Developer Coefficient (2018) — developers consistently report spending only 20–40% of their working time writing or improving code. See <a href="https://thenewstack.io/how-much-time-do-developers-spend-actually-writing-code/">thenewstack.io</a> and <a href="https://www.microsoft.com/en-us/research/publication/today-was-a-good-day-the-daily-life-of-software-developers/">Microsoft Research</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>Multiple data points support this range. The 2025 Stack Overflow Developer Survey found 66% of developers report AI-generated solutions as “almost right, but not quite.” GitClear’s 2025 analysis of 211M lines of code showed refactored code plummeting from 25% to under 10% with AI adoption, while copy-pasted code rose from 8.3% to 12.3%. Their 2026 follow-up found heavy AI users produce 9× more code churn. See <a href="https://survey.stackoverflow.co/2025/ai">survey.stackoverflow.co/2025/ai</a> and <a href="https://www.gitclear.com/ai_assistant_code_quality_2025_research">gitclear.com</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Peng et al.&nbsp;(2023, n=95) found Copilot users completed tasks 55.8% faster. Cui et al.&nbsp;(2024, n=4,867) found a 26% increase in completed tasks across three field experiments at Microsoft, Accenture, and a Fortune 100 company. However, the 2025 DORA report found that most lead time is waiting, not building (~21% flow efficiency), meaning coding-phase speedups have limited impact on end-to-end cycle time. See <a href="https://arxiv.org/abs/2302.06590">arxiv.org/abs/2302.06590</a>, <a href="https://www.microsoft.com/en-us/research/publication/the-effects-of-generative-ai-on-high-skilled-work-evidence-from-three-field-experiments-with-software-developers/">Microsoft Research</a>, and <a href="https://cloud.google.com/resources/content/2025-dora-ai-capabilities-model-report">DORA 2025</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Based on the author’s observations across instrumented projects during early adoption. Chapter 9 reports a wider range (40–60% violation rate dropping to under 10%) for teams with mature instrumentation and comprehensive context architecture. The difference reflects adoption stage: this chapter’s 15–30% improvement represents early-adoption teams with basic context engineering; Chapter 9’s figures reflect fully instrumented codebases.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>Brynjolfsson, Rock, and Syverson (2021) model this as the “Productivity J-Curve”: general-purpose technologies initially lower measured productivity while organizations invest in complementary intangibles, with a later rebound. They specifically note AI may be in the early part of this curve. See also Rogers (2003), <em>Diffusion of Innovations</em>, 5th ed., and Moore (2014), <em>Crossing the Chasm</em>, 3rd ed.&nbsp;Source: <a href="https://www.aeaweb.org/articles?id=10.1257/mac.20180386">American Economic Journal: Macroeconomics</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Prices as of March 2025. See <a href="https://docs.github.com/en/copilot/about-github-copilot/plans-for-github-copilot">GitHub Copilot plans</a>, <a href="https://cursor.com/pricing">Cursor pricing</a>, <a href="https://anthropic.com/pricing">Anthropic pricing</a>. These change frequently; verify current rates before budgeting.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Peng et al.&nbsp;(2023, n=95) found Copilot users completed tasks 55.8% faster. Cui et al.&nbsp;(2024, n=4,867) found a 26% increase in completed tasks across three field experiments at Microsoft, Accenture, and a Fortune 100 company. However, the 2025 DORA report found that most lead time is waiting, not building (~21% flow efficiency), meaning coding-phase speedups have limited impact on end-to-end cycle time. See <a href="https://arxiv.org/abs/2302.06590">arxiv.org/abs/2302.06590</a>, <a href="https://www.microsoft.com/en-us/research/publication/the-effects-of-generative-ai-on-high-skilled-work-evidence-from-three-field-experiments-with-software-developers/">Microsoft Research</a>, and <a href="https://cloud.google.com/resources/content/2025-dora-ai-capabilities-model-report">DORA 2025</a>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Based on the author’s observations across instrumented projects during early adoption. Chapter 9 reports a wider range (40–60% violation rate dropping to under 10%) for teams with mature instrumentation and comprehensive context architecture. The difference reflects adoption stage: this chapter’s 15–30% improvement represents early-adoption teams with basic context engineering; Chapter 9’s figures reflect fully instrumented codebases.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Brynjolfsson, Rock, and Syverson (2021) model this as the “Productivity J-Curve”: general-purpose technologies initially lower measured productivity while organizations invest in complementary intangibles, with a later rebound. They specifically note AI may be in the early part of this curve. See also Rogers (2003), <em>Diffusion of Innovations</em>, 5th ed., and Moore (2014), <em>Crossing the Chasm</em>, 3rd ed.&nbsp;Source: <a href="https://www.aeaweb.org/articles?id=10.1257/mac.20180386">American Economic Journal: Macroeconomics</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

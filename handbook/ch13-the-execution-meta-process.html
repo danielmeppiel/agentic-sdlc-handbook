@@ -518,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1017,7 +1017,7 @@ Figure&nbsp;15.3: The ADAPT loop for mid-execution recovery
 <p><strong>Bisectable history.</strong> Every wave is a separate commit with passing tests. If a bug surfaces after merge, you can bisect to the exact wave that introduced it. This is not possible with the typical “one giant commit per feature” or “squash everything” approaches.</p>
 <p><strong>Auditable decisions.</strong> The plan documents what was decided and why. The checkpoint records document what happened at each validation point. The escalation records document what required human judgment and what the judgment was. A reviewer reading the PR has a complete record of the decision chain, not just the final code.</p>
 <p><strong>Reproducible process.</strong> The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same context files, and the same plan, would produce substantially similar output. This is our hypothesis, not a tested claim. Controlled reproducibility experiments would strengthen it. The non-determinism of AI agents is bounded by the determinism of the process around them.</p>
-<p><strong>Proportional cost.</strong> The time spent scales with the change scope, not the full codebase size — though we have verified this only at the scale documented in the reference case study. A 75-file change took ~90 minutes of total elapsed time regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.</p>
+<p><strong>Proportional cost.</strong> The time spent scales with the change scope, not the full codebase size — though we have verified this only at the scale documented in the reference case study. A 75-file change took ~90 minutes of wave execution time regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.</p>
 <hr>
 <p>The meta-process is the operational core of everything this book teaches. PROSE provides the constraints. Context engineering provides the information. Agent primitives encode the knowledge. The meta-process is how they combine into shipped code.</p>
 <p>But following a process correctly is only half the challenge. The other half is recognizing when it’s going wrong — when an anti-pattern is forming, when a failure mode is emerging, when the process is producing output that looks correct and isn’t. The next chapter documents what those failures look like and how to prevent them.</p>

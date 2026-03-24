@@ -518,7 +518,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a 67,000-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -1452,7 +1452,7 @@ Figure&nbsp;16.1: Failure mode decision tree for diagnosing agent output issues
 <p><strong>Prompt injection via code.</strong> Files from external sources — dependencies, configuration from registries — can contain instructions the model interprets as commands. A malicious comment in a dependency is absurd to a human and a real attack vector for a model. Treat all external content in agent context as untrusted input. (See also #19 in the taxonomy for the full failure mode.)</p>
 <p><strong>Scope escalation through side effects.</strong> An agent modifying application code might also touch CI pipelines, deployment scripts, or configuration files if they’re within filesystem access. A subtle workflow modification is easy to miss in a large diff. Restrict filesystem access to relevant directories. Review diffs for out-of-scope file changes.</p>
 <p><strong>Credential exposure.</strong> Agents reading environment files or test fixtures may echo sensitive values in output or embed them in generated code. Exclude credential files from context. Use secret scanning in CI.</p>
-<p>These risks aren’t unique to AI-generated code — they’re amplified by volume. An agent generating 75 files in 90 minutes produces more review surface area than a human in the same timeframe. Review discipline must scale with generation speed.</p>
+<p>These risks aren’t unique to AI-generated code — they’re amplified by volume. An agent generating 75 files in ~90 minutes of wave execution time (see <a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a>) produces more review surface area than a human in the same timeframe. Review discipline must scale with generation speed.</p>
 <hr>
 </section>
 <section id="what-this-chapter-is-not" class="level2" data-number="16.10">
