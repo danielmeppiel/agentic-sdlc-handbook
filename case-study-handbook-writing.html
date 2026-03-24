@@ -617,8 +617,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-team-topology-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-team-topology">%%{init: {'theme': 'neutral'}}%%
-graph TB
+<pre class="mermaid mermaid-js" data-label="fig-cs-team-topology">graph TB
     subgraph Editorial["Editorial Pod"]
         CE[Chief Editor&lt;br/&gt;Cross-chapter coherence]
         TLA[Thought Leadership Advisor&lt;br/&gt;Positioning &amp; differentiation]
@@ -669,12 +668,7 @@ Figure&nbsp;18.1: Agent team topology: 11 personas organized in four pods
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-production-pipeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-production-pipeline">---
-config:
-  gantt:
-    fontSize: 12
----
-gantt
+<pre class="mermaid mermaid-js" data-label="fig-cs-production-pipeline">gantt
     title Manuscript Production Pipeline
     dateFormat X
     axisFormat %s
@@ -733,8 +727,7 @@ Figure&nbsp;18.2: Manuscript production pipeline: four writing waves plus integr
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-draft-review-cycle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-draft-review-cycle">%%{init: {'theme': 'neutral'}}%%
-sequenceDiagram
+<pre class="mermaid mermaid-js" data-label="fig-cs-draft-review-cycle">sequenceDiagram
     participant O as Orchestrator
     participant D as Draft Agent (Domain Specialist)
     participant R1 as CTO Proxy
@@ -781,8 +774,7 @@ Figure&nbsp;18.3: The draft, review, revise cycle for each chapter
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-dynamic-personas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-dynamic-personas">%%{init: {'theme': 'neutral'}}%%
-flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-cs-dynamic-personas">flowchart TD
     A[Integration Review&lt;br/&gt;Editor reads all 15 chapters] --&gt; B{Visual anchors&lt;br/&gt;missing?}
     B --&gt;|Yes| C[Create Illustrator Agent&lt;br/&gt;Visual Strategist persona]
     C --&gt; D[Fleet of 2: Block 1 + Block 2&lt;br/&gt;40 visual opportunities&lt;br/&gt;15 Mermaid diagrams embedded]

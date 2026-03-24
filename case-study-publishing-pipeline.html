@@ -590,8 +590,7 @@ ul.task-list li input[type="checkbox"] {
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-conversion-wave-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-conversion-wave">%%{init: {'theme': 'neutral'}}%%
-flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-cs-conversion-wave">flowchart LR
     A["15 Markdown&lt;br/&gt;chapters"] --&gt; B["git mv .md → .qmd&lt;br/&gt;+ YAML frontmatter"]
     B --&gt; C["_quarto.yml&lt;br/&gt;book config"]
     C --&gt; D["quarto render"]
@@ -621,15 +620,13 @@ Figure&nbsp;19.1: Publishing conversion pipeline: Markdown to HTML, PDF, and EPU
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-almost-done-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-almost-done">%%{init: {'theme': 'neutral'}}%%
-flowchart TD
+<pre class="mermaid mermaid-js" data-label="fig-cs-almost-done">flowchart TD
     A["PDF renders ✓&lt;br/&gt;text too narrow"] --&gt;|scrreprt class| B["Layout fixed ✓&lt;br/&gt;Mermaid missing"]
     B --&gt;|syntax fix| C["Diagrams render ✓&lt;br/&gt;duplicate numbers"]
     C --&gt;|strip numbers| D["Headings clean ✓&lt;br/&gt;margins overflow"]
     D --&gt;|fig-width+wrap| E["Overflow fixed ✓&lt;br/&gt;fig-width too wide"]
     E --&gt;|5.5 + preamble| F["PDF clean ✓&lt;br/&gt;686KB → 3.8MB"]
 
-    style A fill:#fce4e4,stroke:#c0392b,color:#922b21
 </pre>
 </div>
 </div>
@@ -714,8 +711,7 @@ Figure&nbsp;19.2: The ‘Almost Done’ trap: cascading PDF rendering fixes
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-cs-cicd-architecture-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-cs-cicd-architecture">%%{init: {'theme': 'neutral'}}%%
-flowchart TB
+<pre class="mermaid mermaid-js" data-label="fig-cs-cicd-architecture">flowchart TB
     subgraph CI ["CI Pipeline (49 seconds)"]
         A1["Checkout"] --&gt; A2["Install Quarto"]
         A2 --&gt; A3["quarto render --to html"]

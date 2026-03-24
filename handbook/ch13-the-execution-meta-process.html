@@ -617,8 +617,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-five-phases-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-five-phases">%%{init: {'theme': 'neutral'}}%%
-flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-five-phases">flowchart LR
     AUDIT["AUDIT"] --&gt; PLAN["PLAN"]
     PLAN --&gt; WAVE["WAVE"]
     WAVE --&gt; VALIDATE["VALIDATE"]
@@ -724,8 +723,7 @@ Figure&nbsp;15.1: The five execution phases with adaptation loop
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-wave-deps-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-wave-deps">%%{init: {'theme': 'neutral'}}%%
-flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-wave-deps">flowchart LR
     W0["Wave 0"] --&gt;|"No deps"| W1["Wave 1"]
     W1 --&gt;|"Wave 0 outputs"| W2["Wave 2"]
     W2 --&gt;|"Wave 1 stable"| W3["Wave 3"]
@@ -941,8 +939,7 @@ Figure&nbsp;15.2: Wave dependency chain: Foundation → Core → Migration → P
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-adapt-loop-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-adapt-loop">%%{init: {'theme': 'neutral'}}%%
-flowchart LR
+<pre class="mermaid mermaid-js" data-label="fig-adapt-loop">flowchart LR
     D["DETECT&lt;br/&gt;Failure or stall"] --&gt; DG["DIAGNOSE&lt;br/&gt;Root cause"]
     DG --&gt; A["ADJUST&lt;br/&gt;Modify plan"]
     A --&gt; E["EXECUTE&lt;br/&gt;Re-run wave"]
