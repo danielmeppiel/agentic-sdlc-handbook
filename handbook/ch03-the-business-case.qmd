@@ -39,7 +39,17 @@ The total cost of ownership for agentic development has six components. The firs
 
 ### Tool licenses
 
-The visible cost. Per-seat subscriptions for AI coding tools range from $10–40/month per developer for individual tiers; enterprise tiers with SSO, audit logs, and data residency controls run 2–3× higher. If you're evaluating platform-level tools (not just editor plugins), add platform licensing. Budget $200–600 per developer per year for team tiers; enterprise agreements typically run $500–1,500. This is the easy part.
+The visible cost — and the only one vendors emphasize. Pricing models vary across tools and are evolving rapidly, but as of early 2025, representative price points for the major agentic coding platforms illustrate the range[^ch3-pricing]:
+
+| Tool | Individual | Team / Business | Enterprise |
+|---|---|---|---|
+| GitHub Copilot | Free / $10 Pro / $39 Pro+ | $19/user/mo | $39/user/mo |
+| Cursor | Free / $20 Pro / $60 Pro+ | $40/user/mo | Custom |
+| Claude (Anthropic) | Free / $20 Pro / $100+ Max | $25/seat/mo | $20/seat + usage |
+
+Enterprise tiers add SSO, audit logs, data residency, and admin controls. Note that most platforms are shifting toward **usage-based pricing** — GitHub Copilot Enterprise includes 1,000 premium requests per user per month (a single request to a frontier model like Claude Opus 4.6 consumes multiple premium requests), while others bill by token consumption. The actual license cost depends heavily on how aggressively your teams use agentic workflows with premium models. For a team of 10 on enterprise tiers, expect $2,400–5,000/year per developer in license costs alone — before token overages.
+
+[^ch3-pricing]: Prices as of March 2025. See [GitHub Copilot plans](https://docs.github.com/en/copilot/about-github-copilot/plans-for-github-copilot), [Cursor pricing](https://cursor.com/pricing), [Anthropic pricing](https://anthropic.com/pricing). These change frequently; verify current rates before budgeting.
 
 ### Context engineering investment
 
@@ -69,13 +79,13 @@ During the first 60–90 days, your team will be slower, not faster. Context has
 
 | Cost component | Illustrative range (team of 10, year 1) | What's often missed |
 |---|---|---|
-| Tool licenses | $6,000–30,000 | Enterprise governance tier premium |
+| Tool licenses | $24,000–50,000 | Enterprise tier + premium model usage overages |
 | Context engineering | $20,000–60,000 | Measured in engineering time, not invoices |
 | Token / compute | $6,000–24,000 | Scales with adoption success |
 | Training / change mgmt | $15,000–40,000 | Productivity dip during learning curve |
 | Governance setup | $10,000–25,000 | Security review, policy definition, audit configuration |
 | Adoption curve opportunity cost | $20,000–50,000 | 60–90 days of reduced velocity |
-| **Year 1 total** | **$77,000–229,000** | Tool licenses are 8–13% of total |
+| **Year 1 total** | **$95,000–249,000** | Tool licenses are 20–25% of total |
 
 :::
 
