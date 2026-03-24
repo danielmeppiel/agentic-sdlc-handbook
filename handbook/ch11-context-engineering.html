@@ -565,10 +565,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-context-budget" id="toc-the-context-budget" class="nav-link active" data-scroll-target="#the-context-budget"><span class="header-section-number">13.1</span> The Context Budget</a></li>
   <li><a href="#the-instruction-hierarchy" id="toc-the-instruction-hierarchy" class="nav-link" data-scroll-target="#the-instruction-hierarchy"><span class="header-section-number">13.2</span> The Instruction Hierarchy</a>
   <ul class="collapse">
-  <li><a href="#global-scope-project-wide-principles" id="toc-global-scope-project-wide-principles" class="nav-link" data-scroll-target="#global-scope-project-wide-principles"><span class="header-section-number">13.2.1</span> Global scope: project-wide principles</a></li>
-  <li><a href="#directory-scope-domain-specific-rules" id="toc-directory-scope-domain-specific-rules" class="nav-link" data-scroll-target="#directory-scope-domain-specific-rules"><span class="header-section-number">13.2.2</span> Directory scope: domain-specific rules</a></li>
-  <li><a href="#file-scope-surgical-constraints" id="toc-file-scope-surgical-constraints" class="nav-link" data-scroll-target="#file-scope-surgical-constraints"><span class="header-section-number">13.2.3</span> File scope: surgical constraints</a></li>
-  <li><a href="#how-the-hierarchy-composes" id="toc-how-the-hierarchy-composes" class="nav-link" data-scroll-target="#how-the-hierarchy-composes"><span class="header-section-number">13.2.4</span> How the hierarchy composes</a></li>
+  <li><a href="#file-scope-surgical-constraints" id="toc-file-scope-surgical-constraints" class="nav-link" data-scroll-target="#file-scope-surgical-constraints"><span class="header-section-number">13.2.1</span> File scope: surgical constraints</a></li>
+  <li><a href="#how-the-hierarchy-composes" id="toc-how-the-hierarchy-composes" class="nav-link" data-scroll-target="#how-the-hierarchy-composes"><span class="header-section-number">13.2.2</span> How the hierarchy composes</a></li>
   </ul></li>
   <li><a href="#agent-configuration" id="toc-agent-configuration" class="nav-link" data-scroll-target="#agent-configuration"><span class="header-section-number">13.3</span> Agent Configuration</a></li>
   <li><a href="#skill-design" id="toc-skill-design" class="nav-link" data-scroll-target="#skill-design"><span class="header-section-number">13.4</span> Skill Design</a></li>
@@ -690,61 +688,57 @@ Figure&nbsp;13.1: Context window budget allocation for a typical 128K-token agen
 </section>
 <section id="the-instruction-hierarchy" class="level2" data-number="13.2">
 <h2 data-number="13.2" class="anchored" data-anchor-id="the-instruction-hierarchy"><span class="header-section-number">13.2</span> The Instruction Hierarchy</h2>
-<p>The most consequential context engineering decision is how you structure your instructions. The naive approach is a single document: one large file containing every convention, pattern, and constraint your team follows. This is the “flat instructions” anti-pattern, and it fails for the same reason a single 800-page employee handbook fails: nobody reads the chapter on database conventions when they’re fixing a CSS bug, and neither does an agent. Worse, the agent can’t skip sections; it loads everything, diluting its attention on what matters.</p>
-<p>The solution is a hierarchy: instructions that increase in specificity as scope narrows, from project-wide to directory-level to file-level. Each layer loads only when relevant.</p>
-<section id="global-scope-project-wide-principles" class="level3" data-number="13.2.1">
-<h3 data-number="13.2.1" class="anchored" data-anchor-id="global-scope-project-wide-principles"><span class="header-section-number">13.2.1</span> Global scope: project-wide principles</h3>
-<p>The top layer defines principles that apply everywhere. These are your team’s non-negotiable constraints — the things that are true regardless of which file an agent is editing.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Project Principles</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Error Handling</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All public API functions return Result types, never throw exceptions</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Log errors at the boundary where they're caught, not where they originate</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Security</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>No credentials in source code. Use environment variables or secret managers.</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All user input is validated at the API boundary before reaching business logic.</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## Testing</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Every public function has at least one test. No exceptions.</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tests use the factory pattern for test data. No inline object construction.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Global instructions should be short. If your project-wide principles exceed 50 lines, you are almost certainly including domain-specific guidance that belongs in a narrower scope.</p>
-</section>
-<section id="directory-scope-domain-specific-rules" class="level3" data-number="13.2.2">
-<h3 data-number="13.2.2" class="anchored" data-anchor-id="directory-scope-domain-specific-rules"><span class="header-section-number">13.2.2</span> Directory scope: domain-specific rules</h3>
-<p>The middle layer targets specific areas of the codebase. When an agent edits a file in <code>src/auth/</code>, it loads the auth-specific instructions. When it edits <code>src/frontend/</code>, it loads frontend rules. Neither set pollutes the other.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Authentication Module Rules</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>applyTo: "src/auth/**"</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Token Management</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>All token operations go through AuthResolver. Never access tokens directly.</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Token refresh uses exponential backoff with a maximum of 3 retries.</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>EMU (Enterprise Managed User) tokens use the standard <span class="in">`ghu_`</span> prefix.</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">## Patterns</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use the CredentialChain pattern for multi-source credential resolution.</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Order: environment variable → credential file → interactive prompt.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>The <code>applyTo</code> pattern is the mechanism. When the agent’s task involves files matching that glob, the instructions load. When it doesn’t, they stay out of the context window. This is progressive disclosure at the instruction level: context arrives just-in-time, not just-in-case.</p>
-</section>
-<section id="file-scope-surgical-constraints" class="level3" data-number="13.2.3">
-<h3 data-number="13.2.3" class="anchored" data-anchor-id="file-scope-surgical-constraints"><span class="header-section-number">13.2.3</span> File scope: surgical constraints</h3>
+<p>The most consequential context engineering decision is how you structure your instructions. Chapter 10 specifies the Explicit Hierarchy constraint: instructions form layers from global to local, each inheriting from above and adding specificity below (see §E — Explicit Hierarchy in Chapter 10). This section covers the engineering side — how to build that hierarchy in a real repository, size each layer for the context budget, and compose it at runtime.</p>
+<p>The hierarchy has five layers, from broadest to most specific scope:</p>
+<div class="cell" data-fig-width="5" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-instruction-hierarchy" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-instruction-hierarchy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-instruction-hierarchy">flowchart TD
+    A["🏢 Enterprise / Org Policy&lt;br/&gt;&lt;em&gt;Security baselines, compliance rules&lt;/em&gt;&lt;br/&gt;&lt;code&gt;apm-policy.yml · tighten-only inheritance&lt;/code&gt;"] --&gt; B
+    B["📁 Repository Instructions&lt;br/&gt;&lt;em&gt;copilot-instructions.md · root AGENTS.md&lt;/em&gt;&lt;br/&gt;&lt;code&gt;applyTo: '**'&lt;/code&gt;"] --&gt; C
+    C["📂 Directory Scopes&lt;br/&gt;&lt;em&gt;backend/AGENTS.md · .instructions.md&lt;/em&gt;&lt;br/&gt;&lt;code&gt;applyTo: 'src/backend/**'&lt;/code&gt;"] --&gt; D
+    D["🤖 Agent Configurations&lt;br/&gt;&lt;em&gt;.agent.md definitions&lt;/em&gt;&lt;br/&gt;&lt;code&gt;applyTo: 'src/auth/**'&lt;/code&gt;"] --&gt; E
+    E["⚡ Skill Files&lt;br/&gt;&lt;em&gt;SKILL.md packages&lt;/em&gt;&lt;br/&gt;&lt;code&gt;Activates on code-pattern match&lt;/code&gt;"]
+
+    style A fill:#e8f4fd,stroke:#4a90d9
+    style B fill:#f0f4e8,stroke:#7ba23f
+    style C fill:#fef9e7,stroke:#d4a843
+    style D fill:#fde8e8,stroke:#d94a4a
+    style E fill:#fff3e0,stroke:#e8913a
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-instruction-hierarchy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13.2: The five layers of an instruction hierarchy, from enterprise policy (broadest) to skill files (most specific). Each layer inherits constraints from above and adds domain-specific guidance below.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Each layer narrows scope and adds specificity. Enterprise policies define security baselines and compliance requirements that no repository can relax — they flow down through tighten-only inheritance (allow-lists intersect, deny-lists union, enforcement only escalates). Repository-wide instructions establish project principles: error handling, naming, testing. Directory-scoped instructions target domains (<code>src/auth/</code>, <code>src/frontend/</code>) so that auth rules never pollute frontend context. Agent configurations bind expertise and tool boundaries to specific task types. Skills activate on code-pattern matches to deliver just-in-time playbooks.</p>
+<p>The engineering constraint at every layer is size. Global instructions should stay under 50 lines — if your project-wide principles exceed that, you are including domain-specific guidance that belongs in a narrower scope. Directory-scoped instructions should focus on the patterns unique to that domain. The total instruction load for any single agent task should fit within the ~20K-token instruction budget described in the context budget above. That means your hierarchy must be selective: each layer earns its tokens by being relevant to the current task, not merely present in the repository.</p>
+<section id="file-scope-surgical-constraints" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="file-scope-surgical-constraints"><span class="header-section-number">13.2.1</span> File scope: surgical constraints</h3>
 <p>The narrowest layer targets specific files or file types. This is where you encode the knowledge that would otherwise require reading a file’s git history to understand.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Integration Architecture</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>applyTo: "src/integration/**"</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Required structure</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>Every integrator MUST extend BaseIntegrator and return IntegrationResult.</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Base-class methods — use, don't reimplement</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Operation          <span class="pp">|</span> Use                          <span class="pp">|</span> Never                    <span class="pp">|</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------------------|------------------------------|--------------------------|</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Collision detection<span class="pp">|</span> self.check_collision()       <span class="pp">|</span> Custom existence checks  <span class="pp">|</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> File discovery     <span class="pp">|</span> self.find_files_by_glob()    <span class="pp">|</span> Ad-hoc os.walk           <span class="pp">|</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Path validation    <span class="pp">|</span> BaseIntegrator.validate_path()<span class="pp">|</span> Inline "../" checks      <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Integration Architecture</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>applyTo: "src/integration/**"</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Required structure</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>Every integrator MUST extend BaseIntegrator and return IntegrationResult.</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Base-class methods — use, don't reimplement</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Operation          <span class="pp">|</span> Use                          <span class="pp">|</span> Never                    <span class="pp">|</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="pp">|--------------------|------------------------------|--------------------------|</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Collision detection<span class="pp">|</span> self.check_collision()       <span class="pp">|</span> Custom existence checks  <span class="pp">|</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> File discovery     <span class="pp">|</span> self.find_files_by_glob()    <span class="pp">|</span> Ad-hoc os.walk           <span class="pp">|</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Path validation    <span class="pp">|</span> BaseIntegrator.validate_path()<span class="pp">|</span> Inline "../" checks      <span class="pp">|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This is the knowledge that a new human engineer would learn in their second week, after a senior teammate says “we don’t do it that way here.” The agent never has a second week. It needs this on day one, every time.</p>
 </section>
-<section id="how-the-hierarchy-composes" class="level3" data-number="13.2.4">
-<h3 data-number="13.2.4" class="anchored" data-anchor-id="how-the-hierarchy-composes"><span class="header-section-number">13.2.4</span> How the hierarchy composes</h3>
+<section id="how-the-hierarchy-composes" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="how-the-hierarchy-composes"><span class="header-section-number">13.2.2</span> How the hierarchy composes</h3>
 <p>When an agent edits <code>src/auth/token_resolver.py</code>, the effective context is:</p>
 <ol type="1">
 <li>Global principles (error handling, security, testing)</li>
@@ -765,34 +759,34 @@ Figure&nbsp;13.1: Context window budget allocation for a typical 128K-token agen
 <li><strong>Behavioral constraints.</strong> What the agent prioritizes when making trade-offs. An agent configured with “KISS — simplest correct solution” makes different choices than one configured with “optimize for performance.”</li>
 <li><strong>Anti-patterns.</strong> What the agent should never do. This is often more valuable than positive instructions, because it prevents the specific mistakes your team has seen before.</li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/agents/python-architect.agent.md</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> python-architect</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  Expert on Python design patterns, modularization, and scalable</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  architecture. Activate when creating new modules, refactoring</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  class hierarchies, or making cross-cutting architectural decisions.</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model</span><span class="kw">:</span><span class="at"> claude-sonnet-4.5</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Python Architect</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="at">You are an expert Python architect specializing in CLI tool design.</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="co">## Design Philosophy</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Speed and simplicity over complexity</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Solid foundation that can be iterated on</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Pay only for what you touch — operations proportional to affected files</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="co">## Patterns You Enforce</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> BaseIntegrator for all file-level integrators</span></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> CommandLogger for all CLI output</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> AuthResolver for all credential access</span></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a><span class="co">## You Never</span></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Add a new base class when an existing one can be extended</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Instantiate AuthResolver per-request (it's a singleton)</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Import from integration/ in the CLI layer (use the public API)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/agents/python-architect.agent.md</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> python-architect</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">: </span><span class="ch">&gt;-</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  Expert on Python design patterns, modularization, and scalable</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  architecture. Activate when creating new modules, refactoring</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  class hierarchies, or making cross-cutting architectural decisions.</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="fu">model</span><span class="kw">:</span><span class="at"> claude-sonnet-4.5</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="pp">---</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Python Architect</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="at">You are an expert Python architect specializing in CLI tool design.</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">## Design Philosophy</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Speed and simplicity over complexity</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Solid foundation that can be iterated on</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Pay only for what you touch — operations proportional to affected files</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">## Patterns You Enforce</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> BaseIntegrator for all file-level integrators</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> CommandLogger for all CLI output</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> AuthResolver for all credential access</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">## You Never</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Add a new base class when an existing one can be extended</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Instantiate AuthResolver per-request (it's a singleton)</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="kw">-</span><span class="at"> Import from integration/ in the CLI layer (use the public API)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The “You Never” section is where institutional memory becomes operational. Every item in that list represents a mistake that happened at least once — possibly caught in code review, possibly caught in production. Encoding it in the agent configuration means it doesn’t happen again, regardless of which human or AI writes the next change.</p>
 <p>For a typical project, three to five agent configurations cover most tasks: an architect (structure and patterns), a domain expert (your core business logic), a documentation writer, and optionally a security reviewer and a test specialist. Start with fewer. Add agents when you observe the same correction being made repeatedly — that’s the signal that a new specialization has earned its place.</p>
 </section>
@@ -802,28 +796,28 @@ Figure&nbsp;13.1: Context window budget allocation for a typical 128K-token agen
 <p>A skill is a reusable knowledge package that activates based on code patterns. When an agent touches logging code, the logging skill fires. When it touches authentication flows, the auth skill fires. The agent doesn’t choose to activate a skill; the tooling detects the match and loads it.</p>
 <p>The design test for a skill is: does this knowledge apply across multiple files, require more than a few rules to express, and get triggered by a detectable pattern? If all three are true, it’s a skill. If the knowledge applies to one file, it’s an instruction. If it’s a general approach rather than pattern-specific guidance, it belongs in an agent configuration.</p>
 <p>A well-designed skill has three sections:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># CLI Logging UX Skill</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## When This Activates</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>Code touches console helpers, DiagnosticCollector,</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>STATUS_SYMBOLS, or any user-facing terminal output.</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Decision Framework</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The "So What?" Test — every warning must answer:</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>   what should the user do about this?</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>The Traffic Light Rule:</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>   | Color  | Helper           | Meaning            |</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>   |--------|------------------|--------------------|</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>   | Green  | _rich_success()  | Completed          |</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>   | Yellow | _rich_warning()  | User action needed |</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>   | Red    | _rich_error()    | Cannot continue    |</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>   | Blue   | _rich_info()     | Status update      |</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The Newspaper Test — can the user scan output like headlines?</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Anti-Patterns</span></span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never use bare print() or click.echo() without styling</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never emit a warning without an actionable suggestion</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never mix Rich and colorama in the same output path</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># CLI Logging UX Skill</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## When This Activates</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Code touches console helpers, DiagnosticCollector,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>STATUS_SYMBOLS, or any user-facing terminal output.</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">## Decision Framework</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The "So What?" Test — every warning must answer:</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>   what should the user do about this?</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>The Traffic Light Rule:</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>   | Color  | Helper           | Meaning            |</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>   |--------|------------------|--------------------|</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>   | Green  | _rich_success()  | Completed          |</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>   | Yellow | _rich_warning()  | User action needed |</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>   | Red    | _rich_error()    | Cannot continue    |</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>   | Blue   | _rich_info()     | Status update      |</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>The Newspaper Test — can the user scan output like headlines?</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Anti-Patterns</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never use bare print() or click.echo() without styling</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never emit a warning without an actionable suggestion</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Never mix Rich and colorama in the same output path</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>The decision framework is what distinguishes a skill from a list of rules. Rules tell you what to do. A decision framework tells you how to think about the problem, which means it generalizes to situations the author didn’t anticipate.</p>
 <p>Skills vs.&nbsp;one-off instructions: if you find yourself writing the same instructional content in three different instruction files, extract it into a skill. The instruction files then reference the skill by name rather than duplicating the content. This mirrors the same DRY principle you apply to code — and for the same reason. When the logging convention changes, you update one skill file instead of hunting through every instruction that mentions logging.</p>
 </section>
@@ -853,48 +847,48 @@ Figure&nbsp;13.1: Context window budget allocation for a typical 128K-token agen
 <h2 data-number="13.7" class="anchored" data-anchor-id="before-and-after"><span class="header-section-number">13.7</span> Before and After</h2>
 <p>Consider a concrete task: “Add rate limiting to the <code>/api/users</code> endpoint.”</p>
 <p><strong>Without structured context</strong>, the agent sees the endpoint file and whatever the tool’s default context provides. It produces:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask_limiter <span class="im">import</span> Limiter</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>limiter <span class="op">=</span> Limiter(app, key_func<span class="op">=</span>get_remote_address)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/api/users'</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="at">@limiter.limit</span>(<span class="st">"100/hour"</span>)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_users():</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> flask_limiter <span class="im">import</span> Limiter</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>limiter <span class="op">=</span> Limiter(app, key_func<span class="op">=</span>get_remote_address)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="at">@app.route</span>(<span class="st">'/api/users'</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="at">@limiter.limit</span>(<span class="st">"100/hour"</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_users():</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    ...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>This looks reasonable. It also violates three conventions that exist only in the team’s heads: the project uses a custom rate limiter that integrates with the metrics pipeline, rate limit configuration lives in the environment (not hardcoded), and all middleware decorators are applied in <code>middleware.py</code>, not inline on routes.</p>
 <p><strong>With structured context</strong>, the agent loads three scoped instruction files. Here’s what they actually contain:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Global: middleware-registration.instructions.md</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>applyTo: "**"</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Middleware Registration</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ALL middleware decorators are registered in <span class="in">`middleware.py`</span>, never inline on routes.</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Route files define endpoint logic only. Side effects (auth, rate limiting,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  caching) are composed externally.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Directory: src/api/.instructions.md</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>applyTo: "src/api/**"</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rate Limiting</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use <span class="in">`app.rate_limiter.RateLimiter`</span>, not flask-limiter or third-party libraries.</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  Our implementation integrates with the Prometheus metrics pipeline.</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rate limit values come from environment variables (<span class="in">`API_RATE_LIMIT_{RESOURCE}`</span>),</span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  never hardcoded. Defaults are defined in <span class="in">`config/defaults.yaml`</span>.</span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rate limiter instances are created via <span class="in">`RateLimiter.from_env()`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Skill: api-middleware.skill.md</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## When This Activates</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Adding or modifying middleware for any endpoint in <span class="in">`src/api/`</span>.</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Registration Pattern</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Define the middleware instance in <span class="in">`middleware.py`</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Call <span class="in">`.register(route, methods=)`</span> to bind it</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Never import middleware classes in route files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Global: middleware-registration.instructions.md</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>applyTo: "**"</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Middleware Registration</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>ALL middleware decorators are registered in <span class="in">`middleware.py`</span>, never inline on routes.</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Route files define endpoint logic only. Side effects (auth, rate limiting,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  caching) are composed externally.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Directory: src/api/.instructions.md</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>applyTo: "src/api/**"</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">## Rate Limiting</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Use <span class="in">`app.rate_limiter.RateLimiter`</span>, not flask-limiter or third-party libraries.</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  Our implementation integrates with the Prometheus metrics pipeline.</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rate limit values come from environment variables (<span class="in">`API_RATE_LIMIT_{RESOURCE}`</span>),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  never hardcoded. Defaults are defined in <span class="in">`config/defaults.yaml`</span>.</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Rate limiter instances are created via <span class="in">`RateLimiter.from_env()`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu"># Skill: api-middleware.skill.md</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## When This Activates</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>Adding or modifying middleware for any endpoint in <span class="in">`src/api/`</span>.</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">## Registration Pattern</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Define the middleware instance in <span class="in">`middleware.py`</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Call <span class="in">`.register(route, methods=)`</span> to bind it</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Never import middleware classes in route files</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>These three files total 25 lines. The agent loads them, and produces:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># middleware.py</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> app.rate_limiter <span class="im">import</span> RateLimiter</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>rate_limiter <span class="op">=</span> RateLimiter.from_env(<span class="st">"API_RATE_LIMIT_USERS"</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>rate_limiter.register(<span class="st">"/api/users"</span>, methods<span class="op">=</span>[<span class="st">"GET"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No changes to the route file — middleware is external</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># middleware.py</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> app.rate_limiter <span class="im">import</span> RateLimiter</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>rate_limiter <span class="op">=</span> RateLimiter.from_env(<span class="st">"API_RATE_LIMIT_USERS"</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>rate_limiter.register(<span class="st">"/api/users"</span>, methods<span class="op">=</span>[<span class="st">"GET"</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># No changes to the route file — middleware is external</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Same model. Same task. Different output. The difference is entirely in what the agent knew before it started.</p>
 <p>This pattern repeats across every category of work. Adding a new API endpoint without context produces generic boilerplate; with context, it follows the project’s existing patterns for validation, error response format, and middleware registration. Writing a test without context produces isolated assertions; with context, it uses the project’s test factories, follows the naming convention, and respects the fixture hierarchy. Modifying a configuration file without context produces plausible syntax; with context, it respects the deployment pipeline’s expectations about which values come from environment variables vs.&nbsp;which are hardcoded.</p>
 <p>The critical point is that none of these failures are model failures. The model is capable of doing the right thing in every case. It does the wrong thing because it lacks the information. Context engineering closes that gap.</p>
@@ -902,7 +896,7 @@ Figure&nbsp;13.1: Context window budget allocation for a typical 128K-token agen
 <section id="common-mistakes" class="level2" data-number="13.8">
 <h2 data-number="13.8" class="anchored" data-anchor-id="common-mistakes"><span class="header-section-number">13.8</span> Common Mistakes</h2>
 <p><strong>Over-stuffing context.</strong> The instinct to provide more information is strong and almost always counterproductive. A 400-line instruction file doesn’t give the agent “more to work with.” It gives it more to get distracted by. Instructions should be the minimum sufficient guidance for their scope. If you can’t remember what’s in your instruction file without re-reading it, the agent is having the same problem.</p>
-<p><strong>Flat instructions without scoping.</strong> A single global instruction file that covers everything — API conventions, frontend patterns, database rules, deployment procedures — forces every agent session to load every rule. The backend agent spends context budget on frontend rules. The documentation agent loads database conventions. Scope your instructions. If an instruction doesn’t apply to the current task, it shouldn’t be in the context window.</p>
+<p><strong>Flat instructions without scoping.</strong> A single global instruction file that covers everything — API conventions, frontend patterns, database rules, deployment procedures — forces every agent session to load every rule. The backend agent spends context budget on frontend rules. The documentation agent loads database conventions. Scope your instructions using the hierarchy in <a href="#fig-instruction-hierarchy" class="quarto-xref">Figure&nbsp;<span>13.2</span></a> above (see also §Flat Instructions anti-pattern in Chapter 10).</p>
 <p><strong>Duplicating knowledge across files.</strong> When the same convention appears in three different instruction files, you’ve created a maintenance problem. When the convention changes, you update one file and forget the others. The agent gets contradictory guidance and produces inconsistent output. Extract shared knowledge into skills. Reference, don’t repeat.</p>
 <p><strong>Mixing concerns in a single primitive.</strong> An instruction file that covers both “how to write error messages” and “how to structure database migrations” is serving two unrelated domains. When either domain changes, you risk destabilizing the other. One concern per primitive. This mirrors the single-responsibility principle in code, and for the same reasons.</p>
 <p><strong>Ignoring the feedback loop.</strong> Writing instruction files once and never updating them is like writing tests once and never running them. The value of context engineering compounds through iteration: agent makes a mistake, you trace it to a context gap, you fix the primitive, the mistake doesn’t recur. Teams that skip this loop find their context artifacts drift from reality within weeks.</p>

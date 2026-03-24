@@ -811,50 +811,8 @@ Figure&nbsp;15.2: Wave dependency chain: Foundation → Core → Migration → P
 <section id="pr-394-the-worked-example" class="level2" data-number="15.3">
 <h2 data-number="15.3" class="anchored" data-anchor-id="pr-394-the-worked-example"><span class="header-section-number">15.3</span> <a href="https://github.com/microsoft/apm/pull/394">PR #394</a>: The Worked Example</h2>
 <p>The meta-process is abstract until you see it execute. This section summarizes a real PR — an auth and logging architecture overhaul on APM, an open-source agent package manager (the author’s implementation of the distribution layer described in Chapters 9 and 10). The full execution log — including 5 escalation events, 8 plan iterations, and anti-pattern mappings — is in <a href="../case-study-apm-overhaul.html">The APM Auth + Logging Overhaul</a> case study in Part IV.</p>
-<p><strong>Scope.</strong> 5 cross-cutting concerns (auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage) touching 75 files across the entire source tree.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 50%">
-<col style="width: 50%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Metric</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Files changed</td>
-<td>75</td>
-</tr>
-<tr class="even">
-<td>Lines added / removed</td>
-<td>+7,832 / −1,074</td>
-</tr>
-<tr class="odd">
-<td>Tests</td>
-<td>2,829 → 2,897 (+68 added during session)</td>
-</tr>
-<tr class="even">
-<td>Agents dispatched</td>
-<td>~25 implementation + 6 audit</td>
-</tr>
-<tr class="odd">
-<td>Human interventions</td>
-<td>3 during wave execution (5 total across session)</td>
-</tr>
-<tr class="even">
-<td>Plan iterations</td>
-<td>8 (v1 → v8 before execution began)</td>
-</tr>
-<tr class="odd">
-<td>Wall-clock time</td>
-<td>~90 minutes (wave execution phase)</td>
-</tr>
-</tbody>
-</table>
-<p><strong>A note on timing.</strong> The 90-minute figure reflects an experienced practitioner working with mature instrumentation: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.</p>
+<p><strong>Scope.</strong> 5 cross-cutting concerns (auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage) touching 75 files across the entire source tree. The canonical metrics — files, lines, test counts, agent dispatches, escalations — are in the <a href="../case-study-apm-overhaul.html">APM Overhaul case study</a>. This section focuses on <em>how</em> the meta-process phases played out.</p>
+<p><strong>A note on timing.</strong> The ~90-minute wave execution time reflects an experienced practitioner working with mature instrumentation: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.</p>
 <section id="timeline" class="level3" data-number="15.3.1">
 <h3 data-number="15.3.1" class="anchored" data-anchor-id="timeline"><span class="header-section-number">15.3.1</span> Timeline</h3>
 <table class="caption-top table">
@@ -986,7 +944,7 @@ Figure&nbsp;15.3: The ADAPT loop for mid-execution recovery
 </section>
 <section id="adapting-the-meta-process" class="level2" data-number="15.6">
 <h2 data-number="15.6" class="anchored" data-anchor-id="adapting-the-meta-process"><span class="header-section-number">15.6</span> Adapting the Meta-Process</h2>
-<p>The PR #394 case involved 75 files and ~25 agents across 5 waves (including one recovery wave). Not every change is that large. The meta-process scales in both directions.</p>
+<p>The PR #394 case (see <a href="../case-study-apm-overhaul.html">case study</a> for full metrics) involved multiple waves including one recovery wave. Not every change is that large. The meta-process scales in both directions.</p>
 <section id="small-changes-fewer-than-10-files" class="level3" data-number="15.6.1">
 <h3 data-number="15.6.1" class="anchored" data-anchor-id="small-changes-fewer-than-10-files"><span class="header-section-number">15.6.1</span> Small Changes (fewer than 10 files)</h3>
 <p>For focused changes within a single concern (fixing a bug, adding a feature to one module, refactoring a small subsystem), the full wave structure is overhead. The meta-process compresses:</p>
@@ -1017,7 +975,7 @@ Figure&nbsp;15.3: The ADAPT loop for mid-execution recovery
 <p><strong>Bisectable history.</strong> Every wave is a separate commit with passing tests. If a bug surfaces after merge, you can bisect to the exact wave that introduced it. This is not possible with the typical “one giant commit per feature” or “squash everything” approaches.</p>
 <p><strong>Auditable decisions.</strong> The plan documents what was decided and why. The checkpoint records document what happened at each validation point. The escalation records document what required human judgment and what the judgment was. A reviewer reading the PR has a complete record of the decision chain, not just the final code.</p>
 <p><strong>Reproducible process.</strong> The meta-process is the same regardless of who executes it or which tool orchestrates it. A different developer, with the same codebase, the same context files, and the same plan, would produce substantially similar output. This is our hypothesis, not a tested claim. Controlled reproducibility experiments would strengthen it. The non-determinism of AI agents is bounded by the determinism of the process around them.</p>
-<p><strong>Proportional cost.</strong> The time spent scales with the change scope, not the full codebase size — though we have verified this only at the scale documented in the reference case study. A 75-file change took ~90 minutes of wave execution time regardless of whether the codebase has 10,000 lines or 10 million. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.</p>
+<p><strong>Proportional cost.</strong> The time spent scales with the change scope, not the full codebase size — though we have verified this only at the scale documented in the <a href="../case-study-apm-overhaul.html">reference case study</a>. The agent works on the files in the plan. The test suite validates the behavior. Nothing else matters.</p>
 <hr>
 <p>The meta-process is the operational core of everything this book teaches. PROSE provides the constraints. Context engineering provides the information. Agent primitives encode the knowledge. The meta-process is how they combine into shipped code.</p>
 <p>But following a process correctly is only half the challenge. The other half is recognizing when it’s going wrong — when an anti-pattern is forming, when a failure mode is emerging, when the process is producing output that looks correct and isn’t. The next chapter documents what those failures look like and how to prevent them.</p>

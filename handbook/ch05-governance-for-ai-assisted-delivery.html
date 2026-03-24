@@ -907,6 +907,19 @@ Figure&nbsp;7.1: Governance capability quick-start assessment
 <p>Your agents consume context — instruction files, documentation, configuration, code from dependencies — and that context is an attack surface. Supply chain risk for AI-assisted development extends beyond traditional dependency vulnerabilities into a new category: context poisoning.</p>
 <p><strong>Prompt injection via context</strong> means an agent that reads repository files, fetches documentation, or consumes dependency metadata can be influenced by adversarial content planted in those sources. A malicious instruction in a dependency’s README or a carefully crafted comment in imported code can alter agent behavior. This is not speculative — prompt injection is an active area of security research and a documented attack vector against LLM-integrated systems.</p>
 <p><strong>Compromised instruction files</strong> are especially dangerous because your agent instruction files are code that governs code. If an attacker gains write access (through a compromised dependency, a supply chain attack, or a malicious contribution), they can influence every line of agent-generated code without modifying a single source file.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Organizational Policy: The Permanent Governance Gap
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One limitation of AI-assisted governance that no model improvement will resolve: organizational policy awareness lives nowhere in training data. An agent can enforce coding standards from a rules file. It can run 22 automated policy checks in CI. But it cannot know that your organization’s legal team requires review for any feature touching PII, or that a PR linking a personal asset from a corporate repository creates a compliance risk — unless that policy is explicitly encoded in the context layer. This is why governance primitives (Chapter 9) must include organizational policies, not just technical standards. The <a href="../case-study-growth-engine.html">Growth Engine case study</a> documents this finding in detail: fifteen agent personas across seven expert panels missed a compliance constraint that a human caught in seconds.</p>
+</div>
+</div>
 <hr>
 </section>
 </section>
@@ -1140,6 +1153,26 @@ Figure&nbsp;7.1: Governance capability quick-start assessment
 <li>Confirm your E&amp;O and cyber insurance policies address agent-generated code. Raise the question with your CFO before the board does.</li>
 <li>Schedule a quarterly governance review. Agent capabilities and regulatory requirements both move fast.</li>
 </ol>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>These Governance Principles Have Concrete Implementations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The governance framework above is not theoretical. The APM project implements each principle as CI-enforceable infrastructure:</p>
+<ul>
+<li><strong>Lock file audit trails</strong> pin every agent configuration to exact commit SHAs with full dependency provenance — producing SOC 2-ready evidence from standard <code>git log</code> queries.</li>
+<li><strong>Policy inheritance chains</strong> (Enterprise → Organization → Repository) ensure security baselines cascade automatically; child policies can only tighten constraints, never relax them.</li>
+<li><strong>CI enforcement gates</strong> run 22 automated checks (6 baseline + 16 organizational policy) and block deployments that violate policy — no human gatekeeper required.</li>
+<li><strong>Content scanning</strong> detects hidden Unicode attacks (bidirectional overrides, tag characters, variation selectors) before files reach agent-readable directories — addressing the prompt supply chain threat at the pre-deployment stage.</li>
+</ul>
+<p>The pattern generalizes: governance primitives that can be expressed as CI checks should be. The ones that cannot — organizational policy, legal review triggers, risk classification — must be encoded as explicit context for agents and humans alike.</p>
+</div>
+</div>
 
 
 </section>

@@ -957,7 +957,7 @@ User: And can you add the new /logout endpoint?</code></pre>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## CSS</span></span>
 <span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>Use CSS modules. Follow BEM naming...</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Every agent, regardless of what it is working on, loads all of this. The Python backend agent processes CSS naming conventions. The database migration agent processes React accessibility guidelines. Attention is wasted. Worse, rules from unrelated domains can interfere — the agent might apply the “use modules” CSS guidance to Python module organization, producing unexpected results.</p>
-<p><strong>Fix:</strong> Split by scope. Python rules in a Python-scoped file. React rules in a frontend-scoped file. Authentication rules in an auth-scoped file. Each agent loads only what applies to its current task.</p>
+<p><strong>Fix:</strong> Split by scope. Python rules in a Python-scoped file. React rules in a frontend-scoped file. Authentication rules in an auth-scoped file. Each agent loads only what applies to its current task. Chapter 11 covers the engineering details: how to size each layer for the context budget, compose the hierarchy at runtime, and maintain it as your codebase evolves (see §The Instruction Hierarchy in Chapter 11).</p>
 <hr>
 </section>
 </section>
@@ -1249,15 +1249,17 @@ Figure&nbsp;12.1: Relationships between the five PROSE constraints
 <hr>
 <p>The five constraints are the specification. The chapters that follow (context engineering in Chapter 11, multi-agent orchestration in Chapter 12, and the execution meta-process in Chapter 13) are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <hr>
-<div class="callout callout-style-simple callout-tip no-icon">
-<div class="callout-body d-flex">
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
+<i class="callout-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Deploy PROSE in your repo now</strong>: <code>pip install apm-cli &amp;&amp; apm init</code> – <a href="https://github.com/microsoft/apm">APM on GitHub</a></p>
-<p>Get the full handbook as a formatted PDF or EPUB. <a href="../download.html">📕 Download –&gt;</a> · Follow on <a href="https://www.linkedin.com/in/danielmeppiel/">LinkedIn</a></p>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Try It
 </div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One implementation of PROSE scaffolding: <code>pip install apm-cli &amp;&amp; apm init</code> — <a href="https://github.com/microsoft/apm">APM on GitHub</a>. The primitives in this chapter can also be created manually following the file templates above.</p>
 </div>
 </div>
 

@@ -1187,6 +1187,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>File Presence Is Execution
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In agent configuration, installing a package and executing it are the same event. When an agent reads a skill file or instruction set, it incorporates those directives immediately — there is no separate “install” step that a human reviews before “execution.” This collapses the traditional install → review → execute pipeline into a single action, making supply chain security for agent primitives fundamentally different from traditional package management.</p>
+</div>
+</div>
 <p><strong>Why this pattern is uniquely dangerous.</strong> In traditional dependency management, there is a gap between install and execution — you install a package, then your code explicitly calls it. In agent configuration, <em>file presence is execution</em>. The moment a compromised instruction file exists in <code>.github/</code> or <code>.cursor/</code>, agents ingest it. There is no import statement, no function call, no opt-in. Install and execution are the same event.</p>
 <p>Attack vectors include hidden Unicode characters (tag characters, bidirectional overrides, variation selectors) that are invisible in editors but alter agent behavior, and transitive dependencies that silently introduce MCP server access.</p>
 <p><strong>Prevention</strong> requires pre-deployment scanning — catching compromised content before agents read it, not after. Lock file pinning with content hashes provides reproducibility. Blocking transitive MCP servers by default prevents silent privilege escalation. Tools in this category — APM among them — implement pre-deployment scanning; the principle applies regardless of tooling. Treat the prompt supply chain with the same rigor as your code supply chain.</p>
@@ -1361,6 +1374,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><strong>Cargo-culting complexity.</strong> The team implements full multi-agent orchestration for a 10-file repository with two developers. The overhead exceeds the benefit. The disciplines in this book scale <em>down</em> — a solo developer on a small change needs right-sized tasks and good primitives, not a four-wave plan with parallel review agents.</p>
 <p><strong>Abandoned governance.</strong> No one audits what agents modify outside stated scope. No one tracks token costs against value. AI usage grows organically without the structures that catch these patterns before they become expensive.</p>
 <p>Each organizational pattern amplifies a technical one. Over-trust amplifies the Trust Fall. Under-specification causes Context Dumping. No feedback loop perpetuates Not Fixing the Primitives. The fix is organizational: team agreements, review processes, and treating primitives as shared infrastructure.</p>
+<p><strong>Missing policy encoding.</strong> Agents cannot infer organizational policies from training data. Your CELA review triggers, your data classification rules, your compliance thresholds — none of these exist in any model’s weights. If a policy is not explicitly encoded in the context layer (instruction files, governance primitives, CI checks), agents will violate it with confidence and without warning. This is not a bug to be fixed; it is a permanent boundary. See Chapter 5 for the governance framework that addresses it.</p>
 <hr>
 </section>
 <section id="the-recovery-playbook" class="level2" data-number="16.7">

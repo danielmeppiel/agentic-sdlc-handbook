@@ -809,21 +809,22 @@ Figure&nbsp;11.1: The seven APM primitive types
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">## Authentication (last updated: 2025-06-15)</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Migrated from session-based to JWT auth in Q1 2025</span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Token refresh uses exponential backoff, max 3 retries</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>EMU (Enterprise Managed User) tokens use <span class="in">`ghu_`</span> prefix</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The <span class="in">`SessionAuth`</span> class is deprecated but not yet removed.</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  Do NOT use it for new code. Migration tracked in JIRA-4521.</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="fu">## API Versioning (last updated: 2025-05-20)</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>v1 endpoints frozen. No new features, security fixes only.</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>v2 is the active version. All new endpoints go here.</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Versioning is URL-based (/v1/, /v2/), not header-based.</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  This was debated and decided in ADR-017.</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="fu">## Performance Decisions (last updated: 2025-07-01)</span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Database connection pooling uses pgbouncer, not application-level pools.</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cache invalidation is event-driven (via message queue), not TTL-based.</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The /api/search endpoint has a 5-second timeout. This is intentional —</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  longer queries must use the async search endpoint.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>EMU (Enterprise Managed User) tokens use <span class="in">`ghu_`</span> prefix ← INCORRECT, agent error</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>CORRECTION: EMU tokens use standard PAT prefixes (<span class="in">`github_pat_`</span> / <span class="in">`ghp_`</span>). <span class="in">`ghu_`</span> is OAuth.</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The <span class="in">`SessionAuth`</span> class is deprecated but not yet removed.</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  Do NOT use it for new code. Migration tracked in JIRA-4521.</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">## API Versioning (last updated: 2025-05-20)</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>v1 endpoints frozen. No new features, security fixes only.</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>v2 is the active version. All new endpoints go here.</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Versioning is URL-based (/v1/, /v2/), not header-based.</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  This was debated and decided in ADR-017.</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="fu">## Performance Decisions (last updated: 2025-07-01)</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Database connection pooling uses pgbouncer, not application-level pools.</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Cache invalidation is event-driven (via message queue), not TTL-based.</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The /api/search endpoint has a 5-second timeout. This is intentional —</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  longer queries must use the async search endpoint.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Memory files capture the knowledge that doesn’t fit in instructions because it isn’t a rule; it’s context. The distinction matters: “use JWT for authentication” is a rule (instruction). “We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated” is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won’t.</p>
 <p>Memory files are the most likely primitive to drift from reality. Include dates. Review them quarterly. If a section hasn’t been updated in six months, verify that it’s still accurate or remove it.</p>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -891,7 +892,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 </section>
 <section id="tool-support-and-portability" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="tool-support-and-portability"><span class="header-section-number">11.3</span> Tool Support and Portability</h2>
-<p>The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.</p>
+<p>The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div data-tbl-colwidths="[12,22,18,18,16,14]">
 <table class="caption-top table">
 <colgroup>
@@ -988,7 +989,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 <li><strong>Instructions</strong> have the broadest native support — <code>.instructions.md</code> (Copilot), <code>.cursor/rules/</code> (Cursor), <code>CLAUDE.md</code> (Claude Code). Every major tool reads project-level markdown from predictable locations.</li>
 <li><strong>Memory</strong> is implemented as SQLite databases (GitHub Copilot), notepads (Cursor), or embedded in <code>CLAUDE.md</code> sections (Claude Code). The <code>.memory.md</code> format described here works as portable context loaded by any tool.</li>
 <li><strong>Orchestration specs</strong> (<code>.spec.md</code>) map to plan mode artifacts (<code>plan.md</code> in Copilot CLI) or are consumed as plain context files. No tool has a native “spec” file format yet.</li>
-<li><strong>Agents, Skills, and Prompts</strong> have the deepest native support in GitHub Copilot’s <code>.agent.md</code>, <code>SKILL.md</code>, and <code>.prompt.md</code> formats. <strong>Hooks</strong> are natively supported by Copilot, Cursor, and Claude Code; other tools achieve similar outcomes through their own configuration mechanisms.</li>
+<li><strong>Agents, Skills, and Prompts</strong> have, at the time of writing, the deepest native support in GitHub Copilot’s <code>.agent.md</code>, <code>SKILL.md</code>, and <code>.prompt.md</code> formats. <strong>Hooks</strong> are natively supported by Copilot, Cursor, and Claude Code; other tools achieve similar outcomes through their own configuration mechanisms.</li>
 </ul>
 <p>The file names in this chapter are conventions that work today. As tools converge, expect native format support to broaden.</p>
 </div>
@@ -996,7 +997,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 <p>Three observations.</p>
 <p><strong>Instructions are the universal context file.</strong> Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ (<code>applyTo</code> frontmatter, glob-based rule files, per-directory placement) but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.</p>
 <p><strong>Agent configurations are the least portable.</strong> Chat modes, model selection, and tool boundaries are defined differently in every tool and don’t transfer. The knowledge inside them (domain expertise, named patterns, anti-patterns) is just markdown and moves freely. The activation mechanism does not.</p>
-<p><strong>The three major tools now support most primitives natively.</strong> GitHub Copilot, Cursor, and Claude Code each support the majority of the seven primitive types, though file formats and native integration depth differ. Copilot has the most comprehensive native format support. Cursor and Claude Code have expanded rapidly and cover instructions, agents, skills, memory, and orchestration through their own mechanisms. OpenCode, the newest entrant, currently supports mainly instructions. Windsurf covers instructions and basic context loading. The methodology described here is portable across all of them — the knowledge transfers even when the wiring differs.</p>
+<p><strong>The three major tools now support most primitives natively.</strong> GitHub Copilot, Cursor, and Claude Code each support the majority of the seven primitive types, though file formats and native integration depth differ. As of this writing, Copilot has the most extensive native format support, though the gap is narrowing rapidly as Cursor and Claude Code add primitive-equivalent features. OpenCode, the newest entrant, currently supports mainly instructions. Windsurf covers instructions and basic context loading. The methodology described here is portable across all of them — the knowledge transfers even when the wiring differs.</p>
 <section id="what-happens-when-you-switch-tools" class="level3" data-number="11.3.1">
 <h3 data-number="11.3.1" class="anchored" data-anchor-id="what-happens-when-you-switch-tools"><span class="header-section-number">11.3.1</span> What happens when you switch tools</h3>
 <p>If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your instrumentation files in two tiers:</p>
@@ -1074,7 +1075,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 <li><strong>Memory</strong> — the API versioning decisions, the deprecated authentication class, the rate limit timeout choice</li>
 </ol>
 <p>Each layer adds specificity. None contradicts the layer above; more specific context files refine general guidance, they don’t override it. If a conflict exists, it indicates a design error in the instrumentation, not a resolution the agent should attempt.</p>
-<p>This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task, without requiring that information to fit in anyone’s head.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task, without requiring that information to fit in anyone’s head.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <hr>
 </section>
 <section id="the-instrumentation-audit" class="level2" data-number="11.6">
@@ -1300,7 +1301,7 @@ Figure&nbsp;11.1: The seven APM primitive types
 </tbody>
 </table>
 <dl>
-<dt>These numbers are directional, not guaranteed. They depend on the quality of your context files and the complexity of your conventions. But the direction is consistent: instrumented codebases produce dramatically more reliable agent output than uninstrumented ones, with the same models, the same tools, and the same tasks.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></dt>
+<dt>These numbers are directional, not guaranteed. They depend on the quality of your context files and the complexity of your conventions. But the direction is consistent: instrumented codebases produce dramatically more reliable agent output than uninstrumented ones, with the same models, the same tools, and the same tasks.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></dt>
 <dd>
 <p>Based on the author’s experience across instrumented projects. Results will vary by codebase complexity, model, and instrumentation maturity.</p>
 </dd>
@@ -1376,7 +1377,7 @@ Root cause: which context file failed?
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Repository:</strong> microsoft/apm · <strong>Branch:</strong> <code>feat/auth-logging-architecture-393</code> <strong>Result:</strong> PR #394 — 75 files changed, 2,829 → 2,897 tests · <strong>Duration:</strong> 207 turns, single session</p>
+<p><strong>Repository:</strong> microsoft/apm · <strong>Branch:</strong> <code>feat/auth-logging-architecture-393</code> <strong>Result:</strong> <a href="https://github.com/microsoft/apm/pull/394">PR #394</a> — 75 files changed · <strong>Duration:</strong> 207 turns across 2 sessions · <a href="../case-study-apm-overhaul.html">Full metrics</a></p>
 </div>
 </div>
 <p><strong>Turn 0 — The messy start.</strong> The session opens with the developer pasting raw terminal output of an authentication failure and role-casting the agent in a single breath. This is the Architect role from Chapter 8 — not writing a plan document, but framing the problem and the expertise needed to solve it:</p>
@@ -1489,8 +1490,8 @@ Root cause: which context file failed?
 </div>
 <div class="callout-body-container callout-body">
 <p>The primitives in this chapter — instructions, agents, skills, prompts, memory — are the <em>library</em> layer of the agentic computing stack introduced in Chapter 4. Above them, framework-layer tooling is beginning to emerge: opinionated systems that compose these primitives into complete workflows.</p>
-<p>Two early examples. <strong>Squad</strong> (<code>github.com/bradygaster/squad</code>) provides repository-native multi-agent orchestration built on GitHub Copilot, consuming instruction and agent primitives to dispatch specialized agents in coordinated workflows<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. <strong>Spec-Kit</strong> (<code>github.com/github/spec-kit</code>) takes spec-driven development further — specifications become executable artifacts rather than passive context<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
-<p>Convergence is also visible across vendors. Claude’s <code>plugin.json</code> manifest independently arrived at the same primitive-bundling pattern as APM: a declarative package that bundles skills, agents, hooks, and MCP servers into versioned, distributable units with namespaced composition and marketplace distribution<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>. When independent implementations from different vendors converge on the same structure, the underlying abstraction is sound.</p>
+<p>Two early examples. <strong>Squad</strong> (<code>github.com/bradygaster/squad</code>) provides repository-native multi-agent orchestration built on GitHub Copilot, consuming instruction and agent primitives to dispatch specialized agents in coordinated workflows<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>. <strong>Spec-Kit</strong> (<code>github.com/github/spec-kit</code>) takes spec-driven development further — specifications become executable artifacts rather than passive context<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
+<p>Convergence is also visible across vendors. Claude’s <code>plugin.json</code> manifest independently arrived at the same primitive-bundling pattern as APM: a declarative package that bundles skills, agents, hooks, and MCP servers into versioned, distributable units with namespaced composition and marketplace distribution<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>. When independent implementations from different vendors converge on the same structure, the underlying abstraction is sound.</p>
 <p>An honest hedge: these tools are early. The <em>pattern</em> — frameworks that consume standardized primitives — is durable. The specific tools will evolve, merge, or be replaced. Your investment should be in the primitives themselves (this chapter), not in any single framework. If the primitives are well-structured, framework migration is a packaging change, not a rewrite.</p>
 </div>
 </div>
@@ -1501,11 +1502,12 @@ Root cause: which context file failed?
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>The principle of scoped, hierarchical configuration mirrors established patterns in software engineering — from CSS specificity to Git’s nested .gitignore files. The key insight is that agents benefit from the same locality-of-reference that makes these patterns effective for humans.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Failures in Chapter 14.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Brady Gaster, “How Squad Runs Coordinated AI Agents Inside Your Repository,” GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>GitHub, “Spec Kit — Build High-Quality Software Faster,” https://github.com/github/spec-kit<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>Anthropic, “Claude Code Plugins,” https://docs.anthropic.com/en/docs/claude-code/plugins<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>This comparison reflects mid-2025 capabilities. The AI coding tool landscape evolves quarterly; verify current capabilities at each vendor’s documentation site.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>The principle of scoped, hierarchical configuration mirrors established patterns in software engineering — from CSS specificity to Git’s nested .gitignore files. The key insight is that agents benefit from the same locality-of-reference that makes these patterns effective for humans.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Failures in Chapter 14.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Brady Gaster, “How Squad Runs Coordinated AI Agents Inside Your Repository,” GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>GitHub, “Spec Kit — Build High-Quality Software Faster,” https://github.com/github/spec-kit<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Anthropic, “Claude Code Plugins,” https://docs.anthropic.com/en/docs/claude-code/plugins<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

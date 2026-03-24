@@ -547,7 +547,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#step-3-model-your-value-three-scenarios" id="toc-step-3-model-your-value-three-scenarios" class="nav-link" data-scroll-target="#step-3-model-your-value-three-scenarios"><span class="header-section-number">5.5.3</span> Step 3: Model your value — three scenarios</a></li>
   <li><a href="#step-4-calculate-the-break-even" id="toc-step-4-calculate-the-break-even" class="nav-link" data-scroll-target="#step-4-calculate-the-break-even"><span class="header-section-number">5.5.4</span> Step 4: Calculate the break-even</a></li>
   <li><a href="#worked-example-a-50-person-team" id="toc-worked-example-a-50-person-team" class="nav-link" data-scroll-target="#worked-example-a-50-person-team"><span class="header-section-number">5.5.5</span> Worked example: a 50-person team</a></li>
-  <li><a href="#step-5-define-success-criteria-that-arent-vanity-metrics" id="toc-step-5-define-success-criteria-that-arent-vanity-metrics" class="nav-link" data-scroll-target="#step-5-define-success-criteria-that-arent-vanity-metrics"><span class="header-section-number">5.5.6</span> Step 5: Define success criteria that aren’t vanity metrics</a></li>
+  <li><a href="#sensitivity-to-rework-rate" id="toc-sensitivity-to-rework-rate" class="nav-link" data-scroll-target="#sensitivity-to-rework-rate"><span class="header-section-number">5.5.6</span> Sensitivity to rework rate</a></li>
+  <li><a href="#step-5-define-success-criteria-that-arent-vanity-metrics" id="toc-step-5-define-success-criteria-that-arent-vanity-metrics" class="nav-link" data-scroll-target="#step-5-define-success-criteria-that-arent-vanity-metrics"><span class="header-section-number">5.5.7</span> Step 5: Define success criteria that aren’t vanity metrics</a></li>
   </ul></li>
   <li><a href="#the-cost-of-doing-nothing" id="toc-the-cost-of-doing-nothing" class="nav-link" data-scroll-target="#the-cost-of-doing-nothing"><span class="header-section-number">5.6</span> The Cost of Doing Nothing</a></li>
   <li><a href="#the-honest-version" id="toc-the-honest-version" class="nav-link" data-scroll-target="#the-honest-version"><span class="header-section-number">5.7</span> The Honest Version</a></li>
@@ -583,7 +584,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="5.1" class="anchored" data-anchor-id="the-productivity-paradox"><span class="header-section-number">5.1</span> The Productivity Paradox</h2>
 <p>The most common justification for AI coding tools goes like this: developers report writing code 55% faster, tool X generates 46% of accepted code, therefore we’re getting roughly twice the output. This math is wrong in three ways, and understanding why it’s wrong is the difference between a business case that survives scrutiny and one that collapses at the first board review.</p>
 <p><strong>The denominator problem.</strong> Productivity metrics for AI tools almost always measure the coding phase, writing and editing code in an editor. But coding is 20–35% of a developer’s working time.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The rest is reading code, reviewing pull requests, debugging, communicating, designing, and waiting for builds. A 50% improvement on 30% of work time is a 15% improvement on total work time. That’s still significant. It’s not 10×. Reporting it as 10× invites the CFO to ask why headcount hasn’t decreased by 90%, and when the answer is an awkward silence, the credibility of every subsequent AI investment is damaged.</p>
-<p><strong>The quality discount.</strong> Raw speed metrics count code produced. They don’t count code reworked, reverted, or debugged downstream. Cross-referencing the 2025 Stack Overflow survey and GitClear’s code churn analysis suggests roughly 30–60% of AI-generated code on complex tasks requires significant rework, though no controlled study has established a definitive figure.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> This means architectural changes, convention fixes, and security remediation, not cosmetic edits. If an agent produces a function in 30 seconds that takes 20 minutes to correct, the net productivity may be negative. Measuring production without measuring rework is measuring revenue without measuring returns.</p>
+<p><strong>The quality discount.</strong> Raw speed metrics count code produced. They don’t count code reworked, reverted, or debugged downstream. As established in Chapter 1, 30–60% of agent-generated code on complex tasks requires significant rework — a figure supported by Stack Overflow developer surveys and GitClear code quality analyses.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> This means architectural changes, convention fixes, and security remediation, not cosmetic edits. If an agent produces a function in 30 seconds that takes 20 minutes to correct, the net productivity may be negative. Measuring production without measuring rework is measuring revenue without measuring returns.</p>
 <p><strong>The attribution problem.</strong> When a developer uses an AI tool, which parts of the resulting code are “AI-generated”? The developer writes a prompt, the agent produces code, the developer edits it, asks for revisions, edits again, and commits. Attributing the final result to the AI overstates its contribution. Attributing it to the developer understates the tool’s value. The honest answer, that the output is a collaboration whose proportions vary by task, doesn’t fit neatly into a productivity spreadsheet. This ambiguity is inherent, not a measurement failure.</p>
 <p>These three problems share a root cause: naive productivity metrics treat code as an output, when code is an intermediate artifact. The output of a software development organization is working software delivered to users. Code is a means to that end, and more code is not better code.</p>
 <p>Here is what honest measurement looks like:</p>
@@ -704,7 +705,7 @@ ul.task-list li input[type="checkbox"] {
 <thead>
 <tr class="header">
 <th>Cost component</th>
-<th>Illustrative range (team of 10, year 1)</th>
+<th>Illustrative range (team of 10, year 1) †</th>
 <th>What’s often missed</th>
 </tr>
 </thead>
@@ -716,37 +717,38 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 <tr class="even">
 <td>Context engineering</td>
-<td>$20,000–60,000</td>
+<td>$20,000–60,000 †</td>
 <td>Measured in engineering time, not invoices</td>
 </tr>
 <tr class="odd">
 <td>Token / compute</td>
-<td>$6,000–24,000</td>
+<td>$6,000–24,000 †</td>
 <td>Scales with adoption success</td>
 </tr>
 <tr class="even">
 <td>Training / change mgmt</td>
-<td>$15,000–40,000</td>
+<td>$15,000–40,000 †</td>
 <td>Productivity dip during learning curve</td>
 </tr>
 <tr class="odd">
 <td>Governance setup</td>
-<td>$10,000–25,000</td>
+<td>$10,000–25,000 †</td>
 <td>Security review, policy definition, audit configuration</td>
 </tr>
 <tr class="even">
 <td>Adoption curve opportunity cost</td>
-<td>$20,000–50,000</td>
+<td>$20,000–50,000 †</td>
 <td>60–90 days of reduced velocity</td>
 </tr>
 <tr class="odd">
 <td><strong>Year 1 total</strong></td>
-<td><strong>$95,000–249,000</strong></td>
+<td><strong>$95,000–249,000</strong> †</td>
 <td>Tool licenses are 20–25% of total</td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>† Author estimates based on advisory work with early-adopter teams. Tool license costs reflect published pricing; all other ranges are projections that will vary by region, seniority, codebase complexity, and tooling maturity.</p>
 <p>These ranges are estimates. Your numbers will vary based on team size, codebase complexity, compliance requirements, and how much undocumented knowledge currently lives in your team’s heads. The point is not the specific figures; it’s the ratio. If your business case shows only the first row, it is incomplete.</p>
 <hr>
 </section>
@@ -778,30 +780,31 @@ ul.task-list li input[type="checkbox"] {
 <tr class="odd">
 <td>Cycle time compression</td>
 <td>Median PR cycle time (DORA)</td>
-<td>Months 4–6</td>
-<td>20–40% reduction on agent-suitable tasks</td>
+<td>Months 4–6 †</td>
+<td>20–40% reduction on agent-suitable tasks †</td>
 </tr>
 <tr class="even">
 <td>Defect reduction</td>
 <td>Review rejection rate, post-deploy defects</td>
-<td>Months 6–9</td>
-<td>15–30% reduction in convention violations<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></td>
+<td>Months 6–9 †</td>
+<td>15–30% reduction in convention violations<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> †</td>
 </tr>
 <tr class="odd">
 <td>Knowledge retention</td>
 <td>Onboarding time, bus factor metrics</td>
-<td>Months 9–12+</td>
+<td>Months 9–12+ †</td>
 <td>Gradual; compounds over time</td>
 </tr>
 <tr class="even">
 <td>Attention reallocation</td>
 <td>Developer survey, task-type distribution</td>
-<td>Months 3–6</td>
+<td>Months 3–6 †</td>
 <td>Shift from implementation to design/review</td>
 </tr>
 </tbody>
 </table>
 </div>
+<p>† Timelines and expected ranges are author estimates based on early-adopter patterns, not controlled measurements.</p>
 <p><em>These timelines reflect patterns observed across early-adoption teams; your experience will vary.</em></p>
 <hr>
 </section>
@@ -883,15 +886,15 @@ Figure&nbsp;5.1: Cost-benefit trajectory over a 12-month adoption period
 <tbody>
 <tr class="odd">
 <td><strong>Cycle time improvement</strong></td>
-<td>10–15%</td>
-<td>20–30%</td>
-<td>35–50%</td>
+<td>10–15% †</td>
+<td>20–30% †</td>
+<td>35–50% †</td>
 </tr>
 <tr class="even">
 <td><strong>Defect reduction</strong></td>
-<td>5–10%</td>
-<td>15–25%</td>
-<td>25–35%</td>
+<td>5–10% †</td>
+<td>15–25% †</td>
+<td>25–35% †</td>
 </tr>
 <tr class="odd">
 <td><strong>Context engineering maturity</strong></td>
@@ -907,9 +910,9 @@ Figure&nbsp;5.1: Cost-benefit trajectory over a 12-month adoption period
 </tr>
 <tr class="odd">
 <td><strong>Time to positive ROI</strong></td>
-<td>9–12 months</td>
-<td>6–9 months</td>
-<td>4–6 months</td>
+<td>9–12 months †</td>
+<td>6–9 months †</td>
+<td>4–6 months †</td>
 </tr>
 <tr class="even">
 <td><strong>Assumption</strong></td>
@@ -920,6 +923,7 @@ Figure&nbsp;5.1: Cost-benefit trajectory over a 12-month adoption period
 </tbody>
 </table>
 </div>
+<p>† Author projections based on early-adopter patterns and the author’s advisory work. Not derived from controlled studies. Your results will depend on codebase complexity, team seniority, and context engineering investment.</p>
 <p>The conservative scenario represents where most organizations land if they adopt tools without investing in context engineering. The moderate scenario requires the sustained effort this book teaches. The aggressive scenario requires everything in the moderate scenario plus organizational commitment to structured context as a strategic asset.</p>
 <p>Most organizations should plan for the conservative scenario and invest toward the moderate one. If your business case only works at the aggressive scenario, you don’t have a business case — you have a gamble.</p>
 </section>
@@ -1012,8 +1016,52 @@ Break-even: Year-1 cost ÷ Monthly value run-rate (at steady state, months 6+)</
 <p>The time-savings value (B) dominates. This is typical — cycle time improvement is the largest and most defensible value driver. Note that the $2.5M does not mean the organization saves $2.5M in cash. It means the team delivers the equivalent of $2.5M more throughput at the same headcount. The value manifests as faster delivery, not smaller payroll.</p>
 <p>At the conservative scenario (12% cycle time improvement, same cost assumptions), the break-even pushes to month 10–14. At the aggressive scenario (40%), it pulls in to month 4–6. If your numbers only work at the aggressive end, reread the earlier warning: you have a gamble, not a business case.</p>
 </section>
-<section id="step-5-define-success-criteria-that-arent-vanity-metrics" class="level3" data-number="5.5.6">
-<h3 data-number="5.5.6" class="anchored" data-anchor-id="step-5-define-success-criteria-that-arent-vanity-metrics"><span class="header-section-number">5.5.6</span> Step 5: Define success criteria that aren’t vanity metrics</h3>
+<section id="sensitivity-to-rework-rate" class="level3" data-number="5.5.6">
+<h3 data-number="5.5.6" class="anchored" data-anchor-id="sensitivity-to-rework-rate"><span class="header-section-number">5.5.6</span> Sensitivity to rework rate</h3>
+<p>The 30–60% rework range (Chapter 1) directly affects the cycle time value. Higher rework rates consume the time agents save — a developer who spends 20 minutes correcting a function the agent produced in 30 seconds has a negative net gain on that task. The table below shows how the worked example’s value changes when the rework rate varies, holding all other assumptions constant. The rework rate determines what fraction of agent-generated code requires non-trivial correction; a lower rate means more tasks deliver clean first-draft output that survives review.</p>
+<div data-tbl-colwidths="[20,30,25,25]">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 30%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Rework Rate</th>
+<th>Effective Cycle Time Improvement †</th>
+<th>Annual Team Value (50 devs) †</th>
+<th>Value-to-Cost Ratio †</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20% (optimistic)</td>
+<td>35%</td>
+<td>$3,600,000</td>
+<td>3.1–10.3×</td>
+</tr>
+<tr class="even">
+<td>40% (moderate)</td>
+<td>25%</td>
+<td>$2,645,000</td>
+<td>2.3–7.6×</td>
+</tr>
+<tr class="odd">
+<td>60% (conservative)</td>
+<td>15%</td>
+<td>$1,600,000</td>
+<td>1.4–4.6×</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>† Author estimates. The effective cycle time improvement is modeled as a function of the base scenario (25% at 40% rework); lower rework allows more tasks to deliver full time savings, higher rework erodes them. All three scenarios remain ROI-positive, but at 60% rework the margin is thin and the break-even extends past month 12.</p>
+<p>The point is not the specific numbers — it is the shape. The business case is robust across a wide range of rework assumptions. Even at the conservative end, the investment breaks even within a year. But the difference between 20% and 60% rework is a 2× spread in annual value. This is why context engineering — which directly reduces rework — is the highest-leverage investment in the entire adoption plan.</p>
+</section>
+<section id="step-5-define-success-criteria-that-arent-vanity-metrics" class="level3" data-number="5.5.7">
+<h3 data-number="5.5.7" class="anchored" data-anchor-id="step-5-define-success-criteria-that-arent-vanity-metrics"><span class="header-section-number">5.5.7</span> Step 5: Define success criteria that aren’t vanity metrics</h3>
 <p>Commit to specific, measurable outcomes before you start. Report against them honestly.</p>
 <div data-tbl-colwidths="[20,20,20,20,20]">
 <table class="caption-top table">
