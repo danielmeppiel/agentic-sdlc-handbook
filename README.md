@@ -4,7 +4,7 @@ A comprehensive guide to AI-native software development for engineering leaders 
 
 **[Read online](https://danielmeppiel.github.io/agentic-sdlc-handbook/)** | **[Download PDF/EPUB](https://danielmeppiel.github.io/agentic-sdlc-handbook/download.html)**
 
-By [Daniel Meppiel](https://www.linkedin.com/in/danielmeppiel/) — Global Black Belt at Microsoft, creator of [APM](https://github.com/microsoft/apm).
+By [Daniel Meppiel](https://www.linkedin.com/in/danielmeppiel/) — Global Black Belt at Microsoft, creator of [APM](https://github.com/microsoft/apm) and the [PROSE framework](https://danielmeppiel.github.io/awesome-ai-native).
 
 ## What's Inside
 
