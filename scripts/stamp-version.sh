@@ -24,4 +24,9 @@ EOF
 
 echo "Stamped: version=${VERSION}, build-date=${BUILD_DATE}, build-hash=${BUILD_HASH}"
 
-python3 scripts/generate_cover_asset.py
+# Regenerate cover image if Pillow is available (skipped in CI where PIL isn't installed)
+if python3 -c "import PIL" 2>/dev/null; then
+  python3 scripts/generate_cover_asset.py
+else
+  echo "Pillow not available — skipping cover regeneration (using committed PNG)"
+fi
