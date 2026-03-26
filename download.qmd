@@ -4,7 +4,19 @@ sidebar: false
 body-classes: download-page
 ---
 
+::: {.content-hidden when-format="epub"}
+::: {.content-hidden when-format="pdf"}
+# Download {.unnumbered}
+:::
+:::
+
+::: {.content-visible when-format="epub"}
 # Read Online {.unnumbered}
+:::
+
+::: {.content-visible when-format="pdf"}
+# Read Online {.unnumbered}
+:::
 
 ::: {.content-visible when-format="html:js"}
 ```{=html}

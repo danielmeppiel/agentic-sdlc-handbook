@@ -3,7 +3,7 @@
 \usepackage{etoolbox}
 
 % Replace Pandoc's default title page with the custom full-bleed cover image,
-% followed by a standard copyright page.
+% followed by a standard license page.
 % Uses TikZ overlay to place the cover image at absolute page coordinates,
 % avoiding \newgeometry (which triggers implicit \clearpage → blank page 1).
 \usepackage{tikz}
@@ -16,7 +16,7 @@
     };
   \end{tikzpicture}%
   \clearpage
-  %% Copyright page
+  %% License page
   \thispagestyle{empty}%
   \vspace*{\fill}
   \begin{center}

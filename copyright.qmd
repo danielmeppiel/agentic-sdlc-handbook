@@ -1,0 +1,66 @@
+---
+title-block-style: none
+number-sections: false
+---
+
+# License {.unnumbered .unlisted}
+
+::: {.content-visible when-format="pdf"}
+
+```{=latex}
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+\textbf{\Large The Agentic SDLC Handbook}\\[0.3em]
+{\itshape A Guide to AI-Native Software Development for Leaders and Practitioners}\\[2em]
+\textcopyright\ 2025--2026 Daniel Meppiel. Licensed under CC BY-NC-ND 4.0.\\[0.5em]
+\url{https://creativecommons.org/licenses/by-nc-nd/4.0/}\\[1.5em]
+You are free to share --- copy and redistribute this material in any\\
+medium or format --- under the following terms: you must give appropriate\\
+credit, you may not use the material for commercial purposes, and you\\
+may not distribute modified versions.\\[1em]
+For commercial licensing, translations, or adaptations, contact the author.\\[2em]
+{\itshape The views and opinions in this book are the author's own\\
+and do not represent those of his employer.}\\[2em]
+Pre-release edition\\[0.5em]
+\url{https://danielmeppiel.github.io/agentic-sdlc-handbook/}
+\end{center}
+\vspace*{\fill}
+```
+
+:::
+
+::: {.content-hidden when-format="pdf"}
+
+::: {style="text-align: center; padding-top: 4em;"}
+
+**The Agentic SDLC Handbook**\
+*A Guide to AI-Native Software Development for Leaders and Practitioners*
+
+\
+
+© 2025–2026 Daniel Meppiel\
+Licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+\
+
+You are free to share — copy and redistribute this material in any
+medium or format — under the following terms: you must give appropriate
+credit, you may not use the material for commercial purposes, and you
+may not distribute modified versions.
+
+For commercial licensing, translations, or adaptations, contact the author.
+
+\
+
+*The views and opinions in this book are the author's own
+and do not represent those of his employer.*
+
+\
+
+Pre-release edition · Version {{< var version >}}\
+[danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/)
+
+:::
+
+:::
