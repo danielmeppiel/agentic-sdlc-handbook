@@ -7,6 +7,9 @@ _book/
 _freeze/
 .quarto/
 
+# Local build artifacts
+dist/
+
 /.quarto/
 **/*.quarto_ipynb
 *_files/

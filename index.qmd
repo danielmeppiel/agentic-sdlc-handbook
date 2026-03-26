@@ -1,6 +1,5 @@
 ---
 title-block-style: none
-number-sections: false
 ---
 
 # Preface {.unnumbered}
@@ -9,15 +8,35 @@ number-sections: false
 **Version {{< var version >}}** · {{< var build-date >}}
 :::
 
-::: {.content-visible when-format="html"}
+::: {.callout-warning appearance="minimal" icon=false}
+**Pre-release edition.** This is a living document — new chapters, case studies, and PROSE refinements ship continuously. Claims are grounded in direct experience shipping AI-native systems, with citations where third-party research is referenced. Where data comes from a single project — such as the APM auth + logging overhaul (PR #394) — it is labeled as such. Spotted an error? [Open an issue](https://github.com/danielmeppiel/agentic-sdlc-handbook/issues).
+:::
+
+::: {.content-hidden when-format="pdf"}
+::: {.content-hidden when-format="epub"}
 ::: {.callout-note appearance="minimal" icon=false}
 **Also available as a free PDF & EPUB.** [📕 Download -->](download.qmd)
 :::
 :::
+:::
 
-::: {.content-hidden when-format="html"}
+::: {.content-visible when-format="pdf"}
 ::: {.callout-note appearance="minimal" icon=false}
-**Read the latest version online:** [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/) · **Follow the author:** [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+**Read the latest version online:**\
+[danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/)
+
+**Follow the author:**\
+[LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+:::
+:::
+
+::: {.content-visible when-format="epub"}
+::: {.callout-note appearance="minimal" icon=false}
+**Read the latest version online:**\
+[danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/)
+
+**Follow the author:**\
+[LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
 :::
 :::
 
@@ -70,9 +89,9 @@ Daniel Meppiel is a Global Black Belt at **Microsoft** and the creator of [APM (
 
 With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise adoption, Daniel bridges the gap between technical architecture and business outcomes. His career arc runs from **CERN** (Product Lifecycle Management modernization for particle physics experiments), through **Avaloq** (legacy core-banking system migration) -- the same classes of system modernization and code migration that AI agents now accelerate in the SDLC -- to founding **WeGaw** as CTO for 4 years (building a complex AI-powered water intelligence platform from scratch, serving global energy companies), **Sonar** (code security), **GitHub** (developer tooling), and now **Microsoft**.
 
-This handbook was produced using the same methodology and tooling it describes. The case studies document real sessions executed by the author -- who also designed the PROSE methodology. This creates an inherent advantage: the author knows when to push and when to intervene in ways that are not fully captured by the written method. Where authorial expertise likely mattered beyond what the methodology prescribes, the case studies flag it. Practitioners should treat the documented patterns as a starting point and report where the method alone fell short.
+## A Note on Methodology
 
-This is a living document. New chapters, case studies, and PROSE refinements are published continuously. **This is a pre-release edition.** Claims are grounded in the author's direct experience shipping AI-native systems, with citations where third-party research is referenced. Where data comes from a single project — such as the APM v3.5 rewrite — it is labeled as such. If you spot an error, [open an issue](https://github.com/danielmeppiel/agentic-sdlc-handbook/issues) — corrections ship in the next build.
+This handbook was produced using the same methodology and tooling it describes. The case studies document real sessions executed by the author -- who also designed the PROSE methodology. This creates an inherent advantage: the author knows when to push and when to intervene in ways not fully captured by the written method. Where authorial expertise likely mattered beyond what the methodology prescribes, the case studies flag it. Treat the documented patterns as a starting point, not a ceiling.
 
 ## Acknowledgments
 
@@ -84,10 +103,6 @@ To Mondragon Unibertsitatea — for teaching curiosity, innovation, and self-sta
 
 To the early adopters and contributors of APM who believed in the project and in me — Sergio Sisternes, Sébastien Degodez, and François Descamps. Open source lives or dies on the people who show up first.
 
-*The views and opinions in this book are my own and do not represent those of my employer.*
-
 ## License
 
-This book is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/). Free to read and share with attribution. For commercial use, translations, or adaptations, [reach out](https://www.linkedin.com/in/danielmeppiel/).
-
-© 2025-2026 Daniel Meppiel. All rights reserved.
+This book is licensed under [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/). You are free to read, download, and share it with attribution. For commercial use, translations, or adaptations, [reach out](https://www.linkedin.com/in/danielmeppiel/).

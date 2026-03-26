@@ -2,6 +2,43 @@
 \usepackage{array}
 \usepackage{etoolbox}
 
+% Replace Pandoc's default title page with the custom full-bleed cover image,
+% followed by a standard copyright page.
+% Uses TikZ overlay to place the cover image at absolute page coordinates,
+% avoiding \newgeometry (which triggers implicit \clearpage → blank page 1).
+\usepackage{tikz}
+\makeatletter
+\renewcommand{\maketitle}{%
+  \thispagestyle{empty}%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[inner sep=0pt] at (current page.center) {%
+      \includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio=false]{assets/cover/agentic-sdlc-handbook-cover.png}%
+    };
+  \end{tikzpicture}%
+  \clearpage
+  %% Copyright page
+  \thispagestyle{empty}%
+  \vspace*{\fill}
+  \begin{center}
+  \textbf{\Large The Agentic SDLC Handbook}\\[0.3em]
+  {\itshape A Guide to AI-Native Software Development for Leaders and Practitioners}\\[2em]
+  \textcopyright\ 2025--2026 Daniel Meppiel. Licensed under CC BY-NC-ND 4.0.\\[0.5em]
+  \url{https://creativecommons.org/licenses/by-nc-nd/4.0/}\\[1.5em]
+  You are free to share --- copy and redistribute this material in any\\
+  medium or format --- under the following terms: you must give appropriate\\
+  credit, you may not use the material for commercial purposes, and you\\
+  may not distribute modified versions.\\[1em]
+  For commercial licensing, translations, or adaptations, contact the author.\\[2em]
+  {\itshape The views and opinions in this book are the author's own\\
+  and do not represent those of his employer.}\\[2em]
+  Pre-release edition\\[0.5em]
+  \url{https://danielmeppiel.github.io/agentic-sdlc-handbook/}
+  \end{center}
+  \vspace*{\fill}
+  \clearpage
+}
+\makeatother
+
 % Reduce font size and column padding in tables so wide tables fit
 \AtBeginEnvironment{longtable}{\small\setlength{\tabcolsep}{4pt}}
 

@@ -1,8 +1,6 @@
 ---
-number-sections: false
+title: "Building a Growth Engine"
 ---
-
-# Building a Growth Engine {.unnumbered}
 
 **Scope:** Checkpoints 014-019 -- 6 phases -- 18 implementation tasks  
 **Duration:** ~8 hours wall-clock across multiple sessions  

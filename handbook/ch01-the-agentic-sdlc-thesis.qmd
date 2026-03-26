@@ -185,15 +185,25 @@ The constraints are the point. Let's see what they produce.
 
 ---
 
-::: {.content-visible when-format="html"}
+::: {.content-hidden when-format="pdf"}
+::: {.content-hidden when-format="epub"}
 ::: {.callout-tip appearance="simple" icon=false}
 **Found this useful?** Get the full handbook as a formatted PDF or EPUB. [📕 Download -->](../download.qmd) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
 :::
 :::
+:::
 
-::: {.content-hidden when-format="html"}
+::: {.content-visible when-format="pdf"}
 ::: {.callout-tip appearance="simple" icon=false}
-**Found this useful?** Read the latest version at [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/) · Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+**Found this useful?** Read the latest version at [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/)\
+Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
+:::
+:::
+
+::: {.content-visible when-format="epub"}
+::: {.callout-tip appearance="simple" icon=false}
+**Found this useful?** Read the latest version at [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/)\
+Follow on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
 :::
 :::
 

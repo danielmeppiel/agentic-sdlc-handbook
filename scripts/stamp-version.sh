@@ -23,3 +23,5 @@ build-hash: "${BUILD_HASH}"
 EOF
 
 echo "Stamped: version=${VERSION}, build-date=${BUILD_DATE}, build-hash=${BUILD_HASH}"
+
+python3 scripts/generate_cover_asset.py

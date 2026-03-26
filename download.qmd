@@ -1,37 +1,38 @@
 ---
 title-block-style: none
-number-sections: false
 sidebar: false
+body-classes: download-page
 ---
 
-# Download the Handbook {.unnumbered}
+# Read Online {.unnumbered}
 
-::: {.content-visible when-format="html"}
-
-## Get the Pre-release Edition — PDF & EPUB
-
-The complete handbook is free to read online. For the formatted **PDF** and **EPUB** versions — optimized for offline reading, printing, and annotation — enter your email below. You'll receive the download links instantly.
-
-::: {.callout-tip appearance="simple" icon=false}
-**What you'll also get**: A short series with the strongest ideas from the book, plus ~1 monthly update on the PROSE framework and APM. Unsubscribe anytime.
-:::
-
-<div id="kit-form-container">
-<script async data-uid="6bee764071" src="https://the-ai-native-mind.kit.com/6bee764071/index.js"></script>
+::: {.content-visible when-format="html:js"}
+```{=html}
+<div class="download-hero">
+  <div class="download-hero__cover">
+    <img src="assets/cover/agentic-sdlc-handbook-cover.png"
+         alt="The Agentic SDLC Handbook cover"
+         class="download-hero__cover-img" />
+  </div>
+  <div class="download-hero__form">
+    <h2 class="download-hero__heading">Get the Pre-release Edition — PDF &amp; EPUB</h2>
+    <p class="download-hero__lead">The complete handbook is free to read online. For the formatted <strong>PDF</strong> and <strong>EPUB</strong> versions — optimized for offline reading, printing, and annotation — enter your email below. You'll receive the download links instantly.</p>
+    <div class="download-hero__badge">
+      <strong>What you'll also get</strong>: A short series with the strongest ideas from the book, plus ~1 monthly update on the PROSE framework and APM. Unsubscribe anytime.
+    </div>
+    <div id="kit-form-container">
+      <script async="async" data-uid="6bee764071" src="https://the-ai-native-mind.kit.com/6bee764071/index.js"></script>
+    </div>
+    <p class="download-hero__alt">Prefer to read online? <a href="handbook/ch01-the-agentic-sdlc-thesis.html">Start with the thesis →</a></p>
+  </div>
 </div>
-
-::: {.callout-note appearance="minimal" icon=false}
-Prefer to read online? [Start with the thesis -->](handbook/ch01-the-agentic-sdlc-thesis.qmd)
+```
 :::
 
-:::
+::: {.content-hidden when-format="html:js"}
+The latest version of this handbook is always available online at:
 
-::: {.content-hidden when-format="html"}
+<https://danielmeppiel.github.io/apm-handbook/>
 
-You're reading the offline version. Visit the website for the latest updates and additional resources:
-
-- **Read online:** [danielmeppiel.github.io/agentic-sdlc-handbook](https://danielmeppiel.github.io/agentic-sdlc-handbook/)
-- **APM on GitHub:** [github.com/microsoft/apm](https://github.com/microsoft/apm)
-- **Follow the author:** [LinkedIn](https://www.linkedin.com/in/danielmeppiel/)
-
+The online edition includes interactive navigation, search, and is updated continuously as new chapters and case studies are published.
 :::

@@ -48,10 +48,15 @@ book:
 
 format:
   html:
+    css:
+      - styles/handbook-cover.css
     include-in-header:
       - text: |
           <link rel="icon" type="image/svg+xml" href="/agentic-sdlc-handbook/favicon.svg">
           <link rel="apple-touch-icon" href="/agentic-sdlc-handbook/apple-touch-icon.png">
+          <meta name="dc.rights" content="CC BY-NC-ND 4.0">
+          <meta name="dc.rights.uri" content="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+          <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-2DPKEV68VR"></script>
           <script>
             window.dataLayer = window.dataLayer || [];
@@ -102,6 +107,8 @@ format:
     mermaid:
       theme: neutral
     documentclass: scrreprt
+    classoption:
+      - open=any
     papersize: a4
     toc: true
     toc-depth: 2
@@ -117,5 +124,7 @@ format:
     fig-height: 4
     include-in-header: preamble.tex
   epub:
+    epub-cover-image: assets/cover/agentic-sdlc-handbook-cover.png
+    epub-metadata: epub-metadata.xml
     toc: true
     number-sections: true

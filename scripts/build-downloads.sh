@@ -25,14 +25,19 @@ cp /tmp/handbook-build.pdf "$PDF"
 rm -f /tmp/handbook-build.pdf
 
 if [[ -f "$PDF" && -f "$EPUB" ]]; then
+    # Always keep a stable copy in dist/ (survives _book/ wipes from format re-renders)
+    mkdir -p dist
+    cp "$PDF"  dist/
+    cp "$EPUB" dist/
     echo ""
     echo "Build complete:"
     echo "  PDF:  $PDF ($(du -h "$PDF" | cut -f1))"
     echo "  EPUB: $EPUB ($(du -h "$EPUB" | cut -f1))"
+    echo "  Copies in dist/"
     echo ""
     echo "To update downloads on the live site, push these to gh-pages:"
     echo "  git stash && git checkout gh-pages"
-    echo "  cp _book/*.pdf _book/*.epub ."
+    echo "  cp dist/*.pdf dist/*.epub ."
     echo "  git add *.pdf *.epub && git commit -m 'chore: update PDF/EPUB' && git push"
     echo "  git checkout main && git stash pop"
 else

@@ -1,8 +1,6 @@
 ---
-number-sections: false
+title: "The APM Auth + Logging Overhaul"
 ---
-
-# The APM Auth + Logging Overhaul {.unnumbered}
 
 **Scope:** PR #394 against [microsoft/apm](https://github.com/microsoft/apm) — auth consolidation, logging abstraction, diagnostic collection  
 **Duration:** ~16 hours wall-clock across 2 sessions  

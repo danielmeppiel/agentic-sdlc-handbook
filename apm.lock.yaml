@@ -2,6 +2,24 @@ lockfile_version: '1'
 generated_at: '2026-03-22T17:08:53.418051+00:00'
 apm_version: 0.8.4
 dependencies:
+- repo_url: anthropics/skills
+  host: github.com
+  resolved_commit: 887114fd09f8f24a7e6c907f9ee505348498ab6a
+  virtual_path: skills/canvas-design
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .github/skills/canvas-design
+  content_hash: sha256:ab1260f35c40f2aa2408e1ca25f27620e5002f941f5d32927839eba83a4b18bc
+- repo_url: anthropics/skills
+  host: github.com
+  resolved_commit: 887114fd09f8f24a7e6c907f9ee505348498ab6a
+  virtual_path: skills/pdf
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .github/skills/pdf
+  content_hash: sha256:69e2ac9eb2bbe2881df26acc53b46b39a15cfda206f5357e5f9c83feb0fadcc7
 - repo_url: danielmeppiel/handbook-agents
   host: github.com
   resolved_commit: 103d2e75904c25e170433dee2b670b5556e987fe
@@ -20,3 +38,21 @@ dependencies:
   - .github/agents/thought-leadership.agent.md
   - .github/skills/handbook-panel
   content_hash: sha256:2a2758559fd632c839f1e55e5990e4d3363e6d455f1eba1ed2fd760aeedce960
+- repo_url: inference-sh/skills
+  host: github.com
+  resolved_commit: 94c02ccaf3640bf086e319ce378e69d0155b2710
+  virtual_path: guides/social/social-media-carousel
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .github/skills/social-media-carousel
+  content_hash: sha256:54851ee4bff619823e5a6ba91ea040ce41248f7eedcf830f4359433c65065287
+- repo_url: inference-sh/skills
+  host: github.com
+  resolved_commit: 94c02ccaf3640bf086e319ce378e69d0155b2710
+  virtual_path: tools/image/flux-image
+  is_virtual: true
+  package_type: claude_skill
+  deployed_files:
+  - .github/skills/flux-image
+  content_hash: sha256:f7ea61d8209d5131afa72dd31cf7a00b718c2ff70e0f16e93655b734e4def627

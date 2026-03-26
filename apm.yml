@@ -1,11 +1,12 @@
 name: apm-handbook
 version: 0.1.0
-description: >-
-  The Agentic SDLC Handbook — a dual-audience guide for C-suite leaders
-  and practitioners on building with AI agents across the software
-  development lifecycle.
+description: "The Agentic SDLC Handbook \u2014 a dual-audience guide for C-suite leaders\
+  \ and practitioners on building with AI agents across the software development lifecycle."
 author: Daniel Meppiel
-
 dependencies:
   apm:
-    - danielmeppiel/handbook-agents
+  - danielmeppiel/handbook-agents
+  - anthropics/skills/skills/canvas-design
+  - anthropics/skills/skills/pdf
+  - inference-sh/skills/guides/social/social-media-carousel
+  - inference-sh/skills/tools/image/flux-image
