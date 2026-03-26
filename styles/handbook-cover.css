@@ -1,0 +1,103 @@
+/* ── Download page: cover + form side-by-side ── */
+.download-hero {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin: 1rem 0 2rem 0;
+}
+
+.download-hero__cover {
+  position: sticky;
+  top: 5rem;
+}
+
+.download-hero__cover-img {
+  display: block;
+  width: 100%;
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.22);
+}
+
+.download-hero__form {
+  min-width: 0;
+}
+
+.download-hero__heading {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.5rem;
+  line-height: 1.3;
+  border-bottom: none;
+}
+
+.download-hero__lead {
+  margin: 0 0 1.25rem 0;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--bs-body-color, #333);
+}
+
+.download-hero__badge {
+  margin: 0 0 1.25rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(13, 110, 253, 0.06);
+  border-left: 3px solid #0d6efd;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--bs-body-color, #444);
+}
+
+#kit-form-container {
+  margin: 0 0 1.25rem 0;
+}
+
+.download-hero__alt {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--bs-secondary-color, #666);
+}
+
+/* Dark mode adjustments */
+body.quarto-dark .download-hero__badge {
+  background: rgba(13, 110, 253, 0.12);
+  border-left-color: #6ea8fe;
+}
+
+/* Hide the redundant "Download the Handbook" title on the download page —
+   it's kept in the DOM for sidebar/TOC navigation but visually hidden
+   since the cover image + "Get the Pre-release Edition" heading
+   already communicates the page purpose. */
+.download-page #title-block-header {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Hide the global footer download banner on the download page itself —
+   you're already ON the download page, showing "Get the PDF & EPUB"
+   as a footer CTA is redundant and confusing.
+   The banner is a sibling div right after the <footer> element. */
+.download-page footer.footer ~ div[style*="background"] {
+  display: none !important;
+}
+
+/* Mobile: stack vertically, cover on top (compact) */
+@media (max-width: 767px) {
+  .download-hero {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .download-hero__cover {
+    position: static;
+    max-width: 220px;
+    margin: 0 auto;
+  }
+}
