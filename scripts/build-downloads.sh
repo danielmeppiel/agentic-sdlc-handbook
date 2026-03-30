@@ -35,11 +35,9 @@ if [[ -f "$PDF" && -f "$EPUB" ]]; then
     echo "  EPUB: $EPUB ($(du -h "$EPUB" | cut -f1))"
     echo "  Copies in dist/"
     echo ""
-    echo "To update downloads on the live site, push these to gh-pages:"
-    echo "  git stash && git checkout gh-pages"
-    echo "  cp dist/*.pdf dist/*.epub ."
-    echo "  git add *.pdf *.epub && git commit -m 'chore: update PDF/EPUB' && git push"
-    echo "  git checkout main && git stash pop"
+    echo "To publish to the live site and tag the release:"
+    echo "  ./scripts/publish.sh            # push to gh-pages + create version tag"
+    echo "  ./scripts/publish.sh --dry-run  # preview without changing anything"
 else
     echo "ERROR: Build failed — missing output files" >&2
     exit 1

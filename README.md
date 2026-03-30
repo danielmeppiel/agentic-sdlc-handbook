@@ -122,6 +122,21 @@ apm compile    # Compiles agent instructions
 
 The agent team is distributed as the [`handbook-agents`](https://github.com/danielmeppiel/handbook-agents) APM package.
 
+### Releasing
+
+The PDF and EPUB are served from the `gh-pages` branch via GitHub Pages. Kit.com email links point to stable URLs that always resolve to the latest version — no per-release URL updates needed.
+
+```bash
+# 1. Build PDF/EPUB locally (requires Chromium for Mermaid diagrams)
+./scripts/build-downloads.sh
+
+# 2. Publish to gh-pages and tag the version
+./scripts/publish.sh            # push PDF/EPUB to gh-pages + create git tag
+./scripts/publish.sh --dry-run  # preview without changing anything
+```
+
+Version is set in `_variables.yml`. Build metadata (date, commit hash) is stamped automatically by the pre-render hook.
+
 ## License
 
 The content of this book (prose, diagrams, images) is licensed under
