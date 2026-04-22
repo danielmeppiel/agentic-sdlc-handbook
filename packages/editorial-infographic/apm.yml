@@ -1,0 +1,20 @@
+name: editorial-infographic
+version: 0.1.0
+description: >-
+  Multi-agent panel pipeline for shipping single-page longform editorial
+  infographics from authored long-form content (book chapters, papers,
+  methodology specs). Includes 4 panel agents (Architect / Illustrator /
+  Skeptic / Editor) and the editorial-infographic skill with brand system,
+  layout patterns, renderer, and ship checklist.
+author: Daniel Meppiel
+license: CC-BY-NC-4.0
+type: skill
+keywords:
+  - infographic
+  - thought-leadership
+  - linkedin
+  - panel-review
+  - editorial
+dependencies:
+  apm:
+    - anthropics/skills/skills/canvas-design

@@ -6,7 +6,7 @@ author: Daniel Meppiel
 dependencies:
   apm:
   - danielmeppiel/handbook-agents
-  - anthropics/skills/skills/canvas-design
   - anthropics/skills/skills/pdf
   - inference-sh/skills/guides/social/social-media-carousel
   - inference-sh/skills/tools/image/flux-image
+  - ./packages/editorial-infographic

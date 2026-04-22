@@ -31,3 +31,4 @@ handbook/reviews/apm-audit-publishing.md
 
 # Local backups of redacted files
 .private-backup/
+.DS_Store

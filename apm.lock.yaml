@@ -1,16 +1,22 @@
 lockfile_version: '1'
-generated_at: '2026-03-22T17:08:53.418051+00:00'
-apm_version: 0.8.4
+generated_at: '2026-04-22T20:22:41.524925+00:00'
+apm_version: 0.9.1
 dependencies:
-- repo_url: anthropics/skills
-  host: github.com
-  resolved_commit: 887114fd09f8f24a7e6c907f9ee505348498ab6a
-  virtual_path: skills/canvas-design
-  is_virtual: true
-  package_type: claude_skill
+- repo_url: _local/editorial-infographic
+  package_type: apm_package
   deployed_files:
-  - .github/skills/canvas-design
-  content_hash: sha256:ab1260f35c40f2aa2408e1ca25f27620e5002f941f5d32927839eba83a4b18bc
+  - .github/agents/infographic-architect.agent.md
+  - .github/agents/infographic-editor.agent.md
+  - .github/agents/infographic-illustrator.agent.md
+  - .github/agents/infographic-skeptic.agent.md
+  - .github/skills/editorial-infographic
+  deployed_file_hashes:
+    .github/agents/infographic-architect.agent.md: sha256:d87ebfdd8f38e9fa10f0f63831efcec5b02a765330bdef26c95503e6f17b5eed
+    .github/agents/infographic-editor.agent.md: sha256:b62218c8a4684e4c240f5b405c1f622bf8178b920443c86055fc9474b2e52020
+    .github/agents/infographic-illustrator.agent.md: sha256:323d3535d8d4bf7e513b69a16f39c856590e780d5ce18c7f2de9e2576585892f
+    .github/agents/infographic-skeptic.agent.md: sha256:2ae48596b689339ffc8fb449e0807043cb4b313f49bc90a94f0e0a65e2a62722
+  source: local
+  local_path: ./packages/editorial-infographic
 - repo_url: anthropics/skills
   host: github.com
   resolved_commit: 887114fd09f8f24a7e6c907f9ee505348498ab6a
@@ -37,6 +43,18 @@ dependencies:
   - .github/agents/publishing-advisor.agent.md
   - .github/agents/thought-leadership.agent.md
   - .github/skills/handbook-panel
+  deployed_file_hashes:
+    .github/agents/chief-editor.agent.md: sha256:4f30554290935b9a4902a234e14572f22fbc08b531811dc088f7e65d22737ac7
+    .github/agents/csuite-strategist.agent.md: sha256:383a8ee45ff98083bc00f19dde2102607f11aa8a2e63aca03b969899ade56061
+    .github/agents/cto-proxy.agent.md: sha256:edb7741958a608e2f3ee245d9219e763d4e676220d01702d0a51763d9574d2d2
+    .github/agents/dev-lead-proxy.agent.md: sha256:7c07417683d2eff20ca7f0b541000956abca73bf021ca8f68e9a143e1f68ec3a
+    .github/agents/fact-ref-checker.agent.md: sha256:dfb286d13a146e88376305e67501978ab4ac87dfe42ab3bc38f73d2d83704b84
+    .github/agents/illustrator.agent.md: sha256:e61b480185e752c49d98cafb244daab4e095eefbd0784f2e8dc1fd7ff38d060b
+    .github/agents/market-analyst.agent.md: sha256:01fece584c603b57728b36d5f618b0d248a9963fcac42ff8a6f76d09a668f7d1
+    .github/agents/platform-strategist.agent.md: sha256:41a93a4d9b30fc038efad018115bc5b2513e2853844be775d4e9cd99a19875d7
+    .github/agents/practitioner-authority.agent.md: sha256:403266da3284a923660a59596c3ef534734542e1a8b1410c61d56adbde3ee6be
+    .github/agents/publishing-advisor.agent.md: sha256:cb82c8a0188d06c4e73ddc8f6f47006aa20b1dbcb53cbf5b1f94ceb5caf30d18
+    .github/agents/thought-leadership.agent.md: sha256:aa7af01d1ac7edac7bc936d714ac367efcf5579259e51931be81c30842ea606e
   content_hash: sha256:2a2758559fd632c839f1e55e5990e4d3363e6d455f1eba1ed2fd760aeedce960
 - repo_url: inference-sh/skills
   host: github.com
@@ -56,3 +74,14 @@ dependencies:
   deployed_files:
   - .github/skills/flux-image
   content_hash: sha256:f7ea61d8209d5131afa72dd31cf7a00b718c2ff70e0f16e93655b734e4def627
+- repo_url: anthropics/skills
+  host: github.com
+  resolved_commit: b9e19e6f44773509fbdd7001d77ff41a49a486c1
+  virtual_path: skills/canvas-design
+  is_virtual: true
+  depth: 2
+  resolved_by: _local/editorial-infographic
+  package_type: claude_skill
+  deployed_files:
+  - .github/skills/canvas-design
+  content_hash: sha256:1f0341e58d0b1cfcd6b1bb86219ed6702027e6356aec952e6240b7bc85a1fe73
