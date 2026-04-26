@@ -1,6 +1,3 @@
----
-title: "What Comes Next"
----
 
 # What Comes Next {#sec-what-comes-next}
 

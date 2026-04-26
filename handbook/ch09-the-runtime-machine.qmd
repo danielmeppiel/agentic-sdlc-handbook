@@ -1,6 +1,3 @@
----
-title: "The Runtime Machine"
----
 
 # The Runtime Machine {#sec-runtime-machine}
 

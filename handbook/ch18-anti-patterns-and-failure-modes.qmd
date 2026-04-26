@@ -1,6 +1,3 @@
----
-title: "Anti-Patterns and Failure Modes"
----
 
 # Anti-Patterns and Failure Modes {#sec-anti-patterns}
 

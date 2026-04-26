@@ -1,6 +1,3 @@
----
-title: "The Deterministic / Probabilistic Boundary"
----
 
 # The Deterministic/Probabilistic Boundary {#sec-seam}
 

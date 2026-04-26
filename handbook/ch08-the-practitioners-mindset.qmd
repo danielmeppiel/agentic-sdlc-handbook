@@ -1,6 +1,3 @@
----
-title: "The Practitioner's Mindset"
----
 
 # The Practitioner's Mindset {#sec-practitioners-mindset}
 

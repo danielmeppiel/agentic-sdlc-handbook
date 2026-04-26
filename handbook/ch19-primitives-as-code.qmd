@@ -1,6 +1,3 @@
----
-title: "Primitives as Code"
----
 
 # Primitives as Code {#sec-primitives-as-code}
 

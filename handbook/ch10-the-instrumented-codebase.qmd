@@ -1,6 +1,3 @@
----
-title: "The Instrumented Codebase"
----
 
 # The Instrumented Codebase {#sec-instrumented-codebase}
 

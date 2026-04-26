@@ -1,6 +1,3 @@
----
-title: "Attention and Context Economy"
----
 
 # Attention and Context Economy {#sec-attention-economy}
 

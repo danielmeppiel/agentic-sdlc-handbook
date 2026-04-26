@@ -1,6 +1,3 @@
----
-title: "The PROSE Specification"
----
 
 # The PROSE Specification {#sec-prose}
 

@@ -1,6 +1,3 @@
----
-title: "The Execution Meta-Process"
----
 
 # The Execution Meta-Process {#sec-meta-process}
 

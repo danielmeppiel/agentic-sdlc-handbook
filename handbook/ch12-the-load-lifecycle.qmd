@@ -1,6 +1,3 @@
----
-title: "The Load Lifecycle"
----
 
 # The Load Lifecycle {#sec-load-lifecycle}
 

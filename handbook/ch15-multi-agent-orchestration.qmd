@@ -1,6 +1,3 @@
----
-title: "Multi-Agent Orchestration"
----
 
 # Multi-Agent Orchestration {#sec-multi-agent}
 
