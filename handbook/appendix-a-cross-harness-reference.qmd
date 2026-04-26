@@ -2,21 +2,129 @@
 title: "Appendix A: The Cross-Harness Reference"
 ---
 
-::: {.callout-note}
-## Appendix under construction (v2 draft)
+# The Cross-Harness Reference {#sec-cross-harness-reference}
 
-This appendix is being authored in Wave C of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`.
+This appendix is the dated reference for porting a primitive set across the five harnesses the handbook treats as load-bearing: GitHub Copilot, Anthropic Claude Code, Cursor, OpenAI Codex CLI, and OpenCode. It assumes the vocabulary of @sec-instrumented-codebase (the seven APM primitive types) and @sec-load-lifecycle (Resolve, Materialize, Bind, Activate). The body of the handbook describes the *what* and the *why*; this appendix is the *where* — the path conventions, file names, frontmatter shapes, and load-order rules each harness uses today.
+
+::: {.callout-warning}
+## Verified-on date — 2026-04-26
+
+All vendor conventions in this appendix were verified against the documents footnoted below on **2026-04-26**. Conventions evolve; harnesses ship breaking changes on quarterly cadences and sometimes faster. Before relying on any cell in any of these tables, open the vendor documentation footnote and confirm the convention is still current. The substrate vocabulary in @sec-runtime-machine is durable; the file names below are not.
+
+Refresh cadence for this appendix: annually, or on a major release of any listed harness. A row that changed since the last refresh is the appendix's diff; the snapshot date above is the authoritative cutoff.
 :::
 
-## Purpose
+---
 
-A dated snapshot of substrate-level differences between current agentic harnesses (Copilot, Claude Code, Cursor, Codex, OpenCode). Replaces the mid-2025 tool-support table that previously lived in Ch09. Carries an explicit snapshot date and refresh cadence; the body of the book references this appendix rather than restating the matrix.
+## A.1 At a glance — the substrate matrix
 
-## Structure (to be authored)
+The first table is the one most readers come here for. Rows are the primitive concepts the handbook teaches; columns are the five harnesses; each cell is the path or file convention the harness uses to materialize that concept. Empty cells (`—`) are real: they mean the harness does not have a native binding for that primitive type, and the concept must be approximated through one of the cells that does exist (typically a project-wide rule file). The path conventions for the APM-side translations are taken from the APM CLI's `KNOWN_TARGETS` registry,[^appx-a-apm] which is the single source of truth for the `apm install --target` mappings.
 
-For each substrate question:
+| APM primitive concept     | GitHub Copilot[^appx-a-copilot] | Claude Code[^appx-a-claude] | Cursor[^appx-a-cursor] | Codex CLI[^appx-a-codex] | OpenCode[^appx-a-opencode] |
+|---------------------------|---------------------------------|------------------------------|------------------------|--------------------------|----------------------------|
+| Project-wide rules        | `.github/copilot-instructions.md` | `CLAUDE.md` (repo root)    | `.cursor/rules/*.mdc` (`alwaysApply: true`) | `AGENTS.md` (repo root) | `AGENTS.md` (repo root)    |
+| Scope-attached rules      | `.github/instructions/*.instructions.md` with `applyTo:` glob | Nested `CLAUDE.md` per subtree | `.cursor/rules/*.mdc` with `globs:` | Nested `AGENTS.md` per subtree | Nested `AGENTS.md` per subtree |
+| User-scope rules          | `~/.copilot/instructions/` (partial) | `~/.claude/CLAUDE.md`     | Cursor Settings UI (not file-based) | (no file convention)   | `~/.config/opencode/AGENTS.md` |
+| Persona / specialist agent| `.github/agents/<name>.agent.md` | `.claude/agents/<name>.md` (Task tool) | `.cursor/agents/<name>.md` (modes) | `.codex/agents/<name>.toml` | `.opencode/agents/<name>.md` |
+| Skill (module entrypoint) | `.github/skills/<name>/SKILL.md` | `.claude/skills/<name>/SKILL.md` | `.cursor/skills/<name>/SKILL.md` (partial) | `.agents/<name>/SKILL.md` (cross-tool dir)[^appx-a-skills] | `.opencode/skills/<name>/SKILL.md` |
+| Prompt / repeatable workflow | `.github/prompts/*.prompt.md` | (use slash commands)         | (none — partial via rules) | (none)                | `.opencode/commands/*.md`  |
+| Memory (cross-session)    | (use scoped instructions)       | `CLAUDE.md` + `@path` imports | `.cursor/rules/*.mdc` (`alwaysApply`) | `AGENTS.md`           | `AGENTS.md`                |
+| Hooks (event-driven)      | `.github/hooks/*.json`          | `.claude/hooks/*.json` (merge into `settings.json`) | `.cursor/hooks/*.json` | `.codex/hooks.json` (single file) | (no native hooks)          |
+| MCP server config         | `.github/mcp.json` or VS Code settings | `.claude/settings.json` (`mcpServers` block) | `.cursor/mcp.json` | `.codex/config.toml` (`[mcp_servers]`) | `.opencode/mcp.json`     |
 
-1. The question (e.g., "How does this harness load instruction files at session start?").
-2. The answer per harness, dated.
-3. The implication for primitive design.
-4. The vendor-doc citation.
+A few conventions in the matrix above are worth flagging up front, because they trip readers who scan the table without reading the per-harness sections:
+
+- **AGENTS.md is one file in two roles.** Codex and OpenCode both read `AGENTS.md` at the project root as project-wide rules and walk nested `AGENTS.md` files for scope-attached rules. The same file convention covers two primitive concepts because hierarchy *is* the scope predicate. Cursor, Claude Code, and a growing list of harnesses also load `AGENTS.md` if present.[^appx-a-agentsmd]
+- **`SKILL.md` is the only file name that ports cleanly.** Every harness in the matrix that has a skills concept uses the same file name and substantially the same activation contract. This is the agentskills.io convergence (@sec-skills-convergence below).
+- **Persona files are convention, not standard.** `.agent.md` (Copilot), plain `.md` under `.claude/agents/` (Claude Code), and `.toml` under `.codex/agents/` (Codex) all express the same primitive — a specialist persona with a name, a description, and tool boundaries — but the surface syntax does not port. Persona portability is a manual translation, not a `cp` away.
+- **Hooks are the least standardized cell.** Every harness that has hooks uses JSON, but the schema, the event names, and the merge semantics differ. OpenCode has no native hooks at all. A hook bundle is the row most likely to break across harnesses without warning.
+
+---
+
+## A.2 Per-harness sections
+
+Each section below covers one harness in five fields: load order at session start, scope rules (how a primitive is attached to a path), override semantics (what happens when two files claim the same scope), gotchas (the specific failure modes this harness is prone to), and the vendor doc footnote. Sections are deliberately short; the matrix above is the bulk of the reference.
+
+### A.2.1 GitHub Copilot
+
+**Load order.** At session start, Copilot reads user-level config from `~/.copilot/`, then the project-level `.github/copilot-instructions.md` if present, then walks `.github/instructions/` and pre-loads every `*.instructions.md` file whose `applyTo:` glob matches the current working path. Skills under `.github/skills/<name>/SKILL.md` are registered (their descriptions enter the activation pool) but their bodies load lazily. Agents under `.github/agents/<name>.agent.md` are available for explicit invocation.[^appx-a-copilot]
+
+**Scope rules.** Frontmatter `applyTo:` is a glob predicate; multiple instruction files can match the same path and all of them load. Skills bind by description match (lazy on-demand). Agents bind only when the user names them.
+
+**Override semantics.** None — Copilot composes. If two instruction files match the same path, both load; the order is alphabetical by filename. There is no "closest wins" rule the way Claude Code has.
+
+**Gotchas.** Over-eager `applyTo: "**"` is the single most common Copilot failure: an instructions file matches every path in the repo and consumes the eager-preload budget so completely that lazy skills are never selected (the failure narrated in @sec-load-lifecycle). The `--verbose` log shows the materialized load order; reach for it before retyping skill descriptions.
+
+### A.2.2 Anthropic Claude Code
+
+**Load order.** Claude Code reads `~/.claude/CLAUDE.md` at user scope, then `./CLAUDE.md` at the project root, then walks the directory tree downward and applies the *closest* nested `CLAUDE.md` to whatever subtree the agent is working in. Bodies may use the `@path` import syntax to inline other markdown files at load time. Skills under `.claude/skills/<name>/SKILL.md` register lazily; subagents under `.claude/agents/<name>.md` are invoked through the Task tool.[^appx-a-claude]
+
+**Scope rules.** Hierarchy is the only scope predicate. There is no `applyTo:` glob. A file's location in the directory tree *is* its scope.
+
+**Override semantics.** Closest-wins. Only one `CLAUDE.md` applies per subtree — the deepest one whose directory is an ancestor of (or equals) the working path. Higher-up `CLAUDE.md` files do *not* compose; the closest one shadows them.
+
+**Gotchas.** A nested `CLAUDE.md` placed too deep can be invisible to threads working outside its subtree, so a rule that "should always apply" must live at the root. Conversely, a root `CLAUDE.md` that grows past 200 lines pulls into every session and crowds out the skill activation budget. Use `@path` imports to keep the root file thin and let the imports load only when referenced.
+
+### A.2.3 Cursor
+
+**Load order.** Cursor reads user-scope settings from the Cursor Settings UI (not the filesystem) and project-scope rules from `.cursor/rules/*.mdc`. Each `.mdc` file has frontmatter declaring `globs:` (the scope predicate), `alwaysApply:` (true for project-wide), and a rule `type:`. Modes (Cursor's persona equivalent) are configured globally in the IDE rather than per-project.[^appx-a-cursor]
+
+**Scope rules.** `globs:` is the predicate, equivalent to Copilot's `applyTo:`. Multiple `.mdc` files can match the same path and all of them apply.
+
+**Override semantics.** Compositional, like Copilot. There is no closest-wins; matching rules compose.
+
+**Gotchas.** Cursor's user-scope rules are not file-based, which means they do not version-control alongside the project. A team relying on user-scope rules has hidden state in each developer's IDE settings — the silent-onboarding failure. Skills support is partial as of 2026-04: the `SKILL.md` registration works, but description-driven activation is less reliable than in Copilot or Claude Code, and a skill that is silent in Cursor is often best re-expressed as a rule with `alwaysApply: true` on a narrow `globs:`.
+
+### A.2.4 OpenAI Codex CLI
+
+**Load order.** Codex reads `AGENTS.md` from the project root at session start and walks the directory tree for nested `AGENTS.md` files, applying the closest one to the working subtree. Agents (Codex's persona equivalent) live under `.codex/agents/<name>.toml`. Hooks merge into a single `.codex/hooks.json`. MCP servers are configured in `.codex/config.toml` under the `[mcp_servers]` table.[^appx-a-codex]
+
+**Scope rules.** Hierarchy is the scope predicate, exactly as in Claude Code. There is no glob.
+
+**Override semantics.** Closest-wins — the deepest `AGENTS.md` shadows ancestors. The project root `AGENTS.md` is the always-on fallback.
+
+**Gotchas.** Codex's skill convention diverges from the other harnesses: skills materialize to `.agents/<name>/SKILL.md` (a cross-tool directory shared with the agent skills standard) rather than under `.codex/`. The APM CLI handles this via the `deploy_root` override on the Codex target; if you write a skill installer by hand, the cross-tool directory is the trap. Codex also has no separate prompts primitive — repeatable workflows are written as agents or as section in `AGENTS.md`.
+
+### A.2.5 OpenCode
+
+**Load order.** OpenCode reads `~/.config/opencode/AGENTS.md` at user scope and `./AGENTS.md` at the project root, walking nested `AGENTS.md` files exactly as Codex does. Agents live under `.opencode/agents/<name>.md`, skills under `.opencode/skills/<name>/SKILL.md`, and repeatable workflows under `.opencode/commands/<name>.md`. There is no native hooks concept.[^appx-a-opencode]
+
+**Scope rules.** Hierarchy is the predicate; no glob.
+
+**Override semantics.** Closest-wins, identical to Codex and Claude Code.
+
+**Gotchas.** Hooks are the missing primitive. A bundle that depends on hooks for governance (a pre-commit lint, a tool-call audit) cannot be ported to OpenCode without re-expressing the policy as instructions in `AGENTS.md` or as a slash command the developer runs explicitly. OpenCode is also the harness with the youngest convention set as of the verification date; check the vendor doc footnote before relying on a specific path.
+
+---
+
+## A.3 agentskills.io as the cross-harness convergence {#sec-skills-convergence}
+
+The matrix in A.1 shows one row that ports almost cleanly — the skill row. Every harness in the matrix that has a skills concept uses the same file name (`SKILL.md`), the same directory shape (`<root>/skills/<name>/SKILL.md`), and substantially the same activation contract: the skill's frontmatter `description:` field loads eagerly into a small registry at session start, and the skill's body loads lazily only when the dispatcher selects the skill for the current task. This convergence is not accidental. It is the agentskills.io open registry standard, adopted in compatible form by Copilot, Claude Code, Cursor, OpenCode, and (with the cross-tool directory wrinkle) Codex.[^appx-a-skills]
+
+The reason skills ported and scope-attached rules did not is structural. A skill is a *self-contained module* — name, description, body, optional supporting files — with no implicit dependencies on the surrounding directory layout. Move the directory and the skill still works. Scope-attached rules, by contrast, encode their scope predicate in either the frontmatter (`applyTo:`, `globs:`) or the file's location in the tree, and the two encodings cannot be losslessly translated: a Copilot `applyTo: "src/api/**"` rule cannot become a single Claude Code file without choosing a directory to nest it in. The standard pinned the boundary of a skill (the `SKILL.md` entrypoint and its frontmatter) and left the surrounding bytes free, which is why skills made it across.
+
+The practical implication for portable instrumentation: when a primitive *can* be expressed as a skill, it ports. When a primitive *must* be expressed as a scope-attached rule (because the activation is path-deterministic, not description-deterministic), the port across harnesses is a manual translation. Teams that need cross-harness reach should structure their primitive set with that asymmetry in mind — push as much logic as is honest into skills; reserve scope-attached rules for the genuine path-deterministic cases.
+
+---
+
+## A.4 Forward references
+
+The lifecycle vocabulary used throughout this appendix — Resolve, Materialize, Bind, Activate — is defined in @sec-load-lifecycle. The four-part runtime decomposition (model, harness, filesystem-as-loader, trigger surface) is @sec-runtime-machine. The seven primitive types (instructions, agents, skills, prompts, memory, orchestration, hooks) are catalogued in @sec-instrumented-codebase, which is the canonical APM-side naming this appendix's "concept" column maps from. When a row in the A.1 matrix is empty, the corresponding section of @sec-instrumented-codebase explains what concept the harness is missing and what to substitute.
+
+---
+
+[^appx-a-copilot]: GitHub, "Adding custom instructions for GitHub Copilot," `https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot`. Verified 2026-04-26. Covers `.github/copilot-instructions.md`, `.github/instructions/*.instructions.md` with `applyTo:` glob, and the user-scope `~/.copilot/` directory.
+
+[^appx-a-claude]: Anthropic, "Claude Code: Memory," `https://docs.claude.com/en/docs/claude-code/memory`. Verified 2026-04-26. Covers `CLAUDE.md` at user, project, and nested scope; the `@path` import syntax; and the closest-wins resolution rule.
+
+[^appx-a-cursor]: Cursor, "Rules for AI," `https://docs.cursor.com/context/rules-for-ai`. Verified 2026-04-26. Covers `.cursor/rules/*.mdc`, the `globs:` and `alwaysApply:` frontmatter fields, and the user-scope rules accessible only through the Cursor Settings UI.
+
+[^appx-a-codex]: OpenAI, "Codex CLI," `https://github.com/openai/codex`. Verified 2026-04-26. Codex follows the `AGENTS.md` convention for project-wide and scope-attached rules, stores agents as `.toml` files under `.codex/agents/`, and merges hooks into a single `.codex/hooks.json`. Skills materialize to the cross-tool `.agents/` directory rather than under `.codex/`.
+
+[^appx-a-opencode]: OpenCode, "Documentation," `https://opencode.ai/docs`. Verified 2026-04-26. OpenCode loads `AGENTS.md` at the project root and nested per-subtree, supports skills under `.opencode/skills/<name>/SKILL.md`, and has no native hooks primitive.
+
+[^appx-a-agentsmd]: The AGENTS.md convention, `https://agents.md`. Verified 2026-04-26. A single markdown file at the project root (and optionally nested) that AGENTS.md-aware harnesses load eagerly at session start. Adopted by Codex, OpenCode, and increasingly compatible with other harnesses as a portable lingua franca for project-scope rules.
+
+[^appx-a-skills]: agentskills.io, `https://agentskills.io/`. Verified 2026-04-26. The open registry standard for the `SKILL.md` entrypoint with description-driven activation. Adopted in substantially compatible form by Copilot (`.github/skills/<name>/SKILL.md`), Claude Code (`.claude/skills/<name>/SKILL.md`), Cursor (`.cursor/skills/<name>/SKILL.md`, partial), Codex (`.agents/<name>/SKILL.md`, cross-tool directory), and OpenCode (`.opencode/skills/<name>/SKILL.md`). The contract: descriptions load eagerly into a small registry; bodies load lazily only when the dispatcher selects the skill for the current task.
+
+[^appx-a-apm]: APM CLI, `KNOWN_TARGETS` registry in `src/apm_cli/integration/targets.py`, `https://github.com/microsoft/apm`. Verified 2026-04-26. The registry is the single source of truth for `apm install --target {copilot,claude,cursor,codex,opencode}` path mappings. Each target profile records the root directory, the per-primitive subdirectory, the file extension, the `format_id` for the content transformer, and (for Codex skills) the `deploy_root` override that redirects skills to the cross-tool `.agents/` directory.

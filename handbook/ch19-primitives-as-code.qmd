@@ -2,20 +2,193 @@
 title: "Primitives as Code"
 ---
 
-::: {.callout-note}
-## Chapter under construction (v2 draft)
+# Primitives as Code {#sec-primitives-as-code}
 
-This chapter is being authored in Wave C of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+It is a Monday morning. A staff engineer — call her Priya — is reviewing a pull request on her team's payments service. She has spent the last quarter calibrating two skills the team relies on every day: a `python-review` skill that walks an agent through correctness, architecture, and security checks, and a `pr-description` skill that writes the body of the eventual pull request from the same diff. Both have been refined by hand, in many small commits, against many real reviews. Both work.
+
+This morning, on a single PR, the two skills disagree. The `python-review` skill files a verdict that the change is acceptable but adds two non-blocking nits about error wrapping. The `pr-description` skill, asked moments later to summarize the same review for the description body, writes that the change *needs revision* and lists a different set of concerns. Two voices. Same diff. Same agent. Same model.
+
+Priya pulls up the two SKILL.md files side by side and finds it in two minutes. Both skills carry their own copy of the team's review checklist, inline. Six months ago they were identical. Three months ago a teammate sharpened the wording in `python-review` after a postmortem. Last month another teammate added a new bullet to `pr-description` for a different reason. Neither edit propagated. The two checklists have drifted. Whichever skill the agent loaded first won the framing — and on this PR they had both loaded, in opposite orders, in two different turns of the same session.
+
+Nothing in either skill is wrong on its own. What is wrong is structural. A piece of content that two skills both depend on is *embedded* in each, instead of *declared* by each. There is no single source of truth for the team's review checklist, even though both authors believe there is one — the one in the skill they happened to edit. The handbook's earlier chapters described primitives as files (Ch10, @sec-instrumented-codebase) and named the patterns that compose them (Ch17, @sec-composition-patterns). This chapter is what changes when you stop treating those files as documents and start treating them as packages.
+
+---
+
+## From file to package
+
+Chapter 10 catalogued seven primitive types and named their load modes. The mental model that chapter establishes is one primitive, one file: an instruction file with `applyTo`, an agent file with a tool boundary, a `SKILL.md` with a description and a body. That model is correct for the smallest useful primitives. It stops being sufficient the moment a primitive needs more than its body to do its job — when a code-review skill needs example diffs, when a security-audit skill needs a checklist that another skill also wants, when an orchestration spec needs a sub-step authored by a different team.
+
+The unit that handles those needs is the **package**. A skill is the runtime's analogue of a Module / Facade (Ch17, @sec-composition-patterns): one named entrypoint, one stable description, hidden internal structure. A bundle — a skill that contains other skills or carries asset files alongside its body — is the runtime's Composite. A dependency edge from one skill to another is a Package Reference, the same shape npm and Maven settled on three decades ago.[^ch19-pkg] The consequences for the developer are concrete and immediate.
+
+```{mermaid}
+%%| fig-width: 7.5
+%%| label: fig-package-and-lockfile
+%%| fig-cap: "A skill bundle and its lockfile snapshot"
+%%| fig-alt: "A two-column diagram. The left column is labelled Skill bundle, author view. It shows a directory tree rooted at .github/skills/python-review/ containing SKILL.md as the entrypoint, an assets/ subdirectory with rubric.md and style-guide-example.md, and an apm.yml manifest declaring a dependency on code-review-rubric version 1.2 and on style-guide-python version 2.0. An arrow labelled apm install points to the right column. The right column is labelled Lockfile, consumer view. It shows apm.lock.yaml listing python-review version 1.4 with a sha256 hash, code-review-rubric version 1.2 with its hash, style-guide-python version 2.0 with its hash, and the source URL each was resolved from. A note at the bottom of the right column reads: Transitive closure pinned. Same install, same files, every machine."
+flowchart LR
+    subgraph Bundle["Skill bundle (author view)"]
+        direction TB
+        S["python-review/<br/>SKILL.md<br/>(entrypoint + description)"]
+        A["assets/<br/>rubric.md<br/>style-guide-example.md"]
+        M["apm.yml<br/>dependencies:<br/>- code-review-rubric@1.2<br/>- style-guide-python@2.0"]
+        S --> A
+        S --> M
+    end
+    subgraph Lock["Lockfile (consumer view)"]
+        direction TB
+        L1["python-review @ 1.4<br/>sha256: a2f3..."]
+        L2["code-review-rubric @ 1.2<br/>sha256: 9d10..."]
+        L3["style-guide-python @ 2.0<br/>sha256: 4b87..."]
+        L4["resolved sources<br/>+ content hashes<br/>for every node"]
+        L1 --> L2
+        L1 --> L3
+        L2 --> L4
+        L3 --> L4
+    end
+    Bundle -- "apm install" --> Lock
+```
+
+The leap from file to package is what fixes Priya's drift problem. Once the team's review checklist is its own package — `code-review-rubric` — both `python-review` and `pr-description` can declare a dependency on it. There is now exactly one source of truth, with one version history. A change to the checklist is a change to one file, reviewed once, propagated everywhere on the next install. The two skills no longer disagree because they are no longer carrying two copies of the same content.
+
+---
+
+## Modules over monoliths
+
+A `SKILL.md` body that crosses a few hundred lines is almost always a hint that the primitive has accreted concerns that should belong to neighbours. The same instinct that makes a senior engineer extract a function from a 400-line method applies here, and the test is the same: *does this section have its own reason to change?* If yes, it wants to be its own primitive — its own module, with its own description, its own version, and its own owner.
+
+| Anatomy of a skill bundle | Role | Visibility to consumers |
+|---|---|---|
+| `SKILL.md` (entrypoint) | Description-driven activation contract; the body the agent reads when the skill binds.[^ch19-skills-spec] | Public. The `description` is the API. |
+| `assets/` | Reference material the body cites — example diffs, decision tables, checklists too long to inline. | Loaded transitively when the body links them. |
+| Sub-skills | A child `SKILL.md` under the same bundle directory, activated independently or via a parent reference. | Public if the parent re-exports; private otherwise. |
+| `apm.yml` (or equivalent) | Declared dependencies, version, license, ownership. | Public. Drives the lockfile. |
+| Tests | Activation tests, link-integrity checks, schema validation against the manifest. | Internal to the package; CI gate. |
+
+Two principles hold across the table. First, the entrypoint is *small*. A skill body that lists every consideration the team has ever cared about is a monolith; the same skill that names two or three load-bearing decision rules and links to assets for the rest is a module. Progressive disclosure (Ch13, the attention economy) is enforced at the package boundary as well as inside the body — a consumer who installs the skill should pay for the description at session start, the body when the skill activates, and the assets only when the body cites them.
+
+Second, the content a skill *imports* is named, not pasted. A single decision rule reused by three skills is a sign that the rule wants to live in a fourth skill on which the other three depend. The cost is one new package; the benefit is one source of truth, one version, one review history. Ch17's Composition vocabulary is exactly the design language this judgement uses — Skill, Bundle, Primitive, Dependency, Override (@sec-composition-patterns). The chapter you are reading is that vocabulary made operational on disk.
+
+---
+
+## Separation of concerns, by dependency
+
+Priya's fix, in mechanical detail, looks like this. She extracts the duplicated checklist into a new skill, `code-review-rubric`, with its own `SKILL.md` and its own version history. The bundle's body is the rubric. Its description is the activation contract: *use whenever the agent is grading a code change against the team's standards.* It owns no language-specific advice and no PR-formatting concerns. It owns one thing.
+
+Then she edits both consumers. The `python-review` skill declares the rubric as a dependency in its manifest:
+
+```yaml
+# .github/skills/python-review/apm.yml
+name: python-review
+version: 1.4.0
+description: >
+  Activate when reviewing changes under src/payments/ for correctness,
+  architecture, and security.
+dependencies:
+  apm:
+    - org/code-review-rubric#v1.2
+    - org/style-guide-python#v2.0
+```
+
+The body of `python-review/SKILL.md` no longer contains the checklist. It points at the dependency: *apply the rubric in `code-review-rubric`, then add the Python-specific concerns below.* The `pr-description` skill does the same. One source of truth; two consumers; zero drift.
+
+The cost of the refactor is one new bundle and two manifest edits. The benefit is structural: the team's checklist now has the same status as any other piece of code they ship — one owner, one history, one place to land a change. The next postmortem that sharpens a rubric line lands in `code-review-rubric@v1.3`, both consumers pick it up on the next install, and Monday morning produces one verdict instead of two.
+
+Two kinds of duplication used to be tolerable when primitives were files: short paragraphs that happened to overlap, and example fragments that repeat across skills. Once primitives are packages, only one of them stays tolerable. *Coincidental* overlap — two unrelated skills that happen to use a similar phrase — is fine; it carries no expectation of synchronization. *Essential* overlap — content that is supposed to be the same in both places because the team has one position on it — is not. The cure for essential overlap is always the same: extract a package, declare a dependency, delete the copy.
+
+---
+
+## The lockfile and what it pins
+
+A dependency declaration is an intent (*I want the rubric, version 1.2*). A lockfile is a fact (*on the date of this install, the rubric resolved to commit `9d10…`, content hash `sha256:9d10…`, fetched from this source URL*). The two are different and both are necessary, for the same reasons npm's `package.json` and `package-lock.json` are different.[^ch19-pkg]
+
+| Layer | Manifest (`apm.yml`) | Lockfile (`apm.lock.yaml`) |
+|---|---|---|
+| Records | What the project depends on, by version range. | What was actually resolved on a given date, by content hash. |
+| Edited by | Humans, on every dependency change. | The CLI, on every install. |
+| Reviewed in | Pull requests, like any code change. | Pull requests, as a snapshot artifact. |
+| Answers | "What does this project want?" | "What did this project see, last time it built?" |
+| Breaks if | A consumer adds an undeclared dependency. | A resolved file is republished under the same version with different content. |
+
+The lockfile is what makes a primitive set *reproducible* across machines and across time. Without it, last week's `apm install` and this week's `apm install` will produce different agent behavior on the same project — different transitive closure, different content, different output — with no diff on the consumer's branch to point at. The wave protocol Ch16 describes (@sec-meta-process) depends on this kind of reproducibility: a wave's verdict is honest only if the next wave can be re-run against an identical context. The lockfile is what gives that next wave the same source tree the previous one saw.
+
+A second function the lockfile serves is integrity. Every resolved entry carries a content hash. If a consumer's install resolves `code-review-rubric@v1.2` to a file whose hash does not match the lockfile, the install fails. Republishing a tag with different content is a supply-chain attack; the lockfile is the local check that catches it.[^ch19-apm] Ch20 picks up the supply-chain thread in detail.
+
+Pinning is therefore not bureaucracy. It is the only mechanism by which the *transitive closure* of a primitive — the full set of files that load when the skill activates, including the contents of every dependency — is observable, diff-able, and reviewable. The closure is the thing that actually steers the agent. Without a lockfile, the closure is whatever the registry served the last time anyone installed; with one, it is exactly what the team committed.
+
+---
+
+## Overrides without forking
+
+The cleanest way to compose a dependency is to use it unchanged. The next-cleanest way is to override one named section without taking ownership of the rest. Ch17 names the pattern: Template Method (@sec-composition-patterns). The base module — here, the upstream skill — defines an invariant skeleton with named slots. A consumer replaces a slot in their own project without rewriting the skeleton.
+
+The shape on disk is mundane. The upstream `code-review-rubric` skill names slots in its body — typically section headings whose names are part of its public contract: *Style guide*, *Domain-specific concerns*, *Stop conditions*. A consumer's project carries a small override file that says, in effect: *for this project, replace the Style guide section with the contents of `./style/payments-house-style.md`*. Every other slot is inherited unchanged. The next time the upstream skill ships a new section, the consumer's override does not need to be touched; the new section flows through.
+
+Two practical disciplines make overrides safe to live with.
+
+The first is **slot stability**. The names of overrideable sections are part of the skill's public contract. Renaming `Style guide` to `Style conventions` in a minor version is a breaking change for every downstream override that points at the old name, even if the body of the section is unchanged. The same engineering caution that applies to renaming a public function applies here. The version-bump rules below are how that caution is signalled.
+
+The second is **the override is the smallest unit you own**. A consumer who finds themselves overriding three slots, then four, then six, has crossed the threshold where forking the dependency is more honest. The override mechanism is for project-local specialization of an otherwise-shared module; when most of the module is local, the dependency edge is no longer paying for itself. Drop it, fork, take ownership.
+
+Override is what lets the team in Priya's company use `code-review-rubric` as it ships from the central platform team while still reflecting the payments-team house style on the one section where the two genuinely differ. Without overrides, the choice is binary — adopt the upstream rubric in full, or fork it and inherit nothing future. With overrides, specialization stays local without giving up shared evolution.
+
+---
+
+## Versioning: the description is the API
+
+Software versioning is hard because the question *what is this package's public surface?* admits many honest answers. For a skill, the question has one. The public surface is the description in the `SKILL.md` frontmatter, plus any slot names a consumer might override. The body of the skill is implementation; the description is the API.
+
+This is not a rhetorical flourish. The description is exactly what the harness reads when deciding whether to activate the skill on a given task (Ch10, @sec-instrumented-codebase, on lazy on-demand load). A consumer who installs the skill is buying that activation contract. Rewording the description — *activate when reviewing code* becomes *use whenever an agent is asked about code* — changes which threads the skill binds in. That is a breaking change. It deserves a major version bump and a release note, the same way renaming a public function does.
+
+| Change | SemVer rule | Notes |
+|---|---|---|
+| Edit the body without changing the description or slot names. | Patch. | Safe by construction. |
+| Add a new slot or new asset; existing consumers unaffected. | Minor. | Strictly additive. |
+| Reword the description's activation criteria. | Major. | Bindings shift; consumers must re-evaluate. |
+| Rename or remove an overrideable slot. | Major. | Existing overrides break. |
+| Change a transitive dependency's resolved version such that the closure's content changes. | Reflected in the lockfile, not the package version. | The package version describes *this* package; the lockfile describes the closure. |
+
+The last row is the one teams get wrong most often. A skill's version describes what *that* skill ships. When `code-review-rubric@v1.2` depends on `style-guide-python@v2.0`, and the style guide ships a major v3.0 with breaking slot renames, the rubric's published version does not change *because the rubric did not change*. What changes is the lockfile of any project that re-runs `apm install`. The rubric and the consuming skills will pick up the new style guide (or fail to resolve it) on the next install; the breaking event is recorded in the lockfile diff, not in the rubric's version history. This separation of concerns — package versioning describes the package; lockfile snapshotting describes the closure — is what keeps the system tractable as the dependency tree grows.
+
+---
+
+## A walkthrough, from one file to one package
+
+The full lifecycle is short enough to put on a page. Take Priya's `code-review-rubric`, from extraction to consumption.
+
+1. **Single file.** The rubric lives inline in `python-review/SKILL.md`. It is a heading and forty lines.
+2. **Extracted bundle.** Priya creates `org/code-review-rubric/`. Inside: a `SKILL.md` with the description *use whenever the agent is grading a code change against the team's standards*; a body that contains the rubric, factored into named slots; an `assets/` directory with one file, `examples/good-vs-bad.md`, that the body cites; an `apm.yml` declaring `version: 1.0.0`, no further dependencies, MIT license, the platform team as owner.
+3. **Published.** The bundle is pushed to the org's repository. A tag, `v1.0.0`, points at the commit. The publish workflow runs schema validation on the manifest, link-integrity on the body, and an activation test that loads the description into a sandboxed harness and checks that it activates on a synthetic review task.[^ch19-apm]
+4. **Consumed.** Priya edits `python-review`'s `apm.yml` to add `org/code-review-rubric#v1.0.0` to its dependencies. She runs `apm install`. The CLI resolves the dependency, downloads the bundle, writes a content hash into `apm.lock.yaml`, and stages the rubric's files into the project's `apm_modules/` (or equivalent) tree. The body of `python-review/SKILL.md` now reads, in part, *apply the rubric in `code-review-rubric`, then add the Python-specific concerns below.*
+5. **Overridden.** A second team in the company adopts `python-review` but has its own house style. They add an override file in their project that replaces the rubric's *Style guide* slot with their own one-page guide. The rest of the rubric flows through unchanged.
+6. **Iterated.** A postmortem motivates a sharper line in the rubric. Priya edits `code-review-rubric/SKILL.md`, bumps to `v1.0.1`, publishes. Both consuming projects run `apm install` on their next CI build; the lockfile updates; the new rubric line appears in both teams' next agent reviews. No drift.
+7. **Audited.** Six months later, an enterprise security review asks *which version of the rubric was loaded into the agent that approved PR #4711?* The answer is one lockfile lookup against the commit on which the PR was approved. The closure is reconstructible.
+
+Step 7 is what turns the package layer from an aesthetic choice into a governance one. Reproducibility, integrity, and provenance are the same property viewed from three angles, and all three are properties of the lockfile. A team that runs primitives without a manifest and a lockfile cannot answer step 7 honestly. A team that runs them with both can — which is, ultimately, what *primitives as code* means. Code has a build system. Code has a lockfile. Code has a publish pipeline. So do these.
+
+---
+
+## What this chapter unlocks
+
+Once a team accepts that primitives are packages and not files, the rest of the discipline follows. Pull requests review manifest changes the way they review API changes. Releases bump versions the way they bump library versions. Lockfile diffs go through the same eyes the source diff does. The disciplines named in earlier chapters — progressive disclosure (Ch13), the load-lifecycle reasoning that asks *what files actually arrived in the context?* (Ch12, @sec-load-lifecycle) — get a structural support beam: the package boundary is now the unit of composition, the unit of ownership, the unit of versioning, and the unit of audit, all at once.
+
+What this chapter has *not* covered is the supply-chain question one layer up. When the rubric your team installs is published by another team, in another org, possibly under another company's name — *whose chain of trust is that?* What does it mean to publish a primitive? What is the marketplace topology that lets Priya's payments team install `code-review-rubric` from the platform team without first vetting every transitive dependency by hand? Ch20 (What Comes Next) picks up that thread. The package-management discipline this chapter installs is the prerequisite — without manifests, lockfiles, versions, and overrides, the marketplace question has nowhere to land. With them, it is the next problem worth solving.
+
+---
+
+::: {.callout-tip}
+## TL;DR — Primitives are packages
+
+1. **A skill is a module, not a file.** Entrypoint + body + assets + manifest. The Module / Facade pattern from Ch17 (@sec-composition-patterns), made concrete on disk.
+2. **Don't duplicate; declare.** When two skills share content, extract a third skill they both depend on. Essential overlap is a missing dependency edge.
+3. **Manifest declares intent; lockfile records fact.** The lockfile pins the transitive closure with content hashes. Without it, agent behavior is not reproducible across machines or weeks.
+4. **The description is the API.** Rewording the activation contract is a breaking change. So is renaming an overrideable slot. Bump major; ship a release note.
+5. **Override before forking.** Specialize one slot; inherit the rest. When most of the module is local, the dependency is no longer paying for itself.
 :::
 
-## Thesis
+[^ch19-skills-spec]: agentskills.io specifies the `SKILL.md` entrypoint and the description-driven activation predicate. The same activation contract is implemented in substantially compatible form by Copilot (`.github/skills/<name>/SKILL.md`), Claude Code (`.claude/skills/<name>/SKILL.md`), and several others; the convergence is what lets a skill bundle ship across harnesses with one description rather than many.
 
-If markdown that steers an LLM is code (Ch09), then the discipline of shipping it must look like the discipline of shipping any other code: lint, test, version, distribute, audit. This chapter operationalizes the meta-thesis.
+[^ch19-pkg]: The dependency-and-lockfile pattern adopted here is the one that npm settled on for JavaScript and that Maven and Cargo settled on for Java and Rust respectively: a manifest declaring intent, a lockfile recording the resolved closure, and content hashing for integrity. Ch17 (@sec-composition-patterns) names the same idea as Package Reference and observes that the older "Decorator" framing for dependency in early agentic literature is a near miss. The package-system framing is the right one.
 
-## Sections (to be authored)
+[^ch19-apm]: The APM CLI (`apm install`, `apm.yml`, `apm.lock.yaml`, `apm publish`, `apm audit`) is one open-source realization of the manifest-and-lockfile discipline this chapter describes. See `https://microsoft.github.io/apm/`. Other realizations are possible; the discipline does not depend on any one tool. The walkthrough above uses APM's surface syntax because it is the realization the rest of this part has cited.
 
-1. The DevEx gap.
-2. Lint your primitives.
-3. Test your primitives.
-4. Version, distribute, lockfile.
-5. Audit and supply-chain hygiene.
+[^ch19-genesis]: The agent-side companion `danielmeppiel/genesis` enumerates an analogous composition substrate (skill / bundle / dependency / override) under a different surface vocabulary used by agents; per the directionality contract of this book, it appears here only as agent-side reference, not as load-bearing structure. *Agent-side reference; substrate concept.*
