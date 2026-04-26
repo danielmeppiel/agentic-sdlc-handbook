@@ -52,7 +52,7 @@ Three specialization patterns recur across most multi-agent workflows.
 
 ### Pattern 1: Writer / Reviewer / Tester
 
-The most common pattern separates code production from code validation. One agent writes the code. A second agent reviews it. A third writes or updates tests.
+The most common pattern separates code production from code validation. One agent writes the code. A second agent reviews it. A third writes or updates tests. Architecturally, this is the **A1 PANEL** pattern -- a topology of independent specialized lenses with a synthesis step that produces one decision.[^ch12-a1]
 
 ```{mermaid}
 %%| fig-width: 4.5
@@ -65,13 +65,46 @@ flowchart TD
     T -->|"Test updates +<br/>verification"| Done["Verified output"]
 ```
 
+::: {.callout-note appearance="simple"}
+**A1 PANEL (multi-lens deliberation) -- definition** (verbatim from Genesis `architectural-patterns.md` A1):
+
+**WHEN:** A decision benefits from >=3 specialized lenses (security, cost, UX, architecture, etc.). The lenses are independent; no shared state during evaluation. The synthesis is itself a decision, not a concatenation.
+
+**MECHANISM:** the parent (orchestrator) dispatches one CHILD-THREAD per lens, each loading its own persona / instruction set. Each child returns a finding. The parent runs a synthesis pass that produces ONE verdict.
+
+**ANTI-PATTERNS:** PANEL-WITHOUT-SYNTHESIS (N reports instead of one decision), PANEL-IN-ONE-CONTEXT (running all N lenses in a single window -- the dominant failure mode for senior engineers stepping into agent design), IMBALANCED PANEL (the synthesis follows the majority without examining the dissent; the dissenting lens is usually the highest-information signal).
+:::
+
+```{mermaid}
+%%| fig-cap: "A1 PANEL with bounded-rounds gate"
+%%| fig-alt: "Flowchart showing the orchestrator dispatching three parallel CHILD-THREAD SPAWNs (Writer lens, Reviewer lens, Tester lens), each in its own isolated context window. All three children return findings to a synthesis gate, which either emits one verdict (the panel decision) or, on disagreement, increments a bounded-rounds counter and re-dispatches. After two failed rounds for the same finding, the flow exits to a human checkpoint rather than dispatching a third time at the same level."
+%%| label: fig-a1-panel-bounded
+flowchart TD
+    O["Orchestrator"]
+    O -->|"CHILD-THREAD SPAWN"| W["Writer lens<br/>(fresh context)"]
+    O -->|"CHILD-THREAD SPAWN"| R["Reviewer lens<br/>(fresh context)"]
+    O -->|"CHILD-THREAD SPAWN"| T["Tester lens<br/>(fresh context)"]
+    W --> S{"Synthesis gate"}
+    R --> S
+    T --> S
+    S -->|"Converged"| V["One verdict"]
+    S -->|"Diverged<br/>(round &lt; 2)"| O
+    S -->|"Diverged<br/>(round = 2)"| H["Escalate (L3)<br/>human decides"]
+```
+
+The bounded-rounds branch is the operational form of the discipline in the Escalation Protocol below: at two failed dispatches for the same task, change the level rather than the seat. Three round-trips at the same level is a signal that the panel cannot resolve the question on its own.
+
 This pattern maps directly to the human workflow of author, reviewer, and QA — and for the same reason. The writer optimizes for correctness and completeness. The reviewer optimizes for catching what the writer missed. The tester optimizes for verifiable behavior. These are different cognitive tasks that benefit from different contexts.
 
-In practice, the reviewer agent receives the diff plus the original source, not the writer's full conversation history. This is deliberate. The reviewer should evaluate the output on its own merits, not be anchored by the writer's reasoning. If the writer had a good reason for a decision but the code doesn't reflect it, that is a signal, not an excuse.
+In practice, the reviewer agent receives the diff plus the original source, not the writer's full conversation history. This is deliberate. The reviewer should evaluate the output on its own merits, not be anchored by the writer's reasoning. If the writer had a good reason for a decision but the code doesn't reflect it, that is a signal, not an excuse. Running the reviewer in the writer's session is the **PANEL-IN-ONE-CONTEXT** failure: the reviewer inherits the writer's attention drift and stops being an independent lens (see Chapter 14 for the full anti-pattern entry).
+
+If the reviewer rejects twice on the same finding, change the approach -- decompose further, add context, or escalate -- rather than re-dispatching the writer a third time at the same level. This is the same bounded-rounds discipline used elsewhere in the book.
 
 ### Pattern 2: Domain Teams
 
 For cross-cutting changes, organize agents by area of expertise rather than by workflow stage. Each team owns a concern and is responsible for all files related to that concern.
+
+Structurally, Domain Teams is the same shape as Writer / Reviewer / Tester -- an **A1 PANEL** -- with N varying by the number of concerns, each lens specialized by domain rather than by workflow stage, and the synthesis step performed by the orchestrator (the human, in the PR #394 case) at the wave checkpoint rather than by an N+1 synthesizer agent.
 
 | Aspect | Architecture Team | Domain Expert Team |
 |--------|-------------------|---------------------|
@@ -84,7 +117,7 @@ This pattern scales by adding teams. A security concern adds a security team. A 
 
 #### Concrete Dispatch: What It Actually Looks Like
 
-The Domain Teams pattern describes structure. Here is what a dispatch actually looks like in practice: the instruction files, the prompt, and the file list. This example uses a terminal-based agent, but the pattern applies regardless of tool.
+The Domain Teams pattern describes structure. Here is what a dispatch actually looks like in practice: the instruction files, the prompt, and the file list. This example uses a terminal-based agent, but the pattern applies regardless of tool. The dispatch itself is a **C3 THREAD SPAWN** over the **CHILD-THREAD SPAWN** primitive (Chapter 9): a fresh execution unit with its own context window, loaded with this prompt and these instruction files, stateless across spawns by construction.
 
 Before dispatching, the orchestrator prepares three things: the instruction files the agent will load, the file list it owns exclusively, and the task prompt.
 
@@ -128,9 +161,23 @@ Fix any failures before reporting done.
 
 The orchestrator dispatches this prompt in a fresh session, monitors for completion or escalation, and moves to the next dispatch. Total orchestrator time per dispatch: roughly 2-3 minutes to prepare the prompt and file list, plus monitoring time shared across all active agents in the wave.
 
+The dispatch above is one realization of the **C3 THREAD SPAWN** design pattern. The same shape underlies every example in this chapter -- one writer dispatch, one reviewer dispatch, one migration dispatch, one validator dispatch.
+
+::: {.callout-note appearance="simple"}
+**C3 THREAD SPAWN -- definition** (verbatim from Genesis `design-patterns.md` C3):
+
+**WHEN:** a unit of work benefits from a fresh context window -- isolation from siblings, full attention on its own scope.
+
+**MECHANISM:** parent invokes the harness's spawn affordance with a task description and (optionally) a persona / module to load at startup. Child runs, returns a value, exits.
+
+**ANTI-PATTERN:** UNBOUNDED SPAWN -- letting any thread spawn any depth of descendants. Couple with SUPERVISOR (B3) to bound the tree.
+:::
+
+The wave model in the next section is exactly the supervisor that bounds the spawn tree: a wave is a finite set of C3 spawns whose depth is one and whose breadth is fixed before dispatch.
+
 ### Pattern 3: Audit / Execute / Validate
 
-For exploratory work where the scope is not fully known in advance, separate the agents that discover what needs to change from the agents that make the changes.
+For exploratory work where the scope is not fully known in advance, separate the agents that discover what needs to change from the agents that make the changes. Architecturally this is an **A2 PIPELINE** whose audit stage is itself a **B1 FAN-OUT + SYNTHESIZER** -- multiple read-only audit children running in parallel, fanning in to a synthesis step (typically the human decision point, sometimes a synthesizer agent). The execute stage is then a sequence of C3 THREAD SPAWNs scoped per file group; the validate stage is a B1 fan-out of read-only validators.
 
 ```{mermaid}
 %%| fig-width: 4.5
@@ -147,6 +194,18 @@ flowchart TD
 The critical property of this pattern is the separation between read-only and read-write operations. Audit agents explore the codebase without modifying it. This means you can dispatch multiple audit agents simultaneously with no risk of interference. They can examine the same files, look at overlapping concerns, and produce independent assessments.
 
 The human decision between audit and execution is the highest-leverage point in the entire process. You review the findings, decide which ones to act on, define the scope, and only then allow write operations. This separation is what makes multi-agent orchestration safe, not just fast.
+
+::: {.callout-note appearance="simple"}
+**B1 FAN-OUT + SYNTHESIZER -- definition** (verbatim from Genesis `design-patterns.md` B1):
+
+**WHEN:** >=3 independent lenses with no shared state, where each lens benefits from a fresh context window.
+
+**MECHANISM:** parent spawns one CHILD-THREAD per lens (each loading its own PERSONA PRELOAD). Each child returns a finding. Parent runs a synthesis pass (often loading an arbitrator persona) that produces ONE verdict.
+
+**ANTI-PATTERN:** FAN-OUT-IN-ONE-CONTEXT -- running all N lenses sequentially inside a single window. Each lens contaminates the next; later lenses inherit attention drift from earlier ones.
+:::
+
+A1 PANEL is B1 specialized for decision-making: B1 names the topology, A1 adds the requirement that the N children be persona-specialized lenses and the synthesis be itself a decision. The audit stage of Audit / Execute / Validate is a B1 that may or may not also be an A1, depending on whether the audit children are distinct *personas* (architecture, security, UX) or instances of the same audit prompt sharded across files.
 
 ---
 
@@ -174,7 +233,7 @@ Enforcing this rule requires partitioning the file set before dispatch. If two c
 
 ### Wave-Based Parallelism
 
-The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts.
+The wave model structures execution as a sequence of batches, where each batch runs in parallel and the entire batch completes before the next one starts. This is the chapter's realization of Genesis's **A5 WAVE EXECUTION** pattern; the gate-between-waves discipline below is the same **S4 VALIDATION DECORATOR** Genesis describes.
 
 ```{mermaid}
 %%| fig-width: 5.0
@@ -295,7 +354,7 @@ Wave 1 dispatched a domain agent to migrate logging in three command modules. Th
 
 **Detection.** Wave 1's unit tests passed. The individual files were correct in isolation. But the integration test suite — run at the wave checkpoint — caught mixed error types. Callers updated in Wave 0 now expected `OperationError`. The new error paths added in Wave 1 raised `ValueError`. Three integration tests failed with unhandled exception types.
 
-**Diagnosis.** The orchestrator reviewed the failures and identified the root cause in under two minutes: the Wave 1 dispatch prompt loaded the logging context but not the error-handling context. The agent had no visibility into the pattern change.
+**Diagnosis.** The orchestrator reviewed the failures and identified the root cause in under two minutes: the Wave 1 dispatch prompt loaded the logging context but not the error-handling context. The agent had no visibility into the pattern change. (This is the named **DISPATCH CONTAMINATION** failure -- see Chapter 14.)
 
 **Recovery.** The fix was not to revert Wave 1. The logging migration was correct. Instead, the orchestrator dispatched Wave 2b — two targeted agents:
 
@@ -314,7 +373,9 @@ Two agents, each following their specialization's best practices, produce output
 
 **Resolution.** This is an escalation to the human. Design conflicts are not bugs. They are trade-offs that require judgment. The plan's priority-ordered principles resolve most of them mechanically: if UX is prioritized above architectural purity, the domain agent's approach wins. When the principles don't resolve the conflict, the human decides and documents the rationale.
 
-The frequency of design conflicts is itself a metric. In the PR #394 execution ([case study](../case-study-apm-overhaul.qmd)), 3 human interventions were needed across ~25 agent dispatches. None were design conflicts between agents; all were judgment calls that the plan could not automate. The intervention rate was approximately 12%. We use 15–20% as a starting hypothesis for well-planned work, though this has not been validated across multiple teams. These thresholds are calibration points from our reference case study, not validated benchmarks. Rates significantly above 20% may indicate underspecified plans. Rates below 5% warrant scrutiny — the work may be too simple for multi-agent orchestration, or review may be insufficient.
+The frequency of design conflicts is itself a metric. In the PR #394 execution ([case study](../case-study-apm-overhaul.qmd)), 3 human interventions were needed across ~25 agent dispatches. None were design conflicts between agents; all were judgment calls that the plan could not automate. We use that ratio as a **calibration**, not a measurement: a well-planned execution on a non-trivial change should expect *some* L3+ interventions, not zero. An intervention rate that is implausibly low warrants the same scrutiny as one that is implausibly high -- the work may be too simple for multi-agent orchestration, or review may not be happening.
+
+Inside any single conflict, the bounded-rounds discipline applies: after **two failed dispatches** for the same task, change the approach -- decompose further, add context, or escalate -- rather than spending a third dispatch at the same level. Three rounds at the same level is the signal that the failure is categorical, not random; a third dispatch will fail the same way the first two did.
 
 ---
 
@@ -341,11 +402,13 @@ Not every problem requires human attention. A well-designed orchestration system
 | Level | Trigger | Response | Example |
 |---|---|---|---|
 | L1: Self-heal | Agent hits a test failure it can debug | Agent fixes and continues | Type error in generated code |
-| L2: Retry | Agent produces incomplete output | Re-dispatch with refined prompt | Agent missed 3 of 12 files in scope |
+| L2: Retry | Agent produces incomplete output | Re-dispatch with refined prompt, **bounded to two attempts** at the same level | Agent missed 3 of 12 files in scope |
 | L3: Human decides | Trade-off between competing principles | Human makes design call | UX convention vs. architectural purity |
 | L4: Scope change | Finding requires work outside the current plan | Human creates follow-up task | Discovery of a pre-existing bug unrelated to the change |
 
 :::
+
+Bounded rounds is a calibration, not a measurement: at two failed dispatches for the same task, the right move is to change the level (decompose, add context, or escalate to L3) rather than spend a third dispatch on the same approach. The intent is to catch categorical failures early -- if the second dispatch fails the way the first did, the third almost certainly will too.
 
 The L1 and L2 levels are automated. L3 and L4 require human judgment. The goal is to minimize L3 and L4 interventions not by suppressing them, but by making the plan specific enough that most decisions resolve at L1 or L2.[^ch12-autonomy]
 
@@ -385,6 +448,8 @@ Every agent dispatch creates a session: a context window with its own conversati
 ### Session Isolation
 
 Each agent session is independent. Agent A cannot see Agent B's conversation history, edits, or reasoning. This is a feature, not a limitation. Session isolation ensures that one agent's context degradation does not propagate to others. If Agent A's session becomes cluttered after a complex debugging sequence, Agent B starts fresh with a clean context.
+
+The runtime affordance underneath is the **CHILD-THREAD SPAWN** primitive (Chapter 9): each agent session is a fresh execution unit with its own context window, returning a value -- commits, plan updates, escalation messages -- to the orchestrator. The isolation Chapter 9 describes as the primitive's KEY PROPERTY ("anything not loaded as text into the child thread does not exist for that thread") is exactly the property the wave model relies on for the "shared filesystem, not shared sessions" rule below.
 
 The implication: information flows between agents through committed artifacts, not through shared sessions. When Agent B needs to build on Agent A's work, it reads the committed files — the same files that passed tests and were validated at the wave checkpoint. It does not read Agent A's internal reasoning or discarded alternatives.
 
@@ -469,3 +534,4 @@ The next chapter puts this framework into practice. It walks through the full fi
 
 [^ch12-coordination]: The coordination overhead of multi-agent systems parallels Brooks's observation that adding developers to a late project makes it later (*The Mythical Man-Month*, 1975). The difference: agent coordination overhead is predictable and can be reduced through better planning, not just through better communication.
 [^ch12-autonomy]: Our autonomy taxonomy draws conceptually from the SAE levels of driving automation (SAE J3016), adapted for software engineering contexts. The key parallel: higher autonomy levels require not less human involvement, but different kinds of involvement — supervision rather than operation.
+[^ch12-a1]: The runtime affordance underneath every lens in an A1 PANEL is the **CHILD-THREAD SPAWN** primitive (Chapter 9): a fresh execution unit with its own context window, returning a value to the parent. C3 THREAD SPAWN is the design-level discipline of using one child per scoped lens; B1 FAN-OUT + SYNTHESIZER is the N-lens topology; A1 PANEL specializes B1 by requiring the N lenses be persona-specialized and the synthesis be itself a decision.

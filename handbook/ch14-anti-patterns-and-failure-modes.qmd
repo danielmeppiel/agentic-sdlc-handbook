@@ -4,7 +4,7 @@ title: "Anti-Patterns and Failure Modes"
 
 Every technique in this book was born from a failure. In our early experiments, the wave execution model emerged because a developer tried to run 15 agents at once and got a merge conflict graveyard. The checkpoint discipline exists because someone skipped testing after wave 2 and spent three hours debugging a cascade that started in wave 1. The escalation protocol exists because an agent claimed a file was updated when it wasn't, and no one checked until the PR review.
 
-This chapter documents 19 distinct ways AI-native development goes wrong, why each failure happens, which PROSE constraint it violates, and how to prevent or recover.
+This chapter documents 23 distinct ways AI-native development goes wrong, why each failure happens, which PROSE constraint it violates, and how to prevent or recover.
 
 The uncomfortable truth: AI failures don't crash. They produce plausible wrong output.[^ch14-plausible] An agent that silently violates your architecture or ignores a security boundary produces code that compiles, might pass tests, and enters your codebase as technical debt you don't know you have. Learning to see these failures before they ship is the skill that separates effective AI-native development from expensive AI-assisted typing.
 
@@ -37,10 +37,14 @@ Every anti-pattern maps to a PROSE constraint. This isn't a taxonomy imposed aft
 | 17 | Persona Drift | Explicit Hierarchy | Agent shifts role mid-session, applying wrong domain expertise |
 | 18 | Cross-Wave Merge Conflicts | Orchestrated Composition | Structural conflicts between waves that pass individually but break together |
 | 19 | Prompt Injection via Dependencies | Safety Boundaries | External content in context hijacks agent behavior |
+| 20 | BUNDLE LEAKAGE | Safety Boundaries | Maintainer-only files (eval prompts, dev fixtures) ship inside the user-facing distribution and get pulled into agent context as if they were real instructions |
+| 21 | WAVE-WITHOUT-GATE | Orchestrated Composition | Topologically sorted task DAG executed without a check between waves; drift compounds silently and surfaces with no localizable cause |
+| 22 | TOKEN-LAUNDERING | Safety Boundaries | The agent step holds a write token for its declared externalization target "because the post-stage is too fiddly"; the substrate's capability gate is bypassed by design |
+| 23 | INNER-LOOP MISCAST AS OUTER | Reduced Scope | A single-developer laptop task is promoted to a governed, event-triggered workflow because "governance sounds good"; trigger-surface lock-in paid for properties that are never needed |
 
 :::
 
-Patterns 1–5 are the foundational anti-patterns from Chapter 1. Patterns 6–10 emerge from multi-agent execution mechanics. Patterns 11–19 are session-level and resource-level failure modes identified through systematic audit of early agentic practice. All nineteen are real. All nineteen have cost teams real time, money, and trust.
+Patterns 1–5 are the foundational anti-patterns from Chapter 1. Patterns 6–10 emerge from multi-agent execution mechanics. Patterns 11–19 are session-level and resource-level failure modes identified through systematic audit of early agentic practice. Patterns 20–23 are absorbed from the Genesis corpus, covering packaging-level (#20), execution-shape (#21), and governance-level (#22, #23) failures.[^ch14-genesis-source-time] All twenty-three are real. All twenty-three have cost teams real time, money, and trust.
 
 ---
 
@@ -116,7 +120,7 @@ These are the patterns from Chapter 1's PROSE constraint table, expanded with wo
 
 ## Execution Anti-Patterns
 
-Five patterns that emerge from multi-agent execution mechanics.
+Six patterns that emerge from multi-agent execution mechanics.
 
 ### The Solo Hero
 
@@ -131,6 +135,8 @@ The agent says "Done. All changes applied." You commit without checking. Later: 
 Agent self-reports are generated text, not system logs. An agent can "believe" it made a change that wasn't persisted. **This is the most dangerous pattern in the chapter** — it exploits the tendency to treat confident prose as authoritative.
 
 **Fix.** Never rely on self-reports. Run the test suite. Verify file state with `git diff`. Spot-check critical changes. One line of diff output is worth a thousand words of agent narrative.
+
+The Genesis corpus catalogues two source-time variants of the same failure: PLAN-AND-PRAY (the agent declares an intention as if the intention were the artifact) and VERIFY-WITH-LLM-ONLY (a second agent vouches for the first without running the tests or reading the diff). Three names, one disease, one cure. The cure does not change with the name: run the suite, read the diff, treat agent narrative as a hypothesis until ground truth confirms it.
 
 ### Same-File Parallel Edits
 
@@ -152,11 +158,21 @@ The correction happened in the code, not the instruction set. Manual corrections
 
 **Fix.** Every recurring failure triggers the feedback loop: identify the root primitive and add the missing rule. The system should learn, not repeat.
 
+### Wave-Without-Gate
+
+The team adopts the wave execution pattern from Chapter 12 — topologically sort the task DAG, group independent tasks at the same depth into a wave — and ships waves back-to-back without a check between them. Wave 1 finishes; wave 2 dispatches against wave 1's output without anyone asking "do wave 1's outputs satisfy the assumptions wave 2 was planned under?" By wave 4, the integration test fails and the cause cannot be localized: each wave passed its own tests, the regression lives in the join.
+
+This is the same disease as #9 Skipping Checkpoints, named at the architectural level. Genesis records it as the canonical anti-pattern of the A5 WAVE EXECUTION pattern: WAVE-WITHOUT-GATE — "topologically sorting tasks but not gating between waves; drift compounds silently; failure surfaces at the end with no localizable cause."[^ch14-a5]
+
+The dual is EVERY-TASK-IS-A-WAVE: every task gets its own gate; the gates degenerate into noise; the supervisor pays orchestration cost for zero parallelism. The right grain is one gate per WAVE, not per task and not per release.
+
+**Fix.** Run a check between waves whose pass criterion is concrete: do wave N's outputs satisfy the inputs wave N+1 was planned against? Re-read files modified by wave N before assembling wave N+1's context. On gate failure, re-plan from the failed wave, not from the start of the run.
+
 ---
 
 ## Session and Resource Failure Modes
 
-Nine patterns that emerge at the session level, where context capacity, state management, and external inputs create failure conditions the foundational and execution anti-patterns don't cover.
+Ten patterns that emerge at the session level, where context capacity, state management, and external inputs create failure conditions the foundational and execution anti-patterns don't cover.
 
 ### Context Window Exhaustion
 
@@ -293,6 +309,23 @@ Nine patterns that emerge at the session level, where context capacity, state ma
 
 :::
 
+### Bundle Leakage and Dispatch Contamination
+
+::: {tbl-colwidths="[20,80]"}
+
+| | |
+|---|---|
+| **Symptom** | An agent in a team's pipeline gives an unexpectedly bizarre answer to a routine request — the response reads like it is solving a different problem than the one asked. The team initially flags it as a model regression. The actual cause is that the harness's file picker matched against a maintainer-scope file (an evaluation scenario, a dev fixture, a contributor README) that ships INSIDE the user-facing module's distribution and pulled it into the active context. The session is now reasoning against the wrong text. |
+| **Root cause** | Two scopes — ship-time and run-time — are not the same scope. A module that publishes correctly may still publish too much. Maintainer-only files (evaluation prompts especially — they LOOK LIKE real user requests by construction) inside the distribution boundary get matched by over-eager harness loaders, asset-discovery routines, or LLM-driven file pickers. Genesis names this BUNDLE LEAKAGE; the failure shape that hits the practitioner is its consequence: DISPATCH CONTAMINATION. The other shape is PAYLOAD BLOAT — distribution cost without distribution benefit; cosmetic, not dangerous on its own. |
+| **Constraint violated** | Safety Boundaries (the same family as #19 Prompt Injection via Dependencies — both are untrusted-or-misaddressed text reaching the model). |
+| **Severity** | High. Hallucination amplifier, not just an aesthetic issue.[^ch14-bundle-leakage] |
+| **Prevention** | Maintain a strict separation between ship-time scope and run-time scope. Maintainer-only assets live OUTSIDE the user-facing module entrypoint AND outside any directory the package manager auto-publishes. The APM convention is a contributor-only directory (e.g. `dev/skills/<module>-<role>/`) whose distribution boundary excludes it. NOTE: APM's local-content scanner treats `.apm/skills/` as a publishable source root regardless of devDep marker; dev-only primitives must live OUTSIDE `.apm/`. |
+| **Recovery** | Identify the leaking file by reading the contaminated session's tool-call log — which files did the loader actually read? Move those files outside the distribution boundary. Re-publish. Audit other modules in the same package for symmetric leaks. |
+
+:::
+
+This is the symmetric counterpart of PHANTOM DEPENDENCY (the referenced-but-not-bundled failure, where a module body cites a peer the distribution does not include). Both are SHIP-TIME / RUN-TIME scope violations; both are flagged by the APM publish scanner as part of the lockfile validation pass. PHANTOM DEPENDENCY and three other related packaging failures are tracked in the Genesis corpus with Round 2 evidence pending.[^ch14-phantom-and-friends]
+
 ::: {.callout-warning}
 ## File Presence Is Execution
 
@@ -368,6 +401,10 @@ Technical anti-patterns happen in code. Organizational anti-patterns amplify eve
 **No feedback loop.** Failures happen, developers fix them manually, no one updates the primitives. The same mistake recurs weekly. The team experiences AI as unreliable because their system doesn't learn.
 
 **Cargo-culting complexity.** The team implements full multi-agent orchestration for a 10-file repository with two developers. The overhead exceeds the benefit. The disciplines in this book scale *down* — a solo developer on a small change needs right-sized tasks and good primitives, not a four-wave plan with parallel review agents.
+
+**Token-Laundering.** A team builds an event-triggered agent workflow that posts comments on pull requests. The "correct" architecture buffers the agent's outputs, runs them through a deterministic post-stage, and only then writes to the system of record — the agent itself never holds the write token. The team finds the post-stage "too fiddly" and grants the agent step a write token directly. The externalization works on the happy path. It also works on every unhappy path the agent reaches, including ones the team did not anticipate. The substrate's capability gate is the WHOLE POINT of a governed workflow; bypassing it reduces the design to plain event-driven automation with extra ceremony and a strictly worse threat model. The cure is to either extend the post-stage to cover the desired write, or re-classify the work as in-session (non-governed) automation.[^ch14-token-laundering]
+
+**Inner-Loop Miscast As Outer.** The inverse failure: a team promotes a single-developer laptop task to a governed, event-triggered pipeline because "governance sounds good." The work didn't need event-triggering, didn't need an audit trail, didn't need sandboxing — it needed a developer to run it locally. The cost is trigger-surface lock-in: the workflow is now portable only across substrates that supply the same governance fields. Pay this cost only when the governance properties (event-triggered execution, sandboxed runtime, capability-gated externalization, durable audit trail) are actually needed.[^ch14-inner-loop-miscast]
 
 **Abandoned governance.** No one audits what agents modify outside stated scope. No one tracks token costs against value. AI usage grows organically without the structures that catch these patterns before they become expensive.
 
@@ -447,6 +484,76 @@ Total recovery cost: three focused dispatches instead of an open-ended retry loo
 
 ---
 
+## The Refactor Moves
+
+The Recovery Playbook's step 4 — "Decompose" — is the most common move and the least specified. Decompose how, exactly? Genesis names the four refactor verbs that operate on the module graph at SOURCE TIME — the shapes of what to do when you have a primitive that is doing too many jobs, or two primitives that should be one, or content that has grown into a primitive but has not been promoted yet. Apply them BEFORE re-picking a Tier-2 or Tier-3 architectural shape. Restructuring the graph often dissolves the need for a more elaborate runtime topology.
+
+The verbs come in two pairs of duals: R1 SPLIT and R2 FUSE govern module count; R3 EXTRACT and R4 INLINE govern primitive granularity.
+
+### R1 SPLIT — decomposition
+
+::: {.callout-note}
+## R1 SPLIT (Genesis-verbatim definition)
+A module has grown to do more than one job, OR the dispatcher cannot route cleanly because the module's signature names two capabilities. Triggers: description conjunction (`...and...` between trigger noun-phrases); fragment callers (real call sites need a strict subset of the body); body over budget; multi-lens body; divergent change cadence.[^ch14-r1]
+:::
+
+When a primitive's frontmatter description reads "format reviews and draft release notes," the seam is already there in language. Split along it: one module per trigger noun-phrase, one lens per module. The original entrypoint either becomes a thin orchestrator that dispatches to the new modules, or it goes away. Do not leave both; the dispatcher will guess.
+
+The compounding gain: a split skill becomes individually invocable; its body runs in a fresh context window instead of competing for tokens with the parent's session. Splits with this dual payoff — separation of concerns AND context isolation — are the highest-priority candidates.
+
+The trap is the inverse, PREMATURE SPLIT: splitting a 50-line single-trigger skill into five skills is the agentic analogue of writing 10 functions for a 50-line program. Overhead exceeds benefit; the dispatcher pays the cost forever.
+
+### R2 FUSE — consolidation
+
+::: {.callout-note}
+## R2 FUSE (Genesis-verbatim definition)
+Two or more sibling modules whose descriptions overlap or whose bodies are short and always co-invoked. Triggers: dispatch collision (trigger nouns / verbs overlap; the dispatcher guesses, misses go silent); lockstep co-invocation; tiny siblings sharing one lens.[^ch14-r2]
+:::
+
+R2 is R1's dual. Two siblings that always co-invoke, or whose descriptions trigger each other's dispatch — merge them, then sharpen the description on the merged module. Confirm the merge does not re-trigger an R1 signal (no new conjunction, no multi-lens body); if it does, the symptom is a wrong original split, not a missing fusion.
+
+The trap is FORCED FUSION: merging two modules that genuinely serve different lenses just to reduce dispatcher entries. The dispatcher collision was the symptom; the disease was a too-broad description on one of them. Sharpen the description first.
+
+### R3 EXTRACT — promote to module
+
+::: {.callout-note}
+## R3 EXTRACT (Genesis-verbatim definition)
+Content lives INLINE inside a module body that should be its own primitive (a persona, a rule file, a sibling skill, an asset). Triggers: duplicated inline content (the same paragraph in N modules); wrong-lens inline (a skill body inlines a persona); reuse pressure; maintainer-only content shaped like a real primitive.[^ch14-r3]
+:::
+
+R3 is the move behind step 5 of the Recovery Playbook ("Fix the primitive"). When the same correction has to be made in three modules, extract it to one. The cleanup step Genesis is strict about: if the extracted module crosses a project boundary, declare the dependency at the dependent module's distribution surface — manifest entry, body reference, tool-call probe at the use-site. Skip this step and the module ships with a PHANTOM DEPENDENCY, which is a SHIP-TIME / RUN-TIME scope violation in the symmetric direction to BUNDLE LEAKAGE (#20).
+
+The trap is PROMOTION-WITHOUT-NEED: extracting content whose only caller is and will remain the original module. Wait for the rule of three to fire before paying the extraction cost.
+
+### R4 INLINE — collapse a thin proxy
+
+::: {.callout-note}
+## R4 INLINE (Genesis-verbatim definition)
+A primitive exists only as a thin proxy that always loads exactly one other primitive's content. Triggers: single-caller / single-content; dead variation (extracted in anticipation of N variants; only one ever existed).[^ch14-r4]
+:::
+
+R4 is R3's dual. A primitive whose body is exclusively a reference to one other primitive, with one caller, is a load step and a maintenance file paid for nothing. Inline it back. The exception: if the proxy exists for portability across harnesses or for a planned variant fan-out, leave it (RUSHED INLINE).
+
+### How the moves relate
+
+```{mermaid}
+%%| fig-cap: "The four refactor moves and their dual relationships."
+%%| fig-alt: "Two horizontal pairs. Top pair: R1 SPLIT and R2 FUSE labeled as duals governing module count. Bottom pair: R3 EXTRACT and R4 INLINE labeled as duals governing primitive granularity. R1 SPLIT lists triggers cohesion / dispatch / context-budget. R2 FUSE lists triggers collision / lockstep / tiny-siblings. R3 EXTRACT lists triggers duplication / wrong-lens / reuse pressure. R4 INLINE lists triggers single-caller proxy / dead variation."
+flowchart LR
+  subgraph PAIR1["module count"]
+    direction LR
+    R1[R1 SPLIT<br/>cohesion<br/>dispatch<br/>context-budget] <-- duals --> R2[R2 FUSE<br/>collision<br/>lockstep<br/>tiny-siblings]
+  end
+  subgraph PAIR2["primitive granularity"]
+    direction LR
+    R3[R3 EXTRACT<br/>duplication<br/>wrong-lens<br/>reuse pressure] <-- duals --> R4[R4 INLINE<br/>single-caller proxy<br/>dead variation]
+  end
+```
+
+Run R-pattern triggers across the existing module graph BEFORE re-picking a Tier-3 architectural pattern (see Chapter 13). A common trap: skipping the refactor pass and reaching for a more elaborate runtime topology when the real fix was an R1 SPLIT of an over-broad existing module.
+
+---
+
 ## The Failure Mode Decision Tree
 
 When something goes wrong, the first question is what kind of wrong:
@@ -501,6 +608,26 @@ If you encounter a failure not in this chapter, add it using the same format: sy
 These 19 patterns represent the collective scar tissue of early agentic development practice — the failures that wasted the most time, burned the most tokens, and eroded the most trust. Learn from them, and you skip the most expensive part of the learning curve.
 
 [^ch14-plausible]: The "plausible but wrong" failure mode is well-documented in the AI safety literature. See, e.g., the concept of "sycophantic behavior" in Perez et al., "Discovering Language Model Behaviors with Model-Written Evaluations" (2022), where models produce confident, fluent output that aligns with user expectations rather than ground truth.
+
+[^ch14-genesis-source-time]: This taxonomy covers run-time and session-level failures the practitioner encounters during an agent-augmented session. The complementary catalogue of source-time and packaging failures — module-graph anti-patterns flagged when primitives are authored, distributed, or composed — is maintained in the Genesis corpus (see `architectural-patterns.md`, `composition-substrate.md`, `design-patterns.md`). Where Ch14 names a Genesis pattern verbatim (e.g. BUNDLE LEAKAGE, TOKEN-LAUNDERING, WAVE-WITHOUT-GATE, INNER-LOOP MISCAST AS OUTER, R1-R4 refactor moves), Genesis remains canonical for the long form.
+
+[^ch14-a5]: Genesis, `architectural-patterns.md`, A5 WAVE EXECUTION, ANTI-PATTERNS section.
+
+[^ch14-bundle-leakage]: Genesis, `composition-substrate.md`, "Anti-patterns flagged at this step", BUNDLE LEAKAGE entry.
+
+[^ch14-phantom-and-friends]: Four packaging anti-patterns are tracked in the Genesis corpus and not yet absorbed into Ch14, pending Round 2 operational evidence: PHANTOM DEPENDENCY — a module body cites a peer the distribution does not include; the runtime "just happens" to resolve it, until it doesn't (symmetric counterpart of BUNDLE LEAKAGE, #20). DUPLICATED LEAF — the same content inlined in N primitives where one EXTERNAL MODULE would do; cured by R3 EXTRACT. HIDDEN EXTERNAL — a primitive depends on content not declared as a dependency edge; the runtime loads it by accident. UNPINNED CRITICAL DEP — an external module whose drift would silently change behavior, with no pin. Source: `composition-substrate.md`, "Anti-patterns flagged at this step". Each will be promoted to a full Ch14 entry once a war-story-grade incident is on file.
+
+[^ch14-r1]: Genesis, `refactor-patterns.md`, R1 SPLIT.
+
+[^ch14-r2]: Genesis, `refactor-patterns.md`, R2 FUSE.
+
+[^ch14-r3]: Genesis, `refactor-patterns.md`, R3 EXTRACT.
+
+[^ch14-r4]: Genesis, `refactor-patterns.md`, R4 INLINE.
+
+[^ch14-token-laundering]: Genesis, `architectural-patterns.md`, A10 GOVERNED OUTER LOOP, ANTI-PATTERNS / TOKEN-LAUNDERING.
+
+[^ch14-inner-loop-miscast]: Genesis, `architectural-patterns.md`, A10 GOVERNED OUTER LOOP, ANTI-PATTERNS / INNER-LOOP MISCAST AS OUTER. See also Chapter 15's medium-term governance prediction — the substrate fields these failures violate are the same fields the predicted governance category is built from.
 
 ---
 

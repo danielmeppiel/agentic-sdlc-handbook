@@ -6,7 +6,58 @@ Here is what nobody tells you about using AI agents on a real codebase: the agen
 
 Chapters 10 through 12 gave you the building blocks — PROSE constraints to design by (Chapter 10), context engineering to feed agents accurately (Chapter 11), and multi-agent orchestration to coordinate at scale (Chapter 12). This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from "I need to change 75 files" to "the PR is merged with zero regressions" — and what happens at every decision point in between.
 
-The methodology is a five-phase meta-process. It works regardless of which AI coding tool you use, because it operates at a level above any specific tool's mechanics. The tool dispatches agents, runs tests, and manages files. You manage the process.
+The methodology is a five-phase meta-process. It works regardless of which AI coding tool you use, because it operates at a level above any specific tool's mechanics, and below the design layer that produces the primitives the loop consumes (see the appendix to this chapter). The tool dispatches agents, runs tests, and manages files. You manage the process.
+
+---
+
+## Two Layers, One Artifact: Design vs Execution
+
+The five-phase loop in this chapter is the **execution layer**. It moves code: 75 files, four waves, one merged PR. Above it sits a **design layer** that produces the primitives — the SKILLs, the ORCHESTRATORs, the persona scoping files, the scope-attached rule files — that Ch13's agents load when they execute. The two layers operate on different artifacts, on different cadences, with different gates. Conflating them is a category error that produces either under-designed primitives (which then fail mid-wave) or over-engineered one-line rule files (which then ship with five diagrams and a compliance matrix nobody reads).
+
+The design layer is documented in full as the [Genesis architect's 8-step process](https://github.com/danielmeppiel/genesis-skill). In this book it appears in two places: as a forward reference from Chapter 9 (where the primitives the design layer produces are catalogued) and as the appendix to this chapter (where the steps themselves are listed verbatim for reference). What matters for the execution loop is not the steps. It is the **output**: the handoff packet.
+
+A handoff packet is a single artifact carrying the component diagram, the thread/sequence diagram, the dependency graph, an interface sketch per module, the composition table, the declared targets, and the open compliance findings. The design layer ends — explicitly, with the words "DESIGN ENDS HERE" — when the packet is persisted to the plan store. The execution layer begins by reading the packet back. The packet is the only thing that crosses the boundary; no tacit context survives.
+
+This produces a clean rule. **When you start a Ch13 wave on a new primitive, the handoff packet for that primitive should already exist.** If it does not, you are doing two things at once: designing and executing. That is the configuration in which agents go off-script, scope drifts, and ADAPT-loop fires multiply.
+
+**When the design layer is mandatory.** The hard rule — diagrams first, packet before drafting — applies to:
+
+- Cross-cutting redesigns spanning multiple primitive modules.
+- New SKILL primitives (the modules cataloged in Chapter 9).
+- New ORCHESTRATOR primitives (gh-aw workflows, panel skills).
+
+**When it is exempt.** Single-file `.instructions.md`, short scope-attached rule files, and one-paragraph PROSE clarifications do not need the full ceremony. The cost of an 8-step process should pay for itself in avoided ADAPT-loop fires during execution. On a one-line rule that ships once and never recomposes, it cannot. On a new SKILL the whole team loads on every dispatch hit, it does — many times over.[^ch13-design-cost]
+
+The proportionality argument echoes the small/large calibration in "Adapting the Meta-Process" later in this chapter: the structure is the same, the formality is what scales.
+
+```{mermaid}
+%%| fig-cap: "The design layer (8-step process) emits a handoff packet, persisted via PLAN PERSISTENCE; the execution loop reads the same packet back and operates the five-phase loop. The boundary is the persisted artifact, not a tacit handoff."
+%%| fig-alt: "Top-to-bottom diagram. Top region labeled DESIGN LAYER contains a vertical chain of nodes representing the Genesis 8-step process from intent and scope through the handoff packet. The chain emits a parallelogram labeled HANDOFF PACKET that crosses into a cylinder labeled PLAN PERSISTENCE. From PLAN PERSISTENCE, an arrow leads down into the EXECUTION LAYER region containing the existing five-phase loop AUDIT, PLAN, WAVE, VALIDATE, SHIP with the ADAPT loop folded back to PLAN. A dashed reload arrow runs from PLAN PERSISTENCE to PLAN, WAVE, and ADAPT, indicating the read-back discipline."
+%%| label: fig-design-execution-layers
+flowchart TB
+    subgraph DESIGN["DESIGN LAYER (8-step, scoped)"]
+        S1["1. intent + scope"] --> S2["2. component diagram"]
+        S2 --> S3["3. thread / sequence"]
+        S3 --> S35["3.5 composition decision"]
+        S35 --> S4["4. SoC pass"]
+        S4 --> S5["5. compliance check"]
+        S5 --> S6["6. handoff packet"]
+    end
+    S6 ==> PKT[/"HANDOFF PACKET"/]
+    PKT ==> PP[("PLAN PERSISTENCE")]
+    subgraph EXEC["EXECUTION LAYER (Ch13 five-phase loop)"]
+        AUDIT["AUDIT"] --> PLAN["PLAN"]
+        PLAN --> WAVE["WAVE"]
+        WAVE --> VAL["VALIDATE"]
+        VAL -->|done| SHIP["SHIP"]
+        VAL -->|next| WAVE
+        VAL -->|fail| ADAPT["ADAPT"]
+        ADAPT --> PLAN
+    end
+    PP -.->|reload| PLAN
+    PP -.->|reload| WAVE
+    PP -.->|reload| ADAPT
+```
 
 ---
 
@@ -178,6 +229,8 @@ Before finalizing a wave, apply this test to each task: can an agent complete th
 
 Tasks that fail the self-sufficiency test are the primary source of mid-wave escalations. Catching them during planning eliminates interruptions during execution.
 
+When the same wave fails the same way more than once — like the 58-call-site `install.py` agent stall in the worked example below — the wave-shape problem is usually an underlying primitive-shape problem one layer up: a module that fails **R1 BODY-OVER-BUDGET** and needs **R1 SPLIT**, **R2 FUSE**, **R3 EXTRACT**, or **R4 INLINE** treatment (see Chapter 14's refactor patterns). Those verbs are how you fix the primitive itself once the ADAPT loop has surfaced the diagnosis.
+
 ---
 
 ## [PR #394](https://github.com/microsoft/apm/pull/394): The Worked Example
@@ -214,7 +267,11 @@ Three interventions, three roles, no overlap. These are the categories of human 
 
 ## Checkpoint Discipline
 
-A checkpoint is the pause between waves. It is the mechanism that makes the meta-process safe.
+A checkpoint is the pause between waves. It is the mechanism that makes the meta-process safe. It is also where the **PLAN PERSISTENCE** primitive (Chapter 9) earns its keep.
+
+PLAN PERSISTENCE is a stable artifact — a `plan.md` file, a structured store, a session note — holding the active plan, the todo list, and the checkpoint history across turns and across spawns. It is the cure for attention decay over long sessions. The discipline is not write-once. It is **write-then-reload**: the plan must be read back at every re-grounding boundary (start of a wave, return from a spawn, after a tool failure). A written-once-never-read plan is dead weight.
+
+Reload cadence in this chapter mirrors the **ATTENTION ANCHOR** cadence from Chapter 11. The checkpoint is the cadence event for the orchestrating session; the spawn boundary is the cadence event for the wave agent. Both read the same persisted plan. Neither relies on recall.
 
 ### Why Test After Every Wave
 
@@ -226,7 +283,7 @@ The cost is real: a full test suite run after every wave. In the PR #394 case, t
 
 ### What Happens at a Checkpoint
 
-Each checkpoint has four components:
+Each checkpoint has five components:
 
 **Test gate.** The full test suite runs. If any test fails, the wave is not committed. The failure is triaged: either fixed immediately (if the cause is obvious) or escalated to the human.
 
@@ -236,9 +293,13 @@ Each checkpoint has four components:
 
 **Plan review.** Optionally, the human reviews the remaining plan and adjusts if the current wave revealed something unexpected: a dependency that was missed, a task that should be split, a wave that should be reordered.
 
+**Reload.** Before the next wave's agents spawn, the orchestrating session re-reads the persisted plan. Any wave-2 adjustment, any escalation note added during the previous checkpoint, becomes part of the plan that wave 3's agents load at startup. This is the write-then-reload discipline named in PLAN PERSISTENCE: the plan is not a static document the orchestrator carries in its head; it is a file the orchestrator and every spawn it produces reads from. The reload step takes seconds. It is the difference between a wave launching from the plan as it currently exists and a wave launching from the plan as the orchestrator remembers it.
+
 ### The ADAPT Loop
 
 When a checkpoint fails (tests are red, an agent is stuck, a dependency was missed), the meta-process doesn't stop. It adapts.
+
+The ADAPT loop is the execution-layer realization of Genesis's **ALIGNMENT LOOP** pattern. Both share the same shape (detect, diagnose, adjust, re-execute) and the same calibration: bounded rounds, typically N near 3, treated as a rule of thumb rather than a measured optimum. The same N=3 calibration appears in Chapter 12's multi-agent orchestration discussion. When the ADAPT loop has fired three times on the same wave, the failure is not a wave-execution problem; it is usually a primitive-design problem one layer up. At that point, returning to the design layer and re-running the relevant 8-step process for the primitive that keeps failing is cheaper than continuing to ADAPT around it.
 
 ```{mermaid}
 %%| fig-width: 4.0
@@ -319,3 +380,53 @@ But following a process correctly is only half the challenge. The other half is 
 [^ch13-brooks]: Brooks makes the same argument in *The Mythical Man-Month* (1975): "Plan to throw one away; you will, anyhow." The meta-process inverts this — invest disproportionately in the plan so you don't have to throw the execution away.
 
 [^ch13-conway]: This decomposition pattern echoes Conway's Law: "Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations." Here, agent team boundaries mirror module boundaries by design, not accident.
+
+[^ch13-design-cost]: The Genesis maintainer notes that the 8-step process is not run on every commit to Genesis itself; it is reserved for new primitives and cross-cutting refactors. The exemption is load-bearing — without it, the discipline collapses under its own overhead.
+
+---
+
+## Appendix: The Genesis 8-Step Design Process
+
+The execution loop in this chapter consumes primitives — SKILLs, ORCHESTRATORs, persona scoping files, scope-attached rule files — that were produced by an upstream design process. This appendix lists that process in full for reference. The hard rule "diagrams first" applies only to cross-cutting redesigns and new SKILL or ORCHESTRATOR primitives; single-file `.instructions.md` and short scope-attached rule files are exempt (see "Two Layers, One Artifact" at the top of this chapter).
+
+(adapted from `genesis-skill/skills/genesis/SKILL.md`)
+
+```
+   1 intent + scope
+        v
+   2 component diagram   <-- load primitives, design patterns,
+        v                    architectural patterns, refactor
+        v                    patterns, mermaid conventions
+   3 thread / sequence diagram
+        v
+ 3.5 composition decision  <-- per box: inline | sibling | external
+        v
+   4 SoC pass against existing modules
+        v
+   5 classic + PROSE + LLM-physics compliance check
+        v
+   6 handoff packet (diagrams + interface sketch + declared targets
+                     + module composition table + todos)
+        v             [PERSIST PACKET to plan store]
+        v                                      [DESIGN ENDS HERE]
+   ----- caller / coder thread takes over -----
+   7a portability check
+        v
+   7b draft natural-language module(s)
+        v             RELOAD plan before each module / spawn
+   8 validate against diagrams + lint (PROSE 5-axis, size budget,
+     ASCII, coherent unit, portability honored)
+```
+
+The eight steps in summary:
+
+1. **Intent + scope.** One paragraph: capability, trigger, boundary. Single Responsibility check (no "and" connecting two capabilities). Draft the dispatch description that becomes the module's frontmatter `description`.
+2. **Component diagram.** A `flowchart` showing every primitive the design uses, marked PERSONA / SKILL / RULE / ORCHESTRATOR / ASSET, existing vs new.
+3. **Thread / sequence diagram.** A `sequenceDiagram` showing spawns, fan-in, and any one-writer interlocks. Pattern selection runs in tier order (refactor patterns first, then architectural patterns, then design patterns).
+4. **Composition decision (3.5).** Per box: INLINE asset, LOCAL SIBLING primitive, or EXTERNAL MODULE pulled via the project's module system. External modules require a declared dependency at the distribution surface.
+5. **SoC pass.** Apply R1 SPLIT, R2 FUSE, R3 EXTRACT, R4 INLINE triggers across the existing module graph (see Chapter 14's refactor patterns). Restructure before re-picking architectural patterns.
+6. **Compliance check.** PROSE 5-axis, MODULE ENTRYPOINT canonical spec (name regex, description under 1024 chars, body under 500 lines), classic principles. BLOCKER findings stop the design.
+7. **Handoff packet.** Diagrams + interface sketches + composition table + declared targets + open findings + todos + an evals plan. Persisted to the plan store. Design ends here.
+8. **Draft + validate (caller-side).** Portability check (7a) loads the common substrate; only flagged per-harness needs load a harness adapter. Module bodies (7b) draft against the persisted packet, reloaded before each spawn. Validation (8) lints against the packet's interface sketches.
+
+The reload-before-each-spawn rule at step 7b is the same write-then-reload discipline named in the PLAN PERSISTENCE primitive (Chapter 9) and applied at every checkpoint of this chapter's execution loop. The discipline is not duplicated; it is one rule, applied at two layers.

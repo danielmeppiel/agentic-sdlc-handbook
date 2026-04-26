@@ -2,9 +2,9 @@
 title: "The Instrumented Codebase"
 ---
 
-Open any repository that uses AI agents reliably and you'll notice something before you read a single line of application code: the project is full of markdown files that aren't documentation. They're instruction sets, agent configurations, skill definitions, workflow templates, memory files, and specification blueprints, scattered through `.github/` directories and woven into the source tree. These files don't ship to production. They don't appear in the build output. But they determine whether an AI agent produces code that respects the project's architecture or code that confidently violates it.
+Open any repository that uses AI agents reliably and you'll notice something before you read a single line of application code: the project is full of markdown files that aren't documentation. They're instruction sets, persona definitions, capability bundles, plan artifacts, and event-triggered workflows, scattered through `.github/` directories and woven into the source tree. These files don't ship to production. They don't appear in the build output. But they determine whether an AI agent produces code that respects the project's architecture or code that confidently violates it.
 
-This chapter catalogs those files. It defines seven primitive types, shows what each looks like, explains how they compose, and walks through the transformation of an uninstrumented repository into one that's ready for agentic development. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?
+This chapter catalogs those files. It defines six substrate primitives named for their runtime role -- what the harness actually does with each file -- rather than for the extension on disk. The same `SKILL.md` shape can act as a MODULE ENTRYPOINT in one harness and as a TRIGGER ORCHESTRATOR's session bootstrap in another; the role is the substrate, the extension is the dialect. Chapter 10 specifies the constraints these primitives implement. Chapter 11 teaches the context engineering discipline that makes them effective. This chapter answers the prior question: what, specifically, are you building?
 
 ---
 
@@ -20,63 +20,48 @@ The term "primitive" is deliberate. These artifacts are the atomic units of agen
 
 ---
 
-## The Seven Primitive Types
+## The Six Substrate Primitives
 
-Seven categories cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all seven on day one (the instrumentation audit later in this chapter helps you decide where to start) but understanding the complete set is necessary before making that decision.
+Six primitives cover what every modern agent harness loads, spawns, or persists. Each is named for the role it plays at runtime, not for the file extension that carries it. Different harnesses use different dialects -- `.instructions.md`, `.cursor/rules/*.mdc`, `CLAUDE.md` sections, `AGENTS.md` -- but a SCOPE-ATTACHED RULE FILE is a SCOPE-ATTACHED RULE FILE in all of them. Naming the substrate once means the vocabulary outlives any one tool.
 
 ```{mermaid}
-%%| fig-width: 5.0
-%%| label: fig-seven-primitives
-%%| fig-cap: "The seven APM primitive types"
-%%| fig-alt: "Block diagram showing seven APM primitive types arranged in a 4-by-2 grid. Row 1: Instructions (.instructions.md — scoped conventions per file or directory), Agents (.agent.md — specialist personas with tool boundaries), Skills (SKILL.md — reusable decision frameworks), Prompts (.prompt.md — repeatable workflows). Row 2: Memory (.memory.md — cross-session knowledge), Orchestration (.spec.md — execution-ready specifications), Hooks (event-driven — automated actions on dev events). The seventh slot in row 2 is empty."
-block-beta
-    columns 4
-    A["Instructions<br/>.instructions.md<br/>─<br/>Scoped conventions<br/>per file/directory"]:1
-    B["Agents<br/>.agent.md<br/>─<br/>Specialist personas<br/>with tool boundaries"]:1
-    C["Skills<br/>SKILL.md<br/>─<br/>Reusable decision<br/>frameworks"]:1
-    D["Prompts<br/>.prompt.md<br/>─<br/>Repeatable<br/>workflows"]:1
-    E["Memory<br/>.memory.md<br/>─<br/>Cross-session<br/>knowledge"]:1
-    F["Orchestration<br/>.spec.md<br/>─<br/>Execution-ready<br/>specifications"]:1
-    G["Hooks<br/>event-driven<br/>─<br/>Automated actions<br/>on dev events"]:1
+%%| label: fig-six-primitives
+%%| fig-cap: "The six substrate primitives and how they compose"
+%%| fig-alt: "Composition graph: TRIGGER ORCHESTRATOR at the top spawns CHILD-THREAD SPAWNs. Each thread loads three primitives at startup (PERSONA SCOPING FILE, MODULE ENTRYPOINT, SCOPE-ATTACHED RULE FILE). All threads read and write a single PLAN PERSISTENCE artifact."
+flowchart TD
+    T["TRIGGER ORCHESTRATOR<br/>workflow / hook / schedule"]
+    C1["CHILD-THREAD SPAWN<br/>fresh context window"]
+    C2["CHILD-THREAD SPAWN<br/>fresh context window"]
+    P["PERSONA SCOPING FILE<br/>who the agent is"]
+    M["MODULE ENTRYPOINT<br/>capability + lazy assets"]
+    R["SCOPE-ATTACHED RULE FILE<br/>path-matched constraints"]
+    PP[("PLAN PERSISTENCE<br/>active plan / todos / checkpoints")]
+
+    T -->|spawns| C1
+    T -->|spawns| C2
+    P -.->|loaded into| C1
+    M -.->|loaded into| C1
+    R -.->|loaded into| C1
+    P -.->|loaded into| C2
+    M -.->|loaded into| C2
+    R -.->|loaded into| C2
+    C1 <-->|reads / writes| PP
+    C2 <-->|reads / writes| PP
 ```
 
-### Instructions
+A reader who only knows "instruction file" or "AGENTS.md" or "skill" should land on the right primitive within one sentence. Each section below opens with an `Industry terms:` lead-in to make that mapping explicit, followed by the verbatim Genesis definition and the handbook gloss. Appendix A maps the legacy file-shape view (the seven-block diagram earlier editions used) onto these six substrate roles for readers landing here from a search.
 
-**Purpose:** Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular context artifact; they tell an agent "when you touch code in this scope, follow these rules."
+### PERSONA SCOPING FILE
 
-**File format:** `.instructions.md` with frontmatter specifying scope.
+*Industry terms: AGENTS.md, agent file, persona, mode, custom agent, subagent definition.*
 
-```markdown
----
-applyTo: "src/api/**"
-description: "API layer conventions for endpoint implementation"
----
+::: {.callout-note title="Genesis definition"}
+A markdown document loaded at session start to scope WHO the agent is. Sets voice, expertise lens, hard constraints, anti-patterns it flags. It has no execution life of its own -- it is text loaded into a context window.
+:::
 
-# API Development Rules
+A PERSONA SCOPING FILE answers "who should work on this?" -- not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.
 
-## Middleware Registration
-- All middleware decorators are registered in `middleware.py`, never inline on routes.
-- Route files define endpoint logic only.
-
-## Rate Limiting
-- Use `app.rate_limiter.RateLimiter`, not third-party libraries.
-  The internal implementation integrates with the metrics pipeline.
-- Rate limit values come from environment variables, never hardcoded.
-
-## Error Responses
-- All error responses use `APIError.from_exception()` for consistent format.
-- Never return raw exception messages to clients.
-```
-
-**Design test:** Can you state the scope in one `applyTo` pattern? Does every rule in the file apply to that scope? If you're writing rules that apply to two unrelated domains, split the file. If you can't express the scope as a glob, the knowledge probably belongs in an agent configuration or a skill instead.
-
-**What distinguishes a good instruction file from a bad one:** length. If your instruction file exceeds 40-50 lines, it's trying to do too much. The reason is mechanical: every line of instruction competes for attention with the source code the agent needs to read. A 200-line instruction file doesn't give an agent more to work with. It gives it more to get lost in.
-
-### Agents
-
-**Purpose:** Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to "who should work on this?", not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.
-
-**File format:** `.agent.md` with frontmatter specifying the model, tools, and description.
+**File format:** `.agent.md` (Copilot), agent-mode rule (Cursor), `/commands` definition (Claude Code), `AGENTS.md` (universal). Frontmatter typically declares the model, the tool surface, and a short activation description.
 
 ```yaml
 ---
@@ -109,20 +94,23 @@ and modular service architecture.
 - Import from integration/ in the CLI layer (use the public API)
 ```
 
-Four elements make an agent configuration effective:
+Four elements make a PERSONA SCOPING FILE effective: domain expertise specific enough to constrain the solution space, named patterns the agent can reference in its reasoning, anti-patterns that encode institutional memory, and tool boundaries that make safety boundaries concrete.
 
-1. **Domain expertise.** Specific enough to constrain the agent's decisions. "You are an expert Python developer" is too broad to be useful. "You specialize in CLI tool design using the Click framework with Rich terminal output" constrains the solution space meaningfully.
-2. **Named patterns.** When the agent knows patterns by name ("BaseIntegrator," "CredentialChain," "CommandLogger") it can reference them in its reasoning and produce code that uses them correctly.
-3. **Anti-patterns.** What the agent must never do. These encode institutional memory; each item represents a mistake that happened at least once and cost the team time to fix.
-4. **Tool boundaries.** Which tools the agent can invoke. A documentation agent shouldn't execute destructive commands. A frontend agent shouldn't access backend databases. Tool boundaries are safety boundaries made concrete.
+The substrate property to internalize: a persona is loaded *into* a thread; a thread is not a persona. Conflating the two is the most common error in this domain. When you see a "panel review" implemented as one persona switching voices inside one context window, that is the conflation showing up as PANEL-IN-ONE-CONTEXT (Chapter 12 catalogues the failure mode).
 
-Start with three to five agent configurations. An architect, a domain expert for your core business logic, and a documentation writer cover most tasks. Add configurations when you observe repeated corrections; that's the signal that a new specialization has earned its place.
+Start with three to five PERSONA SCOPING FILEs -- an architect, a domain expert for your core business logic, and a documentation writer cover most tasks. Add files when you observe repeated corrections; that is the signal that a new specialization has earned its place.
 
-### Skills
+### MODULE ENTRYPOINT
 
-**Purpose:** Package reusable decision frameworks that activate based on code patterns. A skill is more than a set of rules; it teaches an agent how to think about a specific domain.
+*Industry terms: skill (agentskills.io), plugin, command bundle, SKILL.md.*
 
-**File format:** A directory containing a `SKILL.md` file, optionally with examples and supporting context.
+::: {.callout-note title="Genesis definition"}
+A bundled, self-contained capability with its own assets and a contract (frontmatter description = function signature; body = process; assets = lazy-loaded knowledge). The unit of REUSE.
+:::
+
+A MODULE ENTRYPOINT is a *container*. The agentskills.io specification owns the container surface -- the SKILL.md frontmatter fields, the 1024-character description cap, the directory layout (`scripts/` + `references/` + `assets/`), the body-size budget. What goes *inside* the container is the question this chapter has historically answered with "decision frameworks." That answer is correct, and it is one kind of content among several. A MODULE ENTRYPOINT can hold a decision framework, an evaluation playbook, an extraction procedure, or a packaging recipe. The container is the same; the content shape varies.
+
+**File format:** A directory containing a `SKILL.md` entrypoint plus optional `assets/` and `scripts/` subtrees. The frontmatter `description` field is preloaded by the harness's dispatcher; treat it as a function signature, not as marketing copy.
 
 ```
 .github/skills/
@@ -167,58 +155,120 @@ If they have to read paragraphs to understand status, restructure.
 - Never mix Rich and colorama in the same output path
 ```
 
-The design test for a skill is three criteria: Does this knowledge apply across multiple files? Does it require more than a few rules to express? Is it triggered by a detectable code pattern? If all three are yes, it's a skill. If the knowledge applies to a single directory, it's an instruction. If it's a general disposition, it's an agent configuration.
+The design test for a MODULE ENTRYPOINT is three criteria: does this knowledge apply across multiple files, does it require more than a few rules to express, and is it triggered by a detectable code pattern? If all three are yes, the knowledge belongs in a module. If it applies to a single directory, it is a SCOPE-ATTACHED RULE FILE. If it is a general disposition, it is a PERSONA SCOPING FILE.
 
-Skills differ from instructions in an important way: they provide *decision frameworks*, not just rules. A rule says "use `_rich_warning()` for warnings." A decision framework says "every warning must answer 'what should the user do about this?'" The framework generalizes to situations the author didn't anticipate. Rules cover known cases. Frameworks cover unknown ones.
+A MODULE ENTRYPOINT differs from a SCOPE-ATTACHED RULE FILE in an important way: it provides a *decision framework*, not just rules. A rule says "use `_rich_warning()` for warnings." A framework says "every warning must answer 'what should the user do about this?'" The framework generalizes to situations the author did not anticipate. Rules cover known cases. Frameworks cover unknown ones.
 
-### Prompts
+For the canonical specification of the container surface -- frontmatter fields, body size budget, evaluation discipline, the trigger-eval split -- refer to agentskills.io. For the broader taxonomy of how MODULE ENTRYPOINTs compose with the other primitives, this chapter is the source of truth.
 
-**Purpose:** Define reusable, parameterized workflows that orchestrate multi-step tasks. A prompt is a repeatable process, the agentic equivalent of a script or a makefile target.
+### SCOPE-ATTACHED RULE FILE
 
-**File format:** `.prompt.md` with frontmatter specifying execution mode and tools.
+*Industry terms: instruction file, rule, .mdc, always-load, applyTo glob.*
+
+::: {.callout-note title="Genesis definition"}
+A constraint that auto-applies whenever the agent operates on a matching path or context. Cross-cutting rules ride along instead of needing to be re-stated in every persona.
+:::
+
+SCOPE-ATTACHED RULE FILEs are the most granular primitive. They tell an agent: "when you touch code in this scope, follow these rules." The harness controls when they load -- by path match or context predicate. The author does not call them; the runtime injects them.
+
+**File format:** `.instructions.md` with frontmatter specifying scope (Copilot), `.cursor/rules/*.mdc` with glob (Cursor), per-directory `CLAUDE.md` (Claude Code), `.windsurfrules` cascade (Windsurf).
 
 ```markdown
 ---
-mode: agent
-description: "Code review workflow with security and architecture checks"
+applyTo: "src/api/**"
+description: "API layer conventions for endpoint implementation"
 ---
 
-# Structured Code Review
+# API Development Rules
 
-## Context Loading
-1. Read the [project architecture](../../docs/architecture.md)
-2. Review the diff to understand scope of changes
-3. Check [security guidelines](../../docs/security.md) for relevant patterns
+## Middleware Registration
+- All middleware decorators are registered in `middleware.py`, never inline on routes.
+- Route files define endpoint logic only.
 
-## Review Phases
+## Rate Limiting
+- Use `app.rate_limiter.RateLimiter`, not third-party libraries.
+  The internal implementation integrates with the metrics pipeline.
+- Rate limit values come from environment variables, never hardcoded.
 
-### Phase 1: Correctness
-- Does the code do what the PR description claims?
-- Are edge cases handled?
-- Do tests cover the new behavior?
-
-### Phase 2: Architecture
-- Does this change respect existing module boundaries?
-- Are new dependencies justified and minimal?
-- Would a senior engineer on this team approve the approach?
-
-### Phase 3: Security
-- Is user input validated at the boundary?
-- Are credentials handled through the standard resolver?
-- Could this change introduce injection, traversal, or leakage?
-
-## Output Format
-Provide findings grouped by severity (Critical / High / Medium / Low).
-For each finding: file, line, what's wrong, what to do instead.
+## Error Responses
+- All error responses use `APIError.from_exception()` for consistent format.
+- Never return raw exception messages to clients.
 ```
 
-Prompts are the bridge between ad-hoc chat and systematic workflows. Without them, every time a developer wants an agent to perform a code review, they type a slightly different request and get slightly different quality. With a prompt file, the process is consistent: the same phases, the same checks, the same output format. Quality becomes reproducible.
+The design test: can you state the scope in one `applyTo` pattern? Does every rule in the file apply to that scope? If you find yourself writing rules that apply to two unrelated domains, split the file. If you cannot express the scope as a glob, the knowledge probably belongs in a PERSONA SCOPING FILE or a MODULE ENTRYPOINT instead.
 
-### Memory
+What distinguishes a good SCOPE-ATTACHED RULE FILE from a bad one is length. If your file exceeds 40-50 lines, it is trying to do too much. The reason is mechanical: every line of rule competes for attention with the source code the agent needs to read. A 200-line rule file does not give an agent more to work with -- it gives it more to get lost in.
 
-**Purpose:** Preserve knowledge across sessions. Agents are stateless; every conversation starts from zero. Memory files give them access to accumulated decisions, resolved trade-offs, and project history that would otherwise vanish between sessions.
+### CHILD-THREAD SPAWN
 
-**File format:** `.memory.md`, structured by domain.
+*Industry terms: subagent thread, Task tool, dispatch, background agent.*
+
+::: {.callout-note title="Genesis definition"}
+A runtime affordance that creates a new execution unit with its OWN fresh context window. Returns a value to the parent. Multiple may run in parallel.
+:::
+
+CHILD-THREAD SPAWN is the only mechanism for parallelism and context isolation a harness offers. The spawning thread suspends (or continues, if the harness supports async); the child runs with a fresh window seeded only by the task description and any primitives the parent loaded into it; the child returns a value as text or structured data.
+
+**File format:** None. CHILD-THREAD SPAWN is a runtime affordance, not a file you author. Most harnesses surface it as a tool call (`task` in Copilot CLI, the Task tool in Claude Code, subagent dispatch in Cursor). Chapter 12 covers the orchestration topologies -- A1 PANEL, A2 PIPELINE, A4 STAFFED PLAN -- that compose CHILD-THREAD SPAWNs into multi-agent workflows.
+
+The substrate property to internalize: a child thread is stateless across spawns. Anything not loaded as text into the child thread does not exist for that thread. Hand off via explicit artifacts -- a slice of PLAN PERSISTENCE, a frozen pointer to a MODULE ENTRYPOINT -- not assumed memory. The most expensive failure mode in this primitive is treating the child thread as if it inherits the parent's context implicitly. It does not.
+
+The compounding gain worth naming: a MODULE ENTRYPOINT dispatched in a fresh child thread converts a Separation-of-Concerns win into a context-isolation win for free. This is the core argument for splitting a god-module into specialized siblings -- each split unlocks an independently spawnable thread.
+
+### TRIGGER ORCHESTRATOR
+
+*Industry terms: hook, runtime trigger, gh-aw workflow, automation, scheduled job.*
+
+::: {.callout-note title="Genesis definition"}
+A declarative pipeline that spawns sessions in response to events (schedule, push, comment, label, manual). Lives ABOVE the thread, deciding when work begins and what initial context it carries.
+:::
+
+TRIGGER ORCHESTRATORs make instrumentation reactive. Without them, every primitive is passive -- it waits for an agent to be invoked and for the right context to load. With them, the substrate responds to events: a file save runs a check, a new file scaffolds a test, a merged PR updates a memory file, a label applied to an issue dispatches a triage agent.
+
+**File format:** Configured via tool-specific orchestration mechanisms. GitHub Agentic Workflows (gh-aw) is the canonical realization shipping today; Copilot hooks, Cursor task runners, and Claude Code's pre/post commands are alternative surfaces. The trigger surface, not an in-session dispatcher, is the matcher: an event filter, a slash command, a schedule.
+
+The substrate property to internalize: TRIGGER ORCHESTRATOR is the only primitive whose execution surface is fully declarative. It does not carry a context window itself; it dispatches others that do.
+
+**Substrate fields** (present when the trigger surface provides them -- GitHub Agentic Workflows safe-outputs is the existing-today reference implementation):
+
+- **SANDBOXING.** Substrate-enforced isolation around the spawned session: network firewall, per-tool container, scoped filesystem. When absent, the session inherits whatever ambient access the invoking environment has. This is the property that makes "let the agent run on push" safe rather than reckless.
+- **CAPABILITY_GATING.** The session does not hold write tokens to external systems. Effects are buffered and externalized by a deterministic post-stage that the session cannot bypass. This is the runtime-enforced form of A9 SUPERVISED EXECUTION (see Chapter 12). An agent that wants to comment on a PR emits a structured request; the orchestrator validates and posts. The agent never holds the GitHub token.
+- **AUDIT_SURFACE.** A durable log of what triggered, what ran, what was externalized; survives the session and is reviewable by third parties. This is the property that lets "agents touched production" become an after-the-fact claim with evidence rather than a folk story.
+
+These three fields are the vocabulary the predicted governance category will be measured against (Chapter 15). A TRIGGER ORCHESTRATOR that ships SANDBOXING, CAPABILITY_GATING, and AUDIT_SURFACE is governance-ready. A trigger surface that ships none of them is a webhook with delusions.
+
+**Examples of what a TRIGGER ORCHESTRATOR automates:**
+
+- Auto-run linting on save to catch convention violations before commit
+- Trigger test generation when a new source file is created
+- Auto-update memory files after a successful PR merge
+- Run a security-reviewer agent on every change to `src/auth/`
+
+Start with one or two TRIGGER ORCHESTRATORs: a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.
+
+### PLAN PERSISTENCE
+
+*Industry terms: scratchpad, plan.md, todos, checkpoints, session store.*
+
+::: {.callout-note title="Genesis definition"}
+A stable artifact (file or structured store) holding the active plan, todos, and checkpoints across turns and across spawns. The cure for attention decay over long sessions.
+:::
+
+The underlying problem PLAN PERSISTENCE addresses is mechanical: tokens far from the current focus point exert weaker influence on inference. As a session grows, earlier decisions, todos, and constraints fade from the model's effective recall even though they remain technically in-context. A 200-turn session whose plan is buried in turn 3 is a session that has forgotten the plan.
+
+The discipline is straightforward: write the plan once, early, before drafting modules or spawning workers; reload it at every re-grounding boundary -- start of each step, return from a spawn, after a tool failure, whenever uncertainty rises. A written-once-never-read plan is dead weight. The discipline is *write-then-reload*, not *write-then-trust-recall*.
+
+**File format:** `plan.md` in a session directory (Copilot CLI), structured todos in the harness's session store, embedded checkpoint blocks in `CLAUDE.md` (Claude Code). The substrate guarantees the slots exist; the syntax varies.
+
+A PLAN PERSISTENCE artifact has up to four slots: a free-form plan capturing problem statement and approach, a structured todo list with per-step status, an optional checkpoint slot for milestone snapshots, and an optional files slot for cross-step artifacts that must outlive any single step's context. Spawned child threads receive a *pointer* to the relevant slice of the plan in their task description; they do not inherit the parent's context.
+
+Use PLAN PERSISTENCE when the work spans more than three dependent steps, more than one file, or one or more child-thread spawns. Skip it for single-shot one-step work where the entire instruction set fits comfortably in the prompt.
+
+#### Cross-session memory: a separate bin
+
+PLAN PERSISTENCE captures the active plan -- the work in flight. A separate bin captures the durable, cross-session knowledge the project has accumulated: which authentication pattern is current and which is deprecated, why the logging module wraps Rich, the migration history that explains a half-deprecated class. This is what previous editions of this chapter called Memory, and it remains a distinct concept from the active plan.
+
+**File format:** `.memory.md` (portable), SQLite store (Copilot), notepads (Cursor), `CLAUDE.md` sections (Claude Code).
 
 ```markdown
 # Project Decisions
@@ -226,8 +276,8 @@ Prompts are the bridge between ad-hoc chat and systematic workflows. Without the
 ## Authentication (last updated: 2025-06-15)
 - Migrated from session-based to JWT auth in Q1 2025
 - Token refresh uses exponential backoff, max 3 retries
-- EMU (Enterprise Managed User) tokens use `ghu_` prefix ← INCORRECT, agent error
-- CORRECTION: EMU tokens use standard PAT prefixes (`github_pat_` / `ghp_`). `ghu_` is OAuth.
+- EMU (Enterprise Managed User) tokens use standard PAT prefixes
+  (`github_pat_` / `ghp_`); `ghu_` is OAuth, not EMU.
 - The `SessionAuth` class is deprecated but not yet removed.
   Do NOT use it for new code. Migration tracked in JIRA-4521.
 
@@ -240,79 +290,30 @@ Prompts are the bridge between ad-hoc chat and systematic workflows. Without the
 ## Performance Decisions (last updated: 2025-07-01)
 - Database connection pooling uses pgbouncer, not application-level pools.
 - Cache invalidation is event-driven (via message queue), not TTL-based.
-- The /api/search endpoint has a 5-second timeout. This is intentional —
+- The /api/search endpoint has a 5-second timeout. This is intentional --
   longer queries must use the async search endpoint.
 ```
 
-Memory files capture the knowledge that doesn't fit in instructions because it isn't a rule; it's context. The distinction matters: "use JWT for authentication" is a rule (instruction). "We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated" is context (memory). An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory won't.
+Cross-session memory captures knowledge that does not fit in a SCOPE-ATTACHED RULE FILE because it is not a rule; it is context. "Use JWT for authentication" is a rule. "We migrated from sessions to JWT in Q1, and the old SessionAuth class is still in the code but deprecated" is context. An agent that knows only the rule might accidentally use the deprecated class. An agent that also has the memory will not.
 
-Memory files are the most likely primitive to drift from reality. Include dates. Review them quarterly. If a section hasn't been updated in six months, verify that it's still accurate or remove it.
+Cross-session memory is the most likely primitive to drift from reality. Include dates. Review quarterly. If a section has not been updated in six months, verify or remove it.
 
 ::: {.callout-note}
-## Memory Storage Varies by Tool
-While this chapter describes memory as markdown files for portability, some tools implement memory as structured databases. GitHub Copilot, for example, stores memory in a database system rather than flat files. The principles are the same (persistence, discoverability, and staleness management) regardless of the storage mechanism.
+## Memory storage varies by tool
+While this section describes cross-session memory as markdown files for portability, some tools implement memory as structured databases. GitHub Copilot, for example, stores memory in a database system rather than flat files. The principles are the same -- persistence, discoverability, staleness management -- regardless of the storage mechanism.
 :::
 
-### Orchestration
+The two bins serve different attention horizons. PLAN PERSISTENCE survives the current session's attention decay. Cross-session memory survives the current session entirely. Conflating the two -- putting JIRA-4521-style historical context into the live plan, or treating the live plan as durable knowledge -- is the most common authoring mistake in this primitive.
 
-**Purpose:** Bridge planning and implementation by defining structured specifications that can be executed by humans or agents with the same precision. Orchestration files decompose large features into implementation-ready units.
+### Reusable workflows and specifications: see Chapter 10
 
-**File format:** `.spec.md` for specifications, or workflow composition files that coordinate multiple context files.
-
-```markdown
-# Feature: Rate Limiting for Public API
-
-## Problem Statement
-Public API endpoints have no rate limiting. A single client can
-exhaust server resources with sustained high-frequency requests.
-
-## Approach
-Implement per-client rate limiting using the internal RateLimiter
-with Redis-backed sliding window counters.
-
-## Implementation Requirements
-
-### Components
-- [ ] Rate limiter middleware (`src/middleware/rate_limiter.py`)
-- [ ] Redis counter service (`src/services/rate_counter.py`)
-- [ ] Configuration loader (`src/config/rate_limits.yaml`)
-
-### API Contracts
-- 429 response with `Retry-After` header when limit exceeded
-- `X-RateLimit-Remaining` header on every response
-- Per-endpoint configuration via environment variables
-
-### Validation Criteria
-- [ ] Handles concurrent requests without race conditions
-- [ ] Sliding window accurate within 1-second granularity
-- [ ] Unit tests > 90% coverage on counter logic
-- [ ] Load test: 10K requests/second without limiter degradation
-```
-
-Specification files matter because they make the "Reduced Scope" constraint operational. Instead of telling an agent "implement rate limiting" and hoping it figures out the approach, the spec defines scope, components, contracts, and success criteria upfront. The agent implements against a specification, not a wish.
-
-### Hooks
-
-**Purpose:** Define automated actions triggered by development events. Hooks bridge the gap between passive context (instructions, memory) and active behavior, making the instrumented codebase reactive rather than waiting to be queried.
-
-**File format:** Configured via tool-specific hook mechanisms (e.g., VS Code tasks, GitHub Actions triggers, copilot hooks configuration) rather than a single portable file format.
-
-**Examples of what hooks automate:**
-
-- Auto-run linting on save to catch convention violations before commit
-- Trigger test generation when a new source file is created
-- Auto-update memory files after a successful PR merge
-- Run a security-reviewer agent on every change to `src/auth/`
-
-Hooks complete the instrumentation model. Without them, every instrumentation file is passive; it waits for an agent to be invoked and for the right context to load. With hooks, the context layer responds to events: a file save triggers a check, a new file triggers scaffolding, a merged PR triggers a memory update. The instrumented codebase stops being a library of reference material and starts behaving like an active participant in the development workflow.
-
-Start with one or two hooks: a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.
+Earlier editions of this chapter included `.prompt.md` (parameterized workflows) and `.spec.md` (feature specifications) as primitive types. Neither is a runtime-role primitive in the sense the rest of this chapter uses -- they are *content* a thread executes, more akin to scripts than to substrate slots. Chapter 10 covers reusable workflows and PROSE specifications as first-class artifacts, with worked examples for code review prompts and rate-limiting specs. Appendix A maps the legacy file shapes onto the six substrate primitives for readers landing here from a search.
 
 ---
 
 ## Tool Support and Portability
 
-The seven context artifact types are conceptual categories, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.[^ch09-landscape]
+The six substrate primitives are conceptual roles, not file format specifications. How each maps to a concrete file depends on which AI coding tool loads it. This table shows native support as of mid-2025; the landscape shifts quarterly, but the pattern is stable: every tool reads project-level markdown; the disagreement is about where it lives and what metadata it supports.[^ch09-landscape]
 
 [^ch09-landscape]: This comparison reflects mid-2025 capabilities. The AI coding tool landscape evolves quarterly; verify current capabilities at each vendor's documentation site.
 
@@ -320,51 +321,52 @@ The seven context artifact types are conceptual categories, not file format spec
 
 | Primitive | GitHub Copilot (VS Code) | Cursor | Claude Code | Windsurf | OpenCode |
 |-----------|--------------------------|--------|-------------|----------|----------|
-| **Instructions** | `.instructions.md` + `applyTo`; `copilot-instructions.md` | `.cursor/rules/*.mdc` + glob | `CLAUDE.md` per directory | `.windsurfrules`; cascade rules | `.opencode/instructions.md` |
-| **Agents** | `.agent.md` with model + tools | Via rules and agent modes | `/commands` and agent configs | — | — |
-| **Skills** | `SKILL.md` dirs with examples | Embed in rules with examples | Embed in `CLAUDE.md` sections | Embed in rules | — |
-| **Prompts** | `.prompt.md` with exec mode | Rules or `.cursor/prompts/` | `/commands` definitions | Flows (different model) | — |
-| **Memory** | SQLite DB; `.memory.md` portable | Notepads; project-level rules | `CLAUDE.md` sections; persistent memory | In rules | — |
-| **Orchestration** | `.spec.md` as context; plan mode | Context; composer plans | Context; plan mode | Loaded as context | Loaded as context |
-| **Hooks** | Copilot hooks config; VS Code tasks | Task runners; `.cursor/hooks/` | Hooks (`hooks` in settings); pre/post commands | — | — |
+| **SCOPE-ATTACHED RULE FILE** | `.instructions.md` + `applyTo`; `copilot-instructions.md` | `.cursor/rules/*.mdc` + glob | `CLAUDE.md` per directory | `.windsurfrules`; cascade rules | `.opencode/instructions.md` |
+| **PERSONA SCOPING FILE** | `.agent.md` with model + tools | Via rules and agent modes | `/commands` and agent configs | — | — |
+| **MODULE ENTRYPOINT** | `SKILL.md` dirs with examples | Embed in rules with examples | Embed in `CLAUDE.md` sections | Embed in rules | — |
+| **CHILD-THREAD SPAWN** | `task` tool; subagent dispatch | Subagent dispatch | Task tool | — | — |
+| **TRIGGER ORCHESTRATOR** | Copilot hooks; VS Code tasks; gh-aw workflows | Task runners; `.cursor/hooks/` | Hooks (`hooks` in settings); pre/post commands | — | — |
+| **PLAN PERSISTENCE** | `plan.md` + SQLite session store; `.memory.md` portable | Notepads; project-level rules | `CLAUDE.md` sections; persistent memory | In rules | — |
+
+(Reusable workflows -- earlier `.prompt.md` -- and PROSE specifications -- earlier `.spec.md` -- are covered in Chapter 10.)
 
 :::
 
 "—" means the tool has no native format for that type. The knowledge is still usable (you embed it in whatever instruction format the tool does support) but automatic activation and scoping are lost.
 
 ::: {.callout-note title="Implementation Reality"}
-The seven primitives describe *what* your codebase needs to communicate to agents, not a universal file format. Tools implement these concepts differently:
+The six substrate primitives describe *what* your codebase needs to communicate to agents, not a universal file format. Tools implement these concepts differently:
 
-- **Instructions** have the broadest native support — `.instructions.md` (Copilot), `.cursor/rules/` (Cursor), `CLAUDE.md` (Claude Code). Every major tool reads project-level markdown from predictable locations.
-- **Memory** is implemented as SQLite databases (GitHub Copilot), notepads (Cursor), or embedded in `CLAUDE.md` sections (Claude Code). The `.memory.md` format described here works as portable context loaded by any tool.
-- **Orchestration specs** (`.spec.md`) map to plan mode artifacts (`plan.md` in Copilot CLI) or are consumed as plain context files. No tool has a native "spec" file format yet.
-- **Agents, Skills, and Prompts** have, at the time of writing, the deepest native support in GitHub Copilot's `.agent.md`, `SKILL.md`, and `.prompt.md` formats. **Hooks** are natively supported by Copilot, Cursor, and Claude Code; other tools achieve similar outcomes through their own configuration mechanisms.
+- **SCOPE-ATTACHED RULE FILEs** have the broadest native support -- `.instructions.md` (Copilot), `.cursor/rules/` (Cursor), `CLAUDE.md` (Claude Code). Every major tool reads project-level markdown from predictable locations.
+- **Cross-session memory** (a sub-bin of PLAN PERSISTENCE) is implemented as SQLite databases (GitHub Copilot), notepads (Cursor), or embedded in `CLAUDE.md` sections (Claude Code). The `.memory.md` format described here works as portable context loaded by any tool.
+- **PLAN PERSISTENCE** maps to plan-mode artifacts (`plan.md` in Copilot CLI), structured todos in the harness session store, or embedded checkpoint blocks. No tool has a fully universal "plan" file format yet.
+- **PERSONA SCOPING FILEs**, **MODULE ENTRYPOINTs**, and **TRIGGER ORCHESTRATORs** have, at the time of writing, the deepest native support in GitHub Copilot's `.agent.md`, `SKILL.md`, and gh-aw / hooks formats. **CHILD-THREAD SPAWN** is a runtime affordance every major harness exposes through some dispatch tool.
 
 The file names in this chapter are conventions that work today. As tools converge, expect native format support to broaden.
 :::
 
 Three observations.
 
-**Instructions are the universal context file.** Every major tool reads markdown from predictable locations and applies it as context. File naming and scoping differ (`applyTo` frontmatter, glob-based rule files, per-directory placement) but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.
+**SCOPE-ATTACHED RULE FILEs are the universal substrate.** Every major tool reads markdown from predictable locations and applies it as scoped context. File naming and matching differ (`applyTo` frontmatter, glob-based rule files, per-directory placement) but the underlying concept transfers without loss. This is where to invest first, regardless of tooling.
 
-**Agent configurations are the least portable.** Chat modes, model selection, and tool boundaries are defined differently in every tool and don't transfer. The knowledge inside them (domain expertise, named patterns, anti-patterns) is just markdown and moves freely. The activation mechanism does not.
+**PERSONA SCOPING FILE activation is the least portable layer.** Mode selection, model binding, and tool boundaries are defined differently in every tool and do not transfer. The knowledge inside the file (domain expertise, named patterns, anti-patterns) is just markdown and moves freely. The activation mechanism does not.
 
-**The three major tools now support most primitives natively.** GitHub Copilot, Cursor, and Claude Code each support the majority of the seven primitive types, though file formats and native integration depth differ. As of this writing, Copilot has the most extensive native format support, though the gap is narrowing rapidly as Cursor and Claude Code add primitive-equivalent features. OpenCode, the newest entrant, currently supports mainly instructions. Windsurf covers instructions and basic context loading. The methodology described here is portable across all of them — the knowledge transfers even when the wiring differs.
+**The three major tools now support most substrate primitives natively.** GitHub Copilot, Cursor, and Claude Code each cover the majority of the six primitives, though file formats and native integration depth differ. As of this writing, Copilot has the most extensive native format support, though the gap is narrowing rapidly as Cursor and Claude Code add primitive-equivalent features. OpenCode, the newest entrant, currently supports mainly SCOPE-ATTACHED RULE FILEs. Windsurf covers rule files and basic context loading. The methodology described here is portable across all of them -- the knowledge transfers even when the wiring differs.
 
 ### What happens when you switch tools
 
 If your team uses one tool, optimize for its native formats. If you use multiple tools or expect to switch, organize your instrumentation files in two tiers:
 
 **Portable tier** (works everywhere with minor adaptation):
-- Instruction content — the rules themselves, as markdown prose
-- Memory files — decisions, deprecations, historical context
-- Orchestration specs — requirements, contracts, validation criteria
-- Skill knowledge — decision frameworks, anti-patterns, examples
+- SCOPE-ATTACHED RULE FILE content -- the rules themselves, as markdown prose
+- Cross-session memory -- decisions, deprecations, historical context
+- MODULE ENTRYPOINT knowledge -- decision frameworks, anti-patterns, examples
+- PLAN PERSISTENCE conventions -- the slot structure, the reload discipline
 
 **Tool-specific tier** (requires per-tool configuration):
-- Instruction scoping — how rules get matched to files (`applyTo` vs. glob frontmatter vs. directory placement)
-- Agent configurations — model selection, tool boundaries, persona activation
-- Prompt execution — how workflows are triggered and parameterized
+- Rule scoping -- how rule files get matched to paths (`applyTo` vs. glob frontmatter vs. directory placement)
+- PERSONA SCOPING FILE activation -- model selection, tool boundaries, persona binding
+- TRIGGER ORCHESTRATOR wiring -- how events fire and what context they carry
 
 The portable tier is the knowledge, 80% of the value. The tool-specific tier is the wiring that connects knowledge to a particular editor. When you switch tools, you rewrite the wiring. That's a few hours of adaptation, not a rewrite of what your team knows.
 
@@ -374,24 +376,24 @@ For teams working across multiple tools, the translation between formats can be 
 
 ## Directory Structure
 
-The seven primitive types organize into a predictable directory structure. The layout below follows GitHub Copilot conventions, the most complete native implementation of all seven types. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize context files in a known location, separate by type, keep each type flat.
+The six substrate primitives organize into a predictable directory structure. The layout below follows GitHub Copilot conventions, the most complete native implementation. Other tools use different file locations (see the compatibility table above), but the organizational principle holds: centralize context files in a known location, separate by primitive role, keep each role flat.
 
 ```
 project/
 ├── .github/
-│   ├── copilot-instructions.md          # Global project principles
-│   ├── instructions/
+│   ├── copilot-instructions.md          # Global SCOPE-ATTACHED RULE FILE
+│   ├── instructions/                     # SCOPE-ATTACHED RULE FILEs
 │   │   ├── api.instructions.md          # applyTo: "src/api/**"
 │   │   ├── auth.instructions.md         # applyTo: "src/auth/**"
 │   │   ├── frontend.instructions.md     # applyTo: "src/ui/**/*.tsx"
 │   │   ├── testing.instructions.md      # applyTo: "**/test/**"
 │   │   └── database.instructions.md     # applyTo: "src/db/**"
-│   ├── agents/
-│   │   ├── architect.agent.md        # Structure, patterns, trade-offs
-│   │   ├── backend-dev.agent.md      # API implementation, business logic
-│   │   ├── security-reviewer.agent.md # Injection, traversal, credentials
-│   │   └── doc-writer.agent.md       # Documentation consistency
-│   ├── skills/
+│   ├── agents/                           # PERSONA SCOPING FILEs
+│   │   ├── architect.agent.md
+│   │   ├── backend-dev.agent.md
+│   │   ├── security-reviewer.agent.md
+│   │   └── doc-writer.agent.md
+│   ├── skills/                           # MODULE ENTRYPOINTs
 │   │   ├── cli-logging-ux/
 │   │   │   ├── SKILL.md
 │   │   │   └── examples/
@@ -399,61 +401,70 @@ project/
 │   │   │   └── SKILL.md
 │   │   └── api-middleware/
 │   │       └── SKILL.md
-│   ├── prompts/
-│   │   ├── code-review.prompt.md
-│   │   ├── feature-impl.prompt.md
-│   │   └── bug-investigation.prompt.md
-│   └── specs/
-│       ├── feature-template.spec.md
-│       └── api-endpoint.spec.md
-├── .memory.md                            # Project-level memory
-├── AGENTS.md                             # Root discovery file
+│   └── workflows/                        # TRIGGER ORCHESTRATORs
+│       ├── on-pr-opened.lock.yml
+│       └── nightly-audit.lock.yml
+├── plan.md                               # PLAN PERSISTENCE (active)
+├── .memory.md                            # cross-session memory
+├── AGENTS.md                             # PERSONA SCOPING FILE (root discovery)
+├── README.md
 ├── src/
 │   ├── api/
-│   │   └── AGENTS.md                    # API-specific context
+│   │   └── AGENTS.md                    # API-specific PERSONA SCOPING FILE
 │   ├── auth/
-│   │   └── AGENTS.md                    # Auth-specific context
+│   │   └── AGENTS.md                    # Auth-specific PERSONA SCOPING FILE
 │   └── ...
 └── ...
 ```
+
+(Reusable workflows -- earlier `.prompt.md` -- and PROSE specifications -- earlier `.spec.md` -- live alongside this layout per Chapter 10.)
 
 Three observations about this structure.
 
 **Context files live in `.github/`**, not scattered through the source tree. This centralizes the knowledge layer; a developer looking for the project's AI configuration finds it in one place. The exceptions are `AGENTS.md` files, which live in the directories they describe, because they're part of a discovery hierarchy (Chapter 11 explains this in detail).
 
-**Each primitive type has its own directory.** Instructions, agents, skills, prompts, specs, and hooks don't mix. This makes it straightforward to audit what you have: how many instruction files exist, what domains they cover, which skills are defined. Mixed directories make this accounting harder than it needs to be.
+**Each substrate role has its own directory.** SCOPE-ATTACHED RULE FILEs, PERSONA SCOPING FILEs, MODULE ENTRYPOINTs, and TRIGGER ORCHESTRATORs don't mix. This makes it straightforward to audit what you have: how many rule files exist, what domains they cover, which modules are defined. Mixed directories make this accounting harder than it needs to be.
 
-**The structure is flat within each directory.** Resist the urge to create nested hierarchies. If you have 15 instruction files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you're probably over-engineering; most projects need 8-12 instruction files.
+**The structure is flat within each directory.** Resist the urge to create nested hierarchies. If you have 15 rule files, a flat list with descriptive names is easier to scan than a three-level tree. If you have 50, you're probably over-engineering; most projects need 8-12 rule files.
 
 ---
 
-## How Primitives Compose
+## How the Substrate Composes
 
-Primitives are not independent. They form a layered system where each type provides a different kind of guidance, and the agent's effective context is the composition of all applicable context files for the current task.
+Primitives are not independent. They form a layered system where each role provides a different kind of guidance, and the agent's effective context is the composition of all applicable substrate primitives for the current task.
 
-The composition follows a hierarchy:
+The composition follows the substrate graph introduced earlier in this chapter:
 
 ```
-Global principles (copilot-instructions.md)
-  └─ Scoped instructions (*.instructions.md, matched by applyTo)
-      └─ Skills (activated by code patterns in the current task)
-          └─ Agent configuration (persona, model, tool boundaries)
-              └─ Prompt or spec (the specific workflow being executed)
-                  └─ Memory (accumulated project context)
-                      └─ Hooks (event-driven triggers, operating across all layers)
+TRIGGER ORCHESTRATOR (workflow / hook / schedule)
+        |
+        v  spawns
+  CHILD-THREAD SPAWN ----- spawns more child threads ----+
+        |                                                |
+        | loads at startup                               |
+        |   PERSONA SCOPING FILE  (who)                  |
+        |   MODULE ENTRYPOINT     (capability)           |
+        |   SCOPE-ATTACHED RULE   (path-matched)         |
+        |                                                |
+        v                                                v
+   reads + writes                              reads + writes
+        |                                                |
+        +--------> PLAN PERSISTENCE  (single source of truth)
+                   + cross-session memory (separate bin)
 ```
 
 When an agent is asked to modify `src/api/users.py`, the effective context assembles from:
 
-1. **Global principles** — error handling, security, testing rules that apply everywhere
-2. **API instructions** — the `applyTo: "src/api/**"` file loads; frontend instructions do not
-3. **API middleware skill** — activates because the task involves an API route
-4. **Backend-dev agent** — provides the persona, model selection, and tool constraints
-5. **Memory** — the API versioning decisions, the deprecated authentication class, the rate limit timeout choice
+1. **Global SCOPE-ATTACHED RULE FILE** -- error handling, security, testing rules that apply everywhere
+2. **API-scoped SCOPE-ATTACHED RULE FILE** -- the `applyTo: "src/api/**"` file loads; the frontend file does not
+3. **API middleware MODULE ENTRYPOINT** -- activates because the task involves an API route
+4. **Backend-dev PERSONA SCOPING FILE** -- provides the lens, the model selection, and the tool boundaries
+5. **Cross-session memory** -- the API versioning decisions, the deprecated authentication class, the rate-limit timeout
+6. **PLAN PERSISTENCE** -- the current step, the prior turn's findings, the checkpoint that survives a child-thread spawn
 
-Each layer adds specificity. None contradicts the layer above; more specific context files refine general guidance, they don't override it. If a conflict exists, it indicates a design error in the instrumentation, not a resolution the agent should attempt.
+Each layer adds specificity. None contradicts the layer above; more specific primitives refine general guidance, they do not override it. If a conflict exists, it indicates a design error in the instrumentation, not a resolution the agent should attempt.
 
-This composition is the Explicit Hierarchy constraint made concrete. Global rules provide consistency. Scoped rules provide domain adaptation. Skills provide decision frameworks. Agent configurations provide expertise. Prompts and specs provide task structure. Memory provides historical context. Hooks provide event-driven automation that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task, without requiring that information to fit in anyone's head.[^ch9-scope]
+This composition is the Explicit Hierarchy constraint made concrete (Chapter 10). Global rules provide consistency. Scoped rules provide domain adaptation. MODULE ENTRYPOINTs provide decision frameworks. PERSONA SCOPING FILEs provide expertise. PLAN PERSISTENCE provides task structure. Cross-session memory provides historical context. TRIGGER ORCHESTRATORs provide event-driven dispatch that ties the layers together. Together, they give the agent the same information a tenured team member would bring to the task, without requiring that information to fit in anyone's head.[^ch9-scope]
 
 ---
 
@@ -490,17 +501,19 @@ The "in heads" column is your instrumentation debt. Every item there is a conven
 - **Medium:** Convention violations that require rework in code review
 - **Low:** Style preferences that don't affect correctness
 
-**Step 4: Map each item to a primitive type.**
+**Step 4: Map each item to a substrate primitive.**
 
-| If the knowledge... | It belongs in... |
-|---------------------|-----------------|
-| Is a rule scoped to specific files/directories | An instruction file |
-| Requires specialist expertise or a specific model | An agent configuration |
-| Applies across files and needs a decision framework | A skill |
-| Defines a repeatable multi-step process | A prompt |
-| Records a decision, trade-off, or historical fact | A memory file |
-| Specifies a feature with components and success criteria | A specification |
-| Defines an automated response to a development event | A hook |
+| If the knowledge... | It belongs in a... |
+|---------------------|--------------------|
+| Is a constraint scoped to specific files or directories | SCOPE-ATTACHED RULE FILE |
+| Requires a specific lens, model, or tool surface | PERSONA SCOPING FILE |
+| Is a reusable, dispatcher-discoverable capability with its own assets | MODULE ENTRYPOINT |
+| Coordinates multiple specialists in fresh context windows | CHILD-THREAD SPAWN (see Chapter 12) |
+| Should run automatically on a repository event | TRIGGER ORCHESTRATOR |
+| Is the active plan or todo state for the current work | PLAN PERSISTENCE |
+| Is a durable decision, deprecation, or historical fact | cross-session memory (sub-bin of PLAN PERSISTENCE) |
+| Is a repeatable multi-step workflow specification | (Chapter 10 -- reusable workflow) |
+| Is a feature spec with components and success criteria | (Chapter 10 -- PROSE specification) |
 
 **Step 5: Write your starter set.** Begin with 3-5 context files covering your critical items. Don't aim for completeness; the feedback loop will guide you to what's actually needed faster than upfront planning will.
 
@@ -758,21 +771,21 @@ This book was partly born from the patterns it describes. By Turn 79, the develo
 
 ## Starting Points
 
-The seven primitives and the full directory structure represent a mature instrumented codebase. You don't need to build all of it at once. Start where the leverage is highest.
+The six substrate primitives and the full directory structure represent a mature instrumented codebase. You don't need to build all of it at once. Start where the leverage is highest.
 
 **Week one.** Write three files:
-1. Global instructions (10-15 lines) — your non-negotiable principles
-2. One scoped instruction file for your most-edited module
-3. One agent configuration for the task agents perform most often
+1. Global SCOPE-ATTACHED RULE FILE (10-15 lines) -- your non-negotiable principles
+2. One scoped SCOPE-ATTACHED RULE FILE for your most-edited module
+3. One PERSONA SCOPING FILE for the task agents perform most often
 
 **Week two.** Use these files on real work. When the agent violates a convention not covered by your files, add it. When it does something right that surprised you, check whether your instrumentation contributed. Update the memory file with the decisions and trade-offs you resolved this week.
 
-**Week three.** Extract the first skill. You'll know it's time because you've written the same guidance in two different instruction files. Package the shared knowledge as a skill with a decision framework. Create your first prompt file for a task you've now asked an agent to do three or more times.
+**Week three.** Extract the first MODULE ENTRYPOINT. You'll know it's time because you've written the same guidance in two different SCOPE-ATTACHED RULE FILEs. Package the shared knowledge as a module with a decision framework. If a recurring multi-step workflow has emerged, capture it as a reusable workflow (Chapter 10).
 **Ongoing.** Review context files monthly. Remove rules that never trigger. Tighten rules that trigger but don't prevent the failure. Add new rules only in response to observed failures. Treat your instrumentation like a test suite; it should grow with the codebase, stay accurate, and never contain dead rules.
 
 The instrumented codebase is not a finished state. It's a practice, an ongoing investment in making machine-readable what your team already knows. Chapter 10 defines the constraints that make these context artifacts effective. Chapter 11 teaches the context engineering discipline that determines how and when they load. This chapter showed you the artifacts themselves.
 
-The directory structure and primitive types in this chapter can be built by hand, and for a first project, doing so builds understanding. For subsequent projects, or for teams standardizing across repositories, the mechanical work of scaffolding and sharing benefits from a distribution mechanism, the same pattern npm brought to JavaScript modules. This category of tooling is new. One open-source implementation is APM (Agent Package Manager), built by the author of this book. You can build everything in this chapter without it; tooling reduces the scaffolding work from hours to seconds.
+The directory structure and substrate primitives in this chapter can be built by hand, and for a first project, doing so builds understanding. For subsequent projects, or for teams standardizing across repositories, the mechanical work of scaffolding and sharing benefits from a distribution mechanism, the same pattern npm brought to JavaScript modules. This category of tooling is new. One open-source implementation is APM (Agent Package Manager), built by the author of this book. You can build everything in this chapter without it; tooling reduces the scaffolding work from hours to seconds.
 
 > **Shortcut: scaffolding with a package manager**
 >
@@ -782,7 +795,7 @@ The directory structure and primitive types in this chapter can be built by hand
 ::: {.callout-note}
 ## From primitives to frameworks
 
-The primitives in this chapter — instructions, agents, skills, prompts, memory — are the *library* layer of the agentic computing stack introduced in Chapter 4. Above them, framework-layer tooling is beginning to emerge: opinionated systems that compose these primitives into complete workflows.
+The substrate primitives in this chapter -- PERSONA SCOPING FILE, MODULE ENTRYPOINT, SCOPE-ATTACHED RULE FILE, CHILD-THREAD SPAWN, TRIGGER ORCHESTRATOR, PLAN PERSISTENCE -- are the *library* layer of the agentic computing stack introduced in Chapter 4. Above them, framework-layer tooling is beginning to emerge: opinionated systems that compose these primitives into complete workflows.
 
 Two early examples. **Squad** (`github.com/bradygaster/squad`) provides repository-native multi-agent orchestration built on GitHub Copilot, consuming instruction and agent primitives to dispatch specialized agents in coordinated workflows[^ch9-squad]. **Spec-Kit** (`github.com/github/spec-kit`) takes spec-driven development further — specifications become executable artifacts rather than passive context[^ch9-speckit].
 
@@ -792,6 +805,42 @@ An honest hedge: these tools are early. The *pattern* — frameworks that consum
 :::
 
 Now you know what to build. What follows is how to make it work.
+
+---
+
+## Appendix A: The seven file-shape view (legacy diagram)
+
+Earlier editions of this chapter organized primitives by file extension and use case. That view is the reader's shortest path from a `.cursor/rules/auth.mdc` they already see in their tree to the substrate role it plays. The substrate view in the body of this chapter is the more durable cut: it survives extension renames, frontmatter dialect drift, and cross-harness migration. Two views, one taxonomy.
+
+```{mermaid}
+%%| label: fig-seven-file-shapes-legacy
+%%| fig-cap: "Legacy file-shape view: the seven primitive types organized by extension"
+%%| fig-alt: "Block diagram showing seven file shapes arranged in a 4-by-2 grid. Row 1: Instructions (.instructions.md), Agents (.agent.md), Skills (SKILL.md), Prompts (.prompt.md). Row 2: Memory (.memory.md), Orchestration (.spec.md), Hooks (event-driven). The seventh slot in row 2 is empty."
+block-beta
+    columns 4
+    A["Instructions<br/>.instructions.md<br/>-<br/>Scoped conventions<br/>per file/directory"]:1
+    B["Agents<br/>.agent.md<br/>-<br/>Specialist personas<br/>with tool boundaries"]:1
+    C["Skills<br/>SKILL.md<br/>-<br/>Reusable decision<br/>frameworks"]:1
+    D["Prompts<br/>.prompt.md<br/>-<br/>Repeatable<br/>workflows"]:1
+    E["Memory<br/>.memory.md<br/>-<br/>Cross-session<br/>knowledge"]:1
+    F["Orchestration<br/>.spec.md<br/>-<br/>Execution-ready<br/>specifications"]:1
+    G["Hooks<br/>event-driven<br/>-<br/>Automated actions<br/>on dev events"]:1
+```
+
+The mapping from file shapes to substrate roles:
+
+| File shape (legacy view) | Substrate primitive (canonical) |
+|--------------------------|----------------------------------|
+| `.instructions.md` | SCOPE-ATTACHED RULE FILE |
+| `.agent.md` | PERSONA SCOPING FILE |
+| `SKILL.md` | MODULE ENTRYPOINT |
+| `.prompt.md` | (Chapter 10 -- reusable workflow) |
+| `.memory.md` | PLAN PERSISTENCE > cross-session memory |
+| `.spec.md` | (Chapter 10 -- PROSE specification) |
+| Hook config | TRIGGER ORCHESTRATOR |
+| (no file) | CHILD-THREAD SPAWN (runtime affordance) |
+
+Two file shapes (`.prompt.md`, `.spec.md`) move to Chapter 10 because they are content a thread executes rather than a substrate slot the harness loads. One substrate role (CHILD-THREAD SPAWN) has no file shape at all because it is a runtime affordance the harness exposes. The remaining six file shapes map cleanly onto the canonical primitives.
 
 [^ch9-lint]: Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Failures in Chapter 14.
 [^ch9-scope]: The principle of scoped, hierarchical configuration mirrors established patterns in software engineering — from CSS specificity to Git's nested .gitignore files. The key insight is that agents benefit from the same locality-of-reference that makes these patterns effective for humans.

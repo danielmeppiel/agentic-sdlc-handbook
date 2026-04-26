@@ -6,7 +6,7 @@ You have a codebase with 200,000 lines of code, a style guide nobody reads, thre
 
 ---
 
-## The Context Budget
+## The Attention Budget
 
 Every AI interaction operates within a fixed capacity. A context window is not a bucket you fill; it is a budget you allocate. Like any budget, the question is not "how much can I spend?" but "what do I spend it on?"
 
@@ -48,6 +48,38 @@ These allocations are starting recommendations from the author's practice — ob
 Those 20K instruction tokens are approximately 800 lines of typical prose markdown. If your global instructions alone consume 400 of those lines, you've spent half your instruction budget before a single scoped rule loads. And the 60K for code context sounds generous until you realize a single mid-sized module — types, implementation, tests — can easily consume 15K tokens. At scale, every line of instruction competes directly with a line of source code the agent could have seen instead.
 
 Two practical implications follow. First, shorter sessions produce better results than longer ones, because conversation history consumes progressively more of the budget. When a session has been running for 30 turns, the instructions you set at the beginning are competing with pages of accumulated dialogue. Second, loading instructions that aren't relevant to the current task is not neutral — it actively degrades performance on the task that matters.
+
+The segment view answers a question of *spend*: of the tokens you load, what fraction goes to instructions, to code, to history. It does not answer the deeper question of *weight*: of the tokens already in the window, which ones the model is actually attending to right now. Treating the window as a flat buffer hides this. The rest of the chapter treats it as an attention budget instead — a resource that decays with distance and must be actively renewed.
+
+### Attention is not uniform
+
+Tokens in a context window are not weighted equally. Material at the start of the window and material near the current turn carry disproportionate influence; material in the middle degrades.[^ch11-middle] In a long session, the same effect operates across turns: instructions issued at turn 0 lose influence by turn 30, not because they have been evicted from the window, but because the model's attention is preferentially anchored to the recent end of the conversation. The token is still there. It is just no longer load-bearing.
+
+This is the property that makes context engineering a discipline rather than an allocation problem. If attention were uniform, "fit it in the window" would be a complete strategy. Because attention decays with distance, the question shifts: how do you keep the goal, the hard constraints, and the acceptance criterion *load-bearing* at turn 30, when they were stated at turn 0?
+
+### The ATTENTION ANCHOR
+
+The cure for this failure mode has a name: the **ATTENTION ANCHOR**. The definition is worth quoting in full, because the property the pattern relies on has no classical software-engineering counterpart:
+
+::: {.callout-note appearance="simple"}
+**B8. ATTENTION ANCHOR**
+
+CLASSICAL ANALOG: NONE. This pattern has no faithful classical counterpart -- it is induced by LLM physics (attention decay over distance / over turns) rather than by software-engineering structure. It is, however, the single most important behavioral pattern for any non-trivial agent task.
+
+WHEN: any session that will exceed roughly a few dozen turns, or any plan whose acceptance criterion / hard constraints were established at turn 0 and must still hold at turn N. Long-running tasks WITHOUT periodic re-injection of the goal and hard constraints DRIFT silently from initial intent. This is the dominant failure mode of agentic work past trivial scope.
+
+MECHANISM: the goal, the hard constraints, and the acceptance criterion are RE-INJECTED into context at scheduled boundaries:
+
+- start of every meaningful step,
+- before any spawn,
+- after any spawn returns,
+- after any tool failure or error recovery,
+- at any natural pause in execution.
+:::
+
+Three things to read out of that definition. First, the cure is *behavioral*, not architectural — no new file format solves this; the operator (or the orchestrator) has to actively re-state the goal at the listed boundaries. Second, the anchor's source of truth lives outside the context window, so it cannot itself decay. In practice this is a plan file, persisted on disk and re-read on demand — the primitive Chapter 9 catalogs as PLAN PERSISTENCE. Third, the anchor is the goal plus the hard constraints, *not the full plan body*. Re-injecting too much defeats the savings of the original decomposition. The discipline is concise, deliberate restatement, performed often.
+
+The rest of this chapter is organised around making that discipline sustainable: the instruction hierarchy and skill design keep the *static* anchor relevant and small; the memory and retrieval section makes the *dynamic* anchor (re-injection at boundaries) cheap to perform; the worked example walks through one full session to show what the discipline looks like in practice.
 
 ## The Instruction Hierarchy
 
@@ -109,7 +141,7 @@ When an agent edits `src/auth/token_resolver.py`, the effective context is:
 
 When the same agent later edits `src/frontend/dashboard.tsx`, the auth rules unload and frontend rules load. The global principles persist. This is the Explicit Hierarchy constraint in action: specificity increases as scope narrows, and irrelevant context is automatically excluded.
 
-The practical benefit is measurable. A project with 300 lines of instructions split across 8 scoped files will produce more consistent agent output than a project with 100 lines in a single global file. Note that the scoped version also contains more total content; the comparison illustrates both the value of structure and of comprehensive coverage. The split version loads 30-50 relevant lines per task; the monolithic version loads all 100 regardless of relevance.
+The practical benefit is measurable. A project with 300 lines of instructions split across 8 scoped files will produce more consistent agent output than a project with 100 lines in a single global file. Note that the scoped version also contains more total content; the comparison illustrates both the value of structure and of comprehensive coverage. The split version loads 30-50 relevant lines per task; the monolithic version loads all 100 regardless of relevance. The hierarchy is the *static* half of attention discipline; the ATTENTION ANCHOR (see §The ATTENTION ANCHOR above) is the *dynamic* half.
 
 ## Agent Configuration
 
@@ -200,6 +232,8 @@ Skills vs. one-off instructions: if you find yourself writing the same instructi
 
 Agents are stateless. Every session starts with an empty context window, and every session's accumulated knowledge vanishes when it ends. This is a fundamental constraint, not a bug to work around.
 
+Statelessness has two forms, and they have different cures. The form most readers think of first — context vanishes when the session ends — is solved by session discipline (when to reset, what to carry forward; covered below). The second form is subtler and operates *inside* a single session: tokens stated early lose attention weight as the session extends, even though they remain nominally in the window. The cure for the second form is not retrieval; it is re-injection. The §Re-injection boundaries subsection below makes that concrete.
+
 Three strategies address it.
 
 **Session context.** Within a single session, the agent accumulates information through conversation turns. Tool outputs, file reads, and your corrections all become part of the working context. This is the most natural form of memory, and the most fragile — it degrades as the session grows, and it disappears when the session ends. Session discipline means recognizing when the accumulated context has grown large enough to dilute the instructions. At that point, start a fresh session. Carry forward the relevant findings; leave the exploration history behind.
@@ -219,6 +253,20 @@ When you reset, carry forward a one-paragraph summary of what was decided and wh
 Co-location deserves specific attention. If your authentication logic is in `src/auth/` and your authentication documentation is in `docs/auth-guide.md`, an agent working on auth code may never see the documentation unless explicitly pointed to it. If instead the module-level README or instruction file references the key decisions — or better, if the decisions are encoded as scoped instructions — the knowledge is available where it's needed. Structure your repository so that the knowledge an agent needs is either scoped to the directory it's working in or discoverable through the instruction hierarchy. This is an architectural choice, not a tooling choice.
 
 The decision of what to externalize vs. what to keep in instructions follows a simple rule: if the knowledge is needed on every task in a given scope, it goes in instructions (it's always loaded). If the knowledge is needed occasionally, it goes in retrievable storage (it's loaded on demand). If the knowledge is needed once, it lives in the session prompt.
+
+### Re-injection boundaries
+
+The ATTENTION ANCHOR prescribes five boundaries at which the goal and hard constraints should be re-injected into the active context:
+
+- start of every meaningful step,
+- before any spawn,
+- after any spawn returns,
+- after any tool failure or error recovery,
+- at any natural pause in execution.
+
+In a tool like Copilot CLI, Claude Code, or Cursor, the practical translation is direct. *Start of every meaningful step* means the operator (or the agent, when self-directing) re-reads the plan file before opening a new file or calling a new tool, and quotes the relevant goal back at the top of the prompt. *Before any spawn* means a sub-agent prompt is constructed by copying the goal and the acceptance criterion verbatim into the dispatch — never relying on the parent's already-decayed context to be inherited. *After any spawn returns* means the parent re-states the goal before integrating the child's output, because the parent has just spent N turns watching unrelated work. *After any tool failure* covers the case where a stack trace, a long diff, or a long error message has just consumed the last several thousand tokens of attention; the goal has been pushed to the middle of the window and needs to be brought back to the front. *At any natural pause* is the cheap move: when the next step is uncertain, re-read the plan rather than extrapolate from the conversation tail.
+
+These boundaries are the same boundaries Chapter 13 calls *checkpoints*. The execution chapter views them as the moments when validation happens; this chapter views them as the moments when attention is renewed. They are the same moments. Both views are correct.
 
 ## The Context Audit
 
@@ -301,6 +349,41 @@ This pattern repeats across every category of work. Adding a new API endpoint wi
 
 The critical point is that none of these failures are model failures. The model is capable of doing the right thing in every case. It does the wrong thing because it lacks the information. Context engineering closes that gap.
 
+## Re-anchoring a long plan: a worked example
+
+Consider a session whose goal is `Refactor the authentication module to use the AuthResolver chain; do not break the legacy basic-auth path; ship with parity tests green.` The plan file lives at `plan.md` in the working directory. It contains, at the top, the goal verbatim, two hard constraints (`do not modify token storage schema`, `parity tests must remain green`), and an ordered todo list of seven steps.
+
+The naive execution runs straight through, accumulating context as it goes. By turn 25 the model has read four files, modified three, hit two test failures, and watched a long stack trace go by. The original goal is still in the window — somewhere around turn 0 — but its attention weight has decayed. The model now proposes a refactor of token storage, because the local context of turn 25 makes that refactor look reasonable. The goal said *do not modify token storage schema*. The constraint is no longer load-bearing.
+
+The anchored execution looks different. The plan file is re-read at each of the five ATTENTION ANCHOR boundaries. Mechanically, the re-injection is one cheap action: the operator (or the orchestrator) prepends a four-line block to the next prompt — `Goal: ...` / `Hard constraints: ...` / `Acceptance: ...` / `Current step: 4 of 7` — drawn from the plan file. The token cost is small. The effect is to push the goal back to the high-attention end of the window. The proposal to refactor token storage now lands against an active constraint rather than a decayed one, and is correctly rejected.
+
+The diagram below shows the same session in attention-weight terms: the five anchor positions across a 30-turn session, each one a moment where the goal is renewed from the on-disk plan file.
+
+```{mermaid}
+%%| fig-width: 5.5
+%%| fig-cap: "Attention re-injection points across a 30-turn session. Without re-injection, the goal stated at turn 0 decays into the low-weight middle of the window. Each anchor point copies the goal back to the high-weight recent end. The on-disk plan file is the substrate that all anchors read from."
+%%| fig-alt: "Flowchart with five labeled anchor positions across a 30-turn session. Turn 0 begins with goal and constraints at full attention weight. By turn 10, attention to early tokens has decayed and an anchor re-injection at turn 10 restores the goal. Turn 16 shows a pre-spawn anchor before dispatching a sub-agent. Turn 21 shows a post-spawn anchor when the parent recovers focus. Turn 25 shows a post-failure anchor after a tool error consumed attention. Turn 30 shows the acceptance check reading from the same anchor source. Across the bottom, an arrow labeled PLAN PERSISTENCE indicates the on-disk plan file as the substrate that all five anchors read from."
+%%| label: fig-attention-anchor
+flowchart LR
+    T0["turn 0<br/>GOAL + CONSTRAINTS<br/>injected fresh"] --> T10
+    T10["turn 10<br/>anchor: re-inject<br/>at step boundary"] --> T16
+    T16["turn 16<br/>anchor: pre-spawn<br/>copy goal to child"] --> T21
+    T21["turn 21<br/>anchor: post-spawn<br/>parent recovers focus"] --> T25
+    T25["turn 25<br/>anchor: post-failure<br/>after error recovery"] --> T30
+    T30["turn 30<br/>acceptance check<br/>reads same anchor"]
+
+    PP["PLAN PERSISTENCE<br/>(on-disk plan.md - survives the window)"]
+    PP -. "re-read" .-> T10
+    PP -. "re-read" .-> T16
+    PP -. "re-read" .-> T21
+    PP -. "re-read" .-> T25
+    PP -. "re-read" .-> T30
+```
+
+The cadence in the diagram is roughly one anchor per ten turns of unstructured work, with extra anchors triggered by spawn boundaries and error recovery. On a 128K-token window with average turn cost of ~1K tokens, that is an anchor every ~10K tokens of accumulated session context — a useful default to start from, not a benchmark. Calibrate based on observed drift: if the agent proposes work that violates a stated constraint, the previous anchor was too far back.
+
+The substrate that makes all of this cheap is the plan file. The anchor itself is short — three or four lines — but the *source of truth* for the anchor lives outside the window so it cannot itself decay. Chapter 9 catalogs that file as a primitive in its own right (PLAN PERSISTENCE). The anchor is the discipline; the plan file is the substrate the discipline reads from.
+
 ## Common Mistakes
 
 **Over-stuffing context.** The instinct to provide more information is strong and almost always counterproductive. A 400-line instruction file doesn't give the agent "more to work with." It gives it more to get distracted by. Instructions should be the minimum sufficient guidance for their scope. If you can't remember what's in your instruction file without re-reading it, the agent is having the same problem.
@@ -315,6 +398,12 @@ The critical point is that none of these failures are model failures. The model 
 
 **Treating context engineering as a one-time setup.** It is not. It is a continuous discipline, like testing or code review. Your codebase evolves. Your conventions evolve. Your context artifacts must evolve with them. Budget time for primitive maintenance the way you budget time for dependency updates — small, regular investments that prevent large, painful corrections.
 
+**ANCHOR DRIFT.** Silently rewriting the goal or the acceptance criterion mid-session to match emerging results. The anchor is now a description of what the agent is doing, not a constraint on what it should be doing. If the goal genuinely needs to change, change it explicitly — escalate to a human, update the plan file, and re-state the new goal as a fresh anchor. Quiet edits to the anchor are how long sessions converge on the wrong deliverable.
+
+**OVER-ANCHORING.** Re-injecting the entire plan body on every turn. The anchor is meant to be the goal plus the hard constraints, not the full plan. Re-injecting too much defeats the savings of the original decomposition and crowds out the working context the model needs to actually take the next step. Three or four lines is usually enough. If the anchor has grown past half a screen, the plan itself probably needs to be split.
+
+**IMPLICIT-ANCHOR.** Assuming the model "remembers" the goal because it was stated at turn 0. Attention decays with distance; early tokens lose influence. There is no implicit anchor in a long session — there is either an explicit re-injection at the boundaries listed in §Re-injection boundaries, or there is silent drift. The choice is binary.
+
 ---
 
 ## The Minimal Viable Context
@@ -326,6 +415,7 @@ If the audit feels like a large undertaking, start smaller. The minimum viable c
 | Global instructions | Project-wide | 5-10 non-negotiable principles (error handling, security, testing) |
 | One domain instruction | Your most-edited module | The patterns and constraints specific to where agents will work most |
 | One agent configuration | Your most common task type | The expertise and behavioral constraints for the work agents do daily |
+| Plan file (`plan.md`) | Per-session | Goal + hard constraints + acceptance criterion at the top; ordered todo list below; re-read at every step boundary (see §The ATTENTION ANCHOR; Ch09 PLAN PERSISTENCE) |
 
 Write these three files. Use the agent on a real task. Observe what goes wrong. Fix the context files. Repeat. Within a few iteration cycles you'll have a context architecture that's shaped by actual failure modes rather than theoretical completeness, and that architecture will be more effective than any comprehensive upfront design.
 

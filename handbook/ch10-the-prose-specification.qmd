@@ -71,6 +71,18 @@ description: >
 
 The agent working on a database migration sees this description and skips it. The agent building a user registration form loads the full content.
 
+### Realized by: C1 LAZY ASSET
+
+The progressive-disclosure constraint has a named pattern that satisfies it at source. Genesis defines it verbatim:
+
+> C1. LAZY ASSET. WHEN: a MODULE ENTRYPOINT bundles knowledge that only some invocations need. Loading it eagerly inflates every session. MECHANISM: the SKILL.md body names the asset by relative path; the agent loads it only when the process step that needs it executes. The asset stays out of context until then. ANTI-PATTERN: EAGER BLOAT - inlining the asset into SKILL.md "for convenience". Every dispatch hit pays the load cost.
+>
+> Source: `genesis/skills/genesis/assets/design-patterns.md:47-60`.
+
+The skill frontmatter shown above is the LAZY ASSET declaration. The description is read at session start; the body, and any assets the body references, are read only when the dispatcher activates the skill for a matching task. The structural counterpart - the link itself - is S5 LAZY PROXY: a relative-path placeholder the runtime materializes on demand. The two compose: declare with C1, reference with S5.
+
+The "before / after" pair shown next is, in Genesis terms, a refactor from EAGER BLOAT to LAZY ASSET + LAZY PROXY. Naming the pattern lets a reviewer point at a specific deviation ("this skill inlines its 800-line evaluation rubric - convert to LAZY ASSET") instead of restating the full constraint each time.
+
 ### Anti-pattern: Context dumping
 
 The most common violation of Progressive Disclosure is loading everything upfront. A single instruction file that inlines the full coding standards, the complete API reference, the authentication guide, and the error taxonomy, all in one document, wastes context capacity on material that is irrelevant to most tasks. The agent's attention spreads across thousands of tokens of guidance, most of which do not apply.
@@ -138,6 +150,18 @@ Each phase operates with a clean context. The diagnosis phase does not carry the
 
 **Session splitting across domains.** When a change spans multiple domains (frontend, backend, database) use separate sessions for each. A backend agent does not need the frontend component tree in its context. A database migration agent does not need the UI routing logic.
 
+### Realized by: C3 THREAD SPAWN
+
+The pattern Genesis catalogues for the Reduced-Scope constraint:
+
+> C3. THREAD SPAWN. WHEN: a unit of work benefits from a fresh context window - isolation from siblings, full attention on its own scope. MECHANISM: parent invokes the harness's spawn affordance with a task description and (optionally) a persona / module to load at startup. Child runs, returns a value, exits. ANTI-PATTERN: UNBOUNDED SPAWN - letting any thread spawn any depth of descendants. Couple with SUPERVISOR (B3) to bound the tree.
+>
+> Source: `genesis/skills/genesis/assets/design-patterns.md:88-102`.
+
+The five-session JWT-auth decomposition shown later in this chapter (see "Applying the Constraints") is one C3 THREAD SPAWN per session. Each child receives a task description, a fresh context window, and a narrow set of files. None of the children inherit the parent's accumulated trace. The orchestrator that issues the spawns is the SUPERVISOR (B3) referenced above; bounding the spawn tree prevents "the agent that spawned an agent that spawned an agent" - the most common failure mode of decomposition without a supervisor.
+
+**A note on long sessions.** Reduced Scope handles drift caused by context-load size. A second, related drift mode - attention decay over turn count - is the subject of B8 ATTENTION ANCHOR, the LLM-physics-native pattern Chapter 11 covers as its spine. Where Reduced Scope says "keep the session small enough that the goal still fits", ATTENTION ANCHOR adds "and re-inject the goal at scheduled boundaries when the session must run long". The two are complementary; Ch11 specifies the re-injection schedule and anti-patterns (see §The Long-Session Problem in Chapter 11).
+
 ### Anti-pattern: Scope creep
 
 A session starts with a focused task. Mid-session, additional requests accumulate:
@@ -197,6 +221,18 @@ Each file has a single responsibility. The frontend instructions do not contain 
 ```
 
 The workflow does not restate the coding standards; the instruction files handle that. It does not redefine the agent's role; the agent configuration handles that. It composes existing building blocks into a sequence.
+
+### Realized by: S1 COMPOSED MODULE
+
+Composition is the structural constraint; Genesis names the structural shape that satisfies it:
+
+> S1. COMPOSED MODULE. WHEN: a high-order module's behavior is "load these N existing modules and orchestrate them". MECHANISM: the orchestrator module declares dependencies on the leaf modules and loads them at the relevant process step. No content is duplicated; each leaf evolves independently. ANTI-PATTERN: HIDDEN COUPLING - copying a leaf's content into the orchestrator instead of depending on it. Drift is guaranteed.
+>
+> Source: `genesis/skills/genesis/assets/design-patterns.md:195-209`.
+
+The decomposed setup at the end of this section - `python.instructions.md`, `integrators.instructions.md`, `testing.instructions.md` - is one COMPOSED MODULE arrangement: a project-level orchestrator declares the leaves, and each leaf is independently testable, debuggable, and versioned. The Monolithic-Prompt anti-pattern shown next is HIDDEN COUPLING in disguise: every concern is inlined into one file, so editing one rule risks unintended interaction with every other rule in the same context.
+
+The naming matters because the reverse refactor has a name too: when two leaves should never have been split (lockstep co-invocation, overlapping descriptions), Genesis catalogues R2 FUSE as the correction. The full source-time refactor verbs (R1 SPLIT / R2 FUSE / R3 EXTRACT / R4 INLINE) are the topic of Chapter 14.
 
 ### Anti-pattern: Monolithic prompt
 
@@ -266,11 +302,27 @@ Before modifying any authentication logic:
 
 The gate is part of the instruction, not an external enforcement mechanism. The agent's context includes the requirement to pause.
 
+**Realized by: S4 VALIDATION DECORATOR.** The named pattern behind the `**STOP**` gate shown above:
+
+> S4. VALIDATION DECORATOR. WHEN: a procedure produces an artifact whose correctness can be checked deterministically before downstream steps consume it. MECHANISM: wrap the producing step with a deterministic gate (linter, test run, schema validator, checklist invocation). The gate decides pass / revise. The decorated step keeps its single responsibility; the decorator owns the verification concern. ANTI-PATTERN: WRAPPING WITHOUT BLOCKING - recording violations to a log without halting. Non-blocking gates degrade to noise.
+>
+> Source: `genesis/skills/genesis/assets/design-patterns.md:251-264`.
+
+The anti-pattern is the discipline that matters in practice: a "stop" that does not stop - a checklist the agent is asked to complete after the fact, a comment-only review with no merge gate - is WRAPPING WITHOUT BLOCKING. The decorator must own the verdict.
+
 **Knowledge scoping.** Instructions load only when the agent is working on matching files. Backend security rules do not load when the agent edits CSS. Frontend accessibility requirements do not load during database migrations.
 
 Note: the `applyTo` pattern serves double duty. It is primarily an Explicit Hierarchy mechanism (see next section), defining *which rules apply where*. But it also functions as a knowledge boundary, constraining *what the agent knows* during a given task. The hierarchy section defines how `applyTo` works; this section explains why constraining knowledge matters for safety.
 
-**Deterministic tools as truth anchors.** When an agent claims a test passes, a boundary-constrained system requires the agent to actually run the test and report the deterministic result. Code execution, API calls, file system operations: these are deterministic tools that ground probabilistic generation in verifiable reality.
+**Realized by: B10 HUMAN CHECKPOINT.** Where the validation decorator gates an artifact, B10 gates an action that requires authority the agent does not have:
+
+> B10. HUMAN CHECKPOINT. WHEN: a step is irrecoverable, expensive, or requires authority the agent does not have. Common examples: shipping a release; merging to main; deleting persistent state; making any decision that the agent's self-confidence cannot resolve (drift detection; suspected hallucination; tie between equally-fit patterns). MECHANISM: the procedure halts at a named checkpoint. The agent emits a structured prompt to the human (current state, options, recommended choice with rationale, escape hatches). Execution does not resume until the human responds. The response IS the gate verdict.
+>
+> Source: `genesis/skills/genesis/assets/design-patterns.md:722-749`.
+
+The "must STOP before" entries in the Standard Role Boundaries table earlier in this section are HUMAN CHECKPOINTs by another name. The named anti-patterns to watch for: SILENT DRIFT (the agent suspects misalignment but powers through), CHATTY GATE (checkpointing on every minor decision so the human rubber-stamps), and POST-HOC CHECKPOINT (asking for approval after the action - that is a notification, not a gate).
+
+**Deterministic tools as truth anchors.** When an agent claims a test passes, a boundary-constrained system requires the agent to actually run the test and report the deterministic result. Code execution, API calls, file system operations: these are deterministic tools that ground probabilistic generation in verifiable reality. The structural seam this paragraph describes has a name in Genesis: S7 DETERMINISTIC TOOL BRIDGE - the contract between probabilistic LLM reasoning and deterministic execution. Where the boundary crosses out of the LLM layer entirely (apply a migration, post a comment, deploy a service), S7 is the named pattern; its full treatment lives in Chapter 12 alongside the multi-agent patterns it composes with.
 
 ### Anti-pattern: Unbounded agent
 
@@ -335,6 +387,18 @@ applyTo: "src/api/auth/**/*.py"
 
 More specific patterns override or extend less specific ones. The authentication module inherits general Python rules and general API rules, then adds its own security requirements.
 
+### Realized by: S6 RULE BRIDGE
+
+The pattern that turns directory- and pattern-scoped instruction files into a coherent hierarchy:
+
+> S6. RULE BRIDGE. WHEN: many personas share the same hard rules (encoding, secrets, review etiquette) but each persona has its own voice. Inlining the rules into every persona couples voice to rules; updating one rule requires editing N persona files. MECHANISM: extract the rules into SCOPE-ATTACHED RULE FILEs. The runtime auto-loads them on path / context match. Personas now vary along the LENS axis; rules vary along the CONSTRAINT axis; neither edits the other. ANTI-PATTERN: BAKED-IN RULES - repeating the encoding rule inside every persona. Drift, then contradiction.
+>
+> Source: `genesis/skills/genesis/assets/design-patterns.md:299-316`.
+
+The cascading `applyTo` files shown above are the Rule Bridge in practice: the specific authentication rules at `src/api/auth/**/*.py` load on path match, the general API rules at `src/api/**/*.py` load on the broader match, and the language-level rules at `**/*.py` load universally. An agent editing an authentication file inherits all three layers; an agent editing CSS inherits none of them. The hierarchy is real because the runtime resolves it, not because a human re-reads the rules each session - the bridge is a runtime contract, not editorial discipline.
+
+The Flat-Instructions anti-pattern that closes this section is BAKED-IN RULES at file scale: the entire repository's rules in one document, with no scope discrimination. Every agent loads every rule on every task; drift surfaces as cross-domain interference (the Python backend agent applying CSS naming guidance to module organization).
+
 **Compilation for portability.** Instruction files authored in tool-specific formats (`.instructions.md` with `applyTo`) can be compiled into hierarchical `AGENTS.md` files for universal portability. The source of truth is the authored instructions. The compiled output is the portable delivery format. This separation means the hierarchy works regardless of which AI coding tool the developer uses.
 
 This hierarchical structure is what makes context files distributable. Package managers for agent primitives — such as APM — automate the scaffolding and sharing of instruction hierarchies across repositories and teams. The constraint (hierarchical context) drives the tooling, not the reverse.
@@ -397,6 +461,23 @@ graph TD
     E <-- "hierarchy defines<br/>boundaries" --> S
     O <-- "composable units<br/>enable disclosure" --> P
 ```
+
+---
+
+## The Pattern Catalogue Beneath PROSE
+
+The five PROSE constraints answer the question "what must my setup do?". A separate, parallel question - "what shapes do I have to choose from when satisfying them?" - is the topic of the pattern catalogue. Genesis organizes that catalogue in four tiers:
+
+| Tier | What it names | Examples |
+|---|---|---|
+| Tier 0 - Substrate primitives | The six file shapes every agent harness implements under different folder names and frontmatter dialects. | PERSONA SCOPING FILE, MODULE ENTRYPOINT, SCOPE-ATTACHED RULE FILE, CHILD-THREAD SPAWN, TRIGGER ORCHESTRATOR, PLAN PERSISTENCE. |
+| Tier 1 - Per-harness affordances | Tool-specific syntax (`apm.yml`, `.cursor/rules`, `.github/workflows`). Loaded only at codegen time. | Adapter files per harness. |
+| Tier 2 - Design patterns | GoF-style creational / structural / behavioral patterns realized in agent setups. | C1 LAZY ASSET, S1 COMPOSED MODULE, S6 RULE BRIDGE, B8 ATTENTION ANCHOR. |
+| Tier 3 - Architectural patterns | System-shape compositions of Tier-2 patterns: the AI-native equivalents of Microservices, Pipes-and-Filters, Saga. | A1 PANEL, A2 PIPELINE, A4 STAFFED PLAN, A10 GOVERNED OUTER LOOP. |
+
+The constraints in this chapter are independent of which tier a solution lives at: a Progressive Disclosure win can come from a Tier-2 LAZY ASSET pattern in one repository or from a Tier-3 STAFFED PLAN topology in another. Naming the catalogue gives reviewers a shared vocabulary for "which pattern realizes this constraint here?" The full Tier-2 / Tier-3 catalogue, with WHEN clauses and anti-patterns, is the content of Chapter 12.
+
+**Selection produces an audit trail.** Each pattern in the catalogue carries a WHEN clause - the conditions that make it the right answer. Selection is therefore not a single pick but a comparison: the patterns considered, the patterns rejected, and the WHEN clause that cut the choice. A handoff packet that names the rejected patterns alongside the selected one is auditable in a way a single answer is not. This discipline, captured by Genesis as "rejection-with-WHEN-clause", is the structural counterpart to PROSE: PROSE constrains what counts as a valid answer; the rejection trail constrains what counts as a valid process for choosing one.
 
 ---
 
@@ -533,21 +614,21 @@ Without the boundary, the backend agent would have modified the API client using
 
 Use this checklist to evaluate whether your current setup satisfies PROSE constraints. Each question is specific enough to answer with a definitive yes or no.
 
-::: {tbl-colwidths="[5,18,70,7]"}
+::: {tbl-colwidths="[5,16,55,17,7]"}
 
-| # | Constraint | Question | Pass |
-|---|---|---|---|
-| P1 | Progressive Disclosure | Does every instruction file over 100 lines use links (not inline content) for subsidiary topics? | |
-| P2 | Progressive Disclosure | Does every cross-reference link include a description of what the target contains (not just a filename)? | |
-| R1 | Reduced Scope | Can you state each agent task in one sentence with a single deliverable? | |
-| R2 | Reduced Scope | Do multi-step workflows start each phase with a fresh context (no accumulated session state)? | |
-| O1 | Orchestrated Composition | Does each instruction file address exactly one concern (check: could you name the file after its single topic)? | |
-| O2 | Orchestrated Composition | Do workflow prompts reference shared instruction files by link rather than pasting their content? | |
-| S1 | Safety Boundaries | Does every agent configuration have an explicit `tools` list (no wildcards)? | |
-| S2 | Safety Boundaries | Is there a `**STOP**` gate before every operation that modifies auth, database schemas, or production config? | |
-| S3 | Safety Boundaries | Does every agent have a file-path boundary (explicit list of directories it may modify)? | |
-| E1 | Explicit Hierarchy | Do instructions exist at three or more specificity levels (e.g., root → domain → module)? | |
-| E2 | Explicit Hierarchy | Can you add module-specific rules without editing any file above that module's scope? | |
+| # | Constraint | Question | Realized by | Pass |
+|---|---|---|---|---|
+| P1 | Progressive Disclosure | Does every instruction file over 100 lines use links (not inline content) for subsidiary topics? | C1 LAZY ASSET + S5 LAZY PROXY | |
+| P2 | Progressive Disclosure | Does every cross-reference link include a description of what the target contains (not just a filename)? | C1 LAZY ASSET (description discipline) | |
+| R1 | Reduced Scope | Can you state each agent task in one sentence with a single deliverable? | C3 THREAD SPAWN | |
+| R2 | Reduced Scope | Do multi-step workflows start each phase with a fresh context (no accumulated session state)? | C3 THREAD SPAWN + B3 SUPERVISOR | |
+| O1 | Orchestrated Composition | Does each instruction file address exactly one concern (check: could you name the file after its single topic)? | S1 COMPOSED MODULE | |
+| O2 | Orchestrated Composition | Do workflow prompts reference shared instruction files by link rather than pasting their content? | S1 COMPOSED MODULE (no HIDDEN COUPLING) | |
+| S1 | Safety Boundaries | Does every agent configuration have an explicit `tools` list (no wildcards)? | S7 DETERMINISTIC TOOL BRIDGE (capability) | |
+| S2 | Safety Boundaries | Is there a `**STOP**` gate before every operation that modifies auth, database schemas, or production config? | S4 VALIDATION DECORATOR + B10 HUMAN CHECKPOINT | |
+| S3 | Safety Boundaries | Does every agent have a file-path boundary (explicit list of directories it may modify)? | S6 RULE BRIDGE (knowledge scoping via `applyTo`) | |
+| E1 | Explicit Hierarchy | Do instructions exist at three or more specificity levels (e.g., root -> domain -> module)? | S6 RULE BRIDGE | |
+| E2 | Explicit Hierarchy | Can you add module-specific rules without editing any file above that module's scope? | S6 RULE BRIDGE (no BAKED-IN RULES) | |
 
 :::
 
