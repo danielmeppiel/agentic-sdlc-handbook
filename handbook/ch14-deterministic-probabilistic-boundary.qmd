@@ -2,24 +2,154 @@
 title: "The Deterministic / Probabilistic Boundary"
 ---
 
-::: {.callout-note}
-## Chapter under construction (v2 draft)
+A team I worked with shipped a small agent on a Friday. Its job was modest: read incoming bug reports from a shared inbox, draft a GitHub issue, attach the relevant labels, mention the right account team. The agent was wired to a model, given a prompt, handed an API token, and let loose. For two weeks it worked. The team moved on.
 
-This chapter is being authored in Wave A of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+On the third Monday morning it produced an issue tagged with a customer name that did not exist. Not a misspelling — a fabrication. The agent had inferred from a thin signal in the email body that the report came from "Acme Robotics," a plausible-sounding company that was not, in fact, a customer. The label it picked was real and belonged to a different account. A real engineer was paged. A real customer success manager had to apologize for an issue their team had never filed. Nothing in the agent's logs explained why the name appeared, because the model that produced it does not, in any retrievable sense, know.
+
+The mistake was not the hallucination. Models hallucinate; that is what they do when asked about thin regions of their training distribution. The mistake was architectural. Between the model's output and the GitHub API call there was no gate — no schema, no allowlist, no deterministic check that the customer existed in the customer table before the issue was filed. The model proposed a write, and the substrate executed it. The agent had been handed the write token directly. There was no place in the system where a deterministic process could have said *no*.
+
+The cure is not a better model. The cure is to redraw the seam. The model proposes the issue body. A deterministic schema-checked transformer — the GitHub Agentic Workflows `safe-outputs:` block, or any equivalent — receives that proposal as a structured artifact, validates it against a declared shape, looks the customer name up in the canonical table, and only then calls the API. The agent never holds the write token. The substrate does. That single change converts a class of incidents from production pages into validation failures caught before any side effect leaves the box.
+
+This chapter is about that seam. Where it sits, what crosses it, what it costs to draw it correctly, and why the placement of the seam — not the choice of model, not the size of the context window, not the elegance of the prompt — is the single most important architectural decision in any agentic design.
+
+---
+
+## Two Computers, One Program
+
+Every agentic system you will ever build is the composition of two computers running in lockstep.
+
+The first is **the deterministic computer**. It is the machine you already know how to program. It executes the harness, runs the test suite, applies the lockfile, calls the GitHub API, writes to the filesystem, emits the audit trail. Given the same inputs it produces the same outputs. When it fails it fails loudly: a non-zero exit code, an exception, a schema violation, a CI red light. You have been debugging this computer for your entire career.
+
+The second is **the probabilistic computer**. It is the model. It takes a prompt and emits a sample from a distribution. Given the same inputs it produces *similar* outputs, not identical ones. When it fails it fails quietly: confident, plausible, wrong. The text reads well. The diff compiles. The function passes superficial review. Only the careful reviewer or the downstream test catches the error, and sometimes nobody does.
+
+The two computers have different failure ergonomics, different debuggability, different trust contracts. Treating them as a single machine — pretending that "the agent" is one coherent thing — is the source of more agentic incidents than any other category of mistake. They are not one thing. They are two things glued together, and the glue is the seam.
+
+The right way to read any agentic system diagram is to draw a line down the middle of the page, label the two sides, and ask: which boxes belong on which side, and what crosses the line in each direction? The table below is the spine of this chapter.
+
+| | Deterministic side | Probabilistic side |
+|---|---|---|
+| **What it does** | File I/O, tool calls, schema validation, test execution, lockfile resolution, allowlist enforcement, audit emission | Reads code, drafts prose, proposes diffs, summarizes intent, picks among options, generates plans |
+| **Failure mode** | Crash, exception, validation error — loud and traceable | Confident plausible wrong — silent and unfalsifiable from inside the model |
+| **What you trust** | The exact output, byte for byte | A distribution of outputs, conditioned on a prompt |
+| **What it costs** | Engineering hours per gate | Tokens per call, plus the cost of every failure that crosses the seam unverified |
+| **What crosses → into it** | Structured prompts, declared tool schemas, file contents grounded by `compile`-time loaders | Proposed actions (text), proposed writes (text), structured tool-call requests |
+| **What crosses ← out of it** | Parsed outputs validated against schema, writes filtered through an allowlist, flagged escalations to humans | Nothing direct: every probabilistic output passes through deterministic validation before it has consequences |
+
+Read each row as a constraint. The deterministic side is what you can audit. The probabilistic side is what you cannot. Anything consequential — anything with a side effect that costs real money or real trust to undo — must be executed on the deterministic side. The probabilistic side is allowed to *propose* anything; it is allowed to *do* nothing.
+
+The phrase "the agent is a junior engineer" from Chapter 8 was a mindset metaphor. The two-computers framing is the architecture metaphor that goes with it. A junior engineer with a write token to production is a liability. The cure is the same in both worlds: the junior engineer drafts a PR; the CI system, the reviewers, and the merge queue execute the change. The agent drafts an action; the substrate executes it.
+
+---
+
+## Consequential Side Effects Belong on the Deterministic Side
+
+Once you see the seam, the rule that follows is short. **The model proposes; the gate disposes.** Every consequential side effect — the kind whose reversal costs more than its execution — must be performed by the deterministic side, against a declared shape, against an allowlist the agent did not write.
+
+The Monday-morning failure had no gate. The fix has one. In a `gh-aw` workflow, the `safe-outputs:` block declares ahead of time the only kinds of side effect this workflow may produce: *create-issue*, *add-issue-comment*, *create-pull-request*, each with a typed schema and an optional allowlist for labels, target repositories, and issue assignees.[^ch14-safeoutputs] The agent emits a JSON artifact during its run; it never holds a token that can call the GitHub API directly. When the agent finishes, a deterministic post-stage reads the artifact, validates each entry against its declared schema, applies the allowlist filter, and only then calls the API. A fully compromised agent — one whose model has been manipulated, prompt-injected, or simply gone off the rails — cannot externalize an effect that the post-stage does not permit. The capability to externalize lives in the substrate, not in the prompt.
+
+This is **strong-form supervised execution**: the agent never holds the write capability.[^ch14-genesis-a9] We will return to the strong/weak distinction at the end of the chapter.
+
+`gh-aw` is one realization of this pattern. It is not the canonical form. Several other realizations exist; learning to recognize the same shape across them is the architect's skill.
+
+- A **CI lambda gating tool execution.** The agent runs in a sandboxed CI job. Its tool surface is restricted to a narrow set of read-only commands plus a single `propose-change` command that writes to a buffered artifact. After the agent exits, a separate Lambda function — running with a different IAM role — reads the artifact, validates it, and applies the change against the system of record. The agent's role has no write permissions. The Lambda's role does.
+- A **Buildkite job-level secret.** The agent runs in a job that has no access to the production deploy secret. It produces a pipeline manifest. A second job, pipeline-triggered and gated on a passing schema check, holds the secret and applies the manifest. Buildkite's per-step secret scoping is the substrate field that enforces the seam.
+- An **Argo workflow with manual approval.** The agent's step in the DAG is `propose-manifest`. The next step is a `Suspend` template that waits for human approval; only the resumption transitions into the deterministic `apply-manifest` step. The seam here is reified as a node in the DAG, not as a buffer between processes.
+- A **Temporal workflow with schema-checked activities.** The agent participates as a workflow step that returns a typed result. Activities — the things that have side effects — are separately registered, separately versioned, and called by the workflow only when the agent's typed result satisfies the activity's input schema. Replay-determinism is the substrate property that makes the seam auditable.
+
+The realizations differ in detail. They share the shape: the model emits a structured proposal; a deterministic process executes the proposal under a declared schema and a declared allowlist; the agent does not hold the externalization capability. Whichever your team standardizes on, the design conversation should use the substrate-level vocabulary — *capability gating*, *audit surface*, *post-stage* — not the vendor-specific syntax. The vendor-specific syntax only appears when you finally write the YAML.
+
+---
+
+## Hallucination as a System Property
+
+A common reaction to the Monday-morning failure is to ask whether a better model would have prevented it. The honest answer is: usually not, and even when it would, you would not know in advance which incidents had been prevented and which were merely deferred. Hallucination is not a bug a vendor can fix in the next release. It is a property of how generative models work.
+
+A pretrained model encodes a frozen distribution over text. When you ask it about a region of the distribution that is densely represented in training — a popular library, a well-documented API, a standard pattern — it samples confidently and usually correctly. When you ask it about a thin region — a specific customer's account configuration, a private codebase's internal helper, a fact that exists nowhere on the public web — it still samples confidently. The confidence is not calibrated against the density of training signal. The model produces a plausible answer because plausibility is what its objective function trained it to produce. Whether the answer is *true* is a question the model cannot, by construction, answer about itself.
+
+This means hallucination cannot be eliminated at the model layer. It must be managed at the system layer. Two disciplines compose to do that:
+
+1. **Grounding** keeps the model's queries inside the dense regions of its prompt. The bounded-scope rule — every external grounding lookup is justified by a specific decision the agent has to make in this turn, not loaded as ambient context — is the central discipline of @sec-bounded-scope. Grounded prompts produce fewer hallucinations because the model is no longer guessing; it is reading.
+2. **Verification** assumes hallucination happened anyway and catches it before it externalizes. This is what the gate does. The gate is not a backup plan for grounding; it is a separate layer. Grounding reduces the hallucination rate. Verification reduces the *consequence* of the hallucinations that survive grounding. Both are required because neither alone is sufficient.
+
+A team that responds to a hallucination incident by tightening the prompt and skipping the gate is making the wrong fix. The prompt change reduces incidence; the gate change reduces blast radius. The cost of an incident scales with blast radius, not incidence. Skip the gate and the next incident — and there will be one — costs as much as this one did.
+
+The taxonomy of failures that result from missing or misplaced gates is treated in detail in @sec-anti-patterns. For the purposes of this chapter, the relevant point is structural: hallucination is the load that the deterministic side exists to carry. If your architecture has nowhere to put it, the load lands in production.
+
+---
+
+## The Four Kinds of Quality Gate
+
+If the seam is the spine of agentic architecture, gates are the vertebrae. But "gate" is not a single thing, and picking the wrong kind for the failure mode you face is a design mistake the team only discovers at incident time. The 2x2 below closes the gate-design space.[^ch14-gate-tradeoffs] Cut on two axes: **who** renders the verdict (the agent's own process, or something outside it), and **how** the verdict is rendered (a programmatic check, or a judgement call). Four cells. Each cell has one shape of failure mode it catches well, and three it catches badly.
+
+| | Programmatic verdict | Judgement verdict |
+|---|---|---|
+| **Internal** (agent or its threads) | **Programmatic-internal:** schema validation, lint, test pass/fail, type check, the diff applied cleanly, the JSON parsed | **Judgement-internal:** the agent reviews its own plan against the goal; goal-steward thread re-reads the spec and asks "are we still on goal?" |
+| **External** (outside the agent process) | **Programmatic-external:** a fresh-context cold reader, given the artifact and a deterministic rubric, applies the rubric and emits pass/fail | **Judgement-external:** a human checkpoint — review, approval, sign-off — required before the workflow continues |
+
+Each cell is good at exactly one shape of failure mode. Picking the wrong cell is the design mistake. Four concrete mismatches:
+
+- **Using programmatic-internal to catch goal drift.** The test suite is green. The lint passes. The type checker is happy. The agent has implemented the wrong feature. Programmatic-internal gates verify *form*; they cannot verify that the form is the form you wanted. A team that responds to a wrong-feature incident by adding more tests is misreading the failure. The right gate is judgement-internal (a goal-steward) or judgement-external (a human checkpoint at the design step).
+- **Using judgement-internal to catch a schema violation.** The goal-steward thread says "yes, we are still implementing the rate limiter." The agent's emitted JSON has a misspelled field name. The downstream consumer crashes. Goal stewards are LLM judgement; they read for intent, not for byte-level conformance. Schema violations are programmatic-internal failures and want a programmatic-internal gate.
+- **Using programmatic-external to catch a hallucinated external fact.** The cold reader, given a rubric that checks structural correctness, sign-offs on an issue body that contains a fabricated customer name. The rubric never asked whether "Acme Robotics" was a real customer; the rubric asked whether the issue body was well-formed. Hallucinated external facts are caught by *grounded verification against a system of record* — a programmatic-internal lookup against the customer table — not by a cold reader reading prose.
+- **Using judgement-external to catch a typo in 200 lines of generated YAML.** The human reviewer eyeballs the diff, sees that it looks plausible, approves. The typo ships. Humans do not read 200 lines of YAML carefully; the review becomes a rubber stamp. The right gate is programmatic-internal — a YAML schema validator. Reserve human checkpoints for decisions a programmatic check cannot render: scope, trade-off, accountability for irreversible action.
+
+The selection rule is short: **pick the cell that matches the failure mode you are guarding against, not the first gate that fits.** A test suite is cheap to add and feels like progress. If the failure mode you fear is goal drift, the test suite is theater. The right gate may be more expensive in engineering hours; if it is the gate that matches the failure, it is the only gate that pays.
+
+```{mermaid}
+%%| label: fig-seam-flow
+%%| fig-cap: "The seam in operation: a probabilistic proposal is buffered, validated, allowlisted, and only then executed deterministically. The agent never holds the externalization capability."
+%%| fig-alt: "Left-to-right flowchart with two labeled regions. The left region, 'Probabilistic side,' contains a single node: the model produces a structured proposal. An arrow crosses the seam to the right region, 'Deterministic side,' which contains a sequence: schema validation, allowlist filter, audit log emission, side effect applied. A failure at any deterministic step routes back to a 'reject and surface' terminal node, not back into the model."
+flowchart LR
+    subgraph PROB[Probabilistic side]
+        M[Model emits<br/>structured proposal]
+    end
+    subgraph DET[Deterministic side]
+        V[Schema<br/>validation]
+        A[Allowlist<br/>filter]
+        L[Audit log]
+        X[Side effect<br/>applied]
+        R[Reject &<br/>surface]
+    end
+    M -- proposal artifact --> V
+    V -- valid --> A
+    V -- invalid --> R
+    A -- allowed --> L
+    A -- denied --> R
+    L --> X
+```
+
+The diagram shows the only flow this chapter contains. Everything else is categorical and lives in tables: the seam itself is a category boundary, not a sequence. The flow exists only inside the deterministic side, where flows make sense.
+
+---
+
+## Strong-Form Supervised Execution
+
+There are two ways to enforce the rule that the agent does not externalize. The first is a contract: the prompt tells the agent to plan, then call a tool, then verify, and the agent is asked to comply. This is **weak-form supervised execution**. It is adequate for inner-loop work on a developer's laptop, where the operator is the auditor and a misstep is recoverable by reverting the file. The agent holds the write capability throughout; the discipline is contractual.
+
+The second is **strong-form**. The substrate denies the write capability to the agent. The agent emits buffered outputs; a deterministic post-stage applies them under filters the agent cannot bypass. Even an agent that has been prompt-injected, jailbroken, or manipulated by a malicious upstream cannot externalize beyond what the post-stage permits. The capability lives in the substrate, not in the prompt.
+
+The preference rule is short: **when the trigger surface offers strong-form, use it.** Weak-form is a fallback for environments without runtime capability gating, not a stylistic alternative. A design that picks weak-form on a strong-form-capable surface — for example, an agent that calls the `gh` CLI to comment on a PR from inside a `gh-aw` workflow that already has a `safe-outputs: add-issue-comment` block — is leaving substrate-level safety on the table. Flag this in review.
+
+Strong-form supervised execution unlocks something that compliance organizations care about and that engineering organizations sometimes underestimate. It allows you to make a defensible claim about agent-driven changes. The claim is not "we trust the model"; the model is in the threat model, not outside it. The claim is "the model can propose any change; the substrate enforces what gets applied; the audit trail records every proposal, every accept, every reject, and the policy that was in force at the time." This is the same compliance posture as a human-on-prod-with-PR-required workflow, expressed in agent-aware vocabulary. Compliance reviewers who reject "the agent has a write token" will accept "the agent emits proposals; the substrate applies them under declared policy" because the latter is auditable in the same way human-driven workflows are auditable. The seam is what makes the audit possible.
+
+---
+
+## The Architect's Discipline
+
+Three habits make the seam visible in everyday work. They are unglamorous and they pay off every week.
+
+::: {.callout-tip}
+## The seam, in three habits
+
+1. **Draw the line on the diagram.** Before you write the prompt or the workflow, sketch the system and label which boxes are deterministic and which are probabilistic. Anything consequential on the probabilistic side is a design defect; redraw until consequential side effects sit on the deterministic side, behind a gate.
+2. **Pick the gate before you pick the model.** For each consequential effect, name the failure mode you fear and pick the gate cell — programmatic-internal, judgement-internal, programmatic-external, judgement-external — that catches it. Then implement the gate. The model choice is downstream.
+3. **Refuse the write token.** When a vendor or a tool offers the agent a credential that allows direct externalization, ask whether the trigger surface offers a strong-form alternative. If it does, take it. If it does not, document why you accepted weak-form and what the compensating control is. Never accept the token without making the choice explicit.
 :::
 
-## Thesis
+The seam is not a feature you turn on. It is a property of the architecture. You either have it or you do not, and the place to find out is in the design review, not in the post-mortem. The chapters that follow build on the seam: multi-agent orchestration places the seam between agents as well as between model and substrate; the architectural patterns chapter catalogues recurring shapes of the seam under classical names; the anti-patterns chapter (@sec-anti-patterns) traces the failures that happen when the seam is drawn in the wrong place or not at all.
 
-Every agentic system is the composition of two computers — a deterministic one (the harness, file I/O, tool calls, the test runner, the lockfile, the gh-aw audit trail) and a probabilistic one (the model). The single most important architectural decision in any agentic design is *where the seam between them sits and what crosses it*.
+A model that hallucinates a customer name on a Monday morning is not, in the end, a model problem. It is a system problem, and systems are what we build. The model proposes. The gate disposes. Everything else is detail.
 
-## The Monday-morning failure
+[^ch14-safeoutputs]: The `safe-outputs:` semantics are documented in the GitHub Agentic Workflows project: <https://github.com/githubnext/gh-aw/blob/main/docs/src/content/docs/reference/safe-outputs/index.md>. The block declares typed write capabilities (create-issue, add-issue-comment, create-pull-request, push-to-pull-request-branch, and others), each with optional schema constraints and allowlists. The agent runs without GitHub write tokens; a post-stage applies validated outputs against the declared filters. Verified-on dates and current capability inventory live in Appendix A.
 
-A team ships an agent that creates GitHub issues from incoming bug reports. It works for two weeks. Then it fabricates a customer name and creates an issue tagged with the wrong account. The model hallucinated; the system carried the hallucination through to a side effect because there was no deterministic gate between the model's output and the GitHub API call. The cure is to redraw the seam: the model proposes the issue body; a deterministic schema-checked transformer (the gh-aw `safe-outputs` block, or its equivalent) executes the API call against a controlled allowlist.
-
-## Sections (to be authored)
-
-1. Two computers, one program.
-2. Consequential side effects belong on the deterministic side.
-3. Hallucination as a system property.
-4. The four kinds of quality gate.
-5. Strong-form supervised execution.
+[^ch14-genesis-a9]: The strong-form / weak-form distinction is borrowed from agent-side architectural-pattern vocabulary, where it is catalogued as the two enforcement forms of supervised execution. See `architectural-patterns.md` and the gate-types section of `pattern-tradeoffs.md` in the [`danielmeppiel/genesis`](https://github.com/danielmeppiel/genesis) skill. Genesis names this pattern; this chapter names the practitioner-side discipline it implements. Treat the citation as out-of-band — the load-bearing argument here is the two-computers framing, which is independent of any one skill or harness.

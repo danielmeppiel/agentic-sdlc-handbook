@@ -2,29 +2,181 @@
 title: "The Runtime Machine"
 ---
 
-::: {.callout-note}
-## Chapter under construction (v2 draft)
+It is a Monday morning. A senior engineer — call her Maya — has spent the last two sprints instrumenting a service repository for agentic development under GitHub Copilot. Conventions live in `.github/instructions/api.instructions.md` with an `applyTo: "src/api/**"` frontmatter. A reusable code-review framework lives in `.github/skills/code-review/SKILL.md`. A specialist persona lives in `.github/agents/security-auditor.agent.md`. Agents bind reliably; reviews are sharper; her teammates have stopped relitigating naming conventions in pull requests. The instrumentation works.
 
-This chapter is being authored in Wave A of the Practitioner Block v2 build. The brief — including thesis, opening failure, section outline, diagrams, and citations — lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+This morning her team lead asks her to evaluate Claude Code on the same project. Maya clones the repo onto a fresh machine, installs the CLI, runs `claude` from the project root, and asks it to add an endpoint following the existing API conventions. Claude Code drafts the endpoint without consulting the convention file. The new code uses the deprecated authentication helper. None of the rules in `api.instructions.md` made it into the model's context. The skill in `.github/skills/code-review/` did not surface during the review. The security-auditor persona — the one her team has been calibrating for a month — is invisible.
+
+Same files. Same model family. Different harness. Silence.
+
+There is nothing wrong with Maya's primitives, and nothing wrong with Claude Code. What has happened is that Maya has been writing programs in a language whose compiler she did not know she was using. Copilot's loader recognizes `.instructions.md` files with an `applyTo` glob and reads them into context whenever a thread touches a matching path.[^ch9-copilot] Claude Code's loader does not. Claude Code reads a file called `CLAUDE.md` from the project root and then walks the directory tree for nested `CLAUDE.md` files, applying the closest one to whatever subtree the agent is working in.[^ch9-claude] The two harnesses agree on what a "scoped rule" *means* — text the model sees automatically when working in a particular part of the codebase — but they disagree, completely, on the file name, the folder, and the scope predicate. A developer who cannot name this disagreement experiences it as magic that comes and goes. A developer who can name it has a one-minute fix: write a `CLAUDE.md` at the repo root that says *for API code, follow the rules in `.github/instructions/api.instructions.md`*, and Claude Code will pull the file in via its `@path` import syntax.
+
+The point of this chapter is to give you the vocabulary. The runtime under your AI tools is not a single thing. It is the composition of four independently-replaceable parts, and most cross-vendor confusion is a mismatch on one of them. Once you can name the four parts, port stories like Maya's stop being stories and become bug reports.
+
+---
+
+## The four parts
+
+Every agentic system you will ever touch is built from the same four parts. They are not branding labels; they are functional roles, and any working setup must fill all four.
+
+```{mermaid}
+%%| fig-width: 5.0
+%%| label: fig-runtime-machine
+%%| fig-cap: "The four parts of the agentic runtime machine"
+%%| fig-alt: "A vertical stack of four labelled blocks, drawn as a layered diagram. From top to bottom: Trigger surface (what spawns a session — a developer command, a webhook, a scheduled workflow); Harness (the program that drives inference — Copilot, Claude Code, Cursor, Codex, OpenCode); Filesystem-as-loader (the directory layout the harness consults — instructions, skills, agents, memory files); Model (the inference engine — the LLM serving completions). An arrow on the right labelled Session start runs from top to bottom; an arrow on the left labelled Each tool call runs from bottom to top, indicating that the harness mediates every round trip between filesystem and model."
+block-beta
+    columns 1
+    Trigger["Trigger surface<br/>─<br/>What spawns the session<br/>(developer command, webhook,<br/>scheduled workflow)"]
+    Harness["Harness<br/>─<br/>The program that drives inference<br/>(Copilot, Claude Code, Cursor,<br/>Codex, OpenCode)"]
+    FS["Filesystem-as-loader<br/>─<br/>The directory layout the harness<br/>consults at session start and<br/>at tool calls"]
+    Model["Model<br/>─<br/>The LLM serving completions"]
+```
+
+**The model** is the inference engine — GPT-5, Claude Sonnet, Gemini, whatever serves the completion endpoint. It takes text in and produces text out. By itself it has no tools, no memory of yesterday, and no awareness of your codebase. Most developers think of "the AI" as the model. Most failures attributed to the model are not the model's fault.
+
+**The harness** is the program that drives the model. It is what runs in your terminal when you type `gh copilot`, `claude`, `cursor`, `codex`, or `opencode`. The harness manages the conversation, calls tools on the model's behalf, decides which files to load into context and when, and decides what to do with the model's output. The harness is the part that varies the most across vendors, and it is the part developers most often confuse with the model.
+
+**The filesystem-as-loader** is the directory layout the harness consults to decide what context the model should see. It is not a passive store of documentation. It is *executable configuration*: a particular file at a particular path with a particular frontmatter shape causes the harness to inject text into the model's context at a particular moment. Move the file, rename it, change its frontmatter, and the behavior changes — even though the model and the harness are unchanged. This is the layer Maya was unknowingly programming against.
+
+**The trigger surface** is whatever decides when a session runs in the first place. Most of the time the trigger is you, typing a command in a terminal. But the trigger may also be a GitHub Actions workflow firing on a pull-request event, a scheduled cron, a webhook from an issue tracker, or a Slack mention. The trigger surface chooses *whether* a session spawns and *with what bootstrap context*. It is orthogonal to the harness — a single trigger orchestrator like GitHub Agentic Workflows can spawn sessions in any of several harnesses inside the same run.[^ch9-substrate]
+
+These four parts are independent. The same primitives can run under Copilot or Claude Code; the same harness can drive any of several models; the same trigger surface can spawn either harness. When something behaves differently between two setups, the productive question is not "what is wrong with the AI?" but "which of the four parts changed?"
+
+---
+
+## Markdown that steers an LLM is code
+
+Look at one of Maya's instruction files. Thirty lines of markdown with a YAML frontmatter block declaring an `applyTo` glob. No braces, no semicolons, no compilation step a developer would recognize. It looks like documentation.
+
+It is not documentation. It has every property of a code artifact:
+
+- It is **parsed.** The harness reads the frontmatter and treats the body as semi-structured input. Misformat the frontmatter and the file silently fails to bind.
+- It is **linked.** When it says *follow the patterns in `tests/test_auth_middleware.py`* — or when it uses Claude Code's `@path` syntax to pull in another file — that reference is a real edge in a real dependency graph.
+- It is **loaded.** At a defined moment in the session lifecycle, the harness reads the file's contents and places them somewhere in the model's context window. This load is observable; you can ask the harness's verbose mode to print it.
+- It is **executed.** The text steers the next token the model emits. A poorly-worded instruction biases the output the way a buggy line of code biases the program. *Never use `_rich_info()` in error handlers* and *avoid `_rich_info()` in error handlers* are not the same instruction. The first prevents a regression. The second hedges enough that the agent will use it anyway.
+
+The implication is uncomfortable but freeing: every property you expect of code applies to these files. They have versions. They have tests (usually informal — does the agent behave correctly with this rule loaded?). They have regressions. They have linters and dependency closures. Treating them as documentation that occasionally affects the agent leaves you debugging through guesswork. Treating them as code lets you bring the full apparatus of code review, version control, and observability to bear.
+
+This is not metaphor. Chapter 19 will treat primitives as code in operational detail — lint, test, lockfile, CI. The reason that chapter exists is that this one is true.
+
+---
+
+## The harness is the compiler
+
+The most useful single sentence in this chapter is: *the harness is the compiler*.
+
+The model is a runtime. The filesystem is the source tree. The harness is the program that decides what compiles to what, in what order, at what visibility. Two harnesses given identical source produce different running programs because their compilers make different decisions. The decision space is small and enumerable, which is why portability is a problem you can solve rather than a fact you must accept.
+
+Consider a single primitive — a scoped rule that says *for code under `src/api/`, use the `auth_v2` helper, never `auth_v1`* — and how two harnesses materialize it.
+
+| Aspect                | GitHub Copilot                               | Anthropic Claude Code                       |
+|-----------------------|----------------------------------------------|---------------------------------------------|
+| File name             | `api.instructions.md` (any stem)             | `CLAUDE.md` (exact name, conventional)      |
+| Folder                | `.github/instructions/`                      | `src/api/CLAUDE.md` (nested in subtree)     |
+| Scope predicate       | `applyTo: "src/api/**"` glob in frontmatter  | Implicit by directory hierarchy             |
+| Multiple files        | Many `.instructions.md` files, glob-matched  | One closest `CLAUDE.md` wins per subtree    |
+| External references   | Plain markdown links                         | `@path` import syntax inlines the file      |
+| User-scope variant    | `.copilot/instructions/` in user home        | `~/.claude/CLAUDE.md` in user home          |
+| Loaded when           | A thread touches a matching path             | A thread starts work in that subtree        |
+
+Both harnesses implement the same substrate concept — text the model sees automatically when working in a particular part of the codebase — but the syntax is incompatible. A primitive written for one is silent in the other. This is not a bug in either tool; it is the unavoidable consequence of two compilers with different opinions about source layout.
+
+Cursor's `.cursor/rules/` directory and OpenAI Codex's `AGENTS.md` convention round out the same picture from different angles: same substrate concept, different surface syntax.[^ch9-cursor][^ch9-codex] OpenCode follows the AGENTS.md convention as well.[^ch9-opencode] The agentskills.io standard — the `SKILL.md` entrypoint with a description-driven match — is the one place the major harnesses have substantially converged, which is why skills port more cleanly than scope-attached rules.[^ch9-skills]
+
+The cross-harness load order looks like this:
+
+```{mermaid}
+%%| fig-width: 6.5
+%%| label: fig-load-order
+%%| fig-cap: "Cross-harness load order for the same project at session start"
+%%| fig-alt: "A two-column comparison diagram. The left column is labelled Copilot. The right column is labelled Claude Code. Each column shows a vertical sequence of load steps numbered 1 through 5, executed at session start. Copilot column, top to bottom: 1. Read user-level config from .copilot/. 2. Read .github/copilot-instructions.md if present. 3. Walk .github/instructions/ and pre-load files whose applyTo glob matches the current working path. 4. Make .github/skills/ available for description-driven activation. 5. Make .github/agents/ available for explicit invocation. Claude Code column, top to bottom: 1. Read user-level CLAUDE.md from ~/.claude/. 2. Read project root CLAUDE.md. 3. Walk subtree downward and load any nested CLAUDE.md whose directory contains the working path; resolve @path imports inline. 4. Make .claude/skills/ available for description-driven activation. 5. Make .claude/agents/ available for invocation via the Task tool. A note at the bottom reads: Same project; different closure of files in context."
+flowchart LR
+    subgraph Copilot
+        direction TB
+        C1["1. User config\n.copilot/"]
+        C2["2. Project base\n.github/copilot-instructions.md"]
+        C3["3. Glob-match instructions\n.github/instructions/*.instructions.md\nfiltered by applyTo"]
+        C4["4. Skills available\n.github/skills/*/SKILL.md"]
+        C5["5. Agents available\n.github/agents/*.agent.md"]
+        C1 --> C2 --> C3 --> C4 --> C5
+    end
+    subgraph ClaudeCode["Claude Code"]
+        direction TB
+        K1["1. User memory\n~/.claude/CLAUDE.md"]
+        K2["2. Project root\n./CLAUDE.md"]
+        K3["3. Nested memories\nsrc/.../CLAUDE.md\n@path imports inlined"]
+        K4["4. Skills available\n.claude/skills/*/SKILL.md"]
+        K5["5. Subagents available\n.claude/agents/*.md\nvia Task tool"]
+        K1 --> K2 --> K3 --> K4 --> K5
+    end
+```
+
+Notice that the *steps* line up — both harnesses do user-scope, then project-scope, then scoped rules, then skills, then specialist personas — but the *files* do not. A primitive set tuned for one harness is, at the file-naming layer, dead on arrival in the other. The fix is not heroic. It is mechanical: provide a thin shim file at the harness's expected path that re-exports the canonical primitives. Maya's project becomes Claude-Code-compatible the moment a `CLAUDE.md` at the repo root says, in plain markdown, *for code under `src/api/`, follow `@.github/instructions/api.instructions.md`*. The compiler now knows where the source is.
+
+::: {.callout-note}
+## Probing your harness
+
+If you are running Genesis as recommended in Chapter 8, you can probe the substrate model directly. Ask your agent: *load Genesis, then list the six runtime-affordance primitives and tell me which file in this project realizes each one for our current harness*. The skill walks its own per-harness adapter and prints the mapping. It is the fastest way to confirm what your harness will and will not see — and to spot the gaps Maya hit before they cost a sprint.[^ch9-genesis]
 :::
 
-## Thesis
+The compiler analogy has a second consequence worth stating. When you choose a harness, you are choosing a compiler. The decision is not reversible by editing a config file. Switching harnesses is a port, with all the same costs and gotchas as porting a program from one language to another. Most projects pay this cost only once, and pay it deliberately. The vocabulary of this chapter is what makes the port a project plan rather than a mystery.
 
-Every agentic system is the composition of four independently-replaceable parts: an inference model, a harness/runtime that drives it, a filesystem layout the harness consults, and one or more trigger surfaces that decide when the harness runs. A developer who cannot name these four parts cannot reason about why their setup behaves differently across vendors.
+---
 
-## The Monday-morning failure
+## Inference is per-thread; the filesystem is shared
 
-A senior engineer ports a working APM project from Copilot to Claude Code. The same primitive files. The same model family. The skills bind in Copilot; in Claude Code they go silent. Without the runtime-machine vocabulary, this is a mystery. With it, it is one of three diagnoses (the harness's load order, the file naming convention it parses, the binding mode of the primitive) — each one falsifiable with a one-minute test.
+The single most consequential structural property of this whole machine is one sentence:
 
-## Sections (to be authored)
+> Inference is per-thread; the filesystem is shared.
 
-1. The four-part machine.
-2. Markdown that steers an LLM is code.
-3. The harness is the compiler.
-4. Inference is per-thread; the filesystem is shared.
-5. What this chapter unlocks.
+When the harness spawns a session, it allocates a thread of inference — a context window, a token budget, a conversation log — that is private to that session. The thread is born empty and dies forgotten. Anything it learned during execution, any decision it made, any tool output it received, is gone the moment the session ends. There is no persistent memory inside the model. The session is amnesiac by construction.
 
-## Diagrams (to be drawn)
+The filesystem, by contrast, is the only thing that survives. Every primitive lives there. Every plan, every memento, every lockfile. When two threads run in parallel — a parent dispatching a child via Claude Code's Task tool, or a developer running two `gh copilot` sessions in two terminals — they share zero context. They communicate, if at all, by writing to and reading from the filesystem. The filesystem is the shared memory of every multi-thread agentic system that has ever existed.
 
-- Stacked-block diagram of the four-part machine.
-- Two-column comparison: Copilot's load order vs Claude Code's load order, same project.
+This is why the disciplines in Chapter 12 (load lifecycle) and Chapter 15 (multi-agent orchestration) center on the filesystem. When a long session loses the thread, the cure is *plan-write-then-reload* — the agent writes its plan to a file mid-session and re-reads the file at decision points. The plan survives the inference; the inference does not survive the plan. When a parent agent fans work out to children, the children inherit nothing from the parent's context except what the parent wrote down. A worker that needs to know the architecture decision its parent just made cannot ask the parent; it must read a file the parent wrote.
+
+If you accept one sentence from this chapter, accept that one. The amnesia of the model and the persistence of the filesystem are the load-bearing asymmetry. Every other discipline in this part of the book is a consequence of it.
+
+---
+
+## What this chapter unlocks
+
+You now have the vocabulary the rest of Part III is going to spend. A short forward map:
+
+**Chapter 10** treats the filesystem-as-loader as a thing you build, primitive by primitive. Now that you know the harness is the compiler and the filesystem is the source tree, the seven-primitive catalogue stops being a list of tools and starts looking like a small programming language.
+
+**Chapter 12** treats the load lifecycle in detail. You will learn what to look for in the harness's verbose output, how to compute the transitive closure of files that load when a primitive activates, and why your skill is silent when a parent rule file overflows the context budget.[^ch9-substrate2]
+
+**Chapter 14** locates the deterministic seam — the line between what the harness deterministically does and what the model probabilistically guesses. The model is one of the four parts. It is the only one that hallucinates. Knowing where it sits is what lets you put the irreversible side effects somewhere else.
+
+**Chapter 15** uses the per-thread/shared-filesystem asymmetry to design multi-agent topologies that stay coordinated when they fan out.
+
+**Appendix A** is the cross-harness reference. When you need to actually port Maya's project, that is where the matrix lives.
+
+---
+
+::: {.callout-tip}
+## TL;DR — Four parts, one machine
+
+1. **Name the four parts.** Model, harness, filesystem-as-loader, trigger surface. When something behaves differently between two setups, ask which of the four changed first.
+2. **Treat your markdown as code.** It is parsed, linked, loaded, and executed. Version it, review it, lint it, and write it precisely enough that the next agent does not hedge.
+3. **The harness is the compiler.** Two harnesses given the same primitives produce different running programs. Cross-harness portability is a project plan, not a mystery.
+4. **Inference is per-thread; the filesystem is shared.** Threads are amnesiac; the filesystem is the only memory that persists. Every coordination pattern in the rest of this book follows from that asymmetry.
+:::
+
+[^ch9-copilot]: GitHub, "Adding custom instructions for GitHub Copilot," `https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot`. The `applyTo` frontmatter field accepts a glob and binds the instruction file to any thread whose work path matches. Files live in `.github/instructions/` for project scope and `.copilot/instructions/` for user scope.
+
+[^ch9-claude]: Anthropic, "Claude Code: Memory," `https://docs.claude.com/en/docs/claude-code/memory`. Claude Code reads `CLAUDE.md` from the project root and then walks the directory tree, applying the closest `CLAUDE.md` in scope to work in that subtree. The body may import other markdown via the `@path` syntax. There is no glob predicate; hierarchy is the only scope selector.
+
+[^ch9-substrate]: This four-part decomposition borrows substrate vocabulary from the agent-side `danielmeppiel/genesis` skill, specifically `assets/runtime-affordances/common.md`, which enumerates six harness-agnostic primitive concepts and treats the trigger surface as orthogonal to the inference harness. *Agent-side reference; substrate concept.*
+
+[^ch9-cursor]: Cursor, "Rules for AI," `https://docs.cursor.com/context/rules-for-ai`. Cursor stores scoped rules in `.cursor/rules/` as files with frontmatter declaring globs and rule type. Same substrate concept as Copilot's instructions and Claude Code's nested memories; incompatible surface syntax.
+
+[^ch9-codex]: OpenAI, "Codex CLI: AGENTS.md," `https://github.com/openai/codex`. Codex follows the `AGENTS.md` convention — a single markdown file at the project root (and optionally nested) that the harness loads at session start. The convention has been adopted by several harnesses as a portable lingua franca for project-scope rules.
+
+[^ch9-opencode]: OpenCode, `https://opencode.ai/docs`. OpenCode loads `AGENTS.md` from the project root using the same convention as Codex, which makes a single `AGENTS.md` the cheapest portable target across the AGENTS.md-aware harnesses.
+
+[^ch9-skills]: agentskills.io, the open registry standard for the `SKILL.md` entrypoint with description-driven activation, has been adopted in substantially compatible form by Copilot (`.github/skills/<name>/SKILL.md`), Claude Code (`.claude/skills/<name>/SKILL.md`), and several others. Skills port across harnesses more cleanly than scope-attached rules because the standard pinned the file name and the activation contract.
+
+[^ch9-genesis]: Genesis ships per-harness adapters under `skills/genesis/assets/runtime-affordances/per-harness/` — one each for Copilot, Claude Code, Cursor, Codex, and OpenCode — each mapping the six substrate concepts to that harness's concrete file paths and frontmatter fields. *Agent-side reference; substrate concept.*
+
+[^ch9-substrate2]: The transitive-closure framing — the full graph of files that load when a primitive activates, including dependencies of dependencies — is borrowed from `danielmeppiel/genesis`, `assets/composition-substrate.md`. *Agent-side reference; substrate concept.*
