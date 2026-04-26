@@ -14,7 +14,7 @@ What Genesis gives you in one sentence: the same primitives, patterns, and disci
 Install:
 
 ```bash
-gh skill install danielmeppiel/genesis
+apm install danielmeppiel/genesis
 ```
 
 Or follow the per-harness installation notes in the Genesis README. Read this part with Genesis loaded; the chapters call out where Genesis names the same idea, in footnote form.

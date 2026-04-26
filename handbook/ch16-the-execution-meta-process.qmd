@@ -6,7 +6,7 @@ title: "The Execution Meta-Process"
 
 Here is what nobody tells you about using AI agents on a real codebase: the agent is the easy part. The hard part is knowing what to ask, in what order, and when to stop asking and start verifying.
 
-Chapters 10 through 12 gave you the building blocks — PROSE constraints to design by (Chapter 10), context engineering to feed agents accurately (Chapter 11), and multi-agent orchestration to coordinate at scale (Chapter 12). This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from "I need to change 75 files" to "the PR is merged with zero regressions" — and what happens at every decision point in between.
+Chapters 11 through 15 gave you the building blocks — PROSE constraints to design by (Chapter 11), the load lifecycle and attention economy that govern what reaches the model (Chapters 12 and 13), the deterministic/probabilistic seam that makes execution safe (Chapter 14), and multi-agent orchestration to coordinate at scale (Chapter 15). This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from "I need to change 75 files" to "the PR is merged with zero regressions" — and what happens at every decision point in between.
 
 The methodology is a five-phase meta-process. It works regardless of which AI coding tool you use, because it operates at a level above any specific tool's mechanics. The tool dispatches agents, runs tests, and manages files. You manage the process.
 
@@ -159,7 +159,7 @@ The most common dependency pattern is foundation-before-migration. Type definiti
 
 ### The One-File-One-Agent Rule
 
-The one-file-one-agent rule from Chapter 12 shapes wave design more than any other constraint. Within a wave, no two agents may edit the same file. If two logically independent changes both touch the same file, they go in separate waves, or they're assigned to a single agent that handles both changes in sequence.
+The one-file-one-agent rule from Chapter 15 shapes wave design more than any other constraint. Within a wave, no two agents may edit the same file. If two logically independent changes both touch the same file, they go in separate waves, or they're assigned to a single agent that handles both changes in sequence.
 
 ### Sizing Waves
 
@@ -188,7 +188,7 @@ The meta-process is abstract until you see it execute. This section summarizes a
 
 **Scope.** 5 cross-cutting concerns (auth resolver deduplication, verbose logging coverage gaps, CommandLogger migration, unicode symbol cleanup, and test coverage) touching 75 files across the entire source tree. The canonical metrics — files, lines, test counts, agent dispatches, escalations — are in the [APM Overhaul case study](../case-study-apm-overhaul.qmd). This section focuses on *how* the meta-process phases played out.
 
-**A note on timing.** The ~90-minute wave execution time reflects an experienced practitioner working with mature instrumentation: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 9). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.
+**A note on timing.** The ~90-minute wave execution time reflects an experienced practitioner working with mature instrumentation: battle-tested instruction files, established personas, and conventions already externalized into codebase instrumentation (Chapter 10). Your first time through will take roughly 3×. The first run is an investment in infrastructure that makes every subsequent run faster.
 
 ### Timeline
 
@@ -210,7 +210,7 @@ Across wave execution, the human intervened exactly three times, each mapping to
 2. **Escalation Handler** (during Wave 2): diagnosed an agent stall on install.py (58 call sites exhausted the context window), decided to split remaining work across two replacement agents rather than retrying.
 3. **Reviewer** (during Wave 2b): triaged a test failure caused by an ordering issue in the migration (a function call was migrated but its setup code wasn't) and directed a targeted fix.
 
-Three interventions, three roles, no overlap. These are the categories of human judgment that the meta-process surfaces, not eliminates. The [case study](../case-study-apm-overhaul.qmd) documents two additional escalation events (a token type correction and a silent NameError) that were caught during checkpoint verification and mapped to anti-patterns in Chapter 14.
+Three interventions, three roles, no overlap. These are the categories of human judgment that the meta-process surfaces, not eliminates. The [case study](../case-study-apm-overhaul.qmd) documents two additional escalation events (a token type correction and a silent NameError) that were caught during checkpoint verification and mapped to anti-patterns in Chapter 18.
 
 ---
 
@@ -264,7 +264,7 @@ The key discipline: adaptation is conservative. You add tasks, split tasks, reor
 
 ## Session Management
 
-Session discipline follows the principles established in Chapter 12. In the meta-process context, two additional considerations apply:
+Session discipline follows the principles established in Chapter 15. In the meta-process context, two additional considerations apply:
 
 **Phase transitions are natural reset boundaries.** Each wave is a logically complete unit of work. Starting a fresh session for each wave means every agent works with a clean context window, loaded with only the instructions and code relevant to its specific task. The orchestrating session is the exception: it runs long intentionally, accumulating task status, wave history, and decision rationale.
 

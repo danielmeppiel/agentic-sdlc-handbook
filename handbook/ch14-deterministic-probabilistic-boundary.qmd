@@ -70,7 +70,7 @@ A pretrained model encodes a frozen distribution over text. When you ask it abou
 
 This means hallucination cannot be eliminated at the model layer. It must be managed at the system layer. Two disciplines compose to do that:
 
-1. **Grounding** keeps the model's queries inside the dense regions of its prompt. The bounded-scope rule — every external grounding lookup is justified by a specific decision the agent has to make in this turn, not loaded as ambient context — is the central discipline of @sec-bounded-scope. Grounded prompts produce fewer hallucinations because the model is no longer guessing; it is reading.
+1. **Grounding** keeps the model's queries inside the dense regions of its prompt. The bounded-scope rule — every external grounding lookup is justified by a specific decision the agent has to make in this turn, not loaded as ambient context — is the central discipline of @sec-boundary-patterns. Grounded prompts produce fewer hallucinations because the model is no longer guessing; it is reading.
 2. **Verification** assumes hallucination happened anyway and catches it before it externalizes. This is what the gate does. The gate is not a backup plan for grounding; it is a separate layer. Grounding reduces the hallucination rate. Verification reduces the *consequence* of the hallucinations that survive grounding. Both are required because neither alone is sufficient.
 
 A team that responds to a hallucination incident by tightening the prompt and skipping the gate is making the wrong fix. The prompt change reduces incidence; the gate change reduces blast radius. The cost of an incident scales with blast radius, not incidence. Skip the gate and the next incident — and there will be one — costs as much as this one did.
