@@ -375,7 +375,7 @@ Technical anti-patterns happen in code. Organizational anti-patterns amplify eve
 
 Each organizational pattern amplifies a technical one. Over-trust amplifies the Trust Fall. Under-specification causes Context Dumping. No feedback loop perpetuates Not Fixing the Primitives. The fix is organizational: team agreements, review processes, and treating primitives as shared infrastructure.
 
-**Missing policy encoding.** Agents cannot infer organizational policies from training data. Your CELA review triggers, your data classification rules, your compliance thresholds — none of these exist in any model's weights. If a policy is not explicitly encoded in the context layer (instruction files, governance primitives, CI checks), agents will violate it with confidence and without warning. This is not a bug to be fixed; it is a permanent boundary. See Chapter 5 for the governance framework that addresses it.
+**Missing policy encoding.** Agents cannot infer organizational policies from training data. Your CELA review triggers, your data classification rules, your compliance thresholds — none of these exist in any model's weights. If a policy is not explicitly encoded in the context layer (instruction files, governance primitives, CI checks), agents will violate it with confidence and without warning. This is not a bug to be fixed; it is a permanent boundary. See [Chapter 5's Organizational Knowledge Gap section](ch05-governance-for-ai-assisted-delivery.qmd#sec-organizational-policy-gap) for the governance framework that addresses it and the case-study evidence (fifteen specialist agents, one constraint missed) that grounds it.
 
 ---
 

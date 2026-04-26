@@ -52,6 +52,14 @@ flowchart LR
 
 This structure is not a proposal. It is a description of what already exists in any organization using AI coding tools — whether they've designed it deliberately or not. The agent in your developer's editor is already operating across these three layers. The question is whether the boundaries, the context flow, and the governance are intentional.
 
+### Where the Layers Meet: Naming the Seam
+
+The interesting failure modes in agentic systems do not happen *inside* a layer. They happen at the boundary where the Agent Layer meets the Platform Layer — every time the probabilistic engine produces a token sequence that has to become a deterministic action: a tool call, a file write, a network request, a shell command. Block 2 calls this boundary *the seam*, and treats it as the load-bearing architectural feature of the whole stack.
+
+The seam is asymmetric. On the agent side, the model emits a structured intent that *looks* like a function call but is, mechanically, the same kind of token sampling that produced the prose around it — confident, fluent, and capable of being confidently wrong. On the platform side, a runtime takes that intent, validates it against a tool schema, executes a deterministic action, and returns a result. Everything that happens at this boundary — schema validation, capability gates, audit trails, error budgets, retry policy — is what determines whether the system is auditable or unauditable, recoverable or unrecoverable, safe to scale or quietly accumulating risk.
+
+For leaders, the seam is the architectural fact that explains why "the model got better" is rarely the right investment. The agent's quality at the seam is bounded by how well the platform side enforces its half of the contract. A more capable model crossing a poorly designed seam produces more articulate failures, not fewer. Block 2's Chapter 14 operates the seam in detail; the planning point here is that every governance, audit, and safety conversation in the rest of this block is, structurally, a conversation about how the seam is enforced in your organization.
+
 ---
 
 ## Mapping the Layers Across the Lifecycle
@@ -184,6 +192,10 @@ This flywheel means the gap between organizations that invest in context early a
 
 **Evidence: the 75-file PR.** This book's primary case study — [PR #394](https://github.com/microsoft/apm/pull/394), a pull request touching 75 files — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global rules down to directory-specific overrides. Each was created when an agent interaction failed due to a context gap. Without that accumulated context, the same task on the same model would have produced 75 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1's Vibe Coding Cliff. The delta between "75 files of rework" and "75 files merged" *is* the context moat, demonstrated. Full metrics and escalation details are documented in the [APM Overhaul case study](../case-study-apm-overhaul.qmd).
 
+**Why the moat actually compounds: the load lifecycle.** Context only helps when it reaches the agent's working set on the right invocations. Block 2 names the mechanism that decides this — the *load lifecycle*: a sequence of resolve, materialize, bind, and activate steps that together choose which instruction files, which conventions, and which capabilities are present in any given agent run. The 75-file PR succeeded not just because the repository had accumulated context, but because the load lifecycle was disciplined: scope-narrow rules loaded only inside the directories that needed them, global rules loaded everywhere, and irrelevant context stayed out of the agent's working set. Teams that treat context architecture as "more is better" — dumping every convention into one global file — discover that their agents get worse as the context layer grows, not better. The load lifecycle is the discipline that prevents this regression.
+
+**The economy underneath the lifecycle.** The reason the load lifecycle matters is that the agent's working set is finite. Block 2 calls this the *attention economy*: every token the agent holds in focus is a token it cannot use for the actual task. When too much irrelevant context loads, the relevant context degrades, and the agent produces plausible-but-wrong output. The 30–60% rework figure from Chapter 1 has this mechanism as one of its structural causes. The strategic implication for leaders is that the context investment is not "write more documentation" — it is "write the right documentation, scoped correctly, so the load lifecycle delivers it on the invocations that need it." The compounding flywheel only turns when the lifecycle is disciplined; without that discipline, more context can make agents demonstrably worse.
+
 **Convergence evidence: the platform intelligence layer.** This pattern is not unique to one vendor. Microsoft's own platform architecture illustrates the convergence: WorkIQ (workplace intelligence from M365 — meetings, email, calendar), FoundryIQ (AI model and deployment intelligence), and FabricIQ (data and analytics intelligence) each contribute organizational context that no coding tool can replicate independently. This three-layer intelligence stack — workplace, AI, and data — mirrors the broader industry pattern: the defensible advantage in AI-assisted development is not the model or the IDE, but the organizational context layer that connects them. As platform vendors integrate these intelligence surfaces, the context moat deepens for organizations that structure their knowledge to take advantage.
 
 ### Technical Debt Gets a New Cost
@@ -192,7 +204,7 @@ AI changes the ROI calculus for documentation debt, convention debt, and knowled
 
 This recalculation applies across the codebase. Undocumented module boundaries, implicit architectural decisions, tribal knowledge stored only in senior engineers' heads: all of these were always technical debt. AI makes the cost of that debt visible on every agent interaction, because the agent fails precisely where the documentation fails.
 
-The implication for leaders: re-prioritize your backlog. Items that were perpetually deferred — "document the authentication flow," "write down the module ownership model," "formalize the error-handling conventions" — now have a concrete, measurable payoff that they did not have before AI tools existed. Chapter 11 provides the methodology for auditing and structuring this context systematically.
+The implication for leaders: re-prioritize your backlog. Items that were perpetually deferred — "document the authentication flow," "write down the module ownership model," "formalize the error-handling conventions" — now have a concrete, measurable payoff that they did not have before AI tools existed. Chapter 10 provides the methodology for auditing and structuring this context systematically.
 
 ---
 
@@ -223,7 +235,7 @@ Three observations from the matrix:
 
 **Invest in context before investing in agents.** Every row in the matrix lists a maturity prerequisite — and most of those prerequisites are documentation, structure, and tooling that should exist regardless of AI adoption. If your conventions are not documented, your tests are not reliable, and your CI pipeline does not produce structured output, no agent tool will compensate. Fix the foundation first.
 
-**Expand based on evidence, not ambition.** Move to the next phase when the current one is producing measurable results — faster reviews, fewer convention violations, higher test coverage. Do not expand because a vendor demo looked impressive. Chapter 8 provides the metrics that distinguish real improvement from optimistic interpretation.
+**Expand based on evidence, not ambition.** Move to the next phase when the current one is producing measurable results — faster reviews, fewer convention violations, higher test coverage. Do not expand because a vendor demo looked impressive. Chapter 10 provides the metrics that distinguish real improvement from optimistic interpretation.
 
 ---
 
@@ -245,7 +257,19 @@ The pattern: work and data context often require building or composing because t
 
 No single vendor covers all three context domains comprehensively today. This is a practical observation, not a criticism; the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.
 
+**The composability story has a name: primitives-as-code.** What makes "compose" a credible third option — rather than a polite way of saying "build from scratch" — is that the context layer has converged on a discipline Block 2 calls *primitives-as-code*. The primitives the agent consumes (instruction files, agent configurations, prompt templates, tool schemas) are stored in version control alongside application code, reviewed in pull requests like application code, tested in CI like application code, and distributed through package managers like application code. That convergence is what turns one team's context investment into another team's reusable artefact, and it is what makes the compose column of the table above a real procurement option rather than a placeholder. Leaders evaluating vendors should treat support for versioned, exportable primitives as a procurement criterion: a context layer that cannot be checked into a repository, reviewed, and shared is not composable, regardless of what the marketing claims.
+
 ## The Agentic Computing Stack
+
+### Three Architectural Lenses
+
+The Three Layers section above (Human, Agent, Platform) is one lens on the same system. It is the *organizational* lens — the one that maps cleanly onto staffing, governance, and budget conversations. Block 2 introduces two more lenses on the same architecture, and it is worth naming them here so the rest of this chapter — and the chapters that follow — read as views of one system rather than competing architectures.
+
+The second lens is the *substrate* lens. Block 2's Chapter 17 names this as a four-layer model: Foundation (the LLM and the harness that runs it), Assembly (how primitives are loaded into a single agent invocation), Composition (how multiple invocations and multiple agents are coordinated), and Execution (how the resulting actions cross the seam to the platform). The substrate lens is the one practitioners actually program against. It is the lens you would draw on a whiteboard if you were asking "where does this bug live?"
+
+The third lens is the *computing-stack* lens — the seven-layer stack diagrammed below. This is the lens this section uses to frame build-buy-compose decisions, because it maps the agentic stack onto the classical computing stack (CPU, runtime, language, framework, application) that procurement, vendor evaluation, and competitive positioning conversations have used for forty years.
+
+The three lenses do not contradict each other. They project the same architecture onto different decision surfaces. The Three-Layer lens answers organizational questions. The four-layer substrate lens answers engineering questions. The seven-layer computing-stack lens answers procurement and strategy questions. Block 2 reconciles all three explicitly; for the strategic decisions this chapter sets up, the computing-stack lens is the one to use.
 
 The components in the build-buy-compose decision above are not independent purchases. They are layers in a technology stack, and as with any stack, each layer depends on the ones below it.
 
