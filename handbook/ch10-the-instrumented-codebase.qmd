@@ -319,7 +319,7 @@ Specification files matter because they make the "Reduced Scope" constraint oper
 
 Hooks complete the instrumentation model. Without them, every instrumentation file is passive; it waits for an agent to be invoked and for the right context to load. With hooks, the context layer responds to events: a file save triggers a check, a new file triggers scaffolding, a merged PR triggers a memory update. The instrumented codebase stops being a library of reference material and starts behaving like an active participant in the development workflow.
 
-Start with one or two hooks: a linting check on save and a test prompt on new file creation cover the highest-leverage triggers. Add more only when you observe a repeated manual step that a hook could eliminate.
+Start with one or two hooks: a linting check on save and a test prompt on new file creation cover the highest-impact triggers. Add more only when you observe a repeated manual step that a hook could eliminate.
 
 ---
 
@@ -699,7 +699,7 @@ This book was partly born from the patterns it describes. By Turn 79, the develo
 
 ## Starting Points
 
-The seven primitives and the full directory structure represent a mature instrumented codebase. You don't need to build all of it at once. Start where the leverage is highest.
+The seven primitives and the full directory structure represent a mature instrumented codebase. You don't need to build all of it at once. Start where the impact is highest.
 
 **Week one.** Three files: global instructions (10-15 lines of non-negotiable principles), one scoped instruction file for your most-edited module, one agent configuration for the task agents perform most often.
 

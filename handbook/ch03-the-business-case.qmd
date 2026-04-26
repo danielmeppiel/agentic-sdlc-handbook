@@ -280,7 +280,7 @@ The 30–60% rework range (Chapter 1) directly affects the cycle time value. Hig
 
 † Author estimates. The effective cycle time improvement is modeled as a function of the base scenario (25% at 40% rework); lower rework allows more tasks to deliver full time savings, higher rework erodes them. All three scenarios remain ROI-positive, but at 60% rework the margin is thin and the break-even extends past month 12.
 
-The point is not the specific numbers — it is the shape. The business case is robust across a wide range of rework assumptions. Even at the conservative end, the investment breaks even within a year. But the difference between 20% and 60% rework is a 2× spread in annual value. This is why context engineering — which directly reduces rework — is the highest-leverage investment in the entire adoption plan.
+The point is not the specific numbers — it is the shape. The business case holds across a wide range of rework assumptions. Even at the conservative end, the investment breaks even within a year. But the difference between 20% and 60% rework is a 2× spread in annual value. This is why context engineering — which directly reduces rework — is the highest-impact investment in the entire adoption plan.
 
 ### Step 5: Define success criteria that aren't vanity metrics
 
@@ -308,7 +308,7 @@ Every business case has an implicit comparison: the investment versus the status
 
 Chapter 2 made the strategic argument: inaction is itself a decision, with consequences for talent, shadow IT, context accumulation, and competitive position. Here, we put a number on it.
 
-**The context gap compounds in reverse.** The same flywheel that rewards early context investment penalizes delay. While your team debates whether AI tools are worth it, competitors who started six months earlier have accumulated six months of machine-readable conventions, structured architecture decisions, and documented patterns. Their agents improve with every sprint. Yours, when you eventually adopt, start from zero. The gap is not six months of calendar time — it is six months of compounding context quality that you must build from scratch while the early adopter's agents are already leveraging it.
+**The context gap compounds in reverse.** The same flywheel that rewards early context investment penalizes delay. While your team debates whether AI tools are worth it, competitors who started six months earlier have accumulated six months of machine-readable conventions, structured architecture decisions, and documented patterns. Their agents improve with every sprint. Yours, when you eventually adopt, start from zero. The gap is not six months of calendar time — it is six months of compounding context quality that you must build from scratch while the early adopter's agents are already drawing on it.
 
 The methodology matters more than any specific number here. If you apply the moderate scenario modeled above in reverse — projecting what a 50-person team forgoes by delaying 12 months — the model yields a figure in the range of $1.5–2.5M in throughput improvement not realized. That figure is illustrative, not predictive: it compounds the model's existing estimation error by running the assumptions backward, and it omits the unquantified but real costs of competitive position and hiring friction. The value of this exercise is not the dollar amount; it is the framing. "Wait and see" is itself a decision with a price. Your board will ask "what if we wait a year?" The answer is this methodology applied to your own numbers, not someone else's estimate.
 

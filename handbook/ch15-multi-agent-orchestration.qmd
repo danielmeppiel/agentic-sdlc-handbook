@@ -145,7 +145,7 @@ flowchart TD
 
 The critical property of this pattern is the separation between read-only and read-write operations. Audit agents explore the codebase without modifying it. This means you can dispatch multiple audit agents simultaneously with no risk of interference. They can examine the same files, look at overlapping concerns, and produce independent assessments.
 
-The human decision between audit and execution is the highest-leverage point in the entire process. You review the findings, decide which ones to act on, define the scope, and only then allow write operations. This separation is what makes multi-agent orchestration safe, not just fast.
+The human decision between audit and execution is the highest-impact point in the entire process. You review the findings, decide which ones to act on, define the scope, and only then allow write operations. This separation is what makes multi-agent orchestration safe, not just fast.
 
 ---
 
@@ -325,7 +325,7 @@ This is not a passive role. It is a different kind of active.
 
 ### What the Orchestrator Decides
 
-**Before execution.** The orchestrator defines the plan: which concerns to address, which to defer, how to partition the work across agents and waves, and what principles govern trade-offs. This is the highest-leverage activity in the entire process. A well-structured plan with mediocre agents produces better results than a vague plan with excellent agents.
+**Before execution.** The orchestrator defines the plan: which concerns to address, which to defer, how to partition the work across agents and waves, and what principles govern trade-offs. This is the highest-impact activity in the entire process. A well-structured plan with mediocre agents produces better results than a vague plan with excellent agents.
 
 **During execution.** The orchestrator monitors progress and handles escalations. Most waves complete without intervention. When an agent gets stuck, the orchestrator diagnoses whether it is a prompt problem (refine the instructions and retry), a scope problem (split the task), or a tooling problem (work around the limitation). When agents produce conflicting output, the orchestrator resolves the conflict using the plan's principles or makes an explicit design decision.
 

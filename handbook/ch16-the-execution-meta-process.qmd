@@ -77,7 +77,7 @@ Waves
 Principles (priority order)
   1. SECURITY — no token leaks, no path traversal.
   2. CORRECTNESS — tests pass, behavior preserved.
-  3. UX — world-class developer experience in every message.
+  3. UX — first-class developer experience in every message.
   4. KISS — simplest correct solution.
   5. SHIP SPEED — favor shipping over perfection.
 
@@ -87,7 +87,7 @@ Constraints
   Do NOT alter public API return types.
 ```
 
-**The human decision.** You approve the plan. This is the highest-leverage moment in the entire process.[^ch13-brooks] A mediocre plan with perfect execution produces mediocre software. A great plan with imperfect execution produces great software — because the test gates catch the imperfections. Take your time here. Review the wave dependencies. Question whether the scope is right. Ask whether the wave structure accounts for the files that will change in multiple phases.
+**The human decision.** You approve the plan. This is the highest-impact moment in the entire process.[^ch13-brooks] A mediocre plan with perfect execution produces mediocre software. A great plan with imperfect execution produces great software — because the test gates catch the imperfections. Take your time here. Review the wave dependencies. Question whether the scope is right. Ask whether the wave structure accounts for the files that will change in multiple phases.
 
 **Key rule.** No implementation starts until you approve the plan. This is the single most important gate.
 

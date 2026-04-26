@@ -29,7 +29,7 @@ This chapter applies the three-tier honesty framework (available now, emerging, 
 
 These predictions are directional. The author believes they describe where the field is heading. They are opinions, not forecasts.
 
-**Full lifecycle agent participation becomes achievable.** The eight-phase lifecycle from Chapter 4 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.
+**Full lifecycle agent participation becomes achievable.** The eight-phase lifecycle from Chapter 4 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, mature support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.
 
 **Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and deployment. Context infrastructure (the context files, instruction hierarchies, and knowledge bases that make agents effective) will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," the same way organizations without CI concluded automated testing "doesn't work at our scale."
 
