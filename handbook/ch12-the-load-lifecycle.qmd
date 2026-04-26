@@ -2,24 +2,141 @@
 title: "The Load Lifecycle"
 ---
 
-::: {.callout-note}
-## Chapter under construction (v2 draft)
+It is a Monday morning. A platform engineer — call him Priya — is finishing a skill that the team's data engineers have been asking for. The skill is supposed to fire whenever an agent touches an Alembic migration: it loads the team's conventions for naming revisions, scoping `op.batch_alter_table` calls, and writing reversible downgrades. Priya places the skill at `.github/skills/db-migrations/SKILL.md`. The frontmatter is correct. The `description` reads *"Activate when authoring or reviewing Alembic database migrations under `migrations/versions/`. Use for naming, batch operations, and reversible downgrade authoring."* He runs the agent against a real migration file. The skill does not bind. The agent writes a perfectly competent migration that uses none of the team's conventions. There is no error. There is no warning. There is no log entry that mentions the skill at all.
 
-This chapter is being authored in Wave B of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+Priya does what most developers do in this situation. He retypes the description three different ways. He adds a few keywords. He moves the file. He adds the migrations path to a glob in another file. None of it works. After an hour he runs the harness in verbose mode[^ch12-copilot] and reads the load trace. The trace tells him two things in two seconds. First, the skill is correctly registered — the harness sees it, parses its frontmatter, and adds its description to the activation pool. Second, the skill never gets the chance to bind because a parent instruction file at `.github/instructions/python.instructions.md` has `applyTo: "**/*.py"` and pulls in 6,200 tokens of Python guidance every time the agent touches a `.py` file. By the time the dispatcher considers on-demand skills, the load window is already three quarters full and the description-matcher has down-ranked everything that is not strictly required to satisfy the user's literal request. The skill is not silent because of its description. It is silent because of someone else's `applyTo` glob.
+
+Without the vocabulary of the load lifecycle, Priya's hour is normal. With it, the diagnosis is the second sentence above and the fix is mechanical. The point of this chapter is to put the second sentence in your head before the first hour costs you a sprint. The runtime machine described in @sec-runtime-machine has a defined sequence by which content reaches the model: the package manager **resolves** the dependency graph, the harness **materializes** files into the directory layout it parses, it **binds** files into context-loading units, and it **activates** the right ones for the task at hand. Each of those four verbs is observable, debuggable, and the place where a specific class of failure lives. {#sec-load-lifecycle}
+
+---
+
+## The four phases
+
+Every primitive that ends up in the model's context arrives there through the same four-phase pipeline. The phases are sequential at session start, but they are not equally automatic — the first two are owned by tools the developer runs explicitly, and the last two are owned by the harness and run on every session.
+
+```{mermaid}
+%%| fig-width: 6.5
+%%| label: fig-load-lifecycle
+%%| fig-cap: "The four phases of the load lifecycle: package manager resolves the dependency graph, the developer (or installer) materializes files into the harness's expected layout, the harness binds each file into a load mode, and at session start the dispatcher activates the subset that matches the current task."
+%%| fig-alt: "A four-step horizontal sequence diagram. Step 1 Resolve, owned by the package manager, walks the declared dependency graph and writes a lockfile that records the transitive closure. Step 2 Materialize, owned by the install step, lays files into per-harness directories such as .github/instructions, .github/skills, CLAUDE.md, .cursor/rules, AGENTS.md. Step 3 Bind, owned by the harness at session start, classifies each file into eager preload, lazy on-demand, or dispatcher-mediated. Step 4 Activate, owned by the dispatcher at decision points, selects which lazy primitives to actually load given the current task and remaining budget. An arrow under the diagram marks the seam between deterministic phases (1, 2, 3) and the probabilistic activation step (4)."
+flowchart LR
+    R["1. Resolve<br/>─<br/>Package manager walks<br/>the dependency graph<br/>and writes a lockfile"]
+    M["2. Materialize<br/>─<br/>Files land at the paths<br/>the harness parses<br/>(.github/, .claude/,<br/>.cursor/, AGENTS.md)"]
+    B["3. Bind<br/>─<br/>Harness classifies each<br/>file: eager preload,<br/>lazy on-demand, or<br/>dispatcher-mediated"]
+    A["4. Activate<br/>─<br/>Dispatcher selects which<br/>lazy primitives load,<br/>given the task and<br/>remaining budget"]
+    R --> M --> B --> A
+```
+
+Phases one and two run once per install. Phases three and four run once per session — three at the top, four at every decision point where the dispatcher can pull more text into context. A primitive that fails to surface has failed in exactly one of these phases, and the fix lives at that phase. Treating the lifecycle as one undifferentiated black box is the error that produces hour-long debugging sessions. Naming the four phases reduces the search space to four small, falsifiable questions.
+
+---
+
+## Resolve
+
+The first phase is dependency resolution. When a project declares that it depends on an external primitive package — a shared logging skill, a security review agent, an organization's policy bundle — a package manager walks the declared graph, picks compatible versions, and records the result. APM's `apm install` performs this step for AGENTS.md-compatible projects: it reads the project's manifest, walks each declared dependency to its published source, recurses into that source's own manifest, and keeps recursing until the closure is built.[^ch12-apm] The resolved closure is written to a lockfile (`apm.lock` or equivalent) that pins every transitive dependency to a specific version or commit.
+
+The transitive-closure question is the one this phase answers, and it is the one most developers never ask of their primitives. When your project depends on a `security-review` skill, that skill may itself depend on a `secret-detection` instruction file, which may itself reference a shared anti-pattern catalogue.[^ch12-substrate] None of those nested files are visible in your project's manifest, but every one of them will load into your agent's context the day a security review fires. The lockfile is the only honest answer to the question *what actually loads when this primitive activates*. Without one, "next week's `apm install`" produces different agent behavior with no code change visible — the same pathology that npm installs without `package-lock.json` had a decade ago, and the cure is the same one.[^ch12-apm]
+
+Two practices fall out of this phase and should be habitual. First, run the resolver in dry-run mode (`apm install --dry-run`, `apm compile --dry-run`) and read the printed closure before you commit a manifest change. The output names every file that will load. Skim it; if anything surprises you, that is a pin you should be making explicit before the surprise becomes a bug. Second, treat the lockfile as a reviewable artifact. A pull request that updates the lockfile but not the manifest means a transitive dependency moved underneath you, and the diff is the only place you will see it.
+
+A primitive that is not declared as a dependency edge but is nonetheless required at runtime is a *phantom dependency* — the runtime "just happens" to load it because the developer's environment has it, but a clean install on a teammate's machine will not. Phantoms are silent in resolve and loud at activate, often weeks later, and the cure for them is also paid here: every file the primitive needs at runtime is either inlined into the primitive, sibling to it in the same source tree, or declared as an external module with a real edge in the graph.[^ch12-substrate]
+
+---
+
+## Materialize
+
+The lockfile says *what*; materialization decides *where*. The harness is the compiler (@sec-runtime-machine), and every compiler has opinions about source layout. The install step's job is to put each resolved primitive at the path the local harness will parse — and only at that path. A skill the package manager downloaded from `acme/security-skill@1.4.2` becomes, on disk, `.github/skills/security/SKILL.md` for a Copilot project, `.claude/skills/security/SKILL.md` for a Claude Code project, or both for a project that targets multiple harnesses. The agentskills.io standard pinned the entrypoint name and the activation contract, which is why skills materialize cleanly across harnesses; scope-attached rules and persona files have not converged, which is why they do not.[^ch12-skills]
+
+The cross-harness materialization picture, for a single project that targets several harnesses, looks like this:
+
+| Concept                  | GitHub Copilot                      | Anthropic Claude Code             | Cursor                               | Codex / OpenCode                     |
+|--------------------------|-------------------------------------|-----------------------------------|--------------------------------------|--------------------------------------|
+| Project-wide rules       | `.github/copilot-instructions.md`[^ch12-copilot] | `CLAUDE.md` at repo root[^ch12-claude] | `.cursor/rules/*.mdc`[^ch12-cursor] | `AGENTS.md` at repo root[^ch12-agents] |
+| Scope-attached rules     | `.github/instructions/*.instructions.md` with `applyTo` glob | Nested `CLAUDE.md` per subtree    | `.cursor/rules/*.mdc` with `globs`   | Nested `AGENTS.md` per subtree       |
+| Skill (module entrypoint)| `.github/skills/<name>/SKILL.md`    | `.claude/skills/<name>/SKILL.md`  | (none — partial via rules)           | (none — partial via AGENTS.md)       |
+| Persona / specialist     | `.github/agents/<name>.agent.md`    | `.claude/agents/<name>.md`        | (none, modes are global)             | (none — convention varies)           |
+| User-scope override      | `.copilot/instructions/`            | `~/.claude/CLAUDE.md`             | Cursor settings (account)            | `~/.codex/AGENTS.md` and equivalents |
+
+The table is the cheat sheet. The lesson behind it is that materialization is a translation step, not a copy step. A monorepo that ships primitives for three harnesses pays the translation cost once, at install time, by emitting three layouts side by side. A project that maintains a single `AGENTS.md` and trusts every harness to pick it up pays the translation cost differently — it accepts that AGENTS.md-aware harnesses (Codex, OpenCode, increasingly Claude Code via convention) get the rules and Copilot does not.[^ch12-agents] Either choice is defensible; choosing without knowing is the error.
+
+Materialization also surfaces the *bundle leakage* failure. When a published module ships with files outside its declared distribution boundary — eval scenarios, contributor scratch notes, dev-only fixtures — the consumer's installer will happily place those files into the consumer's harness layout, where the dispatcher may match against them as if they were real primitives.[^ch12-substrate] The cure is to keep maintainer-only files outside the directory the package manager auto-publishes, so the install step never has them to materialize. This is a publisher-side discipline; it appears here because the failure mode it prevents is a load-lifecycle failure on the consumer's side.
+
+---
+
+## Bind
+
+A file at the right path is not yet a load. Binding is the harness's classification step, run once at session start: for every materialized file the harness can see, decide *how* and *when* its body should reach the model. There are three binding modes, and they correspond to three points in the session timeline.
+
+**Eager preload.** The file is read into context at session start, regardless of what the user has asked for. Project-wide rules are eager: Copilot's `copilot-instructions.md`, Claude Code's root `CLAUDE.md`, every harness's `AGENTS.md` at the project root.[^ch12-copilot] [^ch12-claude] [^ch12-agents] Scope-attached rules are eager but conditioned on a path predicate — Copilot's `.instructions.md` files load eagerly the moment a thread touches a path matching their `applyTo` glob; Claude Code's nested `CLAUDE.md` files load eagerly the moment a thread starts work in their subtree.[^ch12-claude] Eager loads are deterministic. The harness either loads them or it does not, and you can predict which by reading the frontmatter and the path. Eager loads are also the budget consumers most likely to crowd out everything else, which is the failure mode Priya hit.
+
+**Lazy on-demand.** The file is registered with the dispatcher at session start, but its body is not loaded until the dispatcher decides the current task warrants it. Skills are the canonical lazy primitive: the agentskills.io contract is that the *description* loads eagerly into a small registry, and the *body* loads only when the description matches the user's task or the agent's current step.[^ch12-skills] Lazy loads are partly probabilistic — the matching is description-driven and depends on the model's reading of both the description and the task. They are the source of "my skill should have fired but did not" reports, and they are also the design pattern that lets a project ship a hundred specialist skills without burning the budget on any single session.
+
+**Dispatcher-mediated.** The file is neither eager nor offered to the activation matcher. Instead, it sits behind a dispatcher — a Task tool, a sub-agent invocation, a wave protocol — that another primitive must invoke explicitly. Specialist persona files (`.github/agents/*.agent.md`, `.claude/agents/*.md`) are dispatcher-mediated; they only enter context when a parent thread spawns a child thread and names them. Panel skills, fan-out workers, and any primitive that runs in its own context window belong here. Dispatcher-mediated primitives have the cleanest budget story — they cost nothing in the parent session — and the most explicit invocation contract.
+
+The three modes map cleanly onto the project's filesystem layout, and the mapping is what gives the agent stack trace its shape:
+
+| Primitive type          | Binding mode         | Loaded when                                              | Budget cost                              |
+|-------------------------|----------------------|----------------------------------------------------------|------------------------------------------|
+| Project-wide rules      | Eager preload        | Every session, immediately at start                      | Paid every session, unconditionally      |
+| Scope-attached rules    | Eager (conditioned)  | Whenever a thread touches a matching path                | Paid on every session matching the scope |
+| Persona file (specialist)| Dispatcher-mediated | Parent spawns a child thread and names the persona       | Paid only inside the child's context     |
+| Skill (`SKILL.md`)      | Lazy on-demand       | Description matches the task; dispatcher pulls the body  | Description: small, eager; body: full, on activation |
+| Sub-agent / wave panel  | Dispatcher-mediated  | Parent invokes the dispatcher and the dispatcher selects | Paid in each spawned child, not the parent |
+
+A primitive's binding mode is not a stylistic choice; it is set by the file name, the folder, and the frontmatter. Move a skill body into an instructions file, and it switches from lazy to eager. Move an instructions file into a skill folder and remove its `applyTo`, and it switches from eager-conditioned to lazy. The lifecycle phase that owns this transformation is materialize, not author — which is why portability between harnesses sometimes requires more than copying text. Maya's `api.instructions.md` from @sec-runtime-machine ports to Claude Code only if its content stays eager, which is why the recommended translation is a `CLAUDE.md` `@path` import, not a skill.
+
+---
+
+## Activate
+
+The first three phases are deterministic. The fourth is not. Once the harness has bound every materialized file to a load mode, the dispatcher runs at every decision point and selects which lazy primitives to actually pull into context. This is the phase Priya's debugging time was burned in, and it is the phase developers most often confuse with the previous three.
+
+What makes activation deterministic versus probabilistic is itself enumerable, and the enumeration is the most useful thing this chapter has to offer:
+
+- **Path predicates are deterministic.** An `applyTo` glob either matches the current working path or it does not. There is no model in the loop. If your scope-attached rule did not bind, either the path does not match the glob or the glob is malformed; both are testable in seconds.
+- **Frontmatter validity is deterministic.** A YAML parser either accepts the frontmatter or it does not. A skill with a malformed frontmatter is invisible to the dispatcher; the harness's verbose log will say so.[^ch12-copilot]
+- **The lockfile-driven closure is deterministic.** Once the manifest is resolved and pinned, the set of files materialized is fixed. The same `apm install` against the same lockfile produces the same layout on every machine.
+- **Description matching is probabilistic.** When a skill's `description` is the only signal the dispatcher has, the match is the model's reading of the description against the model's reading of the current task. Two activations of the same skill on similar-but-not-identical tasks may differ. Description grammar matters: precise verbs, named triggers ("when authoring Alembic migrations"), explicit scope predicates ("under `migrations/versions/`") raise hit rate; vague descriptions lower it.[^ch12-skills]
+- **Budget pressure is probabilistic.** When the eager preloads have already consumed a large fraction of the budget — Priya's 6,200-token Python instructions file, an over-eager `applyTo: "**"` rule, a project-wide `CLAUDE.md` that grew to 800 lines — the dispatcher down-ranks lazy candidates that are not strictly required. The skill the user expected is not unloaded; it is *un-considered*. Verbose logs show this as a candidate that was registered but never pulled.
+
+These five lines of activation contract are what convert a Monday-morning failure into a Monday-morning fix. A skill that does not bind has failed at exactly one of those bullets, and each bullet has a falsifiable test. Glob mismatch: `git ls-files | grep -E "<glob-as-regex>"`. Frontmatter: `yamllint` on the file. Lockfile: `apm install --dry-run`. Description: read the verbose log entry that says *did not match*. Budget: read the verbose log entry that says *registered but not pulled*. The agent stack trace described in Ch18 is built on these tests; this chapter is what makes them sensible.
+
+The PROSE specification (@sec-prose-spec) is the normative side of the same story. P (Progressive Disclosure) is what keeps eager preload modest enough that lazy activation has budget room to maneuver. R (Reduced Scope) is what keeps `applyTo` globs from over-eagerly pulling in rules. O (Orchestrated Composition) is what keeps the binding modes coherent across primitives that work together. The constraints in Ch11 are not preference; they are the disciplines required to keep activation predictable. This chapter is the substrate they sit on.
+
+---
+
+## What this chapter does NOT cover
+
+The lifecycle described here is the deterministic mechanics of *content reaching the model*. It stops at the moment the dispatcher decides what to load. What happens *inside* the model — how attention degrades over a long context window, why an 800-line instruction file produces worse output than a focused 40-line one even when both fit, how a session's accumulated tool output crowds out the rules set at the start, how the agent should write a plan to a file mid-session and re-read it at decision points — is the *attention and context economy*, and it is the subject of @sec-attention-economy.
+
+The two chapters split a single discipline along a real seam. The deterministic side, here, is the one with the lockfile, the verbose log, the path predicate, the binding mode. The probabilistic side, next, is the one with the working set, the attention curve, the plan memento, the bounded-scope rule for grounding. A team that has internalized both can debug almost every "why did my agent do that?" report by asking, in order: *did the file load?* (this chapter), and *did the model attend to it once it loaded?* (the next).
+
+Genesis names the same split with substrate vocabulary: composition is what determines the closure that materializes; activation is what the dispatcher does with the closure once the session is alive.[^ch12-substrate] [^ch12-affordances] Reading those substrate notes alongside the next chapter is the fastest way to make the seam concrete.
+
+---
+
+::: {.callout-tip}
+## TL;DR — Resolve, Materialize, Bind, Activate
+
+1. **Resolve** the dependency graph and pin the closure. Every transitive primitive that loads must be in the lockfile, or it is a phantom.
+2. **Materialize** files at the harness's expected paths. The same primitive lands in different folders in Copilot, Claude Code, Cursor, Codex, and OpenCode. The translation is mechanical, not magical.
+3. **Bind** every file into one of three modes — eager preload, lazy on-demand, dispatcher-mediated. The mode is set by file name, folder, and frontmatter, not by intent.
+4. **Activate** the right primitives per task. Path predicates, lockfiles, and frontmatter are deterministic; description matching and budget pressure are probabilistic. Verbose logs surface both.
+5. **When a primitive is silent, ask which phase failed first.** Each of the four has a one-minute test. The hour Priya lost is the hour you do not have to.
 :::
 
-## Thesis
+[^ch12-apm]: APM CLI documentation, "Dependency resolution and lockfile semantics," `https://github.com/microsoft/apm`. The `apm install` command resolves the declared dependency graph, walks each transitive edge to its published source, and writes the resolved closure to `apm.lock`. The lockfile pins each module to a specific version or commit so that subsequent installs on different machines materialize the same closure. The `--dry-run` flag prints the closure without writing files; `apm compile --dry-run` prints the materialized layout for the current harness without modifying it.
 
-When the agent runs, the harness loads files in a defined order, recursing through declared dependencies until the closure is built and the model sees it. This is observable, debuggable, and the key to diagnosing "why did my primitive not bind?"
+[^ch12-copilot]: GitHub, "Adding custom instructions for GitHub Copilot," `https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot`. Copilot loads `.github/copilot-instructions.md` at every session and `.github/instructions/*.instructions.md` files conditionally on the `applyTo` frontmatter glob matching the working path. Verbose mode (`gh copilot --verbose`, IDE-equivalent log panes) prints the materialized load order and the activation outcome of each candidate primitive.
 
-## The Monday-morning failure
+[^ch12-claude]: Anthropic, "Claude Code: Memory," `https://docs.claude.com/en/docs/claude-code/memory`. Claude Code reads `CLAUDE.md` from the project root, then walks the directory tree applying the closest nested `CLAUDE.md` to work in that subtree. The body may import other markdown via the `@path` syntax, which inlines the imported file at load time. There is no glob predicate; hierarchy is the only scope selector.
 
-A team adds a new skill that should activate on database migrations. It does not. The skill file is correctly placed; the description matches. The verbose harness output reveals the cause: a parent instruction file is overflowing the context budget, and the on-demand skill never gets pulled because the dispatcher has already closed the load window. Without load-lifecycle vocabulary the team retypes the description for an hour. With it the diagnosis is one minute.
+[^ch12-cursor]: Cursor, "Rules for AI," `https://docs.cursor.com/context/rules-for-ai`. Cursor stores scoped rules in `.cursor/rules/` as `.mdc` files whose frontmatter declares `globs:` and a rule type. The same substrate concept as Copilot's instructions and Claude Code's nested memories, with incompatible surface syntax.
 
-## Sections (to be authored)
+[^ch12-agents]: The AGENTS.md convention, `https://agents.md`. A single markdown file at the project root (and optionally nested) that AGENTS.md-aware harnesses load eagerly at session start. Adopted by Codex, OpenCode, and increasingly compatible across other harnesses as a portable lingua franca for project-scope rules.
 
-1. Load order is observable.
-2. Binding modes (agent-invoked vs substrate-invoked).
-3. The transitive-closure question.
-4. Inline vs local-sibling vs external module.
-5. What this chapter does NOT cover.
+[^ch12-skills]: agentskills.io, the open registry standard for the `SKILL.md` entrypoint with description-driven activation. Adopted in substantially compatible form by Copilot (`.github/skills/<name>/SKILL.md`) and Claude Code (`.claude/skills/<name>/SKILL.md`). The contract: descriptions load eagerly into a small registry; bodies load lazily only when the dispatcher selects the skill for the current task. Skills port across harnesses more cleanly than scope-attached rules because the standard pinned the file name and the activation contract.
+
+[^ch12-substrate]: The transitive-closure framing, the composition modes (inline / local sibling / external module), and the phantom-dependency / bundle-leakage failure pair are taken from `danielmeppiel/genesis`, `assets/composition-substrate.md`. *Agent-side reference; substrate concept.*
+
+[^ch12-affordances]: The eager / lazy / dispatcher-mediated binding-mode taxonomy generalizes the six runtime affordances enumerated in `danielmeppiel/genesis`, `assets/runtime-affordances/common.md` — persona scoping, module entrypoint (skill), scope-attached rule, child-thread spawn, trigger orchestrator, plan persistence — to whichever harness the project is materializing into. *Agent-side reference; substrate concept.*

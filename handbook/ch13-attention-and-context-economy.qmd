@@ -2,24 +2,151 @@
 title: "Attention and Context Economy"
 ---
 
-::: {.callout-note}
-## Chapter under construction (v2 draft)
+# Attention and Context Economy {#sec-attention-economy}
 
-This chapter is being authored in Wave B of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+It is a Monday morning. A staff engineer — call him Priya — opens the team's pull-request queue and finds three reviews from the agentic code-reviewer that all missed the same thing: a use of the deprecated `auth_v1` helper inside a new endpoint. The reviewer is supposed to flag exactly this. Its scope-attached instruction file says, in the second paragraph, *Treat any use of `auth_v1` outside `legacy/` as a blocking review comment, never a suggestion.* The file is loaded. Priya checks the harness's verbose log to be certain. The file is in context. The model just ignored it.
+
+Nothing has changed about the prompt. Nothing has changed about the model. What changed, two weeks ago, was that the team added an 800-line architectural-decisions document to the same scope, because someone reasoned that a code reviewer ought to have the architecture in mind when it reviews code. The document is well-written. It is also, when added on top of the existing instructions and the diff and the conversation history, the difference between an instruction the model attends to and an instruction the model has technically read but cannot find.
+
+Priya's first instinct is to file a bug against the model vendor. His second, after talking to a colleague who has read the load-lifecycle chapter, is to ask the harness to tell him how many tokens are in context at the moment of the review and where the `auth_v1` rule sits inside that span. The answer is uncomfortable. The rule is on line 62 of an instruction file that loads into the middle third of a 35,000-token context payload. The model read it. The model did not see it.
+
+This chapter is about the difference between *read* and *seen*. A context window is not a budget you spend on more material; it is a working set in which attention is finite, position-sensitive, and degrades non-linearly under load. The disciplines that fall out of this — progressive disclosure, subagent isolation, plan-write-then-reload — are not stylistic preferences. They are the small set of countermeasures that keep the attention economy solvent. If Chapter 12 was about the deterministic mechanics of *what loads*,[^ch13-load-lifecycle] this chapter is about the probabilistic consequences of *what gets attended to*.
+
+---
+
+## Window and attention are different quantities
+
+The most common mistake in this whole space is the unit confusion. The number on the vendor's product page — 200K tokens, 1M tokens, soon enough 10M — is the size of the window. It is a hard upper bound on what the harness is allowed to send. It is not the amount of text the model can reason over with uniform fidelity. Those are two different quantities, and conflating them is what produces the eight-hundred-line architectural-decisions document.
+
+Think of it the way you would think about the difference between a CPU's addressable memory and its L1 cache. The window is addressable memory; the model can, in principle, reach any token in it. Attention is the cache; it is what the model can hold in active focus while emitting the next token. Cache capacity is much smaller than addressable memory. Cache replacement policies are not under your control. And the cost of a cache miss — a token that was technically in memory but not in active focus when needed — is silent: there is no exception, no log line, no fault. The model just produces an answer that ignores the missing input.
+
+Two strands of published research make this concrete. Liu and colleagues, in *Lost in the Middle*, ran controlled retrieval experiments across several frontier models and showed that accuracy on a fact-extraction task is highest when the relevant document sits at the very beginning or very end of the context, and dips by tens of percentage points when the same document sits in the middle.[^ch13-liu] The shape of the curve is a U. Its depth depends on the model and on how full the context is. The phenomenon is robust across model families. Anthropic's own needle-in-a-haystack evaluations, repeated as their context windows grew from 100K to 200K to 1M tokens, replicate the shape: very high recall at the edges, a measurable trough in the middle, and a degradation that worsens as the haystack grows even when the needle is unchanged.[^ch13-anthropic] The vendor's own white-papers describe long-context performance as "best at the edges" rather than "uniform across the window."
+
+Two practical consequences fall out immediately. First, *position matters as much as presence*. A rule placed at the start of the system prompt and a rule buried in line 600 of an instruction bundle are not the same input, even when both are technically in scope. Second, *attention degrades with load*. The same rule, in the same position, performs differently in a fresh session and in the same session after twenty turns of tool output have accumulated. Token economics is real: every token you load that the task does not need takes attention away from a token the task does need. There is no free context. There is no neutral content. Every primitive, every file dump, every chatty tool output is taxed against the budget that decides whether your `auth_v1` rule fires.
+
+This is also why the field's vocabulary has converged on a phrase — *context rot* — for the slow degradation that long sessions exhibit even when nothing in the input has technically changed. The window has not shrunk. The cache has fragmented.
+
+---
+
+## Symptoms of attention starvation
+
+Before the levers, the symptoms. Attention starvation is a silent failure mode; you will not see a stack trace. You will see an agent behaving as if it had never been told something you can prove it was told. The diagnostic skill is in recognizing the family of symptoms early enough to treat the cause rather than the surface.
+
+| Symptom in the session                                                | What is actually happening                                                                                              | First thing to check                                                                       |
+|------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+| Agent ignores an explicit, scope-loaded instruction                    | The rule is in the middle of a long payload; effective attention has moved past it                                      | Token count at the failing turn; position of the rule within it                            |
+| Output references a file the agent worked on twenty turns ago, wrongly | The earlier file's contents are no longer in active attention; the agent is reasoning from a stale, summarised memory   | Conversation length; how many tool calls have happened since the file was last read        |
+| Agent forgets to call a tool it called correctly five turns ago        | Tool-use cues from the system prompt are competing with accumulated recent context and losing                           | Whether the tool description is at the start or end of the system prompt and how full the window is |
+| Hallucinated detail about your codebase                                | Grounding evidence either was never loaded, was loaded but pushed out of attention, or sits in the middle               | Closure of files actually loaded at decision time (Ch12's transitive-closure question)     |
+| Quality cliff after a long error-debugging exchange                    | Each pasted error has bloated context with low-signal tokens; the original task has slipped out of effective attention   | Number of pasted error blobs; ratio of error-text tokens to task-text tokens               |
+| Inconsistent answers to the same question across two sessions          | One session is loading more peripheral material than the other, even though both are within window                       | Diff the two sessions' loaded-file lists                                                   |
+
+Three diagnostic questions cover almost every case. *How many tokens are in context at the moment the failure occurs?* If the answer is more than a third of the window, attention is the prime suspect. *Where in the payload is the instruction the model failed?* If it is in the middle, position is the prime suspect. *How many tool outputs and pasted blobs have accumulated since the failing instruction was last reinforced?* If the answer is more than a handful, recency-bias is eating your earlier inputs. None of these questions requires special tooling. The harness's verbose mode and a token counter answer all three.
+
+This diagnostic loop is part of what Chapter 16 will treat as the agent stack trace.[^ch13-meta-process] When an agentic system misbehaves, the loaded primitive set, the token count, the position of the failing rule, and the conversation length are the first four cells in the trace, before any consideration of the model itself.
+
+---
+
+## A mental model: the attention curve over a session
+
+The model worth carrying is shaped like a U over position and a decay over time. Attention is highest at the head of the payload (system prompt, project-base instructions), highest again at the tail (the most recent turn, the diff under review), and lowest in the middle. Across a long session, content that began at the head gets pushed deeper into the payload as new turns accumulate at the tail. Yesterday's "head" is today's "middle."
+
+```{mermaid}
+%%| fig-width: 6.5
+%%| label: fig-attention-curve
+%%| fig-cap: "Position-by-time view of effective attention across a long agent session. Content near the head and tail of the context window receives strong attention; content in the middle is degraded; content that has slipped out of recent turns into mid-payload is taxed twice."
+%%| fig-alt: "A horizontal flow diagram with five labelled zones from left to right, representing positions inside the context window during a long session. The leftmost zone, labelled Head, contains the system prompt, project-base instructions, and scope-attached rules; it is marked high attention. To its right, a Mid-payload zone contains accumulated tool outputs, pasted error blobs, and earlier turns; it is marked degraded attention and labelled the trough. To its right, a Recent-turns zone contains the last five to ten turns; it is marked high attention. To its right, a Tail zone contains the current user turn and the in-flight diff; it is marked highest attention. Below, three downward arrows from the Head and Recent zones into the Mid-payload zone are labelled drift over time, indicating that as the session grows, head content and once-recent content sediment into the trough. A dashed arrow at the bottom labelled next-token decision points from all four zones into a final node, but the arrows from Head and Mid-payload are drawn faint to indicate weaker contribution."
+flowchart LR
+    Head["Head<br/>system prompt<br/>project base<br/>scope rules<br/>(strong attention)"]
+    Mid["Mid-payload<br/>old turns<br/>tool outputs<br/>error pastes<br/>(the trough)"]
+    Recent["Recent turns<br/>last 5-10<br/>(strong attention)"]
+    Tail["Tail<br/>current turn<br/>diff under review<br/>(strongest)"]
+    Decide(["next-token<br/>decision"])
+    Head -. faint .-> Decide
+    Mid -. faint .-> Decide
+    Recent ==> Decide
+    Tail ==> Decide
+    Head -- drift over time --> Mid
+    Recent -- drift over time --> Mid
+```
+
+Two properties of this picture are load-bearing. The first is that *the trough is where instructions go to die*. Anything you place in the middle of a long payload has to be exceptional to survive — repeated near the tail, anchored against a unique key the diff will reference, or short enough to be skimmable by whatever attention does survive. The second is that *the trough grows*. A session that began with the rule at the head will, after enough turns, have the rule at mid-payload. The cure is not "write better rules." The cure is to refuse to let mid-payload accumulate uncontrollably and to refresh, deliberately, the things that must remain in active attention.
+
+---
+
+## Three levers of the attention economy
+
+There is a small, finite set of disciplines that keep the budget solvent. Treat them as the three control surfaces; almost every named pattern in agentic practice is one of these in a particular costume.
+
+### Lever one: progressive disclosure
+
+The first lever is *only load the thing when you need it*. The convention has crystallised in the agentskills.io standard for skills, where the contract is explicit: a skill's `SKILL.md` exposes a description and an activation predicate; the body and any referenced assets are only pulled into context when the harness's dispatcher matches the description against the current task.[^ch13-progressive] A skill that lives in `.claude/skills/api-review/` does not cost any tokens during a frontend bug-fix session. It costs tokens only when the dispatcher decides the current work is API review. The same idea, generalised: split rules by scope so that auth rules unload when the agent moves to the frontend; reference modules instead of inlining them; let on-demand fetch tools pull external grounding only when the agent asks. Every byte that is *available* without being *loaded* is a byte that has not yet taxed your attention budget.
+
+The mistake progressive disclosure prevents is the architectural-decisions document Priya's team added. The intent — *the reviewer should know the architecture* — was correct. The implementation — load it on every review — was the mistake. The right shape was a skill that reads architectural-decisions only when the diff touches an interface boundary, with the rest of the document staying on disk. Progressive disclosure is not laziness; it is the only way a primitive set can grow without each new primitive making every existing primitive perform worse.
+
+### Lever two: subagent isolation
+
+The second lever is *fresh context window per scoped task*. When work is genuinely independent — a worker porting one module while a peer ports another, a research subagent answering a focused question without inheriting the parent's mid-payload — the discipline is to spawn a child thread with its own context, not to extend the parent. Chapter 15 will treat the multi-agent topology in operational detail.[^ch13-multi-agent] Here it is enough to note that the asymmetry from Chapter 9 — *inference is per-thread; the filesystem is shared* — is what makes this lever work. A child thread starts at a clean head with a U-curve fully its own; the parent passes whatever it needs the child to know via the filesystem (a plan file, a focused brief, a pinned reference) rather than via the parent's polluted context.
+
+The mistake subagent isolation prevents is using the parent thread as a do-everything session. A long thread that has done planning, then research, then implementation, then debugging, then review, has accumulated attention waste from every phase, and the review phase pays for the debugging phase's pasted errors. Splitting the work into shorter, scoped threads — each with its own clean head and a tail that ends near completion — is, on every model the field has measured, more reliable than running the whole arc in one window. The cost is the ceremony of writing the brief the child loads. The cost is small. The benefit is that each subagent operates in the part of the U-curve where attention is strongest.
+
+### Lever three: plan-write-then-reload
+
+The third lever is the most counter-intuitive: when a session must be long, *defeat drift by writing the plan to a file and re-reading the file at decision points*. The plan begins at the head of context. Twenty turns later, when it matters, it has slipped into the trough. Re-reading the plan file pulls it back to the tail, where attention is strongest, exactly when the model needs it. The filesystem is the durable memory; the inference is amnesiac; the discipline is to use the durable memory deliberately, not as a backup but as a structural element of how a long session is run. Chapter 16 treats this as a cross-wave attention discipline; here it is the third lever of the economy.[^ch13-meta-process]
+
+The pattern is mundane in form. The agent writes `plan.md` early — a short, structured artifact, not a transcript. Before each consequential step (a refactor, a destructive tool call, a final review), the agent re-reads `plan.md`. The rereading is cheap (the file is short by design) and surgical (the plan is at the tail, fresh, in strong attention). The session's effective head is no longer the eight-hundred-line architectural-decisions document; it is the hundred-line plan the agent itself just wrote and just re-read. PR #394's session log, treated in detail in Part IV, is the canonical worked example: the plan is written, edited, and re-loaded at every wave boundary, and the agent's behaviour at hour six is indistinguishable from its behaviour at hour one because the head it is operating from is, structurally, the head it has chosen to maintain.
+
+---
+
+## A practitioner's budget
+
+The disciplines are easier to apply when you have a categorical sense of the cost-versus-benefit of common context loads. The table below is not a benchmark; it is a starting calibration drawn from the author's practice across Copilot CLI, Claude Code, and similar harnesses. Numbers will shift with model, harness, and task; the *order* is what the author has found stable.
+
+| Context category                                       | Typical cost           | Typical benefit                                  | Recommended treatment                                                       |
+|---------------------------------------------------------|------------------------|--------------------------------------------------|------------------------------------------------------------------------------|
+| Project-base rules (always relevant)                    | low (under 500 tokens) | high (frames every turn)                         | Always-loaded at head                                                        |
+| Scope-attached rules (relevant to current path)         | low to moderate        | high (when in scope)                             | Always-loaded by scope predicate; carve scope tightly                        |
+| On-demand skill body                                    | moderate               | high (when activated)                            | Progressive disclosure; description-driven activation                        |
+| Reference architectural docs                            | high                   | low per turn, occasionally critical              | Skill that pulls only on matching diff; never always-loaded                  |
+| Source files for the current change                     | moderate to high       | essential                                        | Load directly; trim unrelated files; rely on type stubs over full sources    |
+| Tool output from earlier turns                          | grows without bound    | low after one or two turns                       | Summarise into the plan; let the raw output sediment                         |
+| Pasted error tracebacks                                 | high                   | low past the first paste                         | After two pastes, reset; carry forward a one-line summary                    |
+| Conversation history beyond the last ten turns          | high                   | low, mostly recency illusions                    | Reset session; carry forward `plan.md`                                       |
+| External documentation pulled by web fetch              | very high              | high *for one decision*, low afterward           | Bounded-scope grounding;[^ch13-bounded-scope] cite the answer, drop the dump |
+| Repository-wide grep/search results                     | very high              | rarely needed                                    | Replace with targeted reads                                                  |
+| Vendor model card or general guidance                   | high                   | near zero for the agent's task                   | Do not load                                                                  |
+
+Two heuristics fall out of the table. *Anything that is needed on every turn earns a place at the head; everything else should be progressive.* And *anything that grows without bound across a session is a candidate for a periodic reset and a one-paragraph summary*. These heuristics are crude, but they correctly classify perhaps eighty per cent of the loading mistakes a team will make in its first months of agentic practice.
+
+---
+
+## What this chapter unlocks
+
+You now have the second half of the load picture. Chapter 12 told you what the harness loads, in what order, with what closure. This chapter told you what the model can attend to once it is loaded, and what disciplines keep the attended-to set aligned with the relevant set. The two together are what *context engineering* is. Most teams that struggle with agentic quality are doing one half and ignoring the other: they tune the load lifecycle and let attention rot, or they obsess over short prompts while the loader silently pulls in half the repository.
+
+The remaining chapters apply this. Chapter 14 will draw the deterministic seam between the harness and the model; the seam is where attention failures must be caught, because the model itself will not catch them. Chapter 15 will use subagent isolation as the structural primitive of multi-agent topology. Chapter 16 will name plan-write-then-reload as one of the rituals that hold a long execution together. The PROSE specification you saw in Chapter 11 reads differently after this chapter: P (Progressive Disclosure), R (Reduced Scope), O (Orchestrated Composition) are not three preferences, they are the three levers of the attention economy expressed as constraints on the primitives a team writes. The constraint exists because the physics exists.
+
+::: {.callout-tip}
+## TL;DR — Attention is the budget that matters
+
+1. **Window is not attention.** The vendor's token count is addressable memory; the model's effective focus is a smaller, position-sensitive cache. *Lost in the Middle* and the needle-in-a-haystack evaluations describe its shape, not its absence.
+2. **Every loaded token taxes the used ones.** There is no neutral content. The eight-hundred-line architectural document does not sit harmlessly in scope; it pushes the rule that matters into the trough.
+3. **Three levers keep the budget solvent.** Progressive disclosure (load on demand). Subagent isolation (fresh window per scoped task). Plan-write-then-reload (defeat drift in long sessions by re-reading durable memory).
+4. **Diagnose, do not guess.** Token count, position of the failing instruction, count of pasted blobs since the rule was reinforced. Three numbers handle most attention-starvation diagnoses.
 :::
 
-## Thesis
+[^ch13-liu]: Liu, Lin, Hewitt, Paranjape, Bevilacqua, Petroni, and Liang, *Lost in the Middle: How Language Models Use Long Contexts*, 2023, arXiv:2307.03172. The paper documents the U-shaped accuracy curve across multiple frontier models on multi-document question-answering tasks, with the trough deepening as context length grows. Accepted at TACL 2024.
 
-Context is finite. Attention degrades non-linearly under load. Doubling input length does not halve output quality; it crosses a threshold past which the model loses the thread. This is *physics*, not preference, and the disciplines that compensate are not optional polish.
+[^ch13-anthropic]: Anthropic, "Long context prompting for Claude 2.1" (2023) and the subsequent 200K and 1M context-window evaluation posts under `https://www.anthropic.com/news`. Each release reports needle-in-a-haystack results that are strong at the head and tail and degrade in the middle, with the absolute floor of mid-context recall improving across model versions but the qualitative shape remaining a U.
 
-## The Monday-morning failure
+[^ch13-progressive]: agentskills.io, the open registry standard for skills, encodes progressive disclosure into the contract: a skill's description is always available to the dispatcher, but the body and assets are loaded only when the dispatcher activates the skill against a current task. See `https://agentskills.io` and the `SKILL.md` schema for the activation predicate. Copilot, Claude Code, and the AGENTS.md-aware harnesses adopt the standard in substantially compatible form.
 
-A team's reliable code-review prompt starts producing inconsistent results. No one changed the prompt. They added a "useful" 800-line context file two weeks ago. The model's context window can fit the new content; the model's *attention* cannot. The cure is not a bigger model; it is progressive disclosure of the new content.
+[^ch13-load-lifecycle]: See @sec-load-lifecycle for the deterministic mechanics of harness-side loading: load order, binding modes (agent-invoked vs substrate-invoked), and the transitive-closure question. This chapter assumes that vocabulary.
 
-## Sections (to be authored)
+[^ch13-multi-agent]: See @sec-multi-agent for the operational treatment of subagent topology, parent-child handoff via filesystem, and the harness-spawn variance that decides whether your fan-out is programmatic or cooperative.
 
-1. Why context is not a budget; it is a working set.
-2. Plan-write-then-reload.
-3. The bounded-scope rule for external grounding.
-4. Signal-to-noise as a design metric.
-5. The PROSE constraints, revisited.
+[^ch13-meta-process]: See @sec-meta-process for plan-write-then-reload as a cross-wave discipline and for the agent stack trace — the loaded primitive set, the plan memento, the verbose tool log, and the diff — that the diagnostic playbook in this chapter feeds into.
+
+[^ch13-bounded-scope]: Bounded-scope grounding is the discipline of specifying, at design time, what an external source (web fetch, MCP tool, repo search) is *authoritative for*, so that the agent does not promote a peripheral citation into a load-bearing claim. Chapter 14 treats it in detail as part of the deterministic-probabilistic seam; here it is the rule that keeps web-fetch payloads from poisoning the attention budget.
+
+[^ch13-genesis]: The cost-of-loading framing — that every loaded token taxes the tokens that are used, and that progressive disclosure, subagent isolation, and plan-reloading are the three counter-disciplines — is articulated in operational form in the agent-side `danielmeppiel/genesis` skill, specifically in `assets/architectural-patterns.md`. *Agent-side reference; the handbook prose is independent and the framing is the author's synthesis.*
