@@ -1,0 +1,30 @@
+---
+title: "Architectural Patterns: A Rosetta Stone"
+---
+
+::: {.callout-note}
+## Chapter under construction (v2 draft)
+
+This chapter is being authored in Wave A of the Practitioner Block v2 build. It is the architects' chapter. The brief is in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`.
+:::
+
+## Thesis
+
+The agentic runtime is not pattern-free. The same structural problems recur — composition, dispatch, isolation, supervision, fan-out, recovery — and the field has converged on recognizable solutions. Many of these solutions have direct analogues in the classical Gang-of-Four (GoF) catalogue and in distributed-systems literature. Naming them — and naming the analogue — gives architects a vocabulary to reason at the system level instead of the file level.
+
+This chapter catalogues the recurring patterns, organized by runtime layer, and maps each to a GoF or distributed-systems name where the analogy holds. The goal is not to force every agentic pattern into a 1990s frame; it is to give architects a *Rosetta Stone* — a translation table — between the substrate they already know and the substrate they are now learning to design against.
+
+## The audience
+
+This chapter is written for software architects, technical leads, and senior engineers responsible for agentic-system design at scale. It assumes the reader has worked through Ch09–Ch15 and is comfortable with the four-part runtime machine, the load lifecycle, the deterministic/probabilistic seam, and the threading model. It is not a tutorial chapter; it is a reference.
+
+## Sections (to be authored)
+
+1. **The layered model of an agentic runtime.** Foundation (model + harness), assembly (filesystem-as-loader + binding modes), composition (primitives + skills + dependencies), execution (threading + persistence + triggers).
+2. **The Rosetta Stone tables.** Per layer, the recurring patterns and their GoF / distributed-systems analogues. Each entry: agentic name | classical analogue | intent | when to apply | consequences | cross-references to other chapters.
+3. **Composition patterns.** Skill (Module / Facade), Bundle (Composite), Primitive (Strategy), Dependency (Decorator), Override (Template Method).
+4. **Dispatch and orchestration patterns.** Panel (Chain of Responsibility / Mediator), Wave (Pipeline), Fan-Out (Scatter-Gather), Threading (Command + Memento), Subagent Spawn (Active Object).
+5. **Boundary patterns.** Supervised Execution (Proxy + Guard), Schema-Checked Transformer (Adapter), Plan-Write-Then-Reload (Memento), Bounded-Scope Grounding (Authority Boundary).
+6. **Recovery and observability patterns.** Agent Stack Trace (Diagnostic), Lockfile (Snapshot), Audit Trail (Event Sourcing).
+7. **Per-layer decision matrix.** When you have problem X, reach for pattern Y; the trade-offs and the failure mode you accept.
+8. **What this chapter intentionally does not catalogue.** Patterns specific to one harness; patterns whose useful lifetime is shorter than this book's; patterns the field has not yet converged on.

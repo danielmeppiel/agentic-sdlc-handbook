@@ -1,0 +1,30 @@
+---
+title: "The Runtime Machine"
+---
+
+::: {.callout-note}
+## Chapter under construction (v2 draft)
+
+This chapter is being authored in Wave A of the Practitioner Block v2 build. The brief — including thesis, opening failure, section outline, diagrams, and citations — lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+:::
+
+## Thesis
+
+Every agentic system is the composition of four independently-replaceable parts: an inference model, a harness/runtime that drives it, a filesystem layout the harness consults, and one or more trigger surfaces that decide when the harness runs. A developer who cannot name these four parts cannot reason about why their setup behaves differently across vendors.
+
+## The Monday-morning failure
+
+A senior engineer ports a working APM project from Copilot to Claude Code. The same primitive files. The same model family. The skills bind in Copilot; in Claude Code they go silent. Without the runtime-machine vocabulary, this is a mystery. With it, it is one of three diagnoses (the harness's load order, the file naming convention it parses, the binding mode of the primitive) — each one falsifiable with a one-minute test.
+
+## Sections (to be authored)
+
+1. The four-part machine.
+2. Markdown that steers an LLM is code.
+3. The harness is the compiler.
+4. Inference is per-thread; the filesystem is shared.
+5. What this chapter unlocks.
+
+## Diagrams (to be drawn)
+
+- Stacked-block diagram of the four-part machine.
+- Two-column comparison: Copilot's load order vs Claude Code's load order, same project.

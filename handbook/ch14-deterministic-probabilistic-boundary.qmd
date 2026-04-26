@@ -1,0 +1,25 @@
+---
+title: "The Deterministic / Probabilistic Boundary"
+---
+
+::: {.callout-note}
+## Chapter under construction (v2 draft)
+
+This chapter is being authored in Wave A of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+:::
+
+## Thesis
+
+Every agentic system is the composition of two computers — a deterministic one (the harness, file I/O, tool calls, the test runner, the lockfile, the gh-aw audit trail) and a probabilistic one (the model). The single most important architectural decision in any agentic design is *where the seam between them sits and what crosses it*.
+
+## The Monday-morning failure
+
+A team ships an agent that creates GitHub issues from incoming bug reports. It works for two weeks. Then it fabricates a customer name and creates an issue tagged with the wrong account. The model hallucinated; the system carried the hallucination through to a side effect because there was no deterministic gate between the model's output and the GitHub API call. The cure is to redraw the seam: the model proposes the issue body; a deterministic schema-checked transformer (the gh-aw `safe-outputs` block, or its equivalent) executes the API call against a controlled allowlist.
+
+## Sections (to be authored)
+
+1. Two computers, one program.
+2. Consequential side effects belong on the deterministic side.
+3. Hallucination as a system property.
+4. The four kinds of quality gate.
+5. Strong-form supervised execution.

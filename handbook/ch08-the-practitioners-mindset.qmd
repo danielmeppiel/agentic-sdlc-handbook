@@ -2,6 +2,22 @@
 title: "The Practitioner's Mindset"
 ---
 
+::: {.callout-tip}
+## Install Genesis as you read
+
+This Part III teaches the practice of agentic development as a discipline a human can learn. The agent-side companion that operationalizes the entire block is the open-source skill **[`danielmeppiel/genesis`](https://github.com/danielmeppiel/genesis)**. Install it at the start of this part — it gives you a working reference your agent can load while you work through the chapters.
+
+What Genesis gives you in one sentence: the same primitives, patterns, and disciplines you are about to read, packaged as one Agent Skill that any AGENTS.md-compatible harness (Copilot, Claude Code, Cursor, Codex, OpenCode) can load on demand. When the practitioner block names a pattern (Wave, Panel, Supervised Execution), Genesis names the implementation. When this book argues a discipline (progressive disclosure, plan-write-then-reload, bounded-scope grounding), Genesis enforces it in operational form.
+
+Install:
+
+```bash
+gh skill install danielmeppiel/genesis
+```
+
+Or follow the per-harness installation notes in the Genesis README. Read this part with Genesis loaded; the chapters call out where Genesis names the same idea, in footnote form.
+:::
+
 Block 1 answered what to decide. Block 2 answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.
 
 *The practitioner chapters that follow draw primarily from the author's direct experience building and using agentic development workflows. Where claims derive from the reference case study (PR #394, documented in Part IV), this is noted. Where heuristics are offered (such as thresholds or timing estimates), they reflect observed patterns from this practice, not controlled experiments. The reader should treat specific numbers as starting points for their own calibration, not as industry benchmarks.*[^ch8-n1]

@@ -1,0 +1,25 @@
+---
+title: "Attention and Context Economy"
+---
+
+::: {.callout-note}
+## Chapter under construction (v2 draft)
+
+This chapter is being authored in Wave B of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+:::
+
+## Thesis
+
+Context is finite. Attention degrades non-linearly under load. Doubling input length does not halve output quality; it crosses a threshold past which the model loses the thread. This is *physics*, not preference, and the disciplines that compensate are not optional polish.
+
+## The Monday-morning failure
+
+A team's reliable code-review prompt starts producing inconsistent results. No one changed the prompt. They added a "useful" 800-line context file two weeks ago. The model's context window can fit the new content; the model's *attention* cannot. The cure is not a bigger model; it is progressive disclosure of the new content.
+
+## Sections (to be authored)
+
+1. Why context is not a budget; it is a working set.
+2. Plan-write-then-reload.
+3. The bounded-scope rule for external grounding.
+4. Signal-to-noise as a design metric.
+5. The PROSE constraints, revisited.

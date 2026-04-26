@@ -1,0 +1,25 @@
+---
+title: "The Load Lifecycle"
+---
+
+::: {.callout-note}
+## Chapter under construction (v2 draft)
+
+This chapter is being authored in Wave B of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+:::
+
+## Thesis
+
+When the agent runs, the harness loads files in a defined order, recursing through declared dependencies until the closure is built and the model sees it. This is observable, debuggable, and the key to diagnosing "why did my primitive not bind?"
+
+## The Monday-morning failure
+
+A team adds a new skill that should activate on database migrations. It does not. The skill file is correctly placed; the description matches. The verbose harness output reveals the cause: a parent instruction file is overflowing the context budget, and the on-demand skill never gets pulled because the dispatcher has already closed the load window. Without load-lifecycle vocabulary the team retypes the description for an hour. With it the diagnosis is one minute.
+
+## Sections (to be authored)
+
+1. Load order is observable.
+2. Binding modes (agent-invoked vs substrate-invoked).
+3. The transitive-closure question.
+4. Inline vs local-sibling vs external module.
+5. What this chapter does NOT cover.

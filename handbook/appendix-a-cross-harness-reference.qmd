@@ -1,0 +1,22 @@
+---
+title: "Appendix A: The Cross-Harness Reference"
+---
+
+::: {.callout-note}
+## Appendix under construction (v2 draft)
+
+This appendix is being authored in Wave C of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`.
+:::
+
+## Purpose
+
+A dated snapshot of substrate-level differences between current agentic harnesses (Copilot, Claude Code, Cursor, Codex, OpenCode). Replaces the mid-2025 tool-support table that previously lived in Ch09. Carries an explicit snapshot date and refresh cadence; the body of the book references this appendix rather than restating the matrix.
+
+## Structure (to be authored)
+
+For each substrate question:
+
+1. The question (e.g., "How does this harness load instruction files at session start?").
+2. The answer per harness, dated.
+3. The implication for primitive design.
+4. The vendor-doc citation.

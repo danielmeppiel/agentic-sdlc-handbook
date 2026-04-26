@@ -1,0 +1,21 @@
+---
+title: "Primitives as Code"
+---
+
+::: {.callout-note}
+## Chapter under construction (v2 draft)
+
+This chapter is being authored in Wave C of the Practitioner Block v2 build. The brief lives in `WIP-distillation/round-3/04-FINAL-ARC-PROPOSAL.md`, section 5.
+:::
+
+## Thesis
+
+If markdown that steers an LLM is code (Ch09), then the discipline of shipping it must look like the discipline of shipping any other code: lint, test, version, distribute, audit. This chapter operationalizes the meta-thesis.
+
+## Sections (to be authored)
+
+1. The DevEx gap.
+2. Lint your primitives.
+3. Test your primitives.
+4. Version, distribute, lockfile.
+5. Audit and supply-chain hygiene.
