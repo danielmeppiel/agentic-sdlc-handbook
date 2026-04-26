@@ -382,14 +382,27 @@ Three observations. **Context files live in `.github/`**, centralised so the kno
 
 Primitives are not independent. They form a layered system, and the agent's effective context for a task is the composition of every applicable file:
 
-```
-Global principles (copilot-instructions.md)
-  └─ Scoped instructions (*.instructions.md, matched by applyTo)
-      └─ Skills (activated by code patterns in the current task)
-          └─ Agent configuration (persona, model, tool boundaries)
-              └─ Prompt or spec (the specific workflow being executed)
-                  └─ Memory (accumulated project context)
-                      └─ Hooks (event-driven triggers, operating across all layers)
+```{mermaid}
+%%| fig-cap: "Composition cascade. Each layer narrows scope and adds specificity; the agent's effective context for a task is the union of every applicable layer. Hooks operate across all layers as event-driven triggers."
+flowchart TD
+    G["<b>Global principles</b><br/><span style='font-size:11px'>copilot-instructions.md</span>"]
+    I["<b>Scoped instructions</b><br/><span style='font-size:11px'>*.instructions.md, matched by applyTo</span>"]
+    S["<b>Skills</b><br/><span style='font-size:11px'>activated by code patterns</span>"]
+    A["<b>Agent configuration</b><br/><span style='font-size:11px'>persona, model, tool boundaries</span>"]
+    P["<b>Prompt or spec</b><br/><span style='font-size:11px'>the specific workflow being executed</span>"]
+    M["<b>Memory</b><br/><span style='font-size:11px'>accumulated project context</span>"]
+    H["<b>Hooks</b><br/><span style='font-size:11px'>event-driven triggers, cross-cutting</span>"]
+    G --> I --> S --> A --> P --> M
+    H -.->|cross-cutting| G
+    H -.-> I
+    H -.-> S
+    H -.-> A
+    H -.-> P
+    H -.-> M
+    classDef layer fill:#f5f5f5,stroke:#333,stroke-width:1px,color:#000
+    classDef cross fill:#fff3e0,stroke:#e65100,stroke-width:1px,color:#000
+    class G,I,S,A,P,M layer
+    class H cross
 ```
 
 When an agent is asked to modify `src/api/users.py`, the effective context assembles from global principles, the `applyTo: "src/api/**"` instruction file (frontend instructions stay out), the API middleware skill (activated by route patterns), the backend-dev agent (persona, model, tools), and the memory file (versioning decisions, deprecated `SessionAuth`, rate limit timeouts). Each layer adds specificity; none contradicts the layer above. A conflict indicates a design error in the instrumentation, not a resolution the agent should attempt.
