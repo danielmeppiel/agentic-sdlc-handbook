@@ -2,6 +2,8 @@
 title: "The Execution Meta-Process"
 ---
 
+# The Execution Meta-Process {#sec-meta-process}
+
 Here is what nobody tells you about using AI agents on a real codebase: the agent is the easy part. The hard part is knowing what to ask, in what order, and when to stop asking and start verifying.
 
 Chapters 10 through 12 gave you the building blocks — PROSE constraints to design by (Chapter 10), context engineering to feed agents accurately (Chapter 11), and multi-agent orchestration to coordinate at scale (Chapter 12). This chapter puts them into motion. It describes the execution methodology that turns those building blocks into shipped code: how you move from "I need to change 75 files" to "the PR is merged with zero regressions" — and what happens at every decision point in between.

@@ -2,6 +2,8 @@
 title: "What Comes Next"
 ---
 
+# What Comes Next {#sec-what-comes-next}
+
 Everything in this book will be partially obsolete within eighteen months. The models will be better, the tools will be different, and capabilities we marked "directional" will be shipping. That is not a flaw in the book. It is the central argument. The methodology survives tool change. The primitives survive model change. The discipline survives everything.
 
 This chapter applies the three-tier honesty framework (available now, emerging, directional) to the trajectory of the field itself. Where the evidence is strong, the predictions are specific. Where it is not, they are marked accordingly. And where the author is guessing, that is said plainly.

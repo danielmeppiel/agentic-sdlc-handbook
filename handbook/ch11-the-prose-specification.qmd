@@ -2,6 +2,8 @@
 title: "The PROSE Specification"
 ---
 
+# The PROSE Specification {#sec-prose}
+
 You've been using agent instructions for a few weeks. Some tasks produce clean output; others produce confident garbage. The difference isn't the model or the prompt — it's whether your setup follows five core constraints that determine how agents handle scope, context, and boundaries. This chapter specifies each one.
 
 This is the reference chapter. Return to it when you are designing your instruction hierarchy, sizing a task for an agent, or debugging why a workflow that used to be reliable has started producing inconsistent results.

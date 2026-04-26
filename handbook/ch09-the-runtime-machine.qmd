@@ -2,6 +2,8 @@
 title: "The Runtime Machine"
 ---
 
+# The Runtime Machine {#sec-runtime-machine}
+
 It is a Monday morning. A senior engineer — call her Maya — has spent the last two sprints instrumenting a service repository for agentic development under GitHub Copilot. Conventions live in `.github/instructions/api.instructions.md` with an `applyTo: "src/api/**"` frontmatter. A reusable code-review framework lives in `.github/skills/code-review/SKILL.md`. A specialist persona lives in `.github/agents/security-auditor.agent.md`. Agents bind reliably; reviews are sharper; her teammates have stopped relitigating naming conventions in pull requests. The instrumentation works.
 
 This morning her team lead asks her to evaluate Claude Code on the same project. Maya clones the repo onto a fresh machine, installs the CLI, runs `claude` from the project root, and asks it to add an endpoint following the existing API conventions. Claude Code drafts the endpoint without consulting the convention file. The new code uses the deprecated authentication helper. None of the rules in `api.instructions.md` made it into the model's context. The skill in `.github/skills/code-review/` did not surface during the review. The security-auditor persona — the one her team has been calibrating for a month — is invisible.

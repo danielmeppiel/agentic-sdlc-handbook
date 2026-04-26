@@ -2,6 +2,8 @@
 title: "The Practitioner's Mindset"
 ---
 
+# The Practitioner's Mindset {#sec-practitioners-mindset}
+
 ::: {.callout-tip}
 ## Install Genesis as you read
 

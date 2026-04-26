@@ -2,6 +2,8 @@
 title: "Anti-Patterns and Failure Modes"
 ---
 
+# Anti-Patterns and Failure Modes {#sec-anti-patterns}
+
 Every technique in this book was born from a failure. In our early experiments, the wave execution model emerged because a developer tried to run 15 agents at once and got a merge conflict graveyard. The checkpoint discipline exists because someone skipped testing after wave 2 and spent three hours debugging a cascade that started in wave 1. The escalation protocol exists because an agent claimed a file was updated when it wasn't, and no one checked until the PR review.
 
 This chapter documents 19 distinct ways AI-native development goes wrong, why each failure happens, which PROSE constraint it violates, and how to prevent or recover.

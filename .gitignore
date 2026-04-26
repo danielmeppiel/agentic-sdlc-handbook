@@ -9,6 +9,8 @@ _freeze/
 
 # Local build artifacts
 dist/
+handbook/*.html
+handbook/*_files/
 
 /.quarto/
 **/*.quarto_ipynb

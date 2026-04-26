@@ -2,6 +2,8 @@
 title: "The Deterministic / Probabilistic Boundary"
 ---
 
+# The Deterministic/Probabilistic Boundary {#sec-seam}
+
 A team I worked with shipped a small agent on a Friday. Its job was modest: read incoming bug reports from a shared inbox, draft a GitHub issue, attach the relevant labels, mention the right account team. The agent was wired to a model, given a prompt, handed an API token, and let loose. For two weeks it worked. The team moved on.
 
 On the third Monday morning it produced an issue tagged with a customer name that did not exist. Not a misspelling — a fabrication. The agent had inferred from a thin signal in the email body that the report came from "Acme Robotics," a plausible-sounding company that was not, in fact, a customer. The label it picked was real and belonged to a different account. A real engineer was paged. A real customer success manager had to apologize for an issue their team had never filed. Nothing in the agent's logs explained why the name appeared, because the model that produced it does not, in any retrievable sense, know.
