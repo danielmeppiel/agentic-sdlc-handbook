@@ -6,7 +6,7 @@ title: "Appendix B: Genesis worked example: Panel re-architecture"
 
 *Anti-pattern half of `examples/02`, with three callouts.*
 
-The file is `skills/genesis/examples/02-review-panel-architecture.md`. It opens with a panel that breaks, diagnoses why in three short truths, and ends with the version that works. The example is written for cold-load — the index at `skills/genesis/examples/README.md` flags it as readable without prior Genesis context. Same author as the handbook; installable via `apm install danielmeppiel/genesis`.
+The file is [`skills/genesis/examples/02-review-panel-architecture.md`](https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/examples/02-review-panel-architecture.md). It opens with a panel that breaks, diagnoses why in three short truths, and ends with the version that works. The example is written for cold-load — the index at [`skills/genesis/examples/README.md`](https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/examples/README.md) flags it as readable without prior Genesis context. Same author as the handbook; installable via `apm install` [`danielmeppiel/genesis`](https://github.com/danielmeppiel/genesis).
 
 ## The anti-pattern — panel-in-one-thread
 
@@ -17,7 +17,7 @@ The example diagnoses the failure in three "durable truths" before it shows the 
 **Truth #1: context is finite and fragile.** By the time the arbiter step runs, the thread's window contains the orchestrator wrapper, five personas' text, five sets of findings, the conditional persona, the arbiter persona, and the synthesis template. The first lens's text is far from focus, and its nuances have decayed influence on the synthesis.
 
 ::: {.callout-note appearance="simple" icon=false}
-**Cross-link — Ch13.** Truth #1 is the attention-economy point in operational form: see @sec-attention-economy. The substrate vocabulary the corrected design relies on lives in `skills/genesis/assets/runtime-affordances/common.md`.
+**Cross-link — Ch13.** Truth #1 is the attention-economy point in operational form: see @sec-attention-economy. The substrate vocabulary the corrected design relies on lives in [`skills/genesis/assets/runtime-affordances/common.md`](https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/assets/runtime-affordances/common.md).
 :::
 
 **Truth #2: context must be explicit.** The lenses cannot operate independently. Each lens reads the prior lenses' findings whether the design wants that or not, because all share the window. The cross-pollination corrupts the "independent specialist" contract the design claims to deliver.
@@ -70,7 +70,7 @@ The orchestrator spawns one child thread per lens, scoped to the PR under review
 The disambiguation the example insists on: a thread is a runtime spawn with a fresh context window; a persona is a markdown file used as a scoping prompt at thread start. The Architect thread is not the Architect persona; the persona is not a thread. The thread exists because the design needs fresh context; the persona exists because the design needs a focused lens. They cooperate across the spawn boundary.
 
 ::: {.callout-note appearance="simple" icon=false}
-**Cross-link — Ch15.** This is the Panel pattern @sec-multi-agent teaches, executed as fan-out plus synthesizer rather than as a single thread playing many lenses. The orchestrator-as-single-writer rule is the SoC stance from `skills/genesis/assets/composition-substrate.md` — composition over inheritance, with each lens persona depended on via link rather than inlined into the orchestrator.
+**Cross-link — Ch15.** This is the Panel pattern @sec-multi-agent teaches, executed as fan-out plus synthesizer rather than as a single thread playing many lenses. The orchestrator-as-single-writer rule is the SoC stance from [`skills/genesis/assets/composition-substrate.md`](https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/assets/composition-substrate.md) — composition over inheritance, with each lens persona depended on via link rather than inlined into the orchestrator.
 :::
 
-The Compliance summary above flips four rows from FAIL to PASS once the fan-out is in place; Single-writer was already PASS but now holds by construction rather than by coincidence of the loop. For a denser instance with six personas plus an arbiter against a real PR-review surface, see `skills/genesis/examples/04-pr-review-advisory.md`.
+The Compliance summary above flips four rows from FAIL to PASS once the fan-out is in place; Single-writer was already PASS but now holds by construction rather than by coincidence of the loop. For a denser instance with six personas plus an arbiter against a real PR-review surface, see [`skills/genesis/examples/04-pr-review-advisory.md`](https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/examples/04-pr-review-advisory.md).
