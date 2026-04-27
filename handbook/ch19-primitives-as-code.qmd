@@ -96,7 +96,7 @@ Two kinds of duplication used to be tolerable when primitives were files: short 
 
 ## The lockfile and what it pins
 
-A dependency declaration is an intent (*I want the rubric, version 1.2*). A lockfile is a fact (*on the date of this install, the rubric resolved to commit `9d10…`, content hash `sha256:9d10…`, fetched from this source URL*). The two are different and both are necessary, for the same reasons npm's `package.json` and `package-lock.json` are different.[^ch19-pkg]
+A dependency declaration is an intent (*I want the rubric, version 1.2*). A lockfile is a fact (*on the date of this install, the rubric resolved to commit `9d10…`, content hash `sha256:9d10…`, fetched from this source URL*). The two are different and both are necessary, for the same reasons npm's `package.json` and `package-lock.json` are different.[^ch19-pkg] [^ch19-genesis]
 
 | Layer | Manifest (`apm.yml`) | Lockfile (`apm.lock.yaml`) |
 |---|---|---|
