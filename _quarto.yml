@@ -111,6 +111,8 @@ format:
     theme:
       light: cosmo
       dark: darkly
+    mermaid:
+      theme: neutral
     toc: true
     number-sections: true
     code-copy: true

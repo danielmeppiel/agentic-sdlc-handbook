@@ -1,9 +1,9 @@
 
 # Multi-Agent Orchestration {#sec-multi-agent}
 
-A single AI agent can modify a file, and even several files in sequence if the changes are simple enough and the context window holds. But the moment a cross-cutting change spans 40 files across 5 concerns, a single agent becomes the bottleneck — not because it lacks intelligence, but because it lacks bandwidth. Multi-agent orchestration solves the coordination problem by decomposing work across specialized agents that each operate within manageable context budgets. But coordination is not free. Agents that work in parallel can conflict, produce inconsistent output, or break each other's work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.[^ch12-coordination]
+A single agent thread can modify a file, and even several files in sequence if the changes are simple enough and the context window holds. But the moment a cross-cutting change spans 40 files across 5 concerns, that single thread becomes the bottleneck — not because it lacks intelligence, but because it lacks bandwidth. Multi-agent orchestration is the *pattern* that solves this by decomposing work across specialized **agent threads** (the threading-pattern term of art is *subagent*) that each operate within manageable context budgets, composed into a single **agentic system** — the unit you ship. But coordination is not free. Threads that run in parallel can conflict, produce inconsistent output, or break each other's work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.[^ch12-coordination]
 
-This chapter covers when to use multiple agents, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human's role is in all of it.
+This chapter covers when to use multiple agent threads, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human's role is in all of it.
 
 ---
 

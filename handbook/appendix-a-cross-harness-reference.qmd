@@ -109,7 +109,7 @@ The practical implication for portable instrumentation: when a primitive *can* b
 
 ## A.4 Forward references
 
-The lifecycle vocabulary used throughout this appendix — Resolve, Materialize, Bind, Activate — is defined in @sec-load-lifecycle. The four-part runtime decomposition (model, harness, filesystem-as-loader, trigger surface) is @sec-runtime-machine. The seven primitive types (instructions, agents, skills, prompts, memory, orchestration, hooks) are catalogued in @sec-instrumented-codebase, which is the canonical APM-side naming this appendix's "concept" column maps from. When a row in the A.1 matrix is empty, the corresponding section of @sec-instrumented-codebase explains what concept the harness is missing and what to substitute.
+The lifecycle vocabulary used throughout this appendix — Resolve, Materialize, Bind, Activate — is defined in @sec-load-lifecycle. The four-part runtime decomposition (Model, harness, agent source code, client) is @sec-runtime-machine. The seven primitive types (instructions, agents, skills, prompts, memory, orchestration, hooks) are catalogued in @sec-instrumented-codebase, which is the canonical APM-side naming this appendix's "concept" column maps from. When a row in the A.1 matrix is empty, the corresponding section of @sec-instrumented-codebase explains what concept the harness is missing and what to substitute.
 
 ---
 

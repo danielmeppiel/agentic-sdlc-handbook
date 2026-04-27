@@ -90,7 +90,7 @@ Teams are configuring Copilot with a single instructions file and calling it "AI
 
 This book provides what's missing: a systematic methodology for building software with AI agents, from organizational strategy to the individual keystrokes. It introduces the **PROSE framework** -- five architectural constraints that make AI agent output reliable, verifiable, and maintainable -- and shows how to implement it with real tools and real workflows.
 
-The methodology in this book produced the book itself, and it powers [APM](https://github.com/microsoft/apm), an open-source agent package manager with 700+ GitHub stars.
+The methodology in this book produced the book itself, and it powers [APM](https://github.com/microsoft/apm), an open-source agent package manager.
 
 ## Who This Book Is For
 
@@ -126,7 +126,7 @@ as the book — that ports the software architect's role to agentic
 systems. Summon it in your agent with `/genesis <what you want built>`
 and it designs the architecture: which skills, custom agents, and
 instructions you need, and how they compose — the way a software
-architect lays out classes and modules for an OO system.
+architect lays out classes and modules for an Object-Oriented Programming (OO) system.
 Read the book to learn the patterns, or skip ahead and let the
 architect wield them on your project. Inspectable in full at
 [github.com/danielmeppiel/genesis](https://github.com/danielmeppiel/genesis).
@@ -139,7 +139,7 @@ If you have **45 minutes** and need the strategic picture, read Part I, then ski
 
 ## About the Author
 
-Daniel Meppiel is a Global Black Belt at **Microsoft** and the creator of [APM (Agent Package Manager)](https://github.com/microsoft/apm), an open-source tool for managing AI agent configurations across codebases -- 700+ GitHub stars and growing. He designed the **PROSE framework**, a specification methodology for making AI coding agents reliable in professional software delivery. Connect with Daniel on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/).
+Daniel Meppiel is a Global Black Belt at **Microsoft** and the creator of [APM (Agent Package Manager)](https://github.com/microsoft/apm), an open-source tool for managing AI agent configurations across codebases. He designed the **PROSE framework**, a specification methodology for making AI coding agents reliable in professional software delivery. Connect with Daniel on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/).
 
 With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise adoption, Daniel bridges the gap between technical architecture and business outcomes. His career arc runs from **CERN** (Product Lifecycle Management modernization for particle physics experiments), through **Avaloq** (legacy core-banking system migration) -- the same classes of system modernization and code migration that AI agents now accelerate in the SDLC -- to founding **WeGaw** as CTO for 4 years (building a complex AI-powered water intelligence platform from scratch, serving global energy companies), **Sonar** (code security), **GitHub** (developer tooling), and now **Microsoft**.
 
