@@ -112,19 +112,22 @@ You don't need to read sequentially. Start with whichever part matches your role
 - **Part IV -- Case Studies:** APM, the handbook itself, the publishing pipeline, the growth engine
 - **Closing:** What comes next, plus a cross-harness reference appendix
 
-::: {.callout-note title="Before you read Part III: a free companion"}
-Part III is the design-discipline block of the book — the chapters that
-teach how to build non-trivial agent-driven systems.
-
-You can read it on its own. If you want the same patterns loaded into
-the AI you code with while you read, install the companion:
+::: {.callout-note title="The architect for agentic systems — install the companion"}
+Part III is where the book gets technical: the patterns and
+architectural concepts for building non-trivial agent-driven systems.
+The book teaches them; the companion applies them. Install:
 
 ```bash
 apm install danielmeppiel/genesis
 ```
 
 Genesis is a free, open-source Agent Skill — written by the same hand
-as the book and inspectable in full at
+as the book — that ports the software architect's role to agentic
+systems. Summon it in your agent with `/genesis <what you want
+designed>` and it returns a named pattern, an execution diagram, an
+acceptance test, and a written plan before a single file is touched.
+Read the book to learn the patterns, or skip ahead and let the
+architect wield them on your project. Inspectable in full at
 [github.com/danielmeppiel/genesis](https://github.com/danielmeppiel/genesis).
 Works across Copilot, Claude Code, Cursor, Codex, and OpenCode.
 :::
