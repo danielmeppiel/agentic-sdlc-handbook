@@ -108,7 +108,7 @@ You don't need to read sequentially. Start with whichever part matches your role
 
 - **Part I -- The Foundation:** The thesis -- why the current approach fails and what replaces it
 - **Part II -- For Leaders:** The AI-native landscape, business case, reference architecture, governance, team structures, and transition planning
-- **Part III -- For Practitioners:** Mindset, runtime machine, instrumented codebase, PROSE specification, load lifecycle, attention economy, the deterministic/probabilistic seam, multi-agent orchestration, execution meta-process, architectural patterns, anti-patterns, and primitives-as-code
+- **Part III -- For Practitioners:** Mindset, agentic runtime machine, instrumented codebase, PROSE specification, load lifecycle, attention economy, the deterministic/probabilistic seam, multi-agent orchestration, execution meta-process, architectural patterns, anti-patterns, and primitives-as-code
 - **Part IV -- Case Studies:** APM, the handbook itself, the publishing pipeline, the growth engine
 - **Closing:** What comes next, plus a cross-harness reference appendix
 

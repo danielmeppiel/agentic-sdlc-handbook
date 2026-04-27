@@ -1,5 +1,5 @@
 
-# The Runtime Machine {#sec-runtime-machine}
+# The Agentic Runtime Machine {#sec-runtime-machine}
 
 It is a Monday morning. A senior engineer — call her Maya — has spent the last two sprints instrumenting a service repository for agentic development under GitHub Copilot. Conventions live in `.github/instructions/api.instructions.md` with an `applyTo: "src/api/**"` frontmatter. A reusable code-review framework lives in `.github/skills/code-review/SKILL.md`. A specialist persona lives in `.github/agents/security-auditor.agent.md`. Agents bind reliably; reviews are sharper; her teammates have stopped relitigating naming conventions in pull requests. The instrumentation works.
 

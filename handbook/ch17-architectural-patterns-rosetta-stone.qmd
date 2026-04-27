@@ -10,7 +10,7 @@ This chapter is a translation table. For each recurring agentic pattern, it give
 
 ## Audience and how to read this chapter
 
-This chapter is written for software architects, technical leads, and senior engineers responsible for agentic-system design at scale. It assumes you have worked through the runtime machine (Ch09), the load lifecycle (Ch12), the deterministic / probabilistic seam (Ch14), and multi-agent orchestration (Ch15). It is not a tutorial. It is a catalogue.
+This chapter is written for software architects, technical leads, and senior engineers responsible for agentic-system design at scale. It assumes you have worked through the agentic runtime machine (Ch09), the load lifecycle (Ch12), the deterministic / probabilistic seam (Ch14), and multi-agent orchestration (Ch15). It is not a tutorial. It is a catalogue.
 
 Read the layered model in §1 first. After that, the per-layer catalogues (§3–§6) are independently scannable. The decision matrix in §7 indexes the catalogue by problem; §8 names what this chapter deliberately leaves out.
 
