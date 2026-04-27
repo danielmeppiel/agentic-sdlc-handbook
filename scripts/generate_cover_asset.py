@@ -34,16 +34,24 @@ def load_font(size: int, role: str) -> ImageFont.FreeTypeFont | ImageFont.ImageF
     ]
     sans_candidates = [
         FONTS_DIR / "IBMPlexSans-Regular.ttf",
+        FONTS_DIR / "WorkSans-Regular.ttf",
+        FONTS_DIR / "InstrumentSans-Regular.ttf",
         Path("/System/Library/Fonts/HelveticaNeue.ttc"),
         Path("/System/Library/Fonts/Supplemental/Arial.ttf"),
     ]
     sans_bold_candidates = [
         FONTS_DIR / "IBMPlexSans-Bold.ttf",
+        FONTS_DIR / "WorkSans-Bold.ttf",
+        FONTS_DIR / "InstrumentSans-Bold.ttf",
         Path("/System/Library/Fonts/HelveticaNeue.ttc"),
     ]
     sans_light_candidates = [
         FONTS_DIR / "IBMPlexSans-Light.ttf",
         FONTS_DIR / "IBMPlexSans-Regular.ttf",
+        FONTS_DIR / "WorkSans-Regular.ttf",
+        FONTS_DIR / "InstrumentSans-Regular.ttf",
+        Path("/System/Library/Fonts/HelveticaNeue.ttc"),
+        Path("/System/Library/Fonts/Supplemental/Arial.ttf"),
     ]
     if role == "serif":
         candidates = serif_candidates
