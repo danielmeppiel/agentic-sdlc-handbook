@@ -51,6 +51,7 @@ book:
       chapters:
         - handbook/ch20-what-comes-next.qmd
         - handbook/appendix-a-cross-harness-reference.qmd
+        - handbook/appendix-b-genesis-worked-example.qmd
 
 format:
   html:

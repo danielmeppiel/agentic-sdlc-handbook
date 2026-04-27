@@ -79,7 +79,7 @@ For cross-cutting changes, organize agents by area of expertise rather than by w
 
 In the auth-logging overhaul ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in the [case study](../case-study-apm-overhaul.qmd) and summarized in Chapter 16), this two-team structure (architecture team led by an architect agent, domain team led by a logging expert agent) handled a 75-file change across five concerns. The architecture team carried type definitions and architectural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
 
-This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.
+This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.[^ch15-genesis-panel]
 
 #### Concrete Dispatch: What It Actually Looks Like
 
@@ -468,3 +468,4 @@ The next chapter puts this framework into practice. It walks through the full fi
 
 [^ch12-coordination]: The coordination overhead of multi-agent systems parallels Brooks's observation that adding developers to a late project makes it later (*The Mythical Man-Month*, 1975). The difference: agent coordination overhead is predictable and can be reduced through better planning, not just through better communication.
 [^ch12-autonomy]: Our autonomy taxonomy draws conceptually from the SAE levels of driving automation (SAE J3016), adapted for software engineering contexts. The key parallel: higher autonomy levels require not less human involvement, but different kinds of involvement — supervision rather than operation.
+[^ch15-genesis-panel]: For a panel that breaks under panel-in-one-thread and the corrected fan-out plus arbiter, see @sec-genesis-worked-example, which excerpts `skills/genesis/examples/02-review-panel-architecture.md`. For a denser instance with six personas plus an arbiter wired against a real PR-review surface, see `skills/genesis/examples/04-pr-review-advisory.md` — name-only; not excerpted here.

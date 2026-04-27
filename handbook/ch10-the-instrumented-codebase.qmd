@@ -176,6 +176,8 @@ The design test for a skill is three criteria: Does this knowledge apply across 
 
 Skills differ from instructions in an important way: they provide *decision frameworks*, not just rules. A rule says "use `_rich_warning()` for warnings." A decision framework says "every warning must answer 'what should the user do about this?'" The framework generalizes to situations the author didn't anticipate. Rules cover known cases. Frameworks cover unknown ones.
 
+For a production-scale skill the reader already has on disk, see `skills/genesis/SKILL.md` — the same activation contract this section teaches, in operational form.[^ch10-genesis-skill]
+
 ### Prompts
 
 **Load mode:** user-invoked. The developer runs the prompt as a workflow — typically through a slash-command surface or a CLI flag — and the harness reads the file as the opening turn. The prompt is parameterised, repeatable, and explicit; it is the agentic equivalent of a script or a makefile target.
@@ -746,3 +748,4 @@ This chapter showed you what to build. Chapter 11 shows you how to write it. Cha
 [^ch9-lint]: Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Semantic Failure in Chapter 18.
 [^ch9-scope]: The principle of scoped, hierarchical configuration mirrors established patterns in software engineering — from CSS specificity to Git's nested .gitignore files. The key insight is that agents benefit from the same locality-of-reference that makes these patterns effective for humans.
 [^ch10-skills]: agentskills.io is the open registry standard for the `SKILL.md` entrypoint with description-driven activation. The same standard has been adopted in substantially compatible form by GitHub Copilot (`.github/skills/<name>/SKILL.md`), Claude Code (`.claude/skills/<name>/SKILL.md`), and several others — skills port across harnesses more cleanly than scope-attached rules because the standard pinned both the file name and the activation contract.
+[^ch10-genesis-skill]: `skills/genesis/SKILL.md` carries the activation contract under the "Hard rules" heading — the description-driven trigger and the process body the dispatcher reads — alongside `skills/genesis/agents/genesis-architect.agent.md` as the persona-scoping artifact in the same bundle. *Agent-side reference; bundle layout.*

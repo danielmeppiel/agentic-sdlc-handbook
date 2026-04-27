@@ -9,7 +9,7 @@ This is the reference chapter. Return to it when you are designing your instruct
 
 ## The Constraint Model
 
-PROSE defines five constraints. Each addresses a fundamental property of language models (finite context, stateless reasoning, probabilistic output) and each induces a desirable property in the system that follows it. The constraints are independent in definition and interdependent in practice.[^ch10-constraints]
+PROSE defines five constraints. Each addresses a fundamental property of language models (finite context, stateless reasoning, probabilistic output) and each induces a desirable property in the system that follows it. The constraints are independent in definition and interdependent in practice.[^ch10-constraints][^ch11-genesis-prose]
 
 | Constraint | Addresses | Induces |
 |---|---|---|
@@ -570,3 +570,4 @@ One implementation of PROSE scaffolding: `pip install apm-cli && apm init` — [
 
 [^ch10-constraints]: The idea that constraints enable creativity rather than restricting it has deep roots in design thinking. See: Stokes, "Creativity from Constraints: The Psychology of Breakthrough," Springer, 2005.
 [^ch10-spec]: The shift from human-readable to machine-readable specifications parallels the evolution from informal requirements to formal methods in safety-critical systems. The difference: agentic specifications must be *both* — readable by the human reviewer and parseable by the agent consumer.
+[^ch11-genesis-prose]: For PROSE constraints in operational form, see the "Hard rules" section of `skills/genesis/SKILL.md` and the Tier-0 head of `skills/genesis/assets/primitives.md`, which encode progressive disclosure, reduced scope, and the orchestrated-composition stance as a checklist the dispatcher reads before any module body loads. *Agent-side reference; PROSE in operational form.*

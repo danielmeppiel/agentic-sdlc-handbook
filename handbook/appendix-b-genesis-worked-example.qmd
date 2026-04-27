@@ -1,0 +1,76 @@
+---
+title: "Appendix B: Genesis worked example: Panel re-architecture"
+---
+
+# Genesis worked example: Panel re-architecture {#sec-genesis-worked-example}
+
+*Anti-pattern half of `examples/02`, with three callouts.*
+
+The file is `skills/genesis/examples/02-review-panel-architecture.md`. It opens with a panel that breaks, diagnoses why in three short truths, and ends with the version that works. The example is written for cold-load — the index at `skills/genesis/examples/README.md` flags it as readable without prior Genesis context. Same author as the handbook; installable via `apm install danielmeppiel/genesis`.
+
+## The anti-pattern — panel-in-one-thread
+
+The starting design runs five mandatory specialist lenses, one conditional specialist, and an arbiter — all inside one thread. The thread loads each persona file in turn, plays each lens, accumulates findings in working notes, then loads the arbiter persona and synthesizes a single output comment. It looks like a panel; it executes as a single loop.
+
+The example diagnoses the failure in three "durable truths" before it shows the fix.
+
+**Truth #1: context is finite and fragile.** By the time the arbiter step runs, the thread's window contains the orchestrator wrapper, five personas' text, five sets of findings, the conditional persona, the arbiter persona, and the synthesis template. The first lens's text is far from focus, and its nuances have decayed influence on the synthesis.
+
+::: {.callout-note appearance="simple" icon=false}
+**Cross-link — Ch13.** Truth #1 is the attention-economy point in operational form: see @sec-attention-economy. The substrate vocabulary the corrected design relies on lives in `skills/genesis/assets/runtime-affordances/common.md`.
+:::
+
+**Truth #2: context must be explicit.** The lenses cannot operate independently. Each lens reads the prior lenses' findings whether the design wants that or not, because all share the window. The cross-pollination corrupts the "independent specialist" contract the design claims to deliver.
+
+**Truth #3: output is probabilistic.** Variance is highest exactly where the design demands the most precision — the arbiter's synthesis runs at the deepest point of attention degradation in the whole thread.
+
+The example then names the failures in the classical-principle vocabulary the rest of Genesis uses: shared mutable state (every lens writes to the same window), context thrash (one thread plays five distinct lenses), and an unreached escape hatch (a textbook fan-out target executed as a single loop).
+
+The compliance summary at the bottom of the anti-pattern half puts these failures in a table, so the recovery is auditable line by line:
+
+| Check | Old design | New design |
+|---|---|---|
+| Reduced Scope (per-lens fresh window) | FAIL | PASS |
+| Orchestrated Composition (independent contracts) | FAIL | PASS |
+| Single-writer interlock on output | PASS | PASS |
+| God module avoidance | FAIL (one thread = many lenses) | PASS |
+| Fan-out where applicable | FAIL | PASS |
+
+::: {.callout-note appearance="simple" icon=false}
+**Cross-link — Ch18.** The left column is the anti-pattern catalogue from @sec-anti-patterns rendered against one concrete module. The right column is what the recovery looks like once fan-out is reachable — the Old → New row pairs are the recovery path Ch18 leaves abstract.
+:::
+
+## The corrected design — fan-out with arbiter
+
+The redesigned shape is fan-out plus a synthesizer realizing the panel pattern. Each lens gets its own thread with its own fresh context window. The orchestrator is the only writer to the output sink. The arbiter is a distinct persona that runs in its own thread, loaded with the arbiter persona file plus the lens findings as input — never the lens personas themselves.
+
+```{mermaid}
+flowchart LR
+    O{Panel orchestrator}
+    P((Architect))
+    L((Logging UX))
+    U((DevX UX))
+    Sec((Security))
+    G((Growth))
+    Auth((Auth))
+    A((Arbiter))
+    O --> P
+    O --> L
+    O --> U
+    O --> Sec
+    O --> G
+    O -. conditional .-> Auth
+    O --> A
+    classDef new stroke-dasharray: 5 5;
+    class A new;
+```
+
+The orchestrator spawns one child thread per lens, scoped to the PR under review; the conditional lens (Auth) spawns only when its trigger fires. Each child returns findings to the orchestrator; a completeness gate checks the set; the orchestrator then spawns the arbiter thread with the persona plus the collected findings, and writes the synthesized verdict to the output sink under a single-writer interlock. (Genesis continues with a handoff packet template — see source file.)
+
+The disambiguation the example insists on: a thread is a runtime spawn with a fresh context window; a persona is a markdown file used as a scoping prompt at thread start. The Architect thread is not the Architect persona; the persona is not a thread. The thread exists because the design needs fresh context; the persona exists because the design needs a focused lens. They cooperate across the spawn boundary.
+
+::: {.callout-note appearance="simple" icon=false}
+**Cross-link — Ch15.** This is the Panel pattern @sec-multi-agent teaches, executed as fan-out plus synthesizer rather than as a single thread playing many lenses. The orchestrator-as-single-writer rule is the SoC stance from `skills/genesis/assets/composition-substrate.md` — composition over inheritance, with each lens persona depended on via link rather than inlined into the orchestrator.
+:::
+
+The Compliance summary above flips four rows from FAIL to PASS once the fan-out is in place; Single-writer was already PASS but now holds by construction rather than by coincidence of the loop. For a denser instance with six personas plus an arbiter against a real PR-review surface, see `skills/genesis/examples/04-pr-review-advisory.md`.
