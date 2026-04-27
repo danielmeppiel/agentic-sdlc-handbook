@@ -30,12 +30,17 @@ book:
     - part: "Part III: For Practitioners"
       chapters:
         - handbook/ch08-the-practitioners-mindset.qmd
-        - handbook/ch09-the-instrumented-codebase.qmd
-        - handbook/ch10-the-prose-specification.qmd
-        - handbook/ch11-context-engineering.qmd
-        - handbook/ch12-multi-agent-orchestration.qmd
-        - handbook/ch13-the-execution-meta-process.qmd
-        - handbook/ch14-anti-patterns-and-failure-modes.qmd
+        - handbook/ch09-the-runtime-machine.qmd
+        - handbook/ch10-the-instrumented-codebase.qmd
+        - handbook/ch11-the-prose-specification.qmd
+        - handbook/ch12-the-load-lifecycle.qmd
+        - handbook/ch13-attention-and-context-economy.qmd
+        - handbook/ch14-deterministic-probabilistic-boundary.qmd
+        - handbook/ch15-multi-agent-orchestration.qmd
+        - handbook/ch16-the-execution-meta-process.qmd
+        - handbook/ch17-architectural-patterns-rosetta-stone.qmd
+        - handbook/ch18-anti-patterns-and-failure-modes.qmd
+        - handbook/ch19-primitives-as-code.qmd
     - part: "Part IV: Case Studies"
       chapters:
         - case-study-apm-overhaul.qmd
@@ -44,7 +49,9 @@ book:
         - case-study-growth-engine.qmd
     - part: "Closing"
       chapters:
-        - handbook/ch15-what-comes-next.qmd
+        - handbook/ch20-what-comes-next.qmd
+        - handbook/appendix-a-cross-harness-reference.qmd
+        - handbook/appendix-b-genesis-worked-example.qmd
 
 format:
   html:
@@ -104,6 +111,8 @@ format:
     theme:
       light: cosmo
       dark: darkly
+    mermaid:
+      theme: neutral
     toc: true
     number-sections: true
     code-copy: true

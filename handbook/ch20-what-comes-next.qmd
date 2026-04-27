@@ -1,6 +1,5 @@
----
-title: "What Comes Next"
----
+
+# What Comes Next {#sec-what-comes-next}
 
 Everything in this book will be partially obsolete within eighteen months. The models will be better, the tools will be different, and capabilities we marked "directional" will be shipping. That is not a flaw in the book. It is the central argument. The methodology survives tool change. The primitives survive model change. The discipline survives everything.
 
@@ -14,7 +13,7 @@ This chapter applies the three-tier honesty framework (available now, emerging, 
 
 **Multi-agent orchestration moves from research to practice.** Teams today primarily use single-agent interactions. Multi-agent patterns — planning agents dispatching specialists, review agents evaluating output, agents collaborating through shared artifacts — exist in research and early tooling.[^ch15-multiagent] Within a year, they will ship in mainstream platforms. The orchestration disciplines in Chapters 10–12 — task decomposition, wave-based execution, escalation protocols — become operational necessities rather than advanced practices.
 
-**The agentic computing stack crystallizes through independent convergence.** By mid-2025, at least three independent efforts arrived at the same layered architecture: manifest-based primitive distribution, framework-layer composition, and CI/CD-native execution. Anthropic's `plugin.json`[^ch15-plugin], GitHub's Agentic Workflows, and open-source frameworks like Squad[^ch15-squad] and Spec-Kit[^ch15-speckit] didn't coordinate — they converged because the layers reflect real boundaries in the problem. Open-source tools already provide manifest-based dependency resolution and security scanning at the primitive layer, the same architecture as npm or pip applied to agent configuration rather than runtime code. This is the pattern that produced HTTP → REST → Rails/Express → npm/pip → applications: each layer emerged when practitioners needed it, not when a standards body decreed it. Spec-Kit and Squad are to agentic development what Spring and React are to traditional computing — they make orchestration easier in one direction, constrain freedom in another, and consume primitives via package managers above the harness layer. The strategic signal: when independent implementations from different vendors converge on the same architecture, the architecture is real. Organizations investing in the primitive layer (Chapter 9) are building on the layer most likely to remain stable as the framework layer evolves.
+**The agentic computing stack crystallizes through independent convergence.** By mid-2025, at least three independent efforts arrived at the same layered architecture: manifest-based primitive distribution, framework-layer composition, and CI/CD-native execution. Anthropic's `plugin.json`[^ch15-plugin], GitHub's Agentic Workflows, and open-source frameworks like Squad[^ch15-squad] and Spec-Kit[^ch15-speckit] didn't coordinate — they converged because the layers reflect real boundaries in the problem. Open-source tools already provide manifest-based dependency resolution and security scanning at the primitive layer, the same architecture as npm or pip applied to agent configuration rather than runtime code. This is the pattern that produced HTTP → REST → Rails/Express → npm/pip → applications: each layer emerged when practitioners needed it, not when a standards body decreed it. Spec-Kit and Squad are to agentic development what Spring and React are to traditional computing — they make orchestration easier in one direction, constrain freedom in another, and consume primitives via package managers above the harness layer. The strategic signal: when independent implementations from different vendors converge on the same architecture, the architecture is real. Organizations investing in the primitive layer (Chapter 19) are building on the layer most likely to remain stable as the framework layer evolves.
 
 ---
 
@@ -30,7 +29,7 @@ This chapter applies the three-tier honesty framework (available now, emerging, 
 
 These predictions are directional. The author believes they describe where the field is heading. They are opinions, not forecasts.
 
-**Full lifecycle agent participation becomes achievable.** The eight-phase lifecycle from Chapter 4 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.
+**Full lifecycle agent participation becomes achievable.** The eight-phase lifecycle from Chapter 4 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, mature support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.
 
 **Context infrastructure becomes as foundational as CI/CD.** Every serious engineering organization today has continuous integration and deployment. Context infrastructure (the context files, instruction hierarchies, and knowledge bases that make agents effective) will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology "doesn't work for us," the same way organizations without CI concluded automated testing "doesn't work at our scale."
 
@@ -73,7 +72,7 @@ These are the things the author is most confident about, precisely because they 
 
 **Composition will remain necessary.** No single agent will hold an entire large system in focus. The tools for composition will improve; the need for it will not diminish.
 
-These five properties map directly to the PROSE constraints from Chapter 1. The constraints were not designed for today's models; they were designed for the fundamental properties of human-AI collaboration.
+These five properties map directly to the PROSE constraints from Chapter 11. The constraints were not designed for today's models; they were designed for the fundamental properties of human-AI collaboration.
 
 ---
 
@@ -100,7 +99,7 @@ Not every task benefits from agent orchestration. Applying the methodology where
 
 **The task requires fewer than 50 lines of change.** If you can hold the full scope in your head, the overhead of persona design, wave planning, and checkpoint discipline is not worth it. Just write the code.
 
-**The domain knowledge is entirely implicit.** If the conventions, constraints, and trade-offs cannot be externalized into instruction files -- because they depend on political context, unwritten relationships, or organizational history that resists documentation -- agents will produce plausible but wrong output. Instrument the codebase first (Chapter 9), then apply agents.
+**The domain knowledge is entirely implicit.** If the conventions, constraints, and trade-offs cannot be externalized into instruction files -- because they depend on political context, unwritten relationships, or organizational history that resists documentation -- agents will produce plausible but wrong output. Instrument the codebase first (Chapter 10), then apply agents.
 
 **The cost of failure is low and iteration is cheap.** For throwaway scripts, prototyping, and exploratory work, a single agent prompt with no orchestration is faster and sufficient. The methodology exists for production-grade work where reliability matters.
 
@@ -114,17 +113,17 @@ The methodology's value is recognizing which category a task falls into before c
 
 ## Your First Week: What to Do Starting Monday
 
-For leaders who read Block 1 and practitioners who read Block 2, here is the concrete version. Not principles. Actions.
+For leaders who read Parts I–II and practitioners who read Part III, here is the concrete version. Not principles. Actions.
 
 ### Day 1: Audit One Module
 
-Pick the module your team changes most frequently. Not the biggest module, the most-changed one. Run the methodology from Chapter 9: identify implicit knowledge, undocumented conventions, architectural decisions that exist only in your team's memory. Write down what you find. You are not fixing anything today. You are measuring the gap between what an agent can see and what your team knows.
+Pick the module your team changes most frequently. Not the biggest module, the most-changed one. Run the methodology from Chapter 10: identify implicit knowledge, undocumented conventions, architectural decisions that exist only in your team's memory. Write down what you find. You are not fixing anything today. You are measuring the gap between what an agent can see and what your team knows.
 
 **Deliverable:** A list of 5–10 implicit conventions that an agent would violate on its first task in this module.
 
 ### Day 2: Write Your First Three Primitives
 
-Take the top three conventions from yesterday's audit. Write each as an instruction file — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 9, under the constraints from Chapter 10: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
+Take the top three conventions from yesterday's audit. Write each as an instruction file — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 10, under the constraints from Chapter 11: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
 
 **Deliverable:** Three instruction files, committed to your repository.
 
@@ -136,7 +135,7 @@ Pick a task from your current sprint — something an agent would plausibly hand
 
 ### Day 4: Measure and Adjust
 
-Review yesterday's comparison honestly. Which files made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn't land. This is the calibration loop from Chapter 11: context files are not documentation, they are engineering artifacts that need testing and iteration like any other code.
+Review yesterday's comparison honestly. Which files made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn't land. This is the calibration loop from Chapter 13: context files are not documentation, they are engineering artifacts that need testing and iteration like any other code.
 
 **Deliverable:** Revised instruction files based on observed agent behavior.
 
@@ -145,6 +144,14 @@ Review yesterday's comparison honestly. Which files made a difference? Which wer
 Show your team the before-and-after. Not a presentation — a 15-minute demo at standup. Show the worst agent output without instrumentation and the improved output with it. Then plan: which modules get instrumented next? Who owns which instruction files? How do you keep them current as the code evolves?
 
 **Deliverable:** A team agreement on next steps and ownership.
+
+### The Agent-Side Companion
+
+The week described above is the human-side ramp. The agent-side ramp is one install.
+
+I wrote the book first; then I built the tool I wished existed when I started. The companion this part opened with is round one — one author's first packaged answer to the discipline these chapters argue for, written by the same hand and put on disk in the form a harness already loads.[^ch20-genesis] Round two is your turn. The patterns will harden, the catalogue will fill in, the rejected near-misses will outnumber the accepted ones; that is the field maturing, not a roadmap. Treat this part's chapters as the floor, the companion as one floor-plan, and your own first packaged answer as the next entry in the catalogue.
+
+This is not a dependency on the book's part — every chapter stands without it — and it is not the only such companion the field will produce. It is a worked example of what the practice looks like packaged as a primitive set, written by the same hand. Install it Monday morning, read this part with it loaded, and when a chapter names a pattern (Wave, Panel, Supervised Execution), grep the skill for the same name. The agent will surface the operational form. Use whichever name lands first in the conversation.
 
 ### For Leaders, Additionally
 
@@ -187,3 +194,5 @@ The methodology is the floor, not the ceiling. Build on it.
 [^ch15-squad]: Brady Gaster, "How Squad Runs Coordinated AI Agents Inside Your Repository," GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/
 
 [^ch15-speckit]: GitHub, "Spec Kit — Build High-Quality Software Faster," https://github.com/github/spec-kit
+
+[^ch20-genesis]: `danielmeppiel/genesis`, [https://github.com/danielmeppiel/genesis/tree/613f2a64a4a193cacd45fd4439a093044ae3178d](https://github.com/danielmeppiel/genesis/tree/613f2a64a4a193cacd45fd4439a093044ae3178d). Open-source Agent Skill packaging composition substrate, design patterns, and runtime affordances across AGENTS.md-compatible harnesses (Copilot, Claude Code, Cursor, Codex, OpenCode). Install command and full cross-harness install context are at the Part III opener; this footnote is the citation, not the call to action.

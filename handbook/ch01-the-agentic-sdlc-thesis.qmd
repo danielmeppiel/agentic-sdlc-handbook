@@ -117,9 +117,9 @@ When they're violated, the failures are equally predictable:
 | **Flat instructions** | Explicit Hierarchy | Same rules everywhere; backend security rules load when editing frontend CSS |
 | **Scope creep** | Reduced Scope | Task grows mid-session; agent loses track of earlier instructions as attention degrades |
 
-Most of these anti-patterns stem from a single root cause: ignoring that context is finite and fragile. The book returns to these patterns in detail in Chapter 14.
+Most of these anti-patterns stem from a single root cause: ignoring that context is finite and fragile. The book returns to these patterns in detail in Chapter 18.
 
-REST didn't just define constraints — it named a layer in a complete computing stack. HTTP provided transport, web servers provided runtime, REST provided architectural constraints, and everything above (languages, package managers, frameworks, applications) built on that foundation. An equivalent stack is forming for agentic development: LLMs as processing, harnesses as runtime, PROSE constraints as the orchestration standard, markdown primitives as lingua franca, package managers for distribution, and emerging frameworks for composition. Andrej Karpathy observed that we are in "the 1980s of computing" with LLMs — the processing layer is powerful, but the layers above it are embryonic[^ch1-karpathy]. The parallel is structurally precise: the maturity gap between the bottom of the stack and the top is exactly what defined the early PC era. Chapter 4 maps this stack in detail.
+REST didn't just define constraints — it named a layer in a complete computing stack. HTTP provided transport, web servers provided runtime, REST provided architectural constraints, and everything above (languages, package managers, frameworks, applications) built on that foundation. An equivalent stack is forming for agentic development: LLMs as processing, harnesses as the runtime machine that compiles probabilistic instruction streams into deterministic tool calls, PROSE constraints as the orchestration standard, markdown primitives as lingua franca, package managers for distribution, and emerging frameworks for composition. The seam between the probabilistic engine and the deterministic boundary it crosses on every tool call is the architectural feature this book treats as load-bearing — leaders meet it by name in Chapter 4 and Part III operates it in detail. Andrej Karpathy observed that we are in "the 1980s of computing" with LLMs — the processing layer is powerful, but the layers above it are embryonic[^ch1-karpathy]. The parallel is structurally precise: the maturity gap between the bottom of the stack and the top is exactly what defined the early PC era. Chapter 4 maps this stack in detail.
 
 ### Honest Positioning
 
@@ -133,9 +133,9 @@ The appropriate claim is not "PROSE is the only way" but "PROSE articulates cons
 
 ### Scope and Limitations
 
-The primary evidence in this book is one large pull request on one codebase, executed by the methodology's creator. The PR is public and verifiable — you can read every commit, every agent dispatch, and every human intervention. But reproducibility across independent teams, diverse codebases, and competing tools does not yet exist. Where broader evidence supports a claim (industry surveys, academic studies, vendor data), it is cited. Where the evidence is the author's own execution, that is stated plainly. Chapter 15 catalogs the specific claims most likely to be wrong.
+The primary evidence in this book is one large pull request on one codebase, executed by the methodology's creator. The PR is public and verifiable — you can read every commit, every agent dispatch, and every human intervention. But reproducibility across independent teams, diverse codebases, and competing tools does not yet exist. Where broader evidence supports a claim (industry surveys, academic studies, vendor data), it is cited. Where the evidence is the author's own execution, that is stated plainly. Chapter 20 catalogs the specific claims most likely to be wrong.
 
-The concrete examples use GitHub Copilot CLI because that is the author's daily tool. The methodology is designed to be tool-agnostic: the PROSE primitives map to equivalent constructs in Cursor (`.cursor/rules`), Claude Code (`CLAUDE.md`), and other agentic platforms. Chapter 9's cross-platform mapping table shows the translation. If your team uses a different tool, the constraints still apply — only the file paths change.
+The concrete examples use GitHub Copilot CLI because that is the author's daily tool. The methodology is designed to be tool-agnostic: the PROSE primitives map to equivalent constructs in Cursor (`.cursor/rules`), Claude Code (`CLAUDE.md`), and other agentic platforms. Appendix A's cross-harness reference shows the translation. If your team uses a different tool, the constraints still apply — only the file paths change.
 
 Where this book makes predictions or presents projected figures, these are explicitly distinguished from measured evidence. Tables containing author estimates are marked with † throughout. This is not hedging; it is the minimum standard of intellectual honesty in a field where most claims are presented without qualification.
 
@@ -147,22 +147,22 @@ This book serves two audiences who need different things from the same shift.
 
 **If you lead engineering teams** — VP Engineering, CTO, Chief Architect — you need to understand what changes about organizational strategy when AI agents become participants in your software delivery lifecycle. Not the hype version. Not the vendor pitch. The concrete version: what happens to team composition, how governance changes, where the new risks live, and how to evaluate ROI honestly.
 
-Block 1 of this book (Chapters 2–7) answers those questions. It covers the market landscape and why "wait and see" is itself a decision with competitive consequences. It presents a reference architecture — a three-layer model that maps human roles, agent capabilities, and platform infrastructure across the full software lifecycle. It addresses the hard organizational questions: how team structures change, what governance looks like when agents produce code, and how to build an honest business case that doesn't rely on inflated productivity claims. Chapter 3 builds that business case, including what the productivity claims get wrong, what adoption actually costs, and when to expect returns. Every chapter produces a deliverable: an evaluation framework, a decision matrix, a governance checklist, a planning template.
+Parts I–II of this book (Chapters 2–7) answer those questions. They cover the market landscape and why "wait and see" is itself a decision with competitive consequences. They present a reference architecture — a three-layer model that maps human roles, agent capabilities, and platform infrastructure across the full software lifecycle. They address the hard organizational questions: how team structures change, what governance looks like when agents produce code, and how to build an honest business case that doesn't rely on inflated productivity claims. Chapter 3 builds that business case, including what the productivity claims get wrong, what adoption actually costs, and when to expect returns. Every chapter produces a deliverable: an evaluation framework, a decision matrix, a governance checklist, a planning template.
 
 **If you build software** — senior engineer, tech lead, staff developer — you need to know how to implement this Monday morning. Not theory. Not architecture diagrams. The specific disciplines: how to engineer context so agents produce reliable output, how to design the primitives that encode your team's knowledge, how to orchestrate multi-agent execution on a real codebase, and how to handle the failures that the demos never show.
 
-Block 2 (Chapters 8–14) answers those questions. It teaches context engineering as a disciplined practice: how to build context budgets, design instruction hierarchies, create agent configurations, and orchestrate multi-step workflows across real codebases. It walks through the meta-process: audit your codebase for context gaps, plan the artifact architecture, execute in waves, validate against real output, ship. Every chapter includes worked examples with specific numbers, before-and-after comparisons, and anti-patterns drawn from real failures.
+Part III (Chapters 8–19) answers those questions. It teaches context engineering as a disciplined practice: how to build context budgets, design instruction hierarchies, create agent configurations, and orchestrate multi-step workflows across real codebases. It walks through the meta-process: audit your codebase for context gaps, plan the artifact architecture, execute in waves, validate against real output, ship. Every chapter includes worked examples with specific numbers, before-and-after comparisons, and anti-patterns drawn from real failures.
 
-Both blocks stand on a shared foundation (this chapter) and converge in the closing chapter, which addresses where the field is heading.
+Both tracks stand on a shared foundation (this chapter) and converge in the closing chapter, which addresses where the field is heading.
 
-You don't need to read both blocks. Start with whichever matches your role. But if you're a technical leader who also writes code, or a practitioner who needs to make the case to leadership, the cross-references between blocks are designed to support that.
+You don't need to read both tracks. Start with whichever matches your role. But if you're a technical leader who also writes code, or a practitioner who needs to make the case to leadership, the cross-references between parts are designed to support that.
 
-| | Block 1: For Leaders | Block 2: For Practitioners |
+| | Parts I–II: For Leaders | Part III: For Practitioners |
 |---|---|---|
 | **Core question** | What to decide and why | What to do Monday morning |
 | **Tone** | Concise, scan-friendly, outcome-oriented | Precise, evidence-based, action-oriented |
 | **Evidence style** | Frameworks, checklists, decision matrices | Worked examples, specific numbers, before/after |
-| **Chapters** | 2–7 | 8–14 |
+| **Chapters** | 2–7 | 8–19 |
 | **Time to read** | ~2 hours | ~3 hours |
 
 ## What This Book Is Not
@@ -175,7 +175,7 @@ You don't need to read both blocks. Start with whichever matches your role. But 
 
 **This is not comprehensive.** The field moves too fast for any book to cover everything. This book is opinionated and battle-tested. It teaches one well-articulated framework, applies it to real evidence, and gives you enough structure to adapt as the landscape evolves. Where certainty exists, the book is direct. Where it doesn't, and there are many such places in a field this young, the book says so.
 
-**This is not theory.** Every methodology claim in Block 2 traces back to at least one executed implementation. The primary evidence is a single pull request — large enough to be non-trivial, documented enough to be verifiable, and messy enough to be honest. The book doesn't claim this generalizes to every codebase. It claims the constraints and disciplines are sound, and shows you exactly what happened when they were applied.
+**This is not theory.** Every methodology claim in Part III traces back to at least one executed implementation. The primary evidence is a single pull request — large enough to be non-trivial, documented enough to be verifiable, and messy enough to be honest. The book doesn't claim this generalizes to every codebase. It claims the constraints and disciplines are sound, and shows you exactly what happened when they were applied.
 
 ---
 

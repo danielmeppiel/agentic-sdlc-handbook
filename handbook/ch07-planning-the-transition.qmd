@@ -10,7 +10,7 @@ This is a common adoption trajectory we see repeatedly with agentic development 
 
 The problem is not the tools. The problem is that most organizations skip from "successful pilot" to "organization-wide rollout" without building the infrastructure that makes agentic development reliable at scale: the context engineering, the governance, the skill development, the measurement systems. The pilot succeeds *because* it's small: limited codebase, enthusiastic participants, greenfield scope. The rollout fails because none of those conditions hold for the rest of the organization.
 
-This chapter is the bridge between the strategic foundations of Chapters 2 through 6 and the implementation disciplines of Block 2. It answers the operational question: given everything you now understand about the landscape, the architecture, the context requirements, the organizational implications, and the governance needs — how do you actually roll this out?
+This chapter is the bridge between the strategic foundations of Chapters 2 through 6 and the implementation disciplines of Part III. It answers the operational question: given everything you now understand about the landscape, the architecture, the context requirements, the organizational implications, and the governance needs — how do you actually roll this out?
 
 ---
 
@@ -115,7 +115,7 @@ flowchart TB
 
 **Activities.**
 - Establish baseline measurements before the pilot begins. You cannot measure improvement without a starting point. Capture current cycle time, review rejection rate, defect rate, and developer satisfaction on the selected workstreams.
-- Build the minimum viable context layer: project-level instructions, core coding conventions, architecture boundaries. Block 2 (Chapters 8–9) provides the methodology. For the pilot, you need enough context to prevent the most common agent failures, not a comprehensive instrumentation layer.
+- Build the minimum viable context layer: project-level instructions, core coding conventions, architecture boundaries. Part III (Chapters 8–9) provides the methodology. For the pilot, you need enough context to prevent the most common agent failures, not a comprehensive instrumentation layer.
 - Run the pilot with close observation. The goal is to learn, not to prove a point. Document what agents get right, what they get wrong, and what they can't do. Track human intervention points, every moment a developer had to correct, override, or redo agent output.
 
 **Exit signals.** Move to Phase 2 when: (1) the pilot team has a documented context layer that improves agent output quality, (2) the team has a review workflow for agent-generated code that they trust, (3) you have baseline and pilot metrics for at least four weeks, and (4) the pilot team can articulate what worked and what other teams would need.
@@ -170,8 +170,9 @@ The rollback process: teams that are not self-sufficient revert to their pre-ado
 - Onboarding becomes self-service. Documentation, shared context assets, and governance processes should be mature enough that a new team can adopt from written resources alone. If this isn't true, you are not ready for Phase 3.
 - Transition from peer coaching to a dedicated enablement function. The coaching model from Phase 2 does not survive Phase 3 at scale. Assign permanent ownership — a developer experience team, a platform engineering function, or at minimum a named individual — responsible for context asset quality, onboarding materials, and tooling support.
 - Context engineering becomes a continuous practice, not a one-time setup. Teams contribute back to shared assets. Stale context is pruned. New patterns are documented as they emerge. Chapter 13 covers this at team scale.
+- The technical mechanism that makes Phase 3 sustainable is a discipline that Part III names *capability-based security*: not every agent invocation gets the full available toolset and context. The load lifecycle gates which capabilities are loaded eagerly, which are scope-attached to a specific task, which are loaded lazily on demand, and which are mediated by a dispatcher. Phase 3 organizations that succeed treat capability-based security as the lever they tune, not the toolset itself. Part III operates these binding modes in detail; for now, the planning point is that "everyone gets every tool always" is a Phase 1 starting position, not a Phase 3 endpoint.
 - Metrics mature from "is this working?" to "where do we invest next?" — reducing intervention rates, improving context quality, expanding the range of tasks agents handle reliably.
-- Evaluate advanced workflows: multi-agent orchestration, cross-repository operations, CI/CD integration with agent-generated changes. These require organizational maturity and should not be attempted before Phase 3.
+- Evaluate advanced workflows: multi-agent orchestration, cross-repository operations, CI/CD integration with agent-generated changes. These require organizational maturity and should not be attempted before Phase 3. The deployment bar to clear before any of these workflows runs unattended is what Part III calls *strong-form supervised execution*: every agent action that crosses the deterministic boundary (tool call, file write, network call) is auditable, reversible, and policy-checked at execution time. Weak-form supervision — a human reviewing the agent's diff after the fact — is a Phase 2 floor, not a Phase 3 ceiling.
 
 **Rollback criteria.** Phase 3 rollback is not all-or-nothing. It is selective:
 - **Individual teams that show sustained negative trends** — rising intervention rates, declining satisfaction, increasing rework — after eight weeks of active adoption should pause and receive targeted support. Do not force adoption on a team producing worse outcomes with the tools than without them.
@@ -186,9 +187,9 @@ The rollback process: teams that are not self-sufficient revert to their pre-ado
 
 Different roles need different skills. A one-size-fits-all training program wastes time for everyone.
 
-**Senior engineers and tech leads** need context engineering skills: how to build instruction hierarchies, how to design instruction hierarchies, how to evaluate agent output against architectural requirements. They also need to understand the failure modes from Chapter 14 — not because they'll hit every one, but because recognizing a failure mode early prevents hours of debugging. This is the highest-priority training investment.
+**Senior engineers and tech leads** need context engineering skills: how to build instruction hierarchies, how to design instruction hierarchies, how to evaluate agent output against architectural requirements. They also need to understand the failure modes from Chapter 18 — not because they'll hit every one, but because recognizing a failure mode early prevents hours of debugging. This is the highest-priority training investment.
 
-**Mid-level developers** need effective delegation skills: how to scope tasks for agents, how to provide sufficient context for a specific interaction, how to iterate when agent output is wrong rather than starting over. They also need calibrated trust, understanding when agent output is likely reliable and when it requires careful verification. The PROSE framework in Chapter 10 provides the methodology.
+**Mid-level developers** need effective delegation skills: how to scope tasks for agents, how to provide sufficient context for a specific interaction, how to iterate when agent output is wrong rather than starting over. They also need calibrated trust, understanding when agent output is likely reliable and when it requires careful verification. The PROSE framework in Chapter 11 provides the methodology.
 
 **Junior developers** need review skills first and generation skills second. The most dangerous scenario is a junior developer who accepts agent output they cannot evaluate. Before juniors use agentic tools for generation, they should be able to review agent-generated code at the same standard they review human code. Pairing juniors with seniors during initial agent-assisted work is not optional — it is a safety measure.
 
@@ -308,7 +309,7 @@ Use this template to plan your organization's transition. It is a starting point
 
 ---
 
-This chapter closes Block 1. If you also write code — or need to understand what your practitioners will be doing — Block 2 begins with Chapter 8, where context engineering moves from strategy to implementation. The frameworks here are the "what" and "when." Block 2 is the "how."
+This chapter closes Part II. If you also write code — or need to understand what your practitioners will be doing — Part III begins with Chapter 8, where context engineering moves from strategy to implementation. The frameworks here are the "what" and "when." Part III is the "how." Practitioners install the agent-side artefacts (Genesis, the methodology bundle this book documents) at the start of Part III; leaders who want to see the artefacts firsthand can skim Chapter 8's opening, but doing so is not required to set the strategy this chapter lays out.
 
 You now have the strategic picture: the market context that makes this transition urgent (Chapter 2), the business case that justifies the investment (Chapter 3), the reference architecture that organizes the capability (Chapter 4), the governance structures that make it trustworthy (Chapter 5), the team structures that sustain the organizational change (Chapter 6), and the transition plan that sequences the rollout (this chapter).
 

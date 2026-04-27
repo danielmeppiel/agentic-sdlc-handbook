@@ -90,7 +90,7 @@ Teams are configuring Copilot with a single instructions file and calling it "AI
 
 This book provides what's missing: a systematic methodology for building software with AI agents, from organizational strategy to the individual keystrokes. It introduces the **PROSE framework** -- five architectural constraints that make AI agent output reliable, verifiable, and maintainable -- and shows how to implement it with real tools and real workflows.
 
-The methodology in this book produced the book itself, and it powers [APM](https://github.com/microsoft/apm), an open-source agent package manager with 700+ GitHub stars.
+The methodology in this book produced the book itself, and it powers [APM](https://github.com/microsoft/apm), an open-source agent package manager.
 
 ## Who This Book Is For
 
@@ -106,24 +106,40 @@ Part I provides the foundational thesis that both audiences share. The closing c
 
 You don't need to read sequentially. Start with whichever part matches your role:
 
-- **Part I** (Chapter 1): The thesis -- why the current approach fails and what replaces it
-- **Part II** (Chapters 2-7): The business case, reference architecture, governance, team structures, and transition planning
-- **Part III** (Chapters 8-14): The practitioner's mindset, instrumented codebase, PROSE specification, context engineering, multi-agent orchestration, execution meta-process, and anti-patterns
-- **Closing** (Chapter 15): What comes next
+- **Part I -- The Foundation:** The thesis -- why the current approach fails and what replaces it
+- **Part II -- For Leaders:** The AI-native landscape, business case, reference architecture, governance, team structures, and transition planning
+- **Part III -- For Practitioners:** Mindset, agentic runtime machine, instrumented codebase, PROSE specification, load lifecycle, attention economy, the deterministic/probabilistic seam, multi-agent orchestration, execution meta-process, architectural patterns, anti-patterns, and primitives-as-code
+- **Part IV -- Case Studies:** APM, the handbook itself, the publishing pipeline, the growth engine
+- **Closing:** What comes next, plus a cross-harness reference appendix
 
-::: {.callout-tip title="Reading Paths"}
-**Executive scan (45 min):** Ch1 → Ch3 → Ch5 → Ch15 — thesis, business case, governance guardrails, what's next.
+::: {.callout-note title="The architect for agentic systems — install the companion"}
+Part III is where the book gets technical: the patterns and
+architectural concepts for building non-trivial agent-driven systems.
+The book teaches them; the companion applies them. Install:
 
-**Tech lead deep-dive (3 hours):** Ch1 → Ch8 → Ch9 → Ch13 → Ch14 → APM Overhaul case study — the full practitioner arc from mindset through execution to failure modes.
+```bash
+apm install danielmeppiel/genesis
+```
 
-**"Convince my CTO" path (30 min):** Ch3 → Ch6 → APM Overhaul case study — business case, team impact, and proof it works.
+Genesis is a free, open-source Agent Skill — written by the same hand
+as the book — that ports the software architect's role to agentic
+systems. Summon it in your agent with `/genesis <what you want built>`
+and it designs the architecture: which skills, custom agents, and
+instructions you need, and how they compose — the way a software
+architect lays out classes and modules for an Object-Oriented Programming (OO) system.
+Read the book to learn the patterns, or skip ahead and let the
+architect wield them on your project. Inspectable in full at
+[github.com/danielmeppiel/genesis](https://github.com/danielmeppiel/genesis).
+Works across Copilot, Claude Code, Cursor, Codex, and OpenCode.
+:::
 
-**"I start Monday" path (1 hour):** Ch9 → Ch10 → Ch13 → Ch14 — instrumentation, specification, execution, and what goes wrong.
+::: {.callout-tip title="Where to start, by role and time budget"}
+If you have **45 minutes** and need the strategic picture, read Part I, then skim Part II -- the thesis plus the business case, architecture, and governance shape of AI-native delivery. If you have **an hour** and start coding Monday, jump to Part III and read the chapters that match what you're about to ship: instrumentation, PROSE specification, attention economy, or orchestration. If you want proof the methodology survives contact with real systems, the **Part IV case studies** stand on their own in any order. The Parts are designed to be read in any order; the chapter sequence inside each Part is the only place sequence matters.
 :::
 
 ## About the Author
 
-Daniel Meppiel is a Global Black Belt at **Microsoft** and the creator of [APM (Agent Package Manager)](https://github.com/microsoft/apm), an open-source tool for managing AI agent configurations across codebases -- 700+ GitHub stars and growing. He designed the **PROSE framework**, a specification methodology for making AI coding agents reliable in professional software delivery. Connect with Daniel on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/).
+Daniel Meppiel is a Global Black Belt at **Microsoft** and the creator of [APM (Agent Package Manager)](https://github.com/microsoft/apm), an open-source tool for managing AI agent configurations across codebases. He designed the **PROSE framework**, a specification methodology for making AI coding agents reliable in professional software delivery. Connect with Daniel on [LinkedIn](https://www.linkedin.com/in/danielmeppiel/).
 
 With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise adoption, Daniel bridges the gap between technical architecture and business outcomes. His career arc runs from **CERN** (Product Lifecycle Management modernization for particle physics experiments), through **Avaloq** (legacy core-banking system migration) -- the same classes of system modernization and code migration that AI agents now accelerate in the SDLC -- to founding **WeGaw** as CTO for 4 years (building a complex AI-powered water intelligence platform from scratch, serving global energy companies), **Sonar** (code security), **GitHub** (developer tooling), and now **Microsoft**.
 

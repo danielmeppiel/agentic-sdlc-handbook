@@ -1,10 +1,9 @@
----
-title: "Multi-Agent Orchestration"
----
 
-A single AI agent can modify a file, and even several files in sequence if the changes are simple enough and the context window holds. But the moment a cross-cutting change spans 40 files across 5 concerns, a single agent becomes the bottleneck — not because it lacks intelligence, but because it lacks bandwidth. Multi-agent orchestration solves the coordination problem by decomposing work across specialized agents that each operate within manageable context budgets. But coordination is not free. Agents that work in parallel can conflict, produce inconsistent output, or break each other's work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.[^ch12-coordination]
+# Multi-Agent Orchestration {#sec-multi-agent}
 
-This chapter covers when to use multiple agents, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human's role is in all of it.
+A single agent thread can modify a file, and even several files in sequence if the changes are simple enough and the context window holds. But the moment a cross-cutting change spans 40 files across 5 concerns, that single thread becomes the bottleneck — not because it lacks intelligence, but because it lacks bandwidth. Multi-agent orchestration is the *pattern* that solves this by decomposing work across specialized **agent threads** (the threading-pattern term of art is *subagent*) that each operate within manageable context budgets, composed into a single **agentic system** — the unit you ship. But coordination is not free. Threads that run in parallel can conflict, produce inconsistent output, or break each other's work. The discipline of multi-agent orchestration is the discipline of getting the benefits of parallelism without paying the costs of chaos.[^ch12-coordination]
+
+This chapter covers when to use multiple agent threads, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human's role is in all of it.
 
 ---
 
@@ -78,9 +77,9 @@ For cross-cutting changes, organize agents by area of expertise rather than by w
 | **Context loaded** | Type definitions, Module boundaries, Pattern catalog, Dependency graph | Output conventions, Symbol dictionaries, UX guidelines, Migration patterns |
 | **Owns** | Type safety fixes, Dead code removal, API consolidation | Verbose coverage, Logger migration, Formatting cleanup |
 
-In the auth-logging overhaul ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in the [case study](../case-study-apm-overhaul.qmd) and summarized in Chapter 13), this two-team structure (architecture team led by an architect agent, domain team led by a logging expert agent) handled a 75-file change across five concerns. The architecture team carried type definitions and architectural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
+In the auth-logging overhaul ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in the [case study](../case-study-apm-overhaul.qmd) and summarized in Chapter 16), this two-team structure (architecture team led by an architect agent, domain team led by a logging expert agent) handled a 75-file change across five concerns. The architecture team carried type definitions and architectural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
 
-This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.
+This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.[^ch15-genesis-panel]
 
 #### Concrete Dispatch: What It Actually Looks Like
 
@@ -146,7 +145,7 @@ flowchart TD
 
 The critical property of this pattern is the separation between read-only and read-write operations. Audit agents explore the codebase without modifying it. This means you can dispatch multiple audit agents simultaneously with no risk of interference. They can examine the same files, look at overlapping concerns, and produce independent assessments.
 
-The human decision between audit and execution is the highest-leverage point in the entire process. You review the findings, decide which ones to act on, define the scope, and only then allow write operations. This separation is what makes multi-agent orchestration safe, not just fast.
+The human decision between audit and execution is the highest-impact point in the entire process. You review the findings, decide which ones to act on, define the scope, and only then allow write operations. This separation is what makes multi-agent orchestration safe, not just fast.
 
 ---
 
@@ -326,7 +325,7 @@ This is not a passive role. It is a different kind of active.
 
 ### What the Orchestrator Decides
 
-**Before execution.** The orchestrator defines the plan: which concerns to address, which to defer, how to partition the work across agents and waves, and what principles govern trade-offs. This is the highest-leverage activity in the entire process. A well-structured plan with mediocre agents produces better results than a vague plan with excellent agents.
+**Before execution.** The orchestrator defines the plan: which concerns to address, which to defer, how to partition the work across agents and waves, and what principles govern trade-offs. This is the highest-impact activity in the entire process. A well-structured plan with mediocre agents produces better results than a vague plan with excellent agents.
 
 **During execution.** The orchestrator monitors progress and handles escalations. Most waves complete without intervention. When an agent gets stuck, the orchestrator diagnoses whether it is a prompt problem (refine the instructions and retry), a scope problem (split the task), or a tooling problem (work around the limitation). When agents produce conflicting output, the orchestrator resolves the conflict using the plan's principles or makes an explicit design decision.
 
@@ -469,3 +468,4 @@ The next chapter puts this framework into practice. It walks through the full fi
 
 [^ch12-coordination]: The coordination overhead of multi-agent systems parallels Brooks's observation that adding developers to a late project makes it later (*The Mythical Man-Month*, 1975). The difference: agent coordination overhead is predictable and can be reduced through better planning, not just through better communication.
 [^ch12-autonomy]: Our autonomy taxonomy draws conceptually from the SAE levels of driving automation (SAE J3016), adapted for software engineering contexts. The key parallel: higher autonomy levels require not less human involvement, but different kinds of involvement — supervision rather than operation.
+[^ch15-genesis-panel]: The corrected fan-out is the Tier-3 pattern this section's Domain Teams reify — named **A1 PANEL** in [`skills/genesis/assets/architectural-patterns.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/assets/architectural-patterns.md), classical analog *Microservices + API Gateway*. The pattern predates the skill; Genesis packages it together with three inherited anti-patterns, named verbatim so a fresh agent context cannot rediscover them by accident: **PANEL-WITHOUT-SYNTHESIS** (N lenses then a concatenation; the user reads N reports instead of one decision), **PANEL-IN-ONE-CONTEXT** (the dominant senior-engineer failure: all N lenses played sequentially in a single window, each contaminating the next), and **IMBALANCED PANEL** (the dissenting lens is the highest-information signal; the synthesis ignores it). For the worked re-architecture see @sec-genesis-worked-example, which excerpts [`skills/genesis/examples/02-review-panel-architecture.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/examples/02-review-panel-architecture.md). *Agent-side reference; pattern + anti-patterns verbatim.*

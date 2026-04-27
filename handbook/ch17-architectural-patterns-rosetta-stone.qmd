@@ -1,0 +1,180 @@
+---
+title: "Architectural Patterns: A Rosetta Stone"
+---
+
+## Thesis
+
+The agentic runtime is not pattern-free. The same structural problems recur — composition, dispatch, isolation, supervision, fan-out, recovery — and the field has converged on recognizable solutions. Many of these solutions have direct analogues in the classical Gang-of-Four (GoF) catalogue [^gof1994] and in distributed-systems literature [^hohpe2003][^kleppmann2017]. Naming them — and naming the analogue — gives architects a vocabulary to reason at the system level instead of at the file level.
+
+This chapter is a translation table. For each recurring agentic pattern, it gives a name, a classical analogue where the analogy holds, an intent, an applicability rule, the consequences you accept, and cross-references to the chapters that develop the pattern in depth. Where no clean classical analogue exists, the chapter says so and points to the closest distributed-systems shape.
+
+## Audience and how to read this chapter
+
+This chapter is written for software architects, technical leads, and senior engineers responsible for agentic-system design at scale. It assumes you have worked through the agentic runtime machine (Ch09), the load lifecycle (Ch12), the deterministic / probabilistic seam (Ch14), and multi-agent orchestration (Ch15). It is not a tutorial. It is a catalogue.
+
+Read the layered model in §1 first. After that, the per-layer catalogues (§3–§6) are independently scannable. The decision matrix in §7 indexes the catalogue by problem; §8 names what this chapter deliberately leaves out.
+
+## 1. The layered model of an agentic runtime {#sec-layered-model}
+
+An agentic runtime decomposes into four layers. Each layer has its own pattern language; each layer's patterns assume the layer below as substrate. Confusing layers — for instance, debating dispatch topology when the real problem is at the composition layer — is the most common architectural error in agentic design.
+
+```{mermaid}
+flowchart TB
+    subgraph EXEC["Execution layer"]
+        direction LR
+        TH[Threading] --- PER[Persistence] --- TRG[Triggers]
+    end
+    subgraph COMP["Composition layer"]
+        direction LR
+        PR[Primitives] --- SK[Skills] --- DEP[Dependencies]
+    end
+    subgraph ASM["Assembly layer"]
+        direction LR
+        FS[Agent source code] --- BIND[Binding modes]
+    end
+    subgraph FND["Foundation layer"]
+        direction LR
+        MOD[Model] --- HAR[Harness]
+    end
+    EXEC --> COMP --> ASM --> FND
+```
+
+**Foundation layer.** The model and the harness that hosts it. The model is probabilistic; the harness is deterministic. The seam between them is non-negotiable (Ch14, @sec-seam). Patterns at this layer are mostly out of the architect's control — they are vendor decisions — but the *boundary* the foundation layer offers (tool calls, file reads, capability tokens) is what every higher layer depends on.
+
+**Assembly layer.** How content reaches the model. The agent source code convention (AGENTS.md, SKILL.md, instruction files) and the binding modes the harness applies (eager preload, lazy on-demand, dispatcher-mediated) determine *what arrives in the context window* before any reasoning starts. This is where the load lifecycle (Ch12, @sec-load-lifecycle) lives.
+
+**Composition layer.** How content is structured for reuse. Primitives, skills, bundles, dependency edges, override mechanisms. This is where most of the architectural work happens — and where the GoF catalogue maps cleanest, because composition has been a solved problem in software since the 1990s. Composition patterns are detailed in Ch19 (@sec-primitives-as-code).
+
+**Execution layer.** How work is dispatched, parallelized, persisted across boundaries, and re-entered on a trigger. Threading topology, plan persistence, client integration. Multi-agent orchestration (Ch15, @sec-multi-agent) lives here. Most of the patterns architects argue about in public — Panel, Wave, Scatter-Gather — sit in this layer.
+
+## 2. Reading the Rosetta Stone
+
+Each catalogue entry has six fields:
+
+- **Agentic name** — the human-readable name used throughout this book.
+- **Classical analogue** — the closest GoF [^gof1994] or distributed-systems pattern, with a rigour rating: **precise** (the analogy is exact), **partial** (the analogy holds for most of the structure but a named part does not map), or **weak / none** (no clean classical analogue; the closest shape from distributed systems is given instead).
+- **Intent** — one sentence on what the pattern is for.
+- **When to apply** — the condition that makes this pattern the right call rather than its neighbours.
+- **Consequences** — the trade-off you accept by choosing this pattern.
+- **Cross-references** — chapters and adjacent patterns.
+
+Pattern names are drawn from this book's prose and, where applicable, from Genesis's agent-side codification of the same ideas.[^genesis]
+
+## 3. Composition layer {#sec-composition-patterns}
+
+Composition is where the GoF mapping is strongest. The agentic runtime turned out to need almost the same structural patterns as 1990s object-oriented systems, for the same reason: both are systems of named units with dependency graphs and override semantics.
+
+| Agentic name | Classical analogue (rigour) | Intent | When to apply | Consequences | Cross-refs |
+|---|---|---|---|---|---|
+| **Skill** | Module / Facade — *precise* | Bundle a capability under a single named entrypoint that hides assets, dependencies, and internal structure from callers. | Whenever a capability is reusable, dispatchable by description, and ships with content beyond its instruction body. | The skill is the stable unit of reuse. Its description is its API; rewording it is a breaking change. | Ch19 (@sec-primitives-as-code); Bundle, Primitive |
+| **Bundle** | Composite — *precise* | Treat aggregates of primitives uniformly with leaf primitives, so a skill that depends on another skill works the same as a skill that depends on a single instruction. | When a primitive itself contains other primitives (a skill depending on a sub-skill, an agent containing skills). | Recursive distribution; transitive closure becomes the unit of cost. | Skill, Dependency |
+| **Primitive** | Strategy — *partial* | Make a unit of behaviour interchangeable: an agent, a skill, an instruction, a chatmode each implement the same dispatch contract. | When the runtime must select among interchangeable units at load or dispatch time. | *Does not map:* Strategy is pure algorithm; primitives carry state and content. The behavioural-substitution part holds; the stateless part does not. | Ch12 (@sec-load-lifecycle); Skill |
+| **Dependency** | Decorator — *partial* / Package Reference (Maven, npm) — *precise* | Compose capabilities by declaring a directed edge from one module to another, resolved by the package system. | When the same content is needed by 3+ consumers, evolves on its own cadence, has a different owner, or is pinning-worthy. | Crosses a distribution boundary: subject to versioning, transitive closure, and conflict resolution. *Does not map to Decorator:* a dependency is not a wrapper; the "extend behaviour at runtime" framing is wrong. The Maven/npm framing is the right one. | Override; Ch19 |
+| **Override** | Template Method — *precise* | A base module defines an invariant skeleton; a consuming module replaces named slots without rewriting the skeleton. | When a downstream user needs to specialize one section of an upstream primitive without forking it. | The base module's slot names become a public contract. Renaming a slot is a breaking change. | Skill, Dependency |
+
+The Skill / Bundle / Primitive triplet is the runtime's analogue of the Module / Composite / Strategy triplet — a 30-year-old composition vocabulary applied to a new substrate. Architects who see Skill and reach for "what is this in GoF terms?" can answer in one breath: it is a Facade over a Composite of Strategies, distributed by the harness's package system. Override is then Template Method. Dependency is package reference, not Decorator — the "Decorator" framing in older agentic literature is a near miss.
+
+## 4. Dispatch and orchestration layer {#sec-dispatch-patterns}
+
+Dispatch and orchestration is where the most public pattern arguments happen, and where GoF analogies are *partial* more often than *precise*. The reason is that GoF described patterns for one-process, one-thread, in-memory object graphs. Agentic dispatch involves multiple LLM threads, durable artifacts between them, and clients firing across sessions. The closer analogues live in distributed-systems literature [^hohpe2003].
+
+| Agentic name | Classical analogue (rigour) | Intent | When to apply | Consequences | Cross-refs |
+|---|---|---|---|---|---|
+| **Panel** | Mediator — *partial* / Scatter-Gather [^hohpe2003] — *precise* | Run N specialized lenses in parallel against the same artifact, then synthesize their verdicts into a single decision. | When a decision benefits from ≥3 independent lenses and the lenses do not share state during evaluation. | The synthesis step *is* the decision; without it, the user reads N reports instead. *Does not map to Chain of Responsibility:* there is no chain; lenses run in parallel, not in sequence. | Ch15 (@sec-multi-agent); Scatter-Gather |
+| **Wave** | Pipes-and-Filters — *precise* / Pipeline (CI) | Execute a topologically-sorted DAG of tasks one wave at a time, gating between waves. | When the task DAG is non-trivial and drift between waves is expensive enough to want a localizable failure. | Each wave's output gates the next wave's assumptions. A failed gate replans from the failed wave, not from the start. | Ch15; Scatter-Gather, Plan-Write-Then-Reload |
+| **Scatter-Gather** | Scatter-Gather [^hohpe2003] — *precise* (origin term) | Decompose a task into independent parallel sub-tasks; each runs in its own thread; results merge at the gather step. | When sub-tasks are genuinely independent and merge cleanly. | Concurrency cost; one writer per sink (parallel + shared state is almost always a smell). | Ch15; Panel, Wave |
+| **Threading** | Command + Memento — *partial* | Dispatch a unit of work as a serializable invocation (Command) into a fresh context window whose state is captured by a durable plan artifact (Memento). | When a sub-task needs cold context — independent attention budget, no inheritance of the parent's reasoning trace. | Cold context costs a re-load; serialization forces the architect to make the hand-off packet explicit. *Does not map cleanly to either GoF pattern alone:* Command captures the invocation, Memento captures the cross-thread state, neither covers attention isolation. | Ch12; Plan-Write-Then-Reload |
+| **Subagent Spawn** | Active Object [^posa1996] — *precise* | Each invocation creates an independent thread of control with its own message queue and lifecycle. | When the parent must continue while sub-work runs, or when the sub-work must be isolated from the parent's context window. | Spawn cost; cross-thread state must travel via durable artifacts, not shared memory. | Ch15; Threading |
+
+A note on Panel. Earlier drafts of this chapter (and parts of the Genesis catalogue) named Panel as "Chain of Responsibility". That mapping is wrong. Chain of Responsibility passes a request along a sequence of handlers until one accepts it; Panel runs handlers in parallel and synthesizes. The right GoF reach is Mediator (the synthesizer mediates between lenses), and the right distributed-systems reach is Scatter-Gather. Architects should reject the Chain of Responsibility framing on sight: a Panel without a synthesizer is not a chain — it is the **Panel-without-synthesis** anti-pattern: parallel lenses with nothing to arbitrate dissent collapse to whichever lens speaks loudest.
+
+A note on Wave. Wave is Pipes-and-Filters [^parnas1972] applied to LLM stages, with the addition that each filter's output is *durable* (a plan artifact) and each gate is a *deterministic* check, not a model call. The "filter" metaphor undersells the durability requirement; in agentic contexts, Wave only works because each stage's output can be re-read in a fresh thread.
+
+A note on the agent-side codification of this catalogue. The Rosetta Stone names exist because the field's pattern shapes have stabilised; I packaged the same shapes as agent-loadable assets so a fresh agent context recognises them on a new task. The Genesis bundle Part III pointed at carries them in [`skills/genesis/assets/architectural-patterns.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/assets/architectural-patterns.md): **A1 PANEL** (the agent-side code for the corrected fan-out this chapter names a Panel), classical analog *Microservices + API Gateway*; and **A2 PIPELINE** (Genesis's code for what this chapter names **Wave**), classical analog *Pipes-and-Filters*, whose canonical failure is STAGE COLLAPSE — the inherited anti-pattern — verbatim: *"I will plan as I go". Planning and implementation in the same turn. The plan ends up post-hoc and un-falsifiable.* Restraint is part of the discipline, not a separate idea. The verdict-emit example in [`skills/genesis/examples/05-pr-review-verdict.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/examples/05-pr-review-verdict.md) records **A8 ALIGNMENT LOOP — CONSIDERED, REJECTED** with the WHEN-clause cited in line: *"The first attempt is unlikely to satisfy the goal in one pass (creative work, positioning, complex synthesis). Goal drift is a real risk over several rounds."* A binary PR verdict against a fixed rubric is one-shot per event; the bounded-iteration scaffolding A8 carries would be premature structure. Reaching for a pattern is one half of design; declining a near-miss with the WHEN-clause cited is the other.
+
+## 5. Boundary layer {#sec-boundary-patterns}
+
+The boundary layer is where probabilistic outputs meet deterministic substrate. It is the layer where the seam (Ch14, @sec-seam) is enforced. GoF analogues are partial here because GoF assumed in-process objects with trustworthy interfaces; agentic boundaries assume an *adversarial* interior — the model can produce well-formed nonsense.
+
+| Agentic name | Classical analogue (rigour) | Intent | When to apply | Consequences | Cross-refs |
+|---|---|---|---|---|---|
+| **Supervised Execution** | Proxy + Guard — *partial* / Capability Security [^miller2006] — *precise* (strong form) | Plan in the model; execute in the substrate; verify with another deterministic check. The model never holds the write capability for irreversible effects. | When the work names a system of record (repo, db, cluster) and a consequential action against it. | Strong form (substrate-enforced) requires a client that exposes capability-based security; weak form (prose-enforced) is a fallback. The strong form is *not* a Proxy — the model genuinely cannot externalize, not just mediated by one. | Ch14; Audit Trail |
+| **Schema-Checked Transformer** | Adapter — *precise* | Convert the model's freeform output into a structured form by gating it through a schema check at the boundary. | At every model-to-substrate hand-off where the substrate expects typed input. | Schema becomes a public contract of the boundary. A schema mismatch at the gate is recoverable; one past the gate is a runtime fault. | Ch14; Supervised Execution |
+| **Plan-Write-Then-Reload** | Memento — *weak* / Snapshot [^kleppmann2017] — *closer* | Persist the plan as a durable artifact, then deliberately reload it in a fresh context to defeat attention drift on long sessions. | When work is multi-step, multi-file, or spawn-bound and goal drift is a real risk. | The plan artifact becomes the source of truth; the model's in-context recall is treated as untrusted. *No clean GoF analogue:* Memento captures state for restore, but here the restore is *forced* on a thread that already has state, specifically to overwrite attention. | Ch12; Threading, Audit Trail |
+| **Bounded-Scope Grounding** | Bounded Context [^evans2003] — *precise* (DDD origin, not GoF) | Declare what an external corpus is authoritative *for* and refuse to import its framing into questions it does not own. | Whenever an external grounding source (a spec, a vendor catalogue, a competitor's docs) is loaded into a session. | Authority overreach is the failure mode: the corpus's vocabulary contaminates judgement on questions outside its scope. *No GoF analogue:* this is a domain-modelling idea, not an Object-Oriented Programming (OO) structural one. | Ch14; Audit Trail |
+
+The boundary layer is the layer where weak-form discipline is most often dressed as strong-form architecture. Supervised Execution in particular has a *weak form* (the agent is asked to verify before declaring done) and a *strong form* (the substrate denies the write capability and the agent cannot externalize without going through a deterministic post-stage). Picking the weak form on a substrate that offers the strong form is leaving a substrate guarantee on the table. Ch18's *Skipping Checkpoints* names the operational version of this drift; Ch14 develops the seam in depth.
+
+## 6. Recovery and observability layer {#sec-recovery-patterns}
+
+The recovery layer has the *fewest* GoF analogues of any layer. GoF described patterns for object graphs that lived and died inside one process. Agentic systems must explain themselves to operators *after* the session ends, often *after* the process that produced an artifact has exited and cannot be re-entered. The right reach for this layer is consistently distributed-systems literature.
+
+| Agentic name | Classical analogue (rigour) | Intent | When to apply | Consequences | Cross-refs |
+|---|---|---|---|---|---|
+| **Agent Stack Trace** | Distributed Tracing [^dapper2010] — *precise* / no GoF analogue | Make the chain of dispatched skills, spawned threads, and tool calls reconstructible after the fact, the way a stack trace reconstructs a synchronous call. | Whenever an agent run produces an artifact whose provenance an operator may need to audit or replay. | Tracing has a cost: every dispatch and every spawn must emit a trace event. The cost is paid up-front; the alternative is undebuggable after the fact. | Audit Trail |
+| **Lockfile** | Snapshot [^kleppmann2017] — *precise* / Memento [^gof1994] — *partial* | Capture the resolved version of every transitive dependency at install time so the runtime closure is reproducible. | Whenever a module declares external dependencies whose drift would silently change behaviour. | The lockfile is a public artifact; conflicts between consumers' lockfiles surface at install time, not at runtime. *Memento maps partially:* a lockfile is a memento of the dependency graph, but the "restore via the originator" mechanic does not apply — the package manager restores it. | Ch19; Audit Trail |
+| **Audit Trail** | Event Sourcing [^fowler2005] — *precise* | Record every consequential decision the agent made and every consequential effect it produced as an immutable, append-only sequence. | Whenever the work is consequential enough that an auditor — security, compliance, manager, or future maintainer — must reconstruct what fired, what ran, and what was written. | Storage cost; query infrastructure for the trail; discipline to keep the trail truly append-only. The trail must be on a surface the agent cannot rewrite. | Ch15; Supervised Execution, Agent Stack Trace |
+
+These three patterns travel together. A runtime that has an Audit Trail without an Agent Stack Trace can tell you *what* happened but not *why*. A Lockfile without an Audit Trail can reproduce the dependency closure but not the decisions that produced the artifact under it. Operators of long-lived agentic systems should plan to install all three on day one; retrofitting them after the first incident is an order of magnitude more expensive.
+
+## 7. Per-layer decision matrix {#sec-decision-matrix}
+
+The catalogue tells you what patterns exist. The decision matrix tells you which one to reach for given a problem and which trade-off you accept by reaching for it. This table is meant to be cross-referenced from design reviews; the trade-off column is the load-bearing field.
+
+| Layer | When you have… | Reach for | Trade-off you accept | Failure mode if you skip |
+|---|---|---|---|---|
+| Composition | Same content needed in 3+ consumers | **Dependency** | Distribution boundary; versioning; transitive closure | Duplicated leaf; drift between copies |
+| Composition | One module needs to specialize one section of another | **Override** (Template Method) | Slot names become a public contract | Forking the upstream module |
+| Composition | A capability ships with assets and a description | **Skill** (Module + Facade) | Description is the API; rewording is breaking | Asset leakage into the consumer's context |
+| Dispatch | A decision needs ≥3 independent lenses | **Panel** | Synthesis cost; one extra orchestration thread | Single-lens bias; missed dissent |
+| Dispatch | Work decomposes into ordered, gateable stages | **Wave** | Each stage's output must be durable; gates must be deterministic | Stage collapse (planning and implementing in one turn) |
+| Dispatch | Sub-tasks are independent and parallel-safe | **Scatter-Gather** | One writer per sink; concurrency budget | Shared-state interlock; serialized fan-out |
+| Dispatch | A sub-task needs cold context | **Threading** + **Subagent Spawn** | Re-load cost; explicit hand-off packet | Attention contamination from parent |
+| Boundary | A consequential action against a system of record | **Supervised Execution** (strong form) | Client lock-in; capability-based security wiring | Plan-and-pray; LLM-asserted side effects |
+| Boundary | Freeform model output must enter typed substrate | **Schema-Checked Transformer** | Schema becomes a public contract | Type errors past the gate; runtime faults |
+| Boundary | Long-session goal drift | **Plan-Write-Then-Reload** | Plan artifact must be re-readable in a fresh thread | Drift compounds invisibly across turns |
+| Boundary | External corpus loaded as grounding | **Bounded-Scope Grounding** | Must declare what the corpus owns | Authority overreach; vocabulary contamination |
+| Recovery | Multi-skill multi-thread runs whose provenance matters | **Agent Stack Trace** | Tracing emission cost on every dispatch | Undebuggable after the fact |
+| Recovery | External dependencies whose drift changes behaviour | **Lockfile** | Lockfile becomes a public artifact | Non-reproducible runtime closure |
+| Recovery | Consequential effects an auditor must reconstruct | **Audit Trail** | Storage + query infrastructure; append-only discipline | Implicit-trust outer loop; clandestine bot |
+
+Reviewer rule: a design that names a pattern from column three without naming the trade-off in column four is structurally incomplete. The trade-off is what makes the choice deliberate rather than accidental.
+
+## 8. What this chapter intentionally does not catalogue {#sec-out-of-scope}
+
+The catalogue in this chapter is a translation table for patterns that have *converged* — patterns that are stable enough to name and useful enough to reach for. Three categories are deliberately out of scope.
+
+**Harness-specific patterns.** Patterns whose shape depends on a single vendor's runtime — for instance, the exact MCP-gateway topology of Claude Code's container model, or the precise `safe-outputs:` schema of GitHub Agentic Workflows. These belong in per-harness adapter documentation, not in a Rosetta Stone. Genesis's `runtime-affordances/per-harness/` directory is the right home for them; this chapter cites the substrate concept and leaves the binding to the adapter.
+
+**Patterns whose useful lifetime is shorter than this book's.** Prompt-injection countermeasures of the day (delimiter tricks, instruction sandwiches, role-tag hardening); jailbreak-prompt taxonomies; vendor-specific tool-use schemas. These move quarter by quarter. Cataloguing them here would date the chapter within a release cycle. The seam (Ch14) names the *durable* version of these concerns — capability-based security, schema-checked transformers, bounded-scope grounding — without binding to today's specific exploits.
+
+**Patterns the field has not yet converged on.** Multi-agent negotiation protocols beyond simple Panel/Wave shapes; agent-to-agent message formats; cross-organization agent identity. There is real work happening in each of these areas, but no convergence yet on a name and shape worth standing behind. When convergence happens, a future revision of this chapter is the right place to add them. The premature path — naming a pattern before the field agrees on its shape — produces a catalogue of dead names readers must work around.
+
+The cost of leaving these out is that this chapter is shorter than a maximalist catalogue would be. The benefit is that every entry pays its rent: a name a reader can use in a design review next week and still recognize in five years. That is the bar for inclusion.
+
+---
+
+[^genesis]: Where pattern names in this chapter overlap with Genesis's agent-side codification (Tier-2 design patterns and Tier-3 architectural patterns in the `danielmeppiel/genesis` repository), the human-readable name appears in the table; Genesis's internal codes (used by the agent's dispatch logic) are not load-bearing in this chapter. Genesis is one source of pattern naming the author has drawn from; the analogies to GoF and to distributed-systems literature are this book's contribution.
+
+## References {.unnumbered}
+
+::: {#refs}
+:::
+
+[^gof1994]: Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides. *Design Patterns: Elements of Reusable Object-Oriented Software.* Addison-Wesley, 1994.
+
+[^hohpe2003]: Gregor Hohpe and Bobby Woolf. *Enterprise Integration Patterns.* Addison-Wesley, 2003. Source for Scatter-Gather and the EIP family generally.
+
+[^kleppmann2017]: Martin Kleppmann. *Designing Data-Intensive Applications.* O'Reilly, 2017. Source for Snapshot semantics and the durability discussion behind Lockfile and Plan-Write-Then-Reload.
+
+[^posa1996]: Frank Buschmann et al. *Pattern-Oriented Software Architecture, Vol. 1.* Wiley, 1996. Source for Active Object, used here for Subagent Spawn.
+
+[^miller2006]: Mark S. Miller. *Robust Composition: Towards a Unified Approach to Access Control and Concurrency Control.* PhD thesis, Johns Hopkins, 2006. Capability security as the precise frame for strong-form Supervised Execution.
+
+[^evans2003]: Eric Evans. *Domain-Driven Design.* Addison-Wesley, 2003. Source for Bounded Context, the right frame for Bounded-Scope Grounding.
+
+[^dapper2010]: Benjamin H. Sigelman et al. "Dapper, a Large-Scale Distributed Systems Tracing Infrastructure." Google Technical Report, 2010. The canonical reference for distributed tracing; the right shape for Agent Stack Trace.
+
+[^fowler2005]: Martin Fowler. "Event Sourcing." martinfowler.com, 2005. The canonical write-up of the pattern that maps to Audit Trail.
+
+[^parnas1972]: David L. Parnas. "On the Criteria to Be Used in Decomposing Systems into Modules." *Communications of the ACM*, 15(12), 1972. The original Pipes-and-Filters decomposition argument; cited here as the durable ancestor of Wave.

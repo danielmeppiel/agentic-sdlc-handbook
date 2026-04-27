@@ -1,6 +1,5 @@
----
-title: "The PROSE Specification"
----
+
+# The PROSE Specification {#sec-prose}
 
 You've been using agent instructions for a few weeks. Some tasks produce clean output; others produce confident garbage. The difference isn't the model or the prompt — it's whether your setup follows five core constraints that determine how agents handle scope, context, and boundaries. This chapter specifies each one.
 
@@ -10,7 +9,7 @@ This is the reference chapter. Return to it when you are designing your instruct
 
 ## The Constraint Model
 
-PROSE defines five constraints. Each addresses a fundamental property of language models (finite context, stateless reasoning, probabilistic output) and each induces a desirable property in the system that follows it. The constraints are independent in definition and interdependent in practice.[^ch10-constraints]
+PROSE defines five constraints. Each addresses a fundamental property of language models (finite context, stateless reasoning, probabilistic output) and each induces a desirable property in the system that follows it. The constraints are independent in definition and interdependent in practice.[^ch10-constraints][^ch11-genesis-prose]
 
 | Constraint | Addresses | Induces |
 |---|---|---|
@@ -364,7 +363,7 @@ Use CSS modules. Follow BEM naming...
 
 Every agent, regardless of what it is working on, loads all of this. The Python backend agent processes CSS naming conventions. The database migration agent processes React accessibility guidelines. Attention is wasted. Worse, rules from unrelated domains can interfere — the agent might apply the "use modules" CSS guidance to Python module organization, producing unexpected results.
 
-**Fix:** Split by scope. Python rules in a Python-scoped file. React rules in a frontend-scoped file. Authentication rules in an auth-scoped file. Each agent loads only what applies to its current task. Chapter 11 covers the engineering details: how to size each layer for the context budget, compose the hierarchy at runtime, and maintain it as your codebase evolves (see §The Instruction Hierarchy in Chapter 11).
+**Fix:** Split by scope. Python rules in a Python-scoped file. React rules in a frontend-scoped file. Authentication rules in an auth-scoped file. Each agent loads only what applies to its current task. Chapter 13 covers the engineering details: how to size each layer for the context budget, compose the hierarchy at runtime, and maintain it as your codebase evolves (see @sec-attention-economy).
 
 ---
 
@@ -559,7 +558,7 @@ Use this checklist to evaluate whether your current setup satisfies PROSE constr
 
 ---
 
-The five constraints are the specification. The chapters that follow (context engineering in Chapter 11, multi-agent orchestration in Chapter 12, and the execution meta-process in Chapter 13) are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.[^ch10-spec]
+The five constraints are the specification. The chapters that follow (the load lifecycle and attention economy in Chapters 12 and 13, multi-agent orchestration in Chapter 15, and the execution meta-process in Chapter 16) are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.[^ch10-spec]
 
 ---
 
@@ -571,3 +570,4 @@ One implementation of PROSE scaffolding: `pip install apm-cli && apm init` — [
 
 [^ch10-constraints]: The idea that constraints enable creativity rather than restricting it has deep roots in design thinking. See: Stokes, "Creativity from Constraints: The Psychology of Breakthrough," Springer, 2005.
 [^ch10-spec]: The shift from human-readable to machine-readable specifications parallels the evolution from informal requirements to formal methods in safety-critical systems. The difference: agentic specifications must be *both* — readable by the human reviewer and parseable by the agent consumer.
+[^ch11-genesis-prose]: *"classic + PROSE + LLM-physics compliance check"* — that is the verbatim label of **Step 5, compliance check** in [`skills/genesis/SKILL.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/SKILL.md): *"apply the PROSE constraints (Progressive Disclosure, Reduced Scope, Orchestrated Composition, Safety Boundaries, Explicit Hierarchy) and the seven durable LLM truths. Any BLOCKER stops the design; return to step 2."* PROSE compliance is gated at design time, before any module body is drafted. *Agent-side reference; Step 5 verbatim.*

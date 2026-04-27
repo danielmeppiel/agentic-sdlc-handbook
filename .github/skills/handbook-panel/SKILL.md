@@ -72,30 +72,7 @@ description: >-
 
 ## Handbook structure
 
-```
-Block 0: Foundation
-  Ch 1: The Agentic SDLC Thesis
-
-Block 1: For Leaders
-  Ch 2: The AI-Native Landscape
-  Ch 3: The Business Case
-  Ch 4: The Agentic SDLC Reference Architecture
-  Ch 5: Governance for AI-Assisted Delivery
-  Ch 6: Team Structures for AI-Augmented Delivery
-  Ch 7: Planning the Transition
-
-Block 2: For Practitioners
-  Ch 8: The Practitioner's Mindset
-  Ch 9: The Instrumented Codebase
-  Ch 10: The PROSE Specification
-  Ch 11: Context Engineering
-  Ch 12: Multi-Agent Orchestration
-  Ch 13: The Execution Meta-Process
-  Ch 14: Anti-Patterns and Failure Modes
-
-Closing
-  Ch 15: What Comes Next
-```
+Check the Parts and Chapters of the book in the source code to ground yourself on current TOC and chapter structure.
 
 ## Quality gates
 
