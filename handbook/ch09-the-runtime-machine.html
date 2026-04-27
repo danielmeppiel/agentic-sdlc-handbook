@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>19&nbsp; What Comes Next – The Agentic SDLC Handbook</title>
+<title>9&nbsp; The Agentic Runtime Machine – The Agentic SDLC Handbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,7 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../case-study-growth-engine.html" rel="prev">
+<link href="../handbook/ch10-the-instrumented-codebase.html" rel="next">
+<link href="../handbook/ch08-the-practitioners-mindset.html" rel="prev">
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -46,9 +47,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a01a0e4f5bf7a63e0d33cc700e47c3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-70e91be22bf86b359a999b07fbc00959.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-7a01a0e4f5bf7a63e0d33cc700e47c3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-c25b1cc7189173f1b155a78bf3851d93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b58c5230e9b388ddf91b946a2f6918fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-c25b1cc7189173f1b155a78bf3851d93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -76,6 +77,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<meta name="mermaid-theme" content="neutral">
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
@@ -288,7 +290,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch15-what-comes-next.html">Closing</a></li><li class="breadcrumb-item"><a href="../handbook/ch15-what-comes-next.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">What Comes Next</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch09-the-runtime-machine.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Agentic Runtime Machine</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -432,38 +434,68 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch09-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
+  <a href="../handbook/ch09-the-runtime-machine.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Agentic Runtime Machine</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch10-the-prose-specification.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
+  <a href="../handbook/ch10-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch11-context-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
+  <a href="../handbook/ch11-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch12-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  <a href="../handbook/ch12-the-load-lifecycle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Load Lifecycle</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch13-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  <a href="../handbook/ch13-attention-and-context-economy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Attention and Context Economy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  <a href="../handbook/ch14-deterministic-probabilistic-boundary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Deterministic/Probabilistic Boundary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch15-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch16-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch17-architectural-patterns-rosetta-stone.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Architectural Patterns: A Rosetta Stone</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch18-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch19-primitives-as-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Primitives as Code</span></span></a>
   </div>
 </li>
       </ul>
@@ -480,25 +512,25 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-apm-overhaul.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The APM Auth + Logging Overhaul</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The APM Auth + Logging Overhaul</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-publishing-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Publishing Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">The Publishing Pipeline</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-growth-engine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Building a Growth Engine</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Building a Growth Engine</span></span></a>
   </div>
 </li>
       </ul>
@@ -514,8 +546,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch15-what-comes-next.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  <a href="../handbook/ch20-what-comes-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/appendix-a-cross-harness-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Appendix A: The Cross-Harness Reference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/appendix-b-genesis-worked-example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Appendix B: Genesis worked example: Panel re-architecture</span></span></a>
   </div>
 </li>
       </ul>
@@ -530,23 +574,11 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#near-term-what-changes-in-the-next-twelve-months" id="toc-near-term-what-changes-in-the-next-twelve-months" class="nav-link active" data-scroll-target="#near-term-what-changes-in-the-next-twelve-months"><span class="header-section-number">19.1</span> Near-Term: What Changes in the Next Twelve Months</a></li>
-  <li><a href="#medium-term-what-shifts-over-one-to-three-years" id="toc-medium-term-what-shifts-over-one-to-three-years" class="nav-link" data-scroll-target="#medium-term-what-shifts-over-one-to-three-years"><span class="header-section-number">19.2</span> Medium-Term: What Shifts Over One to Three Years</a></li>
-  <li><a href="#long-term-possibilities-over-three-to-five-years" id="toc-long-term-possibilities-over-three-to-five-years" class="nav-link" data-scroll-target="#long-term-possibilities-over-three-to-five-years"><span class="header-section-number">19.3</span> Long-Term: Possibilities Over Three to Five Years</a></li>
-  <li><a href="#what-will-not-change" id="toc-what-will-not-change" class="nav-link" data-scroll-target="#what-will-not-change"><span class="header-section-number">19.4</span> What Will Not Change</a></li>
-  <li><a href="#three-tier-honesty-applied-to-this-chapters-own-claims" id="toc-three-tier-honesty-applied-to-this-chapters-own-claims" class="nav-link" data-scroll-target="#three-tier-honesty-applied-to-this-chapters-own-claims"><span class="header-section-number">19.5</span> Three-Tier Honesty Applied to This Chapter’s Own Claims</a></li>
-  <li><a href="#when-not-to-use-agentic-workflows" id="toc-when-not-to-use-agentic-workflows" class="nav-link" data-scroll-target="#when-not-to-use-agentic-workflows"><span class="header-section-number">19.6</span> When NOT to Use Agentic Workflows</a></li>
-  <li><a href="#your-first-week-what-to-do-starting-monday" id="toc-your-first-week-what-to-do-starting-monday" class="nav-link" data-scroll-target="#your-first-week-what-to-do-starting-monday"><span class="header-section-number">19.7</span> Your First Week: What to Do Starting Monday</a>
-  <ul class="collapse">
-  <li><a href="#day-1-audit-one-module" id="toc-day-1-audit-one-module" class="nav-link" data-scroll-target="#day-1-audit-one-module"><span class="header-section-number">19.7.1</span> Day 1: Audit One Module</a></li>
-  <li><a href="#day-2-write-your-first-three-primitives" id="toc-day-2-write-your-first-three-primitives" class="nav-link" data-scroll-target="#day-2-write-your-first-three-primitives"><span class="header-section-number">19.7.2</span> Day 2: Write Your First Three Primitives</a></li>
-  <li><a href="#day-3-test-against-a-real-task" id="toc-day-3-test-against-a-real-task" class="nav-link" data-scroll-target="#day-3-test-against-a-real-task"><span class="header-section-number">19.7.3</span> Day 3: Test Against a Real Task</a></li>
-  <li><a href="#day-4-measure-and-adjust" id="toc-day-4-measure-and-adjust" class="nav-link" data-scroll-target="#day-4-measure-and-adjust"><span class="header-section-number">19.7.4</span> Day 4: Measure and Adjust</a></li>
-  <li><a href="#day-5-share-and-plan" id="toc-day-5-share-and-plan" class="nav-link" data-scroll-target="#day-5-share-and-plan"><span class="header-section-number">19.7.5</span> Day 5: Share and Plan</a></li>
-  <li><a href="#for-leaders-additionally" id="toc-for-leaders-additionally" class="nav-link" data-scroll-target="#for-leaders-additionally"><span class="header-section-number">19.7.6</span> For Leaders, Additionally</a></li>
-  </ul></li>
-  <li><a href="#what-the-author-probably-got-wrong" id="toc-what-the-author-probably-got-wrong" class="nav-link" data-scroll-target="#what-the-author-probably-got-wrong"><span class="header-section-number">19.8</span> What the Author Probably Got Wrong</a></li>
-  <li><a href="#the-closing-argument" id="toc-the-closing-argument" class="nav-link" data-scroll-target="#the-closing-argument"><span class="header-section-number">19.9</span> The Closing Argument</a></li>
+  <li><a href="#the-four-parts" id="toc-the-four-parts" class="nav-link active" data-scroll-target="#the-four-parts"><span class="header-section-number">9.1</span> The four parts</a></li>
+  <li><a href="#markdown-that-steers-an-llm-is-code" id="toc-markdown-that-steers-an-llm-is-code" class="nav-link" data-scroll-target="#markdown-that-steers-an-llm-is-code"><span class="header-section-number">9.2</span> Markdown that steers an LLM is code</a></li>
+  <li><a href="#the-harness-is-the-compiler" id="toc-the-harness-is-the-compiler" class="nav-link" data-scroll-target="#the-harness-is-the-compiler"><span class="header-section-number">9.3</span> The harness is the compiler</a></li>
+  <li><a href="#inference-is-per-thread-the-filesystem-is-shared" id="toc-inference-is-per-thread-the-filesystem-is-shared" class="nav-link" data-scroll-target="#inference-is-per-thread-the-filesystem-is-shared"><span class="header-section-number">9.4</span> Inference is per-thread; the filesystem is shared</a></li>
+  <li><a href="#what-this-chapter-unlocks" id="toc-what-this-chapter-unlocks" class="nav-link" data-scroll-target="#what-this-chapter-unlocks"><span class="header-section-number">9.5</span> What this chapter unlocks</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -554,9 +586,9 @@ ul.task-list li input[type="checkbox"] {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch15-what-comes-next.html">Closing</a></li><li class="breadcrumb-item"><a href="../handbook/ch15-what-comes-next.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">What Comes Next</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch09-the-runtime-machine.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Agentic Runtime Machine</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">What Comes Next</span></h1>
+<h1 class="title"><span id="sec-runtime-machine" class="quarto-section-identifier"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Agentic Runtime Machine</span></span></h1>
 </div>
 
 
@@ -573,205 +605,267 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Everything in this book will be partially obsolete within eighteen months. The models will be better, the tools will be different, and capabilities we marked “directional” will be shipping. That is not a flaw in the book. It is the central argument. The methodology survives tool change. The primitives survive model change. The discipline survives everything.</p>
-<p>This chapter applies the three-tier honesty framework (available now, emerging, directional) to the trajectory of the field itself. Where the evidence is strong, the predictions are specific. Where it is not, they are marked accordingly. And where the author is guessing, that is said plainly.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>30-second glossary, before the story
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The story below uses three filename shapes that recur across every harness. If they are new, here is enough to read on without losing the thread. Chapter 10 (<a href="ch10-the-instrumented-codebase.html" class="quarto-xref"><span>Chapter 10</span></a>) catalogues all seven primitive types with full examples and design tests.</p>
+<ul>
+<li><strong><code>.instructions.md</code></strong> — scoped conventions. YAML frontmatter <code>applyTo</code> glob (e.g.&nbsp;<code>applyTo: "src/api/**"</code>). When an agent thread touches a matching file, the harness preloads the body. Closest analogue: a <code>.editorconfig</code> the AI reads.</li>
+<li><strong><code>SKILL.md</code></strong> — a reusable decision framework the agent itself decides to load when the task description matches the skill’s declared purpose. Activated on demand, not on every file touch.</li>
+<li><strong><code>.agent.md</code></strong> — a specialist persona. A separate sub-thread is routed to it through the harness’s delegation tool, inheriting its declared model, tools, and instructions.</li>
+</ul>
+<p>For the rest of this chapter, treat these three as concrete instances of the broader category this chapter will name <em>agent source code</em>.</p>
+</div>
+</div>
+<p>It is a Monday morning. A senior engineer — call her Maya — has spent the last two sprints instrumenting a service repository for agentic development under GitHub Copilot. Conventions live in <code>.github/instructions/api.instructions.md</code> with an <code>applyTo: "src/api/**"</code> frontmatter. A reusable code-review framework lives in <code>.github/skills/code-review/SKILL.md</code>. A specialist persona lives in <code>.github/agents/security-auditor.agent.md</code>. Agents bind reliably; reviews are sharper; her teammates have stopped relitigating naming conventions in pull requests. The instrumentation works.</p>
+<p>This morning her team lead asks her to evaluate Claude Code on the same project. Maya clones the repo onto a fresh machine, installs the CLI, runs <code>claude</code> from the project root, and asks it to add an endpoint following the existing API conventions. Claude Code drafts the endpoint without consulting the convention file. The new code uses the deprecated authentication helper. None of the rules in <code>api.instructions.md</code> made it into the model’s context. The skill in <code>.github/skills/code-review/</code> did not surface during the review. The security-auditor persona — the one her team has been calibrating for a month — is invisible.</p>
+<p>Same files. Same model family. Different harness. Silence.</p>
+<p>There is nothing wrong with Maya’s primitives, and nothing wrong with Claude Code. What has happened is that Maya has been writing programs in a language whose compiler she did not know she was using. Copilot’s loader recognizes <code>.instructions.md</code> files with an <code>applyTo</code> glob and reads them into context whenever a thread touches a matching path.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Claude Code’s loader does not. Claude Code reads a file called <code>CLAUDE.md</code> from the project root and then walks the directory tree for nested <code>CLAUDE.md</code> files, applying the closest one to whatever subtree the agent is working in.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The two harnesses agree on what a “scoped rule” <em>means</em> — text the model sees automatically when working in a particular part of the codebase — but they disagree, completely, on the file name, the folder, and the scope predicate. A developer who cannot name this disagreement experiences it as magic that comes and goes. A developer who can name it has a one-minute fix: write a <code>CLAUDE.md</code> at the repo root that says <em>for API code, follow the rules in <code>.github/instructions/api.instructions.md</code></em>. When Claude Code reads that <code>CLAUDE.md</code>, it will use the <code>@path</code> import directive to inline the instruction file’s contents into the model’s context at session start.</p>
+<p>The point of this chapter is to give you the vocabulary. The runtime under your AI tools is not a single thing. It is the composition of four independently-replaceable parts, and most cross-vendor confusion is a mismatch on one of them. Once you can name the four parts, port stories like Maya’s stop being stories and become bug reports.</p>
 <hr>
-<section id="near-term-what-changes-in-the-next-twelve-months" class="level2" data-number="19.1">
-<h2 data-number="19.1" class="anchored" data-anchor-id="near-term-what-changes-in-the-next-twelve-months"><span class="header-section-number">19.1</span> Near-Term: What Changes in the Next Twelve Months</h2>
-<p><strong>Agent tool use becomes standard, not experimental.</strong> The shift from text generation to agents that execute — file operations, terminal commands, API calls, test runs — is underway but uneven.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Within a year, tool-using agents will be the default interaction mode. This makes Safety Boundaries more critical, not less. A model that generates bad code wastes review time. A model that executes bad commands corrupts state. Guardrails that felt conservative in a text-generation world become essential in a tool-execution world.</p>
-<p><strong>Multi-agent orchestration moves from research to practice.</strong> Teams today primarily use single-agent interactions. Multi-agent patterns — planning agents dispatching specialists, review agents evaluating output, agents collaborating through shared artifacts — exist in research and early tooling.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Within a year, they will ship in mainstream platforms. The orchestration disciplines in Chapters 10–12 — task decomposition, wave-based execution, escalation protocols — become operational necessities rather than advanced practices.</p>
-<p><strong>The agentic computing stack crystallizes through independent convergence.</strong> By mid-2025, at least three independent efforts arrived at the same layered architecture: manifest-based primitive distribution, framework-layer composition, and CI/CD-native execution. Anthropic’s <code>plugin.json</code><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, GitHub’s Agentic Workflows, and open-source frameworks like Squad<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> and Spec-Kit<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> didn’t coordinate — they converged because the layers reflect real boundaries in the problem. Open-source tools already provide manifest-based dependency resolution and security scanning at the primitive layer, the same architecture as npm or pip applied to agent configuration rather than runtime code. This is the pattern that produced HTTP → REST → Rails/Express → npm/pip → applications: each layer emerged when practitioners needed it, not when a standards body decreed it. Spec-Kit and Squad are to agentic development what Spring and React are to traditional computing — they make orchestration easier in one direction, constrain freedom in another, and consume primitives via package managers above the harness layer. The strategic signal: when independent implementations from different vendors converge on the same architecture, the architecture is real. Organizations investing in the primitive layer (Chapter 9) are building on the layer most likely to remain stable as the framework layer evolves.</p>
-<hr>
-</section>
-<section id="medium-term-what-shifts-over-one-to-three-years" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="medium-term-what-shifts-over-one-to-three-years"><span class="header-section-number">19.2</span> Medium-Term: What Shifts Over One to Three Years</h2>
-<p><strong>Agent governance becomes a first-class engineering discipline.</strong> Today, governance of agent output is handled through existing processes: pull requests, CI, manual approval. This works at current volumes. As output scales and multi-agent orchestration becomes common, dedicated governance infrastructure will emerge: audit trails for agent decisions, policy engines that enforce constraints at execution time rather than review time, cost controls that manage token spend across teams. The governance frameworks in Chapter 5 anticipate this, but the tooling barely exists. Within three years, agent governance platforms will be a category — the way CI/CD became a category over the past decade.</p>
-<p><strong>The boundary between “writing code” and “describing intent” blurs.</strong> As models improve at understanding architectural context and as context infrastructure matures, the human role shifts further toward specification and validation. The planning phase — defining what the system should do, what constraints it must respect, what trade-offs to accept — becomes proportionally more of the work. The execution phase becomes proportionally more automated. This does not eliminate engineering skill. It shifts where that skill applies: from implementation patterns to system design, constraint definition, and output evaluation. The practitioners who thrive will be the ones who treat specification as an engineering discipline, not a hand-wave before the “real work.”</p>
-<hr>
-</section>
-<section id="long-term-possibilities-over-three-to-five-years" class="level2" data-number="19.3">
-<h2 data-number="19.3" class="anchored" data-anchor-id="long-term-possibilities-over-three-to-five-years"><span class="header-section-number">19.3</span> Long-Term: Possibilities Over Three to Five Years</h2>
-<p>These predictions are directional. The author believes they describe where the field is heading. They are opinions, not forecasts.</p>
-<p><strong>Full lifecycle agent participation becomes achievable.</strong> The eight-phase lifecycle from Chapter 4 describes agent participation across requirements, design, code, test, review, deploy, operate, and iterate. Today, robust support exists primarily in code and review. Within five years, credible participation across all phases is plausible — not as autonomous replacements, but as capable participants handling routine work under human direction.</p>
-<p><strong>Context infrastructure becomes as foundational as CI/CD.</strong> Every serious engineering organization today has continuous integration and deployment. Context infrastructure (the context files, instruction hierarchies, and knowledge bases that make agents effective) will follow the same trajectory. Early movers treat it as competitive advantage. Eventually it becomes table stakes. Organizations without it will find agentic tools unreliable and conclude the technology “doesn’t work for us,” the same way organizations without CI concluded automated testing “doesn’t work at our scale.”</p>
-<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<section id="the-four-parts" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="the-four-parts"><span class="header-section-number">9.1</span> The four parts</h2>
+<p>Every agentic system you will ever touch is built from the same four parts. They are not branding labels; they are functional roles, and any working setup must fill all four.</p>
+<div class="cell" data-fig-width="5.5" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-three-horizons" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-runtime-machine" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-three-horizons-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-runtime-machine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-three-horizons">gantt
-    title Three-Horizon Timeline
-    dateFormat YYYY
-    axisFormat %Y
+<pre class="mermaid mermaid-js" data-label="fig-runtime-machine">flowchart TB
+    Client["Client&lt;br/&gt;(terminal, IDE, workflow,&lt;br/&gt;scheduler, webhook receiver)"]
+    Tools["Tools&lt;br/&gt;(classical CPU code&lt;br/&gt;orchestrated by the harness)"]
+    Harness["Harness&lt;br/&gt;(the compiler that&lt;br/&gt;drives inference)"]
+    Source["Agent Source Code&lt;br/&gt;(files loaded at&lt;br/&gt;session start)"]
+    Model["Model&lt;br/&gt;(inference engine)"]
 
-    section Near-Term (0–12 mo)
-    Tool-using agents standard              :active, n1, 2025, 2026
-    Multi-agent orchestration ships         :active, n2, 2025, 2026
-
-    section Medium-Term (1–3 yr)
-    Agent governance as discipline          :m1, 2026, 2028
-    Spec replaces implementation            :m2, 2026, 2028
-
-    section Long-Term (3–5 yr)
-    Full lifecycle agent participation      :l1, 2028, 2030
-    Context infra foundational as CI/CD     :l2, 2028, 2030
+    Client &lt;--&gt;|"prompt / output"| Harness
+    Tools &lt;--&gt;|"invoke / result"| Harness
+    Harness &lt;--&gt;|"load"| Source
+    Harness &lt;--&gt;|"inference I/O"| Model
 </pre>
 </div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-three-horizons-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;19.1: Three-horizon technology timeline
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-runtime-machine-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: The four parts of the agentic-system runtime machine
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
+<p><strong>The model</strong> is the inference engine — GPT-5, Claude Sonnet, Gemini, whatever serves the inference endpoint. It takes text in and produces text out. By itself it has no tools, no memory of yesterday, and no awareness of your codebase. Most developers think of “the AI” as the model. Most failures attributed to the model are not the model’s fault.</p>
+<p><strong>The harness</strong> is the program that drives the model. It is what runs in your terminal when you type <code>gh copilot</code>, <code>claude</code>, <code>cursor</code>, <code>codex</code>, or <code>opencode</code>. The harness manages the conversation, calls tools on the model’s behalf, decides which files to load into context and when, and decides what to do with the model’s output. The harness is the part that varies the most across vendors, and it is the part developers most often confuse with the model.</p>
+<p><strong>Agent source code</strong> is the directory layout the harness consults to decide what context the model should see. It is not a passive store of documentation. It is <em>executable configuration</em>: a particular file at a particular path with a particular frontmatter shape causes the harness to inject text into the model’s context at a particular moment. Move the file, rename it, change its frontmatter, and the behavior changes — even though the model and the harness are unchanged. This is the layer Maya was unknowingly programming against.</p>
+<p><strong>The client</strong> is the process that decides when a session runs and what bootstrap context it carries. Clients can be interactive — a developer typing in a terminal (Claude Code, Copilot CLI), an IDE plugin forwarding a selection (VS Code, Cursor) — or programmatic — GitHub Agentic Workflows running over GitHub Actions, a cron daemon, a webhook receiver, a CI runner invoking the harness on every pull request. The client is orthogonal to the harness: a single orchestrator like GitHub Agentic Workflows can spawn sessions in any of several harnesses inside the same run.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The client is also the first layer that can rewrite what lower layers see — a system prompt injected at the client level reaches the harness before any agent source code does, and the harness may reshape it further before the model sees a single token. Each layer mutates the input for the layer below it.</p>
+<p>These four parts are independent. The same primitives can run under Copilot or Claude Code; the same harness can drive any of several models; the same client can spawn either harness. When something behaves differently between two setups, the productive question is not “what is wrong with the AI?” but “which of the four parts changed?”</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Where the layers run
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The four parts do not have to live on the same machine. Three canonical combinations cover most real deployments:</p>
+<ul>
+<li><strong>Full local.</strong> Client, harness, agent source code, and model all run on the developer’s laptop. Ollama or a local GGUF serves inference; the harness reads files from the local checkout. Nothing leaves the machine. Useful for air-gapped work, compliance-sensitive repos, or zero-cost experimentation.</li>
+<li><strong>Hybrid — local client, cloud model.</strong> The client, the harness, and the agent source code stay local; only inference calls cross the network. This is the default for most developers running Claude Code or Copilot CLI against a cloud-hosted model. Primitives remain local files; the model never persists them.</li>
+<li><strong>Full cloud.</strong> Client, harness, model, and agent source code all run in the cloud. GitHub’s Copilot Coding Agent is the canonical example: a pull-request event triggers a cloud-hosted harness that checks out the repo, loads primitives from the commit, drives inference, and pushes commits — all without touching a developer’s machine.</li>
+</ul>
+<p>Layer-locality is a deployment decision, not an architectural one. The four-part model is the same in every case; only the network boundary moves.</p>
+</div>
+</div>
 <hr>
 </section>
-<section id="what-will-not-change" class="level2" data-number="19.4">
-<h2 data-number="19.4" class="anchored" data-anchor-id="what-will-not-change"><span class="header-section-number">19.4</span> What Will Not Change</h2>
-<p>These are the things the author is most confident about, precisely because they are structural rather than technological.</p>
-<p><strong>Context will remain finite and fragile.</strong> There will always be a limit to how much information an agent can effectively consider. The constraint that context must be structured, scoped, and curated is a property of the problem, not the current technology.</p>
-<p><strong>Output will remain probabilistic.</strong> Models will get better. They will not become deterministic. Reliability must be architected through constraints and validation, not assumed from model quality.</p>
-<p><strong>Explicit knowledge will remain more valuable than implicit knowledge.</strong> Agents will not read the minds of the team. Organizations that externalize their knowledge will outperform those that don’t.</p>
-<p><strong>Human judgment will remain the bottleneck and the differentiator.</strong> The scarce resource is the ability to define what should be built, evaluate whether it was built correctly, and decide what to do when it wasn’t.</p>
-<p><strong>Composition will remain necessary.</strong> No single agent will hold an entire large system in focus. The tools for composition will improve; the need for it will not diminish.</p>
-<p>These five properties map directly to the PROSE constraints from Chapter 1. The constraints were not designed for today’s models; they were designed for the fundamental properties of human-AI collaboration.</p>
+<section id="markdown-that-steers-an-llm-is-code" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="markdown-that-steers-an-llm-is-code"><span class="header-section-number">9.2</span> Markdown that steers an LLM is code</h2>
+<p>Look at one of Maya’s instruction files. Thirty lines of markdown with a YAML frontmatter block declaring an <code>applyTo</code> glob. No braces, no semicolons, no compilation step a developer would recognize. It looks like documentation.</p>
+<p>It is not documentation. It has every property of a code artifact:</p>
+<ul>
+<li>It is <strong>parsed.</strong> The harness reads the frontmatter and treats the body as semi-structured input. Misformat the frontmatter and the file silently fails to bind.</li>
+<li>It is <strong>linked.</strong> When it says <em>follow the patterns in <code>tests/test_auth_middleware.py</code></em> — or when it uses <code>@path</code> (an import directive inside <code>CLAUDE.md</code>) to inline another file — that reference is a real edge in a real dependency graph.</li>
+<li>It is <strong>loaded.</strong> At a defined moment in the session lifecycle, the harness reads the file’s contents and places them somewhere in the model’s context window. This load is observable; you can ask the harness’s verbose mode to print it.</li>
+<li>It is <strong>executed.</strong> The text steers the next token the model emits. A poorly-worded instruction biases the output the way a buggy line of code biases the program. <em>Never use <code>_rich_info()</code> in error handlers</em> and <em>avoid <code>_rich_info()</code> in error handlers</em> are not the same instruction. The first prevents a regression. The second hedges enough that the agent will use it anyway.</li>
+</ul>
+<p>The implication is uncomfortable but freeing: every property you expect of code applies to these files. They have versions. They have tests (usually informal — does the agent behave correctly with this rule loaded?). They have regressions. They have linters and dependency closures. Treating them as documentation that occasionally affects the agent leaves you debugging through guesswork. Treating them as code lets you bring the full apparatus of code review, version control, and observability to bear.</p>
+<p>This is not metaphor. Chapter 19 will treat primitives as code in operational detail — lint, test, lockfile, CI. That chapter is the practical consequence of the claim this one just made.</p>
 <hr>
 </section>
-<section id="three-tier-honesty-applied-to-this-chapters-own-claims" class="level2" data-number="19.5">
-<h2 data-number="19.5" class="anchored" data-anchor-id="three-tier-honesty-applied-to-this-chapters-own-claims"><span class="header-section-number">19.5</span> Three-Tier Honesty Applied to This Chapter’s Own Claims</h2>
+<section id="the-harness-is-the-compiler" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="the-harness-is-the-compiler"><span class="header-section-number">9.3</span> The harness is the compiler</h2>
+<p>The most useful single sentence in this chapter is: <em>the harness is the compiler</em>.</p>
+<p>The model is a runtime. The agent source code is the source tree. The harness is the program that decides what compiles to what, in what order, at what visibility. Two harnesses given identical source produce different running programs because their compilers make different decisions. The decision space is small and enumerable, which is why portability is a problem you can solve rather than a fact you must accept.</p>
+<p>Consider a single primitive — a scoped rule that says <em>for code under <code>src/api/</code>, use the <code>auth_v2</code> helper, never <code>auth_v1</code></em> — and how two harnesses materialize it.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 39%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Claim</th>
-<th>Tier</th>
-<th>Confidence</th>
+<th>Aspect</th>
+<th>GitHub Copilot</th>
+<th>Anthropic Claude Code</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Tool-using agents become the default interaction mode</td>
-<td>Available now</td>
-<td>High — shipping in multiple platforms</td>
+<td>File name</td>
+<td><code>api.instructions.md</code> (any stem)</td>
+<td><code>CLAUDE.md</code> (exact name, conventional)</td>
 </tr>
 <tr class="even">
-<td>Multi-agent orchestration enters mainstream tooling</td>
-<td>Available now</td>
-<td>High — shipping in multiple tools</td>
+<td>Folder</td>
+<td><code>.github/instructions/</code></td>
+<td><code>src/api/CLAUDE.md</code> (nested in subtree)</td>
 </tr>
 <tr class="odd">
-<td>Agent governance becomes a distinct discipline</td>
-<td>Emerging</td>
-<td>Medium — need is clear, tooling is not</td>
+<td>Scope predicate</td>
+<td><code>applyTo: "src/api/**"</code> glob in frontmatter</td>
+<td>Implicit by directory hierarchy</td>
 </tr>
 <tr class="even">
-<td>Specification replaces implementation as the core skill</td>
-<td>Emerging</td>
-<td>Medium — direction clear, timeline uncertain</td>
+<td>Multiple files</td>
+<td>Many <code>.instructions.md</code> files, glob-matched</td>
+<td>One closest <code>CLAUDE.md</code> wins per subtree</td>
 </tr>
 <tr class="odd">
-<td>Full lifecycle agent coverage becomes operational</td>
-<td>Directional</td>
-<td>Low-to-medium — plausible, not inevitable</td>
+<td>External references</td>
+<td>Plain markdown links</td>
+<td><code>@path</code> directive (inlines file)</td>
 </tr>
 <tr class="even">
-<td>Context infrastructure becomes as foundational as CI/CD</td>
-<td>Directional</td>
-<td>Medium — trajectory clear, timeline 5+ years</td>
+<td>User-scope variant</td>
+<td><code>.copilot/instructions/</code> in user home</td>
+<td><code>~/.claude/CLAUDE.md</code> in user home</td>
 </tr>
 <tr class="odd">
-<td>Agentic computing stack layers consolidate</td>
-<td>Emerging</td>
-<td>Medium — convergence visible, standardization not</td>
-</tr>
-<tr class="even">
-<td>The five core constraints hold</td>
-<td>Structural</td>
-<td>High — properties of the problem</td>
+<td>Loaded when</td>
+<td>A thread touches a matching path</td>
+<td>A thread starts work in that subtree</td>
 </tr>
 </tbody>
 </table>
-<p>The reader should calibrate accordingly. Invest confidently in the “available now” tier. Prepare for the “emerging” tier. Be aware of the “directional” tier without betting the organization on specific timelines.</p>
+<p>Both harnesses implement the same substrate concept — text the model sees automatically when working in a particular part of the codebase — but the syntax is incompatible. A primitive written for one is silent in the other. This is not a bug in either tool; it is the unavoidable consequence of two compilers with different opinions about source layout.</p>
+<p>Cursor’s <code>.cursor/rules/</code> directory and OpenAI Codex’s <code>AGENTS.md</code> convention round out the same picture from different angles: same substrate concept, different surface syntax.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> OpenCode follows the AGENTS.md convention as well.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> The agentskills.io standard — the <code>SKILL.md</code> entrypoint with a description-driven match — is the one place the major harnesses have substantially converged, which is why skills port more cleanly than scope-attached rules.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<p>The cross-harness load order looks like this:</p>
+<div class="cell" data-fig-width="6.5" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-load-order" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-load-order-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-load-order">flowchart LR
+    subgraph Copilot
+        direction TB
+        C1["1. User config\n.copilot/"]
+        C2["2. Project base\n.github/copilot-instructions.md"]
+        C3["3. Glob-match instructions\n.github/instructions/*.instructions.md\nfiltered by applyTo"]
+        C4["4. Skills available\n.github/skills/*/SKILL.md"]
+        C5["5. Agents available\n.github/agents/*.agent.md"]
+        C1 --&gt; C2 --&gt; C3 --&gt; C4 --&gt; C5
+    end
+    subgraph ClaudeCode["Claude Code"]
+        direction TB
+        K1["1. User memory\n~/.claude/CLAUDE.md"]
+        K2["2. Project root\n./CLAUDE.md"]
+        K3["3. Nested memories\nsrc/.../CLAUDE.md\n@path imports inlined"]
+        K4["4. Skills available\n.claude/skills/*/SKILL.md"]
+        K5["5. Subagents available\n.claude/agents/*.md\nvia Task tool"]
+        K1 --&gt; K2 --&gt; K3 --&gt; K4 --&gt; K5
+    end
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-load-order-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: Cross-harness load order for the same project at session start
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Notice that the <em>steps</em> line up — both harnesses do user-scope, then project-scope, then scoped rules, then skills, then specialist personas — but the <em>files</em> do not. A primitive set tuned for one harness is, at the file-naming layer, dead on arrival in the other. The fix is not heroic. It is mechanical: provide a thin shim file at the harness’s expected path that re-exports the canonical primitives. Maya’s project becomes Claude-Code-compatible the moment a <code>CLAUDE.md</code> at the repo root says, in plain markdown, <em>for code under <code>src/api/</code>, follow <code>@.github/instructions/api.instructions.md</code></em>. The compiler now knows where the source is.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Probing your harness
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you are running Genesis as recommended in Chapter 8, you can probe the substrate model directly. Ask your agent: <em>load Genesis, then list the six runtime-affordance primitives and tell me which file in this project realizes each one for our current harness</em>. The skill walks its own per-harness adapter and prints the mapping. It is the fastest way to confirm what your harness will and will not see — and to spot the gaps Maya hit before they cost a sprint.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+</div>
+</div>
+<p>The compiler analogy has a second consequence worth stating. When you choose a harness, you are choosing a compiler. The decision is not reversible by editing a config file. Switching harnesses is a port, with all the same costs and gotchas as porting a program from one language to another. Most projects pay this cost only once, and pay it deliberately. The vocabulary of this chapter is what makes the port a project plan rather than a mystery.</p>
 <hr>
 </section>
-<section id="when-not-to-use-agentic-workflows" class="level2" data-number="19.6">
-<h2 data-number="19.6" class="anchored" data-anchor-id="when-not-to-use-agentic-workflows"><span class="header-section-number">19.6</span> When NOT to Use Agentic Workflows</h2>
-<p>Not every task benefits from agent orchestration. Applying the methodology where it does not fit wastes time and produces worse outcomes than working manually. Recognize these scenarios early:</p>
-<p><strong>The task requires fewer than 50 lines of change.</strong> If you can hold the full scope in your head, the overhead of persona design, wave planning, and checkpoint discipline is not worth it. Just write the code.</p>
-<p><strong>The domain knowledge is entirely implicit.</strong> If the conventions, constraints, and trade-offs cannot be externalized into instruction files – because they depend on political context, unwritten relationships, or organizational history that resists documentation – agents will produce plausible but wrong output. Instrument the codebase first (Chapter 9), then apply agents.</p>
-<p><strong>The cost of failure is low and iteration is cheap.</strong> For throwaway scripts, prototyping, and exploratory work, a single agent prompt with no orchestration is faster and sufficient. The methodology exists for production-grade work where reliability matters.</p>
-<p><strong>The work is inherently sequential and creative.</strong> Naming things, choosing abstractions, defining API contracts – these are judgment-dense tasks where agent suggestions help but orchestrated composition adds nothing. Use agents as sounding boards, not as orchestrated fleets.</p>
-<p><strong>The platform fights automation.</strong> The Growth Engine case study documents three automated approaches to Kit form automation, each hitting React’s virtual DOM. When the platform’s internals are undocumented and hostile to external manipulation, escalate to a human with a precise checklist rather than attempting a fourth approach.</p>
-<p>The methodology’s value is recognizing which category a task falls into before committing to an approach.</p>
+<section id="inference-is-per-thread-the-filesystem-is-shared" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="inference-is-per-thread-the-filesystem-is-shared"><span class="header-section-number">9.4</span> Inference is per-thread; the filesystem is shared</h2>
+<p>The single most consequential structural property of this whole machine is one sentence:</p>
+<blockquote class="blockquote">
+<p>Inference is per-thread; the filesystem is shared.</p>
+</blockquote>
+<p>When the harness spawns a session, it allocates a thread of inference — a context window, a token budget, a conversation log — that is private to that session. The thread is born empty and dies forgotten. Anything it learned during execution, any decision it made, any tool output it received, is gone the moment the session ends. There is no persistent memory inside the model. The session is amnesiac by construction.</p>
+<p>The filesystem, by contrast, is the only thing that survives. Every primitive lives there. Every plan, every memento, every lockfile. When two threads run in parallel — a parent dispatching a child via Claude Code’s Task tool, or a developer running two <code>gh copilot</code> sessions in two terminals — they share zero context. They communicate, if at all, by writing to and reading from the filesystem. The filesystem is the shared memory of every multi-thread agentic system that has ever existed.</p>
+<p>This is why the disciplines in Chapter 12 (load lifecycle) and Chapter 15 (multi-agent orchestration) center on the filesystem. When a long session loses the thread, the cure is <em>plan-write-then-reload</em> — the agent writes its plan to a file mid-session and re-reads the file at decision points. The plan survives the inference; the inference does not survive the plan. When a parent agent fans work out to children, the children inherit nothing from the parent’s context except what the parent wrote down. A worker that needs to know the architecture decision its parent just made cannot ask the parent; it must read a file the parent wrote.</p>
+<p>If you accept one sentence from this chapter, accept that one. The amnesia of the model and the persistence of the filesystem are the load-bearing asymmetry. Every other discipline in this part of the book is a consequence of it.</p>
 <hr>
 </section>
-<section id="your-first-week-what-to-do-starting-monday" class="level2" data-number="19.7">
-<h2 data-number="19.7" class="anchored" data-anchor-id="your-first-week-what-to-do-starting-monday"><span class="header-section-number">19.7</span> Your First Week: What to Do Starting Monday</h2>
-<p>For leaders who read Block 1 and practitioners who read Block 2, here is the concrete version. Not principles. Actions.</p>
-<section id="day-1-audit-one-module" class="level3" data-number="19.7.1">
-<h3 data-number="19.7.1" class="anchored" data-anchor-id="day-1-audit-one-module"><span class="header-section-number">19.7.1</span> Day 1: Audit One Module</h3>
-<p>Pick the module your team changes most frequently. Not the biggest module, the most-changed one. Run the methodology from Chapter 9: identify implicit knowledge, undocumented conventions, architectural decisions that exist only in your team’s memory. Write down what you find. You are not fixing anything today. You are measuring the gap between what an agent can see and what your team knows.</p>
-<p><strong>Deliverable:</strong> A list of 5–10 implicit conventions that an agent would violate on its first task in this module.</p>
-</section>
-<section id="day-2-write-your-first-three-primitives" class="level3" data-number="19.7.2">
-<h3 data-number="19.7.2" class="anchored" data-anchor-id="day-2-write-your-first-three-primitives"><span class="header-section-number">19.7.2</span> Day 2: Write Your First Three Primitives</h3>
-<p>Take the top three conventions from yesterday’s audit. Write each as an instruction file — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 9, under the constraints from Chapter 10: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.</p>
-<p><strong>Deliverable:</strong> Three instruction files, committed to your repository.</p>
-</section>
-<section id="day-3-test-against-a-real-task" class="level3" data-number="19.7.3">
-<h3 data-number="19.7.3" class="anchored" data-anchor-id="day-3-test-against-a-real-task"><span class="header-section-number">19.7.3</span> Day 3: Test Against a Real Task</h3>
-<p>Pick a task from your current sprint — something an agent would plausibly handle. Run it twice: once without your new context files, once with them. Compare the output. Did the context files prevent the mistakes you predicted? Did they cause new problems? Record the before-and-after. This is your first data point, not your conclusion.</p>
-<p><strong>Deliverable:</strong> A before-and-after comparison with specific examples of what changed.</p>
-</section>
-<section id="day-4-measure-and-adjust" class="level3" data-number="19.7.4">
-<h3 data-number="19.7.4" class="anchored" data-anchor-id="day-4-measure-and-adjust"><span class="header-section-number">19.7.4</span> Day 4: Measure and Adjust</h3>
-<p>Review yesterday’s comparison honestly. Which files made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn’t land. This is the calibration loop from Chapter 11: context files are not documentation, they are engineering artifacts that need testing and iteration like any other code.</p>
-<p><strong>Deliverable:</strong> Revised instruction files based on observed agent behavior.</p>
-</section>
-<section id="day-5-share-and-plan" class="level3" data-number="19.7.5">
-<h3 data-number="19.7.5" class="anchored" data-anchor-id="day-5-share-and-plan"><span class="header-section-number">19.7.5</span> Day 5: Share and Plan</h3>
-<p>Show your team the before-and-after. Not a presentation — a 15-minute demo at standup. Show the worst agent output without instrumentation and the improved output with it. Then plan: which modules get instrumented next? Who owns which instruction files? How do you keep them current as the code evolves?</p>
-<p><strong>Deliverable:</strong> A team agreement on next steps and ownership.</p>
-</section>
-<section id="for-leaders-additionally" class="level3" data-number="19.7.6">
-<h3 data-number="19.7.6" class="anchored" data-anchor-id="for-leaders-additionally"><span class="header-section-number">19.7.6</span> For Leaders, Additionally</h3>
-<p>If you lead the organization rather than the team, Day 1 is different. Start with the readiness assessment from Chapter 7. Identify one team with the right combination of codebase maturity, process discipline, and cultural openness. Fund a structured pilot — not “give everyone licenses and see what happens,” but the phased adoption from the transition plan. Protect the investment in context infrastructure. It has the highest long-term return and the lowest short-term visibility, which means it is the one most likely to be cut.</p>
+<section id="what-this-chapter-unlocks" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="what-this-chapter-unlocks"><span class="header-section-number">9.5</span> What this chapter unlocks</h2>
+<p>You now have the vocabulary the rest of Part III is going to spend. A short forward map:</p>
+<p><strong>Chapter 10</strong> treats agent source code as a thing you build, primitive by primitive. Now that you know the harness is the compiler and the agent source code is the source tree, the seven-primitive catalogue stops being a list of tools and starts looking like a small programming language.</p>
+<p><strong>Chapter 12</strong> treats the load lifecycle in detail. You will learn what to look for in the harness’s verbose output, how to compute the transitive closure of files that load when a primitive activates, and why your skill is silent when a parent rule file overflows the context budget.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<p><strong>Chapter 14</strong> locates the deterministic seam — the line between what the harness deterministically does and what the model probabilistically guesses. The model is one of the four parts. It is the only one that hallucinates. Knowing where it sits is what lets you put the irreversible side effects somewhere else.</p>
+<p><strong>Chapter 15</strong> uses the per-thread/shared-filesystem asymmetry to design multi-agent topologies that stay coordinated when they fan out.</p>
+<p><strong>Appendix A</strong> is the cross-harness reference. When you need to actually port Maya’s project, that is where the matrix lives.</p>
 <hr>
-</section>
-</section>
-<section id="what-the-author-probably-got-wrong" class="level2" data-number="19.8">
-<h2 data-number="19.8" class="anchored" data-anchor-id="what-the-author-probably-got-wrong"><span class="header-section-number">19.8</span> What the Author Probably Got Wrong</h2>
-<p>Intellectual honesty requires identifying where this book’s assumptions are most likely to age poorly.</p>
-<p><strong>The pace of capability improvement may outrun governance.</strong> This book assumes organizations will have time to build governance infrastructure before agent capabilities demand it. If capabilities improve faster than organizational maturity — the historical pattern for every technology shift — many organizations will face a period where agents can do more than the organization is prepared to govern.</p>
-<p><strong>The emphasis on human-in-the-loop may prove too conservative.</strong> For high-stakes production code, human review will hold. For internal tooling, prototyping, and throwaway infrastructure, fully autonomous workflows may become practical sooner than this book suggests. The “always review” stance is safer but may leave real efficiency on the table in contexts where the cost of failure is low.</p>
-<p><strong>The multi-agent orchestration model may evolve past human orchestrators.</strong> The patterns in this book assume a human planner dispatching specialist agents. Future orchestration may involve agents that plan their own decomposition, negotiate resources, and maintain persistent state across sessions. The compositional principles will likely still apply, but the human-as-orchestrator model this book centers may be a transitional pattern, not an enduring one.</p>
-<p><strong>The documentation burden may not pay for itself.</strong> This book asks teams to externalize knowledge that was previously implicit. That is real work with real ongoing maintenance cost. If the productivity gains from agentic development are modest — 15–20% rather than the 2–3x some claim — then the time spent creating and maintaining context infrastructure could consume most of the gains. The break-even calculation is less obviously favorable than the book implies, and the author has not seen enough longitudinal data to be certain it tips the right way.</p>
-<p><strong>And the uncomfortable one: the author may be overestimating the durability of human judgment as the differentiator.</strong> This book argues that human judgment is the bottleneck agents cannot replace — and builds its entire methodology around that assumption. But there is a motivated reasoning risk in any book that argues humans are indispensable, written by a human who wants that to be true. If models develop genuine architectural reasoning — not pattern matching on training data, but the ability to evaluate trade-offs, anticipate failure modes, and make design decisions that hold up under pressure — then the “human judgment” moat this book describes is not structural. It is temporal. The author believes it is structural. The author also acknowledges that this belief is load-bearing for the entire framework, which means it is exactly the kind of assumption that deserves the most scrutiny and the least certainty.</p>
-<hr>
-</section>
-<section id="the-closing-argument" class="level2" data-number="19.9">
-<h2 data-number="19.9" class="anchored" data-anchor-id="the-closing-argument"><span class="header-section-number">19.9</span> The Closing Argument</h2>
-<p>Accept that you are early. The field is moving faster than any book can capture. The specific tools will change. The formats will evolve. The capabilities will exceed what is described here.</p>
-<p>Use the principles, not the specifics. Structure your context, scope your tasks, compose simple building blocks, enforce safety boundaries, and organize your knowledge hierarchically. These disciplines work regardless of which model runs underneath or which tool wraps around it.</p>
-<p>REST did not make HTTP better. It gave engineers constraints to reason about distributed systems. Twenty-five years later, the constraints still hold, even though every specific technology from that era has been replaced. The aspiration for the architectural constraints in this book is the same: durable reasoning tools for a field that will not stop changing.</p>
-<p>The methodology is the floor, not the ceiling. Build on it.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>TL;DR — Four parts, one machine
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Name the four parts.</strong> Model, harness, agent source code, client. When something behaves differently between two setups, ask which of the four changed first.</li>
+<li><strong>Treat your markdown as code.</strong> It is parsed, linked, loaded, and executed. Version it, review it, lint it, and write it precisely enough that the next agent does not hedge.</li>
+<li><strong>The harness is the compiler.</strong> Two harnesses given the same primitives produce different running programs. Cross-harness portability is a project plan, not a mystery.</li>
+<li><strong>Inference is per-thread; the filesystem is shared.</strong> Threads are amnesiac; the filesystem is the only memory that persists. Every coordination pattern in the rest of this book follows from that asymmetry.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></li>
+</ol>
+</div>
+</div>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>GitHub Copilot’s “agent mode” (2025), Cursor’s agentic features, and similar integrations in VS Code, JetBrains, and other IDEs demonstrate this shift. The Model Context Protocol (MCP) standardizes how agents access external tools, accelerating adoption.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>OpenAI’s Swarm framework, Microsoft’s AutoGen, and LangGraph represent early multi-agent orchestration libraries. GitHub Copilot coding agent and similar CI-integrated agents mark the beginning of production multi-agent workflows.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Anthropic, “Claude Code Plugins,” https://docs.anthropic.com/en/docs/claude-code/plugins<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Brady Gaster, “How Squad Runs Coordinated AI Agents Inside Your Repository,” GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>GitHub, “Spec Kit — Build High-Quality Software Faster,” https://github.com/github/spec-kit<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>GitHub, “Adding custom instructions for GitHub Copilot,” <code>https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot</code>. The <code>applyTo</code> frontmatter field accepts a glob and binds the instruction file to any thread whose work path matches. Files live in <code>.github/instructions/</code> for project scope and <code>.copilot/instructions/</code> for user scope.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Anthropic, “Claude Code: Memory,” <code>https://docs.claude.com/en/docs/claude-code/memory</code>. Claude Code reads <code>CLAUDE.md</code> from the project root and then walks the directory tree, applying the closest <code>CLAUDE.md</code> in scope to work in that subtree. The body may import other markdown files via the <code>@path</code> directive, which inlines the referenced file’s contents into the model’s context at session start. There is no glob predicate; hierarchy is the only scope selector.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>This four-part decomposition borrows substrate vocabulary from the agent-side <code>danielmeppiel/genesis</code> skill, specifically <code>assets/runtime-affordances/common.md</code>, which enumerates six harness-agnostic primitive concepts and treats the client as orthogonal to the inference harness. <em>Agent-side reference; substrate concept.</em><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Cursor, “Rules for AI,” <code>https://docs.cursor.com/context/rules-for-ai</code>. Cursor stores scoped rules in <code>.cursor/rules/</code> as files with frontmatter declaring globs and rule type. Same substrate concept as Copilot’s instructions and Claude Code’s nested memories; incompatible surface syntax.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>OpenAI, “Codex CLI: AGENTS.md,” <code>https://github.com/openai/codex</code>. Codex follows the <code>AGENTS.md</code> convention — a single markdown file at the project root (and optionally nested) that the harness loads at session start. The convention has been adopted by several harnesses as a portable lingua franca for project-scope rules.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>OpenCode, <code>https://opencode.ai/docs</code>. OpenCode loads <code>AGENTS.md</code> from the project root using the same convention as Codex, which makes a single <code>AGENTS.md</code> the cheapest portable target across the AGENTS.md-aware harnesses.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>agentskills.io, the open registry standard for the <code>SKILL.md</code> entrypoint with description-driven activation, has been adopted in substantially compatible form by Copilot (<code>.github/skills/&lt;name&gt;/SKILL.md</code>), Claude Code (<code>.claude/skills/&lt;name&gt;/SKILL.md</code>), and several others. Skills port across harnesses more cleanly than scope-attached rules because the standard pinned the file name and the activation contract.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Genesis ships per-harness adapters under <code>skills/genesis/assets/runtime-affordances/per-harness/</code> — one each for Copilot, Claude Code, Cursor, Codex, and OpenCode — each mapping the six substrate concepts to that harness’s concrete file paths and frontmatter fields. <em>Agent-side reference; substrate concept.</em><a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>The transitive-closure framing — the full graph of files that load when a primitive activates, including dependencies of dependencies — is borrowed from <code>danielmeppiel/genesis</code>, <code>assets/composition-substrate.md</code>. <em>Agent-side reference; substrate concept.</em><a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The four-part runtime machine this chapter just named is the substrate at which the design discipline of Part III stops being optional. The companion the part opener pointed at is one packaged answer to that discipline. <em>Cross-reference; substrate framing.</em><a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1191,11 +1285,14 @@ Figure&nbsp;19.1: Three-horizon technology timeline
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../case-study-growth-engine.html" class="pagination-link" aria-label="Building a Growth Engine">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Building a Growth Engine</span></span>
+      <a href="../handbook/ch08-the-practitioners-mindset.html" class="pagination-link" aria-label="The Practitioner's Mindset">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../handbook/ch10-the-instrumented-codebase.html" class="pagination-link" aria-label="The Instrumented Codebase">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; The AI-Native Landscape – The Agentic SDLC Handbook</title>
+<title>17&nbsp; Architectural Patterns: A Rosetta Stone – The Agentic SDLC Handbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -23,7 +23,26 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -33,8 +52,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../handbook/ch03-the-business-case.html" rel="next">
-<link href="../handbook/ch01-the-agentic-sdlc-thesis.html" rel="prev">
+<link href="../handbook/ch18-anti-patterns-and-failure-modes.html" rel="next">
+<link href="../handbook/ch16-the-execution-meta-process.html" rel="prev">
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -290,7 +309,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html">Part II: For Leaders</a></li><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch17-architectural-patterns-rosetta-stone.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Architectural Patterns: A Rosetta Stone</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -381,7 +400,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link active">
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
   </div>
 </li>
@@ -482,7 +501,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch17-architectural-patterns-rosetta-stone.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch17-architectural-patterns-rosetta-stone.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Architectural Patterns: A Rosetta Stone</span></span></a>
   </div>
 </li>
@@ -574,14 +593,17 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#market-velocity" id="toc-market-velocity" class="nav-link active" data-scroll-target="#market-velocity"><span class="header-section-number">2.1</span> Market Velocity</a></li>
-  <li><a href="#from-autocomplete-to-agents" id="toc-from-autocomplete-to-agents" class="nav-link" data-scroll-target="#from-autocomplete-to-agents"><span class="header-section-number">2.2</span> From Autocomplete to Agents</a></li>
-  <li><a href="#coding-tools-vs.-software-delivery-platforms" id="toc-coding-tools-vs.-software-delivery-platforms" class="nav-link" data-scroll-target="#coding-tools-vs.-software-delivery-platforms"><span class="header-section-number">2.3</span> Coding Tools vs.&nbsp;Software Delivery Platforms</a></li>
-  <li><a href="#the-landscape-today-capabilities-that-actually-matter" id="toc-the-landscape-today-capabilities-that-actually-matter" class="nav-link" data-scroll-target="#the-landscape-today-capabilities-that-actually-matter"><span class="header-section-number">2.4</span> The Landscape Today: Capabilities That Actually Matter</a></li>
-  <li><a href="#how-these-tools-are-priced" id="toc-how-these-tools-are-priced" class="nav-link" data-scroll-target="#how-these-tools-are-priced"><span class="header-section-number">2.5</span> How These Tools Are Priced</a></li>
-  <li><a href="#two-buying-motions-one-problem" id="toc-two-buying-motions-one-problem" class="nav-link" data-scroll-target="#two-buying-motions-one-problem"><span class="header-section-number">2.6</span> Two Buying Motions, One Problem</a></li>
-  <li><a href="#the-8-phase-evaluation-framework" id="toc-the-8-phase-evaluation-framework" class="nav-link" data-scroll-target="#the-8-phase-evaluation-framework"><span class="header-section-number">2.7</span> The 8-Phase Evaluation Framework</a></li>
-  <li><a href="#inaction-is-a-decision" id="toc-inaction-is-a-decision" class="nav-link" data-scroll-target="#inaction-is-a-decision"><span class="header-section-number">2.8</span> Inaction Is a Decision</a></li>
+  <li><a href="#thesis" id="toc-thesis" class="nav-link active" data-scroll-target="#thesis"><span class="header-section-number">17.1</span> Thesis</a></li>
+  <li><a href="#audience-and-how-to-read-this-chapter" id="toc-audience-and-how-to-read-this-chapter" class="nav-link" data-scroll-target="#audience-and-how-to-read-this-chapter"><span class="header-section-number">17.2</span> Audience and how to read this chapter</a></li>
+  <li><a href="#sec-layered-model" id="toc-sec-layered-model" class="nav-link" data-scroll-target="#sec-layered-model"><span class="header-section-number">17.3</span> 1. The layered model of an agentic runtime</a></li>
+  <li><a href="#reading-the-rosetta-stone" id="toc-reading-the-rosetta-stone" class="nav-link" data-scroll-target="#reading-the-rosetta-stone"><span class="header-section-number">17.4</span> 2. Reading the Rosetta Stone</a></li>
+  <li><a href="#sec-composition-patterns" id="toc-sec-composition-patterns" class="nav-link" data-scroll-target="#sec-composition-patterns"><span class="header-section-number">17.5</span> 3. Composition layer</a></li>
+  <li><a href="#sec-dispatch-patterns" id="toc-sec-dispatch-patterns" class="nav-link" data-scroll-target="#sec-dispatch-patterns"><span class="header-section-number">17.6</span> 4. Dispatch and orchestration layer</a></li>
+  <li><a href="#sec-boundary-patterns" id="toc-sec-boundary-patterns" class="nav-link" data-scroll-target="#sec-boundary-patterns"><span class="header-section-number">17.7</span> 5. Boundary layer</a></li>
+  <li><a href="#sec-recovery-patterns" id="toc-sec-recovery-patterns" class="nav-link" data-scroll-target="#sec-recovery-patterns"><span class="header-section-number">17.8</span> 6. Recovery and observability layer</a></li>
+  <li><a href="#sec-decision-matrix" id="toc-sec-decision-matrix" class="nav-link" data-scroll-target="#sec-decision-matrix"><span class="header-section-number">17.9</span> 7. Per-layer decision matrix</a></li>
+  <li><a href="#sec-out-of-scope" id="toc-sec-out-of-scope" class="nav-link" data-scroll-target="#sec-out-of-scope"><span class="header-section-number">17.10</span> 8. What this chapter intentionally does not catalogue</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -589,9 +611,9 @@ ul.task-list li input[type="checkbox"] {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html">Part II: For Leaders</a></li><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch17-architectural-patterns-rosetta-stone.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Architectural Patterns: A Rosetta Stone</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></h1>
+<h1 class="title"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Architectural Patterns: A Rosetta Stone</span></h1>
 </div>
 
 
@@ -608,485 +630,472 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Your developers are already using AI coding tools. Some of them expensed their own subscriptions. A few are running code through APIs you’ve never audited. The question isn’t whether AI-assisted development is happening in your organization. It’s whether you’re driving it or reacting to it.</p>
-<hr>
-<section id="market-velocity" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="market-velocity"><span class="header-section-number">2.1</span> Market Velocity</h2>
-<p>The AI developer tools market is growing faster than any prior developer tooling category. The pattern is worth more than any snapshot figure, because the figures will be outdated by the time you read this. Here’s the pattern:</p>
-<p>The 2024 Stack Overflow Developer Survey found 76% of developers are using or plan to use AI coding tools — up from 44% in 2023. GitHub’s 2024 Octoverse report placed the figure higher: 97% of developers surveyed had used AI coding tools in some capacity. Even accounting for sampling bias (developers on GitHub are likelier to adopt developer tools), the direction is unambiguous.</p>
-<p>The supply side is moving as fast as the demand side. In 2021, GitHub Copilot launched as a technical preview — an autocomplete tool powered by OpenAI Codex. By mid-2025, the market includes more than ten well-funded products spanning code completion, agentic coding, and full-lifecycle platforms. Cursor has disclosed rapid growth, though specific ARR figures remain unconfirmed by the company.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Microsoft has cited GitHub Copilot subscriber growth and revenue contributions in quarterly earnings calls.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Anthropic has raised billions at valuations implying substantial API revenue, though the breakdown by use case — including code generation — is not publicly disclosed. The pattern across vendors is consistent: AI coding tools have become a high-growth commercial category, not a research curiosity.</p>
-<p>Gartner estimated in 2024 that by 2028, 75% of enterprise software engineers will use AI code assistants — up from fewer than 10% in early 2023. The adoption curve is not linear; it is compounding. And the tools are not static targets; each major release expands what “AI-assisted development” means, which means the definition of the market is shifting while you’re trying to evaluate it.</p>
-<p>Three things are driving this:</p>
-<p><strong>Model commoditization.</strong> In 2022, OpenAI’s models were the dominant option most developers had practical access to for code generation at production quality. By 2025, Anthropic’s Claude, Google’s Gemini, Meta’s Llama, and several other models compete credibly. This commoditization drives down model costs, which drives down tool pricing, which drives up adoption. Tools that once charged premium prices for model access now compete on integration, context management, and workflow design. The model is becoming the commodity layer; everything above it is where differentiation happens.</p>
-<p><strong>Developer-led adoption.</strong> Unlike most enterprise software categories, where procurement selects a tool and pushes it to employees, AI coding tools spread bottom-up. A single developer tries a tool, gets faster at certain tasks, and tells three colleagues. By the time engineering leadership notices, eight of twelve developers on a team may be using different tools, none centrally managed. This dynamic is not new (it drove Slack, GitHub, and Docker adoption), but the speed appears to exceed prior developer tool adoption curves because the tools produce immediate, visible productivity gains on individual tasks.</p>
-<p><strong>Platform consolidation.</strong> AI coding tools are expanding into adjacent phases of the software lifecycle. What started as autocomplete in an editor now reaches into code review, testing, CI/CD, documentation, and deployment. This blurs the line between “coding tool” and “software delivery platform,” a distinction that matters enormously for purchasing decisions, and one that most evaluations fail to make.</p>
-<hr>
+<section id="thesis" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="thesis"><span class="header-section-number">17.1</span> Thesis</h2>
+<p>The agentic runtime is not pattern-free. The same structural problems recur — composition, dispatch, isolation, supervision, fan-out, recovery — and the field has converged on recognizable solutions. Many of these solutions have direct analogues in the classical Gang-of-Four (GoF) catalogue <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and in distributed-systems literature <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Naming them — and naming the analogue — gives architects a vocabulary to reason at the system level instead of at the file level.</p>
+<p>This chapter is a translation table. For each recurring agentic pattern, it gives a name, a classical analogue where the analogy holds, an intent, an applicability rule, the consequences you accept, and cross-references to the chapters that develop the pattern in depth. Where no clean classical analogue exists, the chapter says so and points to the closest distributed-systems shape.</p>
 </section>
-<section id="from-autocomplete-to-agents" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="from-autocomplete-to-agents"><span class="header-section-number">2.2</span> From Autocomplete to Agents</h2>
-<p>The market’s evolution follows a clear progression, and understanding where you are on this curve determines what you should be evaluating.</p>
-<p><strong>Phase 1: Code completion (2021-2023).</strong> The original value proposition: type a comment or partial line, receive a multi-line suggestion. GitHub Copilot, Tabnine, Amazon CodeWhisperer (now Q Developer), and others competed primarily on suggestion quality: how often the completion was correct and useful. The interaction was passive: the developer wrote code, the tool offered predictions. Adoption was fast because the integration was minimal, a plugin in an existing editor, no workflow changes required. Most organizations still treat AI coding tools as “better autocomplete.” Many are stuck here.</p>
-<p><strong>Phase 2: Conversational assistance (2023-2024).</strong> ChatGPT’s launch in late 2022 shifted expectations. Developers began asking AI to explain code, generate boilerplate, debug errors, and plan implementations. Tools responded: Copilot Chat, Cursor’s chat panel, JetBrains AI Assistant, and others embedded conversational AI directly into the development environment. The interaction became active: developers described intent, AI produced code, developers reviewed and integrated it. This phase introduced a new failure mode: developers could now delegate larger tasks to AI, and the quality of the output became harder to verify at a glance.</p>
-<p><strong>Phase 3: Agentic coding (2024-2025).</strong> The current frontier. Agents don’t just suggest code; they execute multi-step tasks: read files, run commands, modify multiple files, execute tests, and iterate on failures. GitHub Copilot’s agent mode, Claude Code, Cursor’s Composer, and Windsurf’s Cascade operate in this space. The agent reads context, plans an approach, takes action, evaluates results, and repeats. The interaction model shifted again: the developer describes a goal, the agent works toward it with varying degrees of autonomy, and the developer reviews the result. This is where the Vibe Coding Cliff from Chapter 1 becomes acute — agents working without structured context make confident, plausible errors at scale.</p>
-<p><strong>Phase 4: Orchestrated SDLC (emerging).</strong> The leading edge of the market, where agents participate beyond the code editor — in issue triage, code review, testing, release management, and operations. GitHub’s Coding Agent assigns issues to an AI that works in a cloud environment, submits pull requests, and responds to review feedback. Anthropic’s Claude Code can read issues and produce PRs autonomously. Several startups (Devin, Factory, Codegen) are building similar workflows. No organization has publicly demonstrated a fully automated end-to-end SDLC at production scale, but the components exist for the first multi-phase automations. This is where governance becomes non-optional.</p>
-<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<section id="audience-and-how-to-read-this-chapter" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="audience-and-how-to-read-this-chapter"><span class="header-section-number">17.2</span> Audience and how to read this chapter</h2>
+<p>This chapter is written for software architects, technical leads, and senior engineers responsible for agentic-system design at scale. It assumes you have worked through the agentic runtime machine (Ch09), the load lifecycle (Ch12), the deterministic / probabilistic seam (Ch14), and multi-agent orchestration (Ch15). It is not a tutorial. It is a catalogue.</p>
+<p>Read the layered model in §1 first. After that, the per-layer catalogues (§3–§6) are independently scannable. The decision matrix in §7 indexes the catalogue by problem; §8 names what this chapter deliberately leaves out.</p>
+</section>
+<section id="sec-layered-model" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="sec-layered-model"><span class="header-section-number">17.3</span> 1. The layered model of an agentic runtime</h2>
+<p>An agentic runtime decomposes into four layers. Each layer has its own pattern language; each layer’s patterns assume the layer below as substrate. Confusing layers — for instance, debating dispatch topology when the real problem is at the composition layer — is the most common architectural error in agentic design.</p>
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-ai-evolution" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ai-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-ai-evolution">flowchart LR
-    P1["&lt;b&gt;Phase 1&lt;/b&gt;&lt;br/&gt;Code Completion&lt;br/&gt;&lt;em&gt;2021–2023&lt;/em&gt;&lt;br/&gt;Passive suggestion"]
-    P2["&lt;b&gt;Phase 2&lt;/b&gt;&lt;br/&gt;Conversational&lt;br/&gt;&lt;em&gt;2023–2024&lt;/em&gt;&lt;br/&gt;Active Q&amp;A"]
-    P3["&lt;b&gt;Phase 3&lt;/b&gt;&lt;br/&gt;Agentic Coding&lt;br/&gt;&lt;em&gt;2024–2025&lt;/em&gt;&lt;br/&gt;Goal-directed execution"]
-    P4["&lt;b&gt;Phase 4&lt;/b&gt;&lt;br/&gt;Orchestrated SDLC&lt;br/&gt;&lt;em&gt;Emerging&lt;/em&gt;&lt;br/&gt;Autonomous lifecycle"]
-
-    P1 --&gt;|"risk ↑"| P2 --&gt;|"risk ↑"| P3 --&gt;|"risk ↑"| P4
-
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TB
+    subgraph EXEC["Execution layer"]
+        direction LR
+        TH[Threading] --- PER[Persistence] --- TRG[Triggers]
+    end
+    subgraph COMP["Composition layer"]
+        direction LR
+        PR[Primitives] --- SK[Skills] --- DEP[Dependencies]
+    end
+    subgraph ASM["Assembly layer"]
+        direction LR
+        FS[Agent source code] --- BIND[Binding modes]
+    end
+    subgraph FND["Foundation layer"]
+        direction LR
+        MOD[Model] --- HAR[Harness]
+    end
+    EXEC --&gt; COMP --&gt; ASM --&gt; FND
 </pre>
 </div>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ai-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.1: Four phases of AI-assisted development evolution
-</figcaption>
-</figure>
+<p></p></figure><p></p>
 </div>
 </div>
 </div>
-<blockquote class="blockquote">
-<p><em>Each phase increases both capability and risk. Most organisations evaluate Phase 1–2 while their developers already operate at Phase 3.</em></p>
-</blockquote>
-<div data-tbl-colwidths="[15,25,25,20,15]">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 15%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 20%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Phase</th>
-<th>Interaction model</th>
-<th>Primary value</th>
-<th>Key risk</th>
-<th>Maturity</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Code completion</td>
-<td>Passive suggestion</td>
-<td>Speed on known tasks</td>
-<td>Low — easy to reject</td>
-<td>Available now</td>
-</tr>
-<tr class="even">
-<td>Conversational assistance</td>
-<td>Active Q&amp;A</td>
-<td>Exploration, boilerplate</td>
-<td>Medium — harder to verify</td>
-<td>Available now</td>
-</tr>
-<tr class="odd">
-<td>Agentic coding</td>
-<td>Goal-directed execution</td>
-<td>Multi-file, multi-step tasks</td>
-<td>High — confident errors at scale</td>
-<td>Available now</td>
-</tr>
-<tr class="even">
-<td>Orchestrated SDLC</td>
-<td>Autonomous lifecycle participation</td>
-<td>Cross-phase automation</td>
-<td>Very high — governance gap</td>
-<td>Emerging</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Most organizations are evaluating Phase 1-2 tools while their developers are already using Phase 3. This gap between what leadership is evaluating and what teams are actually doing is itself a risk.</p>
-<hr>
+<p><strong>Foundation layer.</strong> The model and the harness that hosts it. The model is probabilistic; the harness is deterministic. The seam between them is non-negotiable (Ch14, <a href="ch14-deterministic-probabilistic-boundary.html" class="quarto-xref"><span>Chapter 14</span></a>). Patterns at this layer are mostly out of the architect’s control — they are vendor decisions — but the <em>boundary</em> the foundation layer offers (tool calls, file reads, capability tokens) is what every higher layer depends on.</p>
+<p><strong>Assembly layer.</strong> How content reaches the model. The agent source code convention (AGENTS.md, SKILL.md, instruction files) and the binding modes the harness applies (eager preload, lazy on-demand, dispatcher-mediated) determine <em>what arrives in the context window</em> before any reasoning starts. This is where the load lifecycle (Ch12, <a href="ch12-the-load-lifecycle.html" class="quarto-xref"><span>Chapter 12</span></a>) lives.</p>
+<p><strong>Composition layer.</strong> How content is structured for reuse. Primitives, skills, bundles, dependency edges, override mechanisms. This is where most of the architectural work happens — and where the GoF catalogue maps cleanest, because composition has been a solved problem in software since the 1990s. Composition patterns are detailed in Ch19 (<a href="ch19-primitives-as-code.html" class="quarto-xref"><span>Chapter 19</span></a>).</p>
+<p><strong>Execution layer.</strong> How work is dispatched, parallelized, persisted across boundaries, and re-entered on a trigger. Threading topology, plan persistence, client integration. Multi-agent orchestration (Ch15, <a href="ch15-multi-agent-orchestration.html" class="quarto-xref"><span>Chapter 15</span></a>) lives here. Most of the patterns architects argue about in public — Panel, Wave, Scatter-Gather — sit in this layer.</p>
 </section>
-<section id="coding-tools-vs.-software-delivery-platforms" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="coding-tools-vs.-software-delivery-platforms"><span class="header-section-number">2.3</span> Coding Tools vs.&nbsp;Software Delivery Platforms</h2>
-<p>The market has split into two categories that require different evaluation criteria, different procurement processes, and different governance models. Conflating them leads to purchasing decisions that satisfy neither developers nor leadership.</p>
-<p><strong>AI coding tools</strong> optimize the inner loop — the edit-build-test cycle a developer performs dozens of times per day. They live in the editor. Their value is speed and quality at the point of code production. Cursor, Claude Code, Windsurf, GitHub Copilot (in-editor), and Amazon Q Developer compete here. Developers choose these tools. Adoption is grassroots, driven by individual developers.</p>
-<p><strong>Software delivery platforms</strong> optimize the full lifecycle — from ideation through production operations. They span source control, CI/CD, security scanning, code review, deployment, and monitoring. They provide governance: who did what, when, with what authority, and with what audit trail. GitHub, GitLab, Azure DevOps, and Atlassian compete here. Organizations choose these platforms. It’s a leadership decision.</p>
-<p>The strategic tension: AI coding tools are expanding into platform territory (Cursor’s Bugbot for code review, Claude Code’s issue-to-PR workflow), and platforms are absorbing AI coding capabilities (GitHub Copilot spanning code to review to agents). The previously clean boundary between “tool” and “platform” is blurring.</p>
-<p>For evaluation purposes, the distinction still matters:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Criterion</th>
-<th>AI coding tool</th>
-<th>Software delivery platform</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Who decides</td>
-<td>Individual developer</td>
-<td>Engineering leadership</td>
-</tr>
-<tr class="even">
-<td>Primary value</td>
-<td>Coding speed and quality</td>
-<td>Lifecycle governance and automation</td>
-</tr>
-<tr class="odd">
-<td>Evaluation scope</td>
-<td>Editor experience, model quality</td>
-<td>Security, compliance, audit trails</td>
-</tr>
-<tr class="even">
-<td>Risk if ungoverned</td>
-<td>Inconsistent code quality</td>
-<td>Shadow IT, compliance exposure</td>
-</tr>
-<tr class="odd">
-<td>Switching cost</td>
-<td>Low (editor plugin)</td>
-<td>High (CI/CD, permissions, history)</td>
-</tr>
-<tr class="even">
-<td>SDLC coverage</td>
-<td>Code (+ expanding)</td>
-<td>Ideate through Operate</td>
-</tr>
-</tbody>
-</table>
-<p>The mistake most organizations make: evaluating platform decisions with coding-tool criteria (“which one has the best autocomplete?”), or evaluating coding-tool decisions with platform criteria (“does it integrate with our SSO?”). Both questions are valid. They apply to different purchasing decisions.</p>
-<hr>
-</section>
-<section id="the-landscape-today-capabilities-that-actually-matter" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="the-landscape-today-capabilities-that-actually-matter"><span class="header-section-number">2.4</span> The Landscape Today: Capabilities That Actually Matter</h2>
-<p>A feature comparison grid is the most natural thing to produce and the least useful thing to read. Every vendor has one. They all look favorable to the vendor that made them. The table below attempts something different: an honest snapshot of where each tool actually is, what it can’t do by design, and, critically, which capabilities you should care about first.</p>
-<p>The maturity tiers: <strong>Now</strong> = available and shipping in production. <strong>Emerging</strong> = available but limited, or in public preview. <strong>Directional</strong> = announced, demonstrated in research, or on a public roadmap but not yet usable at production scale. <strong>N/A</strong> = not applicable — the tool’s architecture doesn’t target this capability, and that’s a design choice, not a gap.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<div class="landscape">
-<div data-tbl-colwidths="[20,12,12,12,12,10,12,10]">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 20%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 10%">
-<col style="width: 12%">
-<col style="width: 10%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Capability</th>
-<th>GitHub Copilot</th>
-<th>Cursor</th>
-<th>Claude Code</th>
-<th>Windsurf</th>
-<th>OpenCode</th>
-<th>Amazon Q Developer</th>
-<th>JetBrains AI</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Code completion</td>
-<td>Now</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>Now</td>
-</tr>
-<tr class="even">
-<td>Chat / explain</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-</tr>
-<tr class="odd">
-<td>Multi-file editing</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Emerging</td>
-<td>Emerging</td>
-</tr>
-<tr class="even">
-<td>Agent mode (in-editor)</td>
-<td>Now</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Emerging</td>
-<td>Emerging</td>
-</tr>
-<tr class="odd">
-<td>Terminal / CLI agent</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>N/A</td>
-</tr>
-<tr class="even">
-<td>Autonomous PR creation</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Now</td>
-<td>Directional</td>
-<td>Directional</td>
-<td>Directional</td>
-<td>N/A</td>
-</tr>
-<tr class="odd">
-<td>Code review agent</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Directional</td>
-<td>Directional</td>
-<td>N/A</td>
-<td>Emerging</td>
-<td>Directional</td>
-</tr>
-<tr class="even">
-<td>Multi-model routing</td>
-<td>Now</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Now</td>
-</tr>
-<tr class="odd">
-<td>Custom instructions / rules</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Emerging</td>
-<td>Emerging</td>
-</tr>
-<tr class="even">
-<td>Enterprise governance</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Emerging</td>
-<td>Emerging</td>
-<td>N/A</td>
-<td>Now</td>
-<td>Emerging</td>
-</tr>
-<tr class="odd">
-<td>Full SDLC platform</td>
-<td>Now</td>
-<td>Directional</td>
-<td>N/A</td>
-<td>N/A</td>
-<td>N/A</td>
-<td>Emerging</td>
-<td>N/A</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p><strong>Where to look first.</strong> Not every row matters equally. If you’re a CTO deciding where to invest evaluation time, three capabilities separate “we have a coding tool” from “we have a strategy”:</p>
-<ol type="1">
-<li><strong>Custom instructions / rules.</strong> This is the mechanism that addresses the Vibe Coding Cliff. Without it, every agent interaction starts from zero context. With it, your architectural decisions, conventions, and constraints are loaded automatically. This is the row that determines whether AI tools get more reliable over time or stay permanently mediocre. All major tools support this now, but the implementations differ: GitHub Copilot uses custom instructions and <code>.github/copilot-instructions.md</code>, Cursor uses <code>.cursor/rules</code>, Claude Code uses <code>CLAUDE.md</code>, and OpenCode uses <code>.opencode/instructions.md</code>. The methodology in this book is portable across all of them. The pattern is more uniform than the file paths suggest: every harness treats the repository’s filesystem as the loader for what the agent sees on each invocation — Part III (For Practitioners) calls this the <em>agent source code</em> and makes the load lifecycle explicit in Chapter 12 (<a href="ch12-the-load-lifecycle.html" class="quarto-xref"><span>Chapter 12</span></a>). The file paths are vendor-specific. The mechanism is not.</li>
-<li><strong>Enterprise governance.</strong> Audit logs, SSO, data residency controls, policy enforcement. Without these, you’re flying blind on compliance. This is where coding tools and platforms diverge most sharply, and where “good enough for a developer” and “acceptable for the organization” are different conversations.</li>
-<li><strong>Autonomous PR creation and code review agents.</strong> These are the frontier capabilities that move AI from “helps me type faster” to “participates in my workflow.” They’re also where the governance gap is widest — an agent that can open a PR or approve a review needs the same trust framework you’d apply to a new hire.</li>
-</ol>
-<p>The rest of the matrix (completion, chat, multi-file editing) is table stakes. Every serious tool does it. Don’t let a vendor differentiate on capabilities that stopped being differentiators in 2024.</p>
-<p>One more thing the matrix can’t show you: <strong>architecture shapes capability.</strong> Claude Code has no code completion and no in-editor agent mode because it’s a CLI tool, not an editor plugin — that’s a design decision, not a deficiency. Cursor has no terminal agent because it’s an editor-first experience. OpenCode is a terminal-native tool like Claude Code, focused on CLI workflows with multi-model routing — it’s the newest entrant and its capability set is still expanding. JetBrains AI doesn’t do autonomous PRs because it’s focused on the IDE experience. The N/A cells matter as much as the Now cells — they tell you what each tool is <em>trying to be</em>, which tells you whether it fits your workflow.</p>
-<p>As of mid-2025, Microsoft’s tools (GitHub Copilot + GitHub platform) cover the broadest set of categories across both coding-tool and platform dimensions.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> This is a factual observation; the author works at Microsoft and discloses this. Whether breadth matters more than depth at any given capability is a decision each organization makes for itself.</p>
-<hr>
-</section>
-<section id="how-these-tools-are-priced" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="how-these-tools-are-priced"><span class="header-section-number">2.5</span> How These Tools Are Priced</h2>
-<p>Dollar figures go stale fast, so here’s the underlying pattern. AI coding tools follow three pricing models: <strong>per-seat subscription</strong> (Copilot, Cursor, Windsurf — flat monthly per developer), <strong>usage-based</strong> (API-driven tools like Claude Code — you pay for tokens consumed), and <strong>platform-bundled</strong> (AI capabilities included in a broader DevOps or cloud platform tier, as with Amazon Q and GitHub Enterprise). Enterprise tiers that add governance, SSO, and audit controls typically run 2–4× the individual price, depending on the vendor. The budget conversation that matters isn’t “what does the tool cost?” but “what does the tool cost relative to the developer time it displaces, and does the enterprise tier’s governance premium justify avoiding the shadow IT remediation cost?” Chapter 3 builds the business case for that math.</p>
-<hr>
-</section>
-<section id="two-buying-motions-one-problem" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="two-buying-motions-one-problem"><span class="header-section-number">2.6</span> Two Buying Motions, One Problem</h2>
-<p>How AI development tools enter an organization determines how governable they are.</p>
-<p><strong>Bottom-up adoption.</strong> A developer discovers Claude Code or Cursor, pays for a personal subscription (or uses a free tier), and begins using it on company code. The tool is fast. The developer gets more done. Colleagues notice. Within weeks, a team of twelve engineers may have eight people using different AI tools, none approved by IT, none covered by the company’s data processing agreements, none visible in security audit logs.</p>
-<p>This is shadow IT with a new coat of paint, and it carries the same risks: code flowing through unapproved APIs, intellectual property entering training datasets without consent, security and compliance policies circumvented not maliciously but inadvertently, because nobody told the developer that the tool’s terms of service include data retention they’d never accept for a production database.</p>
-<p><strong>Top-down mandates.</strong> Leadership selects a platform, negotiates an enterprise agreement, and rolls it out. The tools are governed, auditable, and compliant. The problem: developers may already prefer the tool they chose themselves. A top-down mandate that doesn’t match what developers actually use creates resentment, workarounds, and, in the worst case, developers continuing to use their preferred tool in parallel with the mandated one, creating the worst of both worlds: the cost of enterprise licensing and the risk of ungoverned usage.</p>
-<p><strong>The winning strategy addresses both motions simultaneously.</strong> Evaluate the tools developers are already using. Understand why they chose them. Then select a platform that satisfies the governance requirements leadership needs while providing the developer experience that drives voluntary adoption. This is harder than either approach alone, and it is the only one that works.</p>
-<p>A useful diagnostic: survey your engineering teams this week. Ask three questions: (1) Which AI coding tools are you currently using? (2) Are you using a personal or company-provided account? (3) What would you lose if the tool were removed?</p>
-<p>The answers will tell you whether you have a strategy or a gap.</p>
-<hr>
-</section>
-<section id="the-8-phase-evaluation-framework" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="the-8-phase-evaluation-framework"><span class="header-section-number">2.7</span> The 8-Phase Evaluation Framework</h2>
-<p>Most AI tool evaluations focus on the coding phase. This is like evaluating a car by testing only the engine — you learn something, but you miss everything that determines whether the thing actually gets you where you’re going. Software delivery spans eight phases. If you’re only measuring AI’s impact on one of them, you’re not evaluating — you’re guessing.</p>
-<p><strong>The insight most organizations miss: code generation is the <em>most mature</em> phase — the one with the most capable tooling and the highest adoption. Plan, Test, and Review are where the next wave of high-value AI assistance will land — and where structured context (the kind this book teaches you to build) makes the difference between useful automation and expensive noise.</strong></p>
-<div data-tbl-colwidths="[12,30,30,28]">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 30%">
-<col style="width: 30%">
-<col style="width: 28%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Phase</th>
-<th>What happens</th>
-<th>What “good” looks like</th>
-<th>Your current state</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Ideate</strong></td>
-<td>Requirements gathering, research, exploration</td>
-<td>Agents surface prior art, draft specs from rough notes, and flag conflicting requirements before a human commits to a direction.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="even">
-<td><strong>Plan</strong></td>
-<td>Architecture decisions, task breakdown, estimation</td>
-<td>Agents generate ADRs, decompose epics into sized tasks, and produce dependency graphs that a tech lead reviews rather than builds from scratch.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="odd">
-<td><strong>Code</strong></td>
-<td>Implementation, code generation, refactoring</td>
-<td>Agents produce code that respects your conventions, calls your actual APIs, and passes your linter on the first attempt — not just code that compiles.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="even">
-<td><strong>Build</strong></td>
-<td>Compilation, dependency resolution, packaging</td>
-<td>Agents diagnose build failures, suggest dependency fixes, and resolve CI errors without a human reading the full log.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="odd">
-<td><strong>Test</strong></td>
-<td>Unit tests, integration tests, test generation</td>
-<td>Agents generate tests that cover edge cases your team would write manually, achieve meaningful coverage increases, and don’t just parrot the implementation.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="even">
-<td><strong>Review</strong></td>
-<td>Code review, security review, standards checks</td>
-<td>Agents catch real issues — not style nits — and produce review comments specific enough that the author can act on them without a follow-up conversation.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="odd">
-<td><strong>Release</strong></td>
-<td>Deployment, release management, changelog</td>
-<td>Agents draft changelogs from commit history, flag breaking changes, and automate the mechanical parts of release so humans focus on go/no-go decisions.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="even">
-<td><strong>Operate</strong></td>
-<td>Monitoring, incident response, observability</td>
-<td>Agents correlate alerts to recent deployments, draft incident timelines, and suggest rollback actions — reducing mean-time-to-diagnose, not replacing on-call judgment.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>These eight phases group into three buckets that map to how leaders plan and budget:</p>
+<section id="reading-the-rosetta-stone" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="reading-the-rosetta-stone"><span class="header-section-number">17.4</span> 2. Reading the Rosetta Stone</h2>
+<p>Each catalogue entry has six fields:</p>
 <ul>
-<li><strong>Intent</strong> (Ideate + Plan): what are we building and why?</li>
-<li><strong>Build</strong> (Code + Build + Test + Review): turning intent into verified software.</li>
-<li><strong>Operate</strong> (Release + Operate): getting software to users and keeping it running.</li>
+<li><strong>Agentic name</strong> — the human-readable name used throughout this book.</li>
+<li><strong>Classical analogue</strong> — the closest GoF <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> or distributed-systems pattern, with a rigour rating: <strong>precise</strong> (the analogy is exact), <strong>partial</strong> (the analogy holds for most of the structure but a named part does not map), or <strong>weak / none</strong> (no clean classical analogue; the closest shape from distributed systems is given instead).</li>
+<li><strong>Intent</strong> — one sentence on what the pattern is for.</li>
+<li><strong>When to apply</strong> — the condition that makes this pattern the right call rather than its neighbours.</li>
+<li><strong>Consequences</strong> — the trade-off you accept by choosing this pattern.</li>
+<li><strong>Cross-references</strong> — chapters and adjacent patterns.</li>
 </ul>
-<p>Most organizations in mid-2025 have agent assistance concentrated in the Code phase, partial coverage in Test and Review, and minimal or no coverage in everything else. That’s not a failure — Code was the most tractable phase to automate, and the tools started there. But it’s incomplete, and staying there means you’re optimizing the cheapest part of the process. The highest-value gains in the next 12–18 months will come from extending agent assistance into Plan, Test, and Review — phases where the work is expensive, the feedback loops are slow, and structured context can drive reliable automation.</p>
-<p>Fill in the checkboxes for your organization. The pattern of checks tells you where you have coverage, where you have gaps, and where your next pilot should focus.</p>
-<hr>
+<p>Pattern names are drawn from this book’s prose and, where applicable, from Genesis’s agent-side codification of the same ideas.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 </section>
-<section id="inaction-is-a-decision" class="level2" data-number="2.8">
-<h2 data-number="2.8" class="anchored" data-anchor-id="inaction-is-a-decision"><span class="header-section-number">2.8</span> Inaction Is a Decision</h2>
-<p>The most dangerous position in the current market is “wait and see.” It feels like prudence. It is actually a decision — to let your developers self-select tools, to defer governance until a breach forces the conversation, and to fall behind organizations that are building the structured context that makes AI tools reliable. Here is what “wait and see” costs:</p>
-<p><strong>Talent risk.</strong> Developers increasingly expect AI tooling as a workplace standard. A 2023 GitHub-commissioned survey (Wakefield Research, n=500, U.S. enterprise developers at companies with 1,000+ employees) found that 92% report using AI coding tools at work or personally.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Offering no supported AI tools — or restricting them to basic autocomplete — makes your organization less attractive to the engineers you’re competing to hire and retain.</p>
-<p><strong>Shadow IT risk.</strong> Every month without a sanctioned tool is a month where developers find their own solutions. Each unsanctioned tool introduces data residency questions, IP exposure, and compliance gaps that compound over time. The remediation cost of unwinding six months of shadow AI usage is nontrivial.</p>
-<p><strong>Context accumulation risk.</strong> This is the least obvious and most consequential cost. The organizations investing now in structured context — documented conventions, machine-readable architecture decisions, curated instruction sets — are building a compounding asset. Their AI tools get more reliable over time. Yours, when you eventually adopt, will start from zero. The gap between “adopted in 2025” and “adopted in 2027” is not two years of tool usage — it is two years of context that the early adopter’s agents can use and yours cannot. Chapter 4 covers this in detail.</p>
-<p><strong>Competitive risk.</strong> If your competitors ship features faster because their developers can delegate routine implementation to agents while yours cannot, the productivity gap is not theoretical. It shows up in release cadence, in time-to-market, and in the quality of the problems your engineers spend their attention on.</p>
-<p>None of this is an argument for rushing. It is an argument for informed action. The decision matrix below provides a starting framework:</p>
+<section id="sec-composition-patterns" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="sec-composition-patterns"><span class="header-section-number">17.5</span> 3. Composition layer</h2>
+<p>Composition is where the GoF mapping is strongest. The agentic runtime turned out to need almost the same structural patterns as 1990s object-oriented systems, for the same reason: both are systems of named units with dependency graphs and override semantics.</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Action</th>
-<th>Timeline</th>
-<th>What it requires</th>
+<th>Agentic name</th>
+<th>Classical analogue (rigour)</th>
+<th>Intent</th>
+<th>When to apply</th>
+<th>Consequences</th>
+<th>Cross-refs</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Audit current usage</strong></td>
-<td>This week</td>
-<td>Survey engineering teams; catalog which tools are in use</td>
+<td><strong>Skill</strong></td>
+<td>Module / Facade — <em>precise</em></td>
+<td>Bundle a capability under a single named entrypoint that hides assets, dependencies, and internal structure from callers.</td>
+<td>Whenever a capability is reusable, dispatchable by description, and ships with content beyond its instruction body.</td>
+<td>The skill is the stable unit of reuse. Its description is its API; rewording it is a breaking change.</td>
+<td>Ch19 (<a href="ch19-primitives-as-code.html" class="quarto-xref"><span>Chapter 19</span></a>); Bundle, Primitive</td>
 </tr>
 <tr class="even">
-<td><strong>Evaluate coding-phase tools</strong></td>
-<td>This month</td>
-<td>Trial 2-3 options with a representative team</td>
+<td><strong>Bundle</strong></td>
+<td>Composite — <em>precise</em></td>
+<td>Treat aggregates of primitives uniformly with leaf primitives, so a skill that depends on another skill works the same as a skill that depends on a single instruction.</td>
+<td>When a primitive itself contains other primitives (a skill depending on a sub-skill, an agent containing skills).</td>
+<td>Recursive distribution; transitive closure becomes the unit of cost.</td>
+<td>Skill, Dependency</td>
 </tr>
 <tr class="odd">
-<td><strong>Establish governance baseline</strong></td>
-<td>This quarter</td>
-<td>Data residency policy, approved tool list, usage guidelines</td>
+<td><strong>Primitive</strong></td>
+<td>Strategy — <em>partial</em></td>
+<td>Make a unit of behaviour interchangeable: an agent, a skill, an instruction, a chatmode each implement the same dispatch contract.</td>
+<td>When the runtime must select among interchangeable units at load or dispatch time.</td>
+<td><em>Does not map:</em> Strategy is pure algorithm; primitives carry state and content. The behavioural-substitution part holds; the stateless part does not.</td>
+<td>Ch12 (<a href="ch12-the-load-lifecycle.html" class="quarto-xref"><span>Chapter 12</span></a>); Skill</td>
 </tr>
 <tr class="even">
-<td><strong>Pilot agentic capabilities</strong></td>
-<td>Next quarter</td>
-<td>Select one team, one workflow, measure before and after</td>
+<td><strong>Dependency</strong></td>
+<td>Decorator — <em>partial</em> / Package Reference (Maven, npm) — <em>precise</em></td>
+<td>Compose capabilities by declaring a directed edge from one module to another, resolved by the package system.</td>
+<td>When the same content is needed by 3+ consumers, evolves on its own cadence, has a different owner, or is pinning-worthy.</td>
+<td>Crosses a distribution boundary: subject to versioning, transitive closure, and conflict resolution. <em>Does not map to Decorator:</em> a dependency is not a wrapper; the “extend behaviour at runtime” framing is wrong. The Maven/npm framing is the right one.</td>
+<td>Override; Ch19</td>
 </tr>
 <tr class="odd">
-<td><strong>Extend to adjacent phases</strong></td>
-<td>6-12 months</td>
-<td>Test, Review, and Plan phase automation with structured context</td>
-</tr>
-<tr class="even">
-<td><strong>Full lifecycle strategy</strong></td>
-<td>12-18 months</td>
-<td>Platform selection, organizational context investment, governance maturity</td>
+<td><strong>Override</strong></td>
+<td>Template Method — <em>precise</em></td>
+<td>A base module defines an invariant skeleton; a consuming module replaces named slots without rewriting the skeleton.</td>
+<td>When a downstream user needs to specialize one section of an upstream primitive without forking it.</td>
+<td>The base module’s slot names become a public contract. Renaming a slot is a breaking change.</td>
+<td>Skill, Dependency</td>
 </tr>
 </tbody>
 </table>
-<p>The first two rows require no budget, no procurement, and no organizational change. They require a decision to look. That is where this starts.</p>
+<p>The Skill / Bundle / Primitive triplet is the runtime’s analogue of the Module / Composite / Strategy triplet — a 30-year-old composition vocabulary applied to a new substrate. Architects who see Skill and reach for “what is this in GoF terms?” can answer in one breath: it is a Facade over a Composite of Strategies, distributed by the harness’s package system. Override is then Template Method. Dependency is package reference, not Decorator — the “Decorator” framing in older agentic literature is a near miss.</p>
+</section>
+<section id="sec-dispatch-patterns" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="sec-dispatch-patterns"><span class="header-section-number">17.6</span> 4. Dispatch and orchestration layer</h2>
+<p>Dispatch and orchestration is where the most public pattern arguments happen, and where GoF analogies are <em>partial</em> more often than <em>precise</em>. The reason is that GoF described patterns for one-process, one-thread, in-memory object graphs. Agentic dispatch involves multiple LLM threads, durable artifacts between them, and clients firing across sessions. The closer analogues live in distributed-systems literature <a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Agentic name</th>
+<th>Classical analogue (rigour)</th>
+<th>Intent</th>
+<th>When to apply</th>
+<th>Consequences</th>
+<th>Cross-refs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Panel</strong></td>
+<td>Mediator — <em>partial</em> / Scatter-Gather <a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> — <em>precise</em></td>
+<td>Run N specialized lenses in parallel against the same artifact, then synthesize their verdicts into a single decision.</td>
+<td>When a decision benefits from ≥3 independent lenses and the lenses do not share state during evaluation.</td>
+<td>The synthesis step <em>is</em> the decision; without it, the user reads N reports instead. <em>Does not map to Chain of Responsibility:</em> there is no chain; lenses run in parallel, not in sequence.</td>
+<td>Ch15 (<a href="ch15-multi-agent-orchestration.html" class="quarto-xref"><span>Chapter 15</span></a>); Scatter-Gather</td>
+</tr>
+<tr class="even">
+<td><strong>Wave</strong></td>
+<td>Pipes-and-Filters — <em>precise</em> / Pipeline (CI)</td>
+<td>Execute a topologically-sorted DAG of tasks one wave at a time, gating between waves.</td>
+<td>When the task DAG is non-trivial and drift between waves is expensive enough to want a localizable failure.</td>
+<td>Each wave’s output gates the next wave’s assumptions. A failed gate replans from the failed wave, not from the start.</td>
+<td>Ch15; Scatter-Gather, Plan-Write-Then-Reload</td>
+</tr>
+<tr class="odd">
+<td><strong>Scatter-Gather</strong></td>
+<td>Scatter-Gather <a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> — <em>precise</em> (origin term)</td>
+<td>Decompose a task into independent parallel sub-tasks; each runs in its own thread; results merge at the gather step.</td>
+<td>When sub-tasks are genuinely independent and merge cleanly.</td>
+<td>Concurrency cost; one writer per sink (parallel + shared state is almost always a smell).</td>
+<td>Ch15; Panel, Wave</td>
+</tr>
+<tr class="even">
+<td><strong>Threading</strong></td>
+<td>Command + Memento — <em>partial</em></td>
+<td>Dispatch a unit of work as a serializable invocation (Command) into a fresh context window whose state is captured by a durable plan artifact (Memento).</td>
+<td>When a sub-task needs cold context — independent attention budget, no inheritance of the parent’s reasoning trace.</td>
+<td>Cold context costs a re-load; serialization forces the architect to make the hand-off packet explicit. <em>Does not map cleanly to either GoF pattern alone:</em> Command captures the invocation, Memento captures the cross-thread state, neither covers attention isolation.</td>
+<td>Ch12; Plan-Write-Then-Reload</td>
+</tr>
+<tr class="odd">
+<td><strong>Subagent Spawn</strong></td>
+<td>Active Object <a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> — <em>precise</em></td>
+<td>Each invocation creates an independent thread of control with its own message queue and lifecycle.</td>
+<td>When the parent must continue while sub-work runs, or when the sub-work must be isolated from the parent’s context window.</td>
+<td>Spawn cost; cross-thread state must travel via durable artifacts, not shared memory.</td>
+<td>Ch15; Threading</td>
+</tr>
+</tbody>
+</table>
+<p>A note on Panel. Earlier drafts of this chapter (and parts of the Genesis catalogue) named Panel as “Chain of Responsibility”. That mapping is wrong. Chain of Responsibility passes a request along a sequence of handlers until one accepts it; Panel runs handlers in parallel and synthesizes. The right GoF reach is Mediator (the synthesizer mediates between lenses), and the right distributed-systems reach is Scatter-Gather. Architects should reject the Chain of Responsibility framing on sight: a Panel without a synthesizer is not a chain — it is the <strong>Panel-without-synthesis</strong> anti-pattern: parallel lenses with nothing to arbitrate dissent collapse to whichever lens speaks loudest.</p>
+<p>A note on Wave. Wave is Pipes-and-Filters <a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> applied to LLM stages, with the addition that each filter’s output is <em>durable</em> (a plan artifact) and each gate is a <em>deterministic</em> check, not a model call. The “filter” metaphor undersells the durability requirement; in agentic contexts, Wave only works because each stage’s output can be re-read in a fresh thread.</p>
+<p>A note on the agent-side codification of this catalogue. The Rosetta Stone names exist because the field’s pattern shapes have stabilised; I packaged the same shapes as agent-loadable assets so a fresh agent context recognises them on a new task. The Genesis bundle Part III pointed at carries them in <a href="https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/assets/architectural-patterns.md"><code>skills/genesis/assets/architectural-patterns.md</code></a>: <strong>A1 PANEL</strong> (the agent-side code for the corrected fan-out this chapter names a Panel), classical analog <em>Microservices + API Gateway</em>; and <strong>A2 PIPELINE</strong> (Genesis’s code for what this chapter names <strong>Wave</strong>), classical analog <em>Pipes-and-Filters</em>, whose canonical failure is STAGE COLLAPSE — the inherited anti-pattern — verbatim: <em>“I will plan as I go”. Planning and implementation in the same turn. The plan ends up post-hoc and un-falsifiable.</em> Restraint is part of the discipline, not a separate idea. The verdict-emit example in <a href="https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/examples/05-pr-review-verdict.md"><code>skills/genesis/examples/05-pr-review-verdict.md</code></a> records <strong>A8 ALIGNMENT LOOP — CONSIDERED, REJECTED</strong> with the WHEN-clause cited in line: <em>“The first attempt is unlikely to satisfy the goal in one pass (creative work, positioning, complex synthesis). Goal drift is a real risk over several rounds.”</em> A binary PR verdict against a fixed rubric is one-shot per event; the bounded-iteration scaffolding A8 carries would be premature structure. Reaching for a pattern is one half of design; declining a near-miss with the WHEN-clause cited is the other.</p>
+</section>
+<section id="sec-boundary-patterns" class="level2" data-number="17.7">
+<h2 data-number="17.7" class="anchored" data-anchor-id="sec-boundary-patterns"><span class="header-section-number">17.7</span> 5. Boundary layer</h2>
+<p>The boundary layer is where probabilistic outputs meet deterministic substrate. It is the layer where the seam (Ch14, <a href="ch14-deterministic-probabilistic-boundary.html" class="quarto-xref"><span>Chapter 14</span></a>) is enforced. GoF analogues are partial here because GoF assumed in-process objects with trustworthy interfaces; agentic boundaries assume an <em>adversarial</em> interior — the model can produce well-formed nonsense.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Agentic name</th>
+<th>Classical analogue (rigour)</th>
+<th>Intent</th>
+<th>When to apply</th>
+<th>Consequences</th>
+<th>Cross-refs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Supervised Execution</strong></td>
+<td>Proxy + Guard — <em>partial</em> / Capability Security <a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> — <em>precise</em> (strong form)</td>
+<td>Plan in the model; execute in the substrate; verify with another deterministic check. The model never holds the write capability for irreversible effects.</td>
+<td>When the work names a system of record (repo, db, cluster) and a consequential action against it.</td>
+<td>Strong form (substrate-enforced) requires a client that exposes capability-based security; weak form (prose-enforced) is a fallback. The strong form is <em>not</em> a Proxy — the model genuinely cannot externalize, not just mediated by one.</td>
+<td>Ch14; Audit Trail</td>
+</tr>
+<tr class="even">
+<td><strong>Schema-Checked Transformer</strong></td>
+<td>Adapter — <em>precise</em></td>
+<td>Convert the model’s freeform output into a structured form by gating it through a schema check at the boundary.</td>
+<td>At every model-to-substrate hand-off where the substrate expects typed input.</td>
+<td>Schema becomes a public contract of the boundary. A schema mismatch at the gate is recoverable; one past the gate is a runtime fault.</td>
+<td>Ch14; Supervised Execution</td>
+</tr>
+<tr class="odd">
+<td><strong>Plan-Write-Then-Reload</strong></td>
+<td>Memento — <em>weak</em> / Snapshot <a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> — <em>closer</em></td>
+<td>Persist the plan as a durable artifact, then deliberately reload it in a fresh context to defeat attention drift on long sessions.</td>
+<td>When work is multi-step, multi-file, or spawn-bound and goal drift is a real risk.</td>
+<td>The plan artifact becomes the source of truth; the model’s in-context recall is treated as untrusted. <em>No clean GoF analogue:</em> Memento captures state for restore, but here the restore is <em>forced</em> on a thread that already has state, specifically to overwrite attention.</td>
+<td>Ch12; Threading, Audit Trail</td>
+</tr>
+<tr class="even">
+<td><strong>Bounded-Scope Grounding</strong></td>
+<td>Bounded Context <a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> — <em>precise</em> (DDD origin, not GoF)</td>
+<td>Declare what an external corpus is authoritative <em>for</em> and refuse to import its framing into questions it does not own.</td>
+<td>Whenever an external grounding source (a spec, a vendor catalogue, a competitor’s docs) is loaded into a session.</td>
+<td>Authority overreach is the failure mode: the corpus’s vocabulary contaminates judgement on questions outside its scope. <em>No GoF analogue:</em> this is a domain-modelling idea, not an Object-Oriented Programming (OO) structural one.</td>
+<td>Ch14; Audit Trail</td>
+</tr>
+</tbody>
+</table>
+<p>The boundary layer is the layer where weak-form discipline is most often dressed as strong-form architecture. Supervised Execution in particular has a <em>weak form</em> (the agent is asked to verify before declaring done) and a <em>strong form</em> (the substrate denies the write capability and the agent cannot externalize without going through a deterministic post-stage). Picking the weak form on a substrate that offers the strong form is leaving a substrate guarantee on the table. Ch18’s <em>Skipping Checkpoints</em> names the operational version of this drift; Ch14 develops the seam in depth.</p>
+</section>
+<section id="sec-recovery-patterns" class="level2" data-number="17.8">
+<h2 data-number="17.8" class="anchored" data-anchor-id="sec-recovery-patterns"><span class="header-section-number">17.8</span> 6. Recovery and observability layer</h2>
+<p>The recovery layer has the <em>fewest</em> GoF analogues of any layer. GoF described patterns for object graphs that lived and died inside one process. Agentic systems must explain themselves to operators <em>after</em> the session ends, often <em>after</em> the process that produced an artifact has exited and cannot be re-entered. The right reach for this layer is consistently distributed-systems literature.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Agentic name</th>
+<th>Classical analogue (rigour)</th>
+<th>Intent</th>
+<th>When to apply</th>
+<th>Consequences</th>
+<th>Cross-refs</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Agent Stack Trace</strong></td>
+<td>Distributed Tracing <a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> — <em>precise</em> / no GoF analogue</td>
+<td>Make the chain of dispatched skills, spawned threads, and tool calls reconstructible after the fact, the way a stack trace reconstructs a synchronous call.</td>
+<td>Whenever an agent run produces an artifact whose provenance an operator may need to audit or replay.</td>
+<td>Tracing has a cost: every dispatch and every spawn must emit a trace event. The cost is paid up-front; the alternative is undebuggable after the fact.</td>
+<td>Audit Trail</td>
+</tr>
+<tr class="even">
+<td><strong>Lockfile</strong></td>
+<td>Snapshot <a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> — <em>precise</em> / Memento <a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> — <em>partial</em></td>
+<td>Capture the resolved version of every transitive dependency at install time so the runtime closure is reproducible.</td>
+<td>Whenever a module declares external dependencies whose drift would silently change behaviour.</td>
+<td>The lockfile is a public artifact; conflicts between consumers’ lockfiles surface at install time, not at runtime. <em>Memento maps partially:</em> a lockfile is a memento of the dependency graph, but the “restore via the originator” mechanic does not apply — the package manager restores it.</td>
+<td>Ch19; Audit Trail</td>
+</tr>
+<tr class="odd">
+<td><strong>Audit Trail</strong></td>
+<td>Event Sourcing <a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> — <em>precise</em></td>
+<td>Record every consequential decision the agent made and every consequential effect it produced as an immutable, append-only sequence.</td>
+<td>Whenever the work is consequential enough that an auditor — security, compliance, manager, or future maintainer — must reconstruct what fired, what ran, and what was written.</td>
+<td>Storage cost; query infrastructure for the trail; discipline to keep the trail truly append-only. The trail must be on a surface the agent cannot rewrite.</td>
+<td>Ch15; Supervised Execution, Agent Stack Trace</td>
+</tr>
+</tbody>
+</table>
+<p>These three patterns travel together. A runtime that has an Audit Trail without an Agent Stack Trace can tell you <em>what</em> happened but not <em>why</em>. A Lockfile without an Audit Trail can reproduce the dependency closure but not the decisions that produced the artifact under it. Operators of long-lived agentic systems should plan to install all three on day one; retrofitting them after the first incident is an order of magnitude more expensive.</p>
+</section>
+<section id="sec-decision-matrix" class="level2" data-number="17.9">
+<h2 data-number="17.9" class="anchored" data-anchor-id="sec-decision-matrix"><span class="header-section-number">17.9</span> 7. Per-layer decision matrix</h2>
+<p>The catalogue tells you what patterns exist. The decision matrix tells you which one to reach for given a problem and which trade-off you accept by reaching for it. This table is meant to be cross-referenced from design reviews; the trade-off column is the load-bearing field.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>When you have…</th>
+<th>Reach for</th>
+<th>Trade-off you accept</th>
+<th>Failure mode if you skip</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Composition</td>
+<td>Same content needed in 3+ consumers</td>
+<td><strong>Dependency</strong></td>
+<td>Distribution boundary; versioning; transitive closure</td>
+<td>Duplicated leaf; drift between copies</td>
+</tr>
+<tr class="even">
+<td>Composition</td>
+<td>One module needs to specialize one section of another</td>
+<td><strong>Override</strong> (Template Method)</td>
+<td>Slot names become a public contract</td>
+<td>Forking the upstream module</td>
+</tr>
+<tr class="odd">
+<td>Composition</td>
+<td>A capability ships with assets and a description</td>
+<td><strong>Skill</strong> (Module + Facade)</td>
+<td>Description is the API; rewording is breaking</td>
+<td>Asset leakage into the consumer’s context</td>
+</tr>
+<tr class="even">
+<td>Dispatch</td>
+<td>A decision needs ≥3 independent lenses</td>
+<td><strong>Panel</strong></td>
+<td>Synthesis cost; one extra orchestration thread</td>
+<td>Single-lens bias; missed dissent</td>
+</tr>
+<tr class="odd">
+<td>Dispatch</td>
+<td>Work decomposes into ordered, gateable stages</td>
+<td><strong>Wave</strong></td>
+<td>Each stage’s output must be durable; gates must be deterministic</td>
+<td>Stage collapse (planning and implementing in one turn)</td>
+</tr>
+<tr class="even">
+<td>Dispatch</td>
+<td>Sub-tasks are independent and parallel-safe</td>
+<td><strong>Scatter-Gather</strong></td>
+<td>One writer per sink; concurrency budget</td>
+<td>Shared-state interlock; serialized fan-out</td>
+</tr>
+<tr class="odd">
+<td>Dispatch</td>
+<td>A sub-task needs cold context</td>
+<td><strong>Threading</strong> + <strong>Subagent Spawn</strong></td>
+<td>Re-load cost; explicit hand-off packet</td>
+<td>Attention contamination from parent</td>
+</tr>
+<tr class="even">
+<td>Boundary</td>
+<td>A consequential action against a system of record</td>
+<td><strong>Supervised Execution</strong> (strong form)</td>
+<td>Client lock-in; capability-based security wiring</td>
+<td>Plan-and-pray; LLM-asserted side effects</td>
+</tr>
+<tr class="odd">
+<td>Boundary</td>
+<td>Freeform model output must enter typed substrate</td>
+<td><strong>Schema-Checked Transformer</strong></td>
+<td>Schema becomes a public contract</td>
+<td>Type errors past the gate; runtime faults</td>
+</tr>
+<tr class="even">
+<td>Boundary</td>
+<td>Long-session goal drift</td>
+<td><strong>Plan-Write-Then-Reload</strong></td>
+<td>Plan artifact must be re-readable in a fresh thread</td>
+<td>Drift compounds invisibly across turns</td>
+</tr>
+<tr class="odd">
+<td>Boundary</td>
+<td>External corpus loaded as grounding</td>
+<td><strong>Bounded-Scope Grounding</strong></td>
+<td>Must declare what the corpus owns</td>
+<td>Authority overreach; vocabulary contamination</td>
+</tr>
+<tr class="even">
+<td>Recovery</td>
+<td>Multi-skill multi-thread runs whose provenance matters</td>
+<td><strong>Agent Stack Trace</strong></td>
+<td>Tracing emission cost on every dispatch</td>
+<td>Undebuggable after the fact</td>
+</tr>
+<tr class="odd">
+<td>Recovery</td>
+<td>External dependencies whose drift changes behaviour</td>
+<td><strong>Lockfile</strong></td>
+<td>Lockfile becomes a public artifact</td>
+<td>Non-reproducible runtime closure</td>
+</tr>
+<tr class="even">
+<td>Recovery</td>
+<td>Consequential effects an auditor must reconstruct</td>
+<td><strong>Audit Trail</strong></td>
+<td>Storage + query infrastructure; append-only discipline</td>
+<td>Implicit-trust outer loop; clandestine bot</td>
+</tr>
+</tbody>
+</table>
+<p>Reviewer rule: a design that names a pattern from column three without naming the trade-off in column four is structurally incomplete. The trade-off is what makes the choice deliberate rather than accidental.</p>
+</section>
+<section id="sec-out-of-scope" class="level2" data-number="17.10">
+<h2 data-number="17.10" class="anchored" data-anchor-id="sec-out-of-scope"><span class="header-section-number">17.10</span> 8. What this chapter intentionally does not catalogue</h2>
+<p>The catalogue in this chapter is a translation table for patterns that have <em>converged</em> — patterns that are stable enough to name and useful enough to reach for. Three categories are deliberately out of scope.</p>
+<p><strong>Harness-specific patterns.</strong> Patterns whose shape depends on a single vendor’s runtime — for instance, the exact MCP-gateway topology of Claude Code’s container model, or the precise <code>safe-outputs:</code> schema of GitHub Agentic Workflows. These belong in per-harness adapter documentation, not in a Rosetta Stone. Genesis’s <code>runtime-affordances/per-harness/</code> directory is the right home for them; this chapter cites the substrate concept and leaves the binding to the adapter.</p>
+<p><strong>Patterns whose useful lifetime is shorter than this book’s.</strong> Prompt-injection countermeasures of the day (delimiter tricks, instruction sandwiches, role-tag hardening); jailbreak-prompt taxonomies; vendor-specific tool-use schemas. These move quarter by quarter. Cataloguing them here would date the chapter within a release cycle. The seam (Ch14) names the <em>durable</em> version of these concerns — capability-based security, schema-checked transformers, bounded-scope grounding — without binding to today’s specific exploits.</p>
+<p><strong>Patterns the field has not yet converged on.</strong> Multi-agent negotiation protocols beyond simple Panel/Wave shapes; agent-to-agent message formats; cross-organization agent identity. There is real work happening in each of these areas, but no convergence yet on a name and shape worth standing behind. When convergence happens, a future revision of this chapter is the right place to add them. The premature path — naming a pattern before the field agrees on its shape — produces a catalogue of dead names readers must work around.</p>
+<p>The cost of leaving these out is that this chapter is shorter than a maximalist catalogue would be. The benefit is that every entry pays its rent: a name a reader can use in a design review next week and still recognize in five years. That is the bar for inclusion.</p>
 <hr>
-<p>The market is moving. Your developers are moving with it. The question this chapter should have settled is not <em>what</em> to buy — that requires the business case in Chapter 3 and the reference architecture in Chapter 4. The question is whether you’re making deliberate decisions about a shift that is already happening inside your organization, or whether you’re discovering it after the fact.</p>
-<p>Chapter 3 builds the honest business case: what AI-assisted development actually costs, what it actually delivers, and how to measure value without inflating the numbers.</p>
+</section>
+<section id="references" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list" style="display: none">
+
+</div>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Third-party analyses (e.g., Sacra, 2024) estimated Cursor’s ARR at $100M+ by early 2025, citing publicly observable hiring, usage, and fundraising signals. Anysphere (Cursor’s parent company) has not confirmed a specific revenue figure. Treat these estimates as directional, not authoritative.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Microsoft reported GitHub Copilot metrics in its FY2024 and FY2025 quarterly earnings. See Microsoft Investor Relations quarterly earnings transcripts at <a href="https://www.microsoft.com/en-us/investor">microsoft.com/en-us/investor</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Ratings reflect the author’s assessment as of early 2025, based on official vendor documentation and hands-on evaluation. Capabilities evolve rapidly; consult vendor documentation for current status. Sources: <a href="https://docs.github.com/en/copilot/about-github-copilot/github-copilot-features">GitHub Copilot features</a>, <a href="https://www.cursor.com/features">Cursor features</a>, <a href="https://aws.amazon.com/q/developer/">Amazon Q Developer</a>, <a href="https://codeium.com/windsurf">Windsurf</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Landscape snapshot as of mid-2025. The competitive landscape evolves quarterly; verify current capabilities at each vendor’s site before making tool decisions.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>GitHub, “Survey Reveals AI’s Impact on the Developer Experience,” June 2023. Survey conducted by Wakefield Research among 500 U.S.-based developers at companies with 1,000+ employees. See <a href="https://github.blog/news-insights/research/survey-reveals-ais-impact-on-the-developer-experience/">github.blog</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides. <em>Design Patterns: Elements of Reusable Object-Oriented Software.</em> Addison-Wesley, 1994.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Gregor Hohpe and Bobby Woolf. <em>Enterprise Integration Patterns.</em> Addison-Wesley, 2003. Source for Scatter-Gather and the EIP family generally.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Martin Kleppmann. <em>Designing Data-Intensive Applications.</em> O’Reilly, 2017. Source for Snapshot semantics and the durability discussion behind Lockfile and Plan-Write-Then-Reload.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides. <em>Design Patterns: Elements of Reusable Object-Oriented Software.</em> Addison-Wesley, 1994.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Where pattern names in this chapter overlap with Genesis’s agent-side codification (Tier-2 design patterns and Tier-3 architectural patterns in the <code>danielmeppiel/genesis</code> repository), the human-readable name appears in the table; Genesis’s internal codes (used by the agent’s dispatch logic) are not load-bearing in this chapter. Genesis is one source of pattern naming the author has drawn from; the analogies to GoF and to distributed-systems literature are this book’s contribution.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Gregor Hohpe and Bobby Woolf. <em>Enterprise Integration Patterns.</em> Addison-Wesley, 2003. Source for Scatter-Gather and the EIP family generally.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>Gregor Hohpe and Bobby Woolf. <em>Enterprise Integration Patterns.</em> Addison-Wesley, 2003. Source for Scatter-Gather and the EIP family generally.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Gregor Hohpe and Bobby Woolf. <em>Enterprise Integration Patterns.</em> Addison-Wesley, 2003. Source for Scatter-Gather and the EIP family generally.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Frank Buschmann et al.&nbsp;<em>Pattern-Oriented Software Architecture, Vol. 1.</em> Wiley, 1996. Source for Active Object, used here for Subagent Spawn.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>David L. Parnas. “On the Criteria to Be Used in Decomposing Systems into Modules.” <em>Communications of the ACM</em>, 15(12), 1972. The original Pipes-and-Filters decomposition argument; cited here as the durable ancestor of Wave.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>Mark S. Miller. <em>Robust Composition: Towards a Unified Approach to Access Control and Concurrency Control.</em> PhD thesis, Johns Hopkins, 2006. Capability security as the precise frame for strong-form Supervised Execution.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>Martin Kleppmann. <em>Designing Data-Intensive Applications.</em> O’Reilly, 2017. Source for Snapshot semantics and the durability discussion behind Lockfile and Plan-Write-Then-Reload.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Eric Evans. <em>Domain-Driven Design.</em> Addison-Wesley, 2003. Source for Bounded Context, the right frame for Bounded-Scope Grounding.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Benjamin H. Sigelman et al.&nbsp;“Dapper, a Large-Scale Distributed Systems Tracing Infrastructure.” Google Technical Report, 2010. The canonical reference for distributed tracing; the right shape for Agent Stack Trace.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>Martin Kleppmann. <em>Designing Data-Intensive Applications.</em> O’Reilly, 2017. Source for Snapshot semantics and the durability discussion behind Lockfile and Plan-Write-Then-Reload.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides. <em>Design Patterns: Elements of Reusable Object-Oriented Software.</em> Addison-Wesley, 1994.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>Martin Fowler. “Event Sourcing.” martinfowler.com, 2005. The canonical write-up of the pattern that maps to Audit Trail.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1506,13 +1515,13 @@ Figure&nbsp;2.1: Four phases of AI-assisted development evolution
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="pagination-link" aria-label="The Agentic SDLC Thesis">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span>
+      <a href="../handbook/ch16-the-execution-meta-process.html" class="pagination-link" aria-label="The Execution Meta-Process">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../handbook/ch03-the-business-case.html" class="pagination-link" aria-label="The Business Case">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The Business Case</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../handbook/ch18-anti-patterns-and-failure-modes.html" class="pagination-link" aria-label="Anti-Patterns and Failure Modes">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

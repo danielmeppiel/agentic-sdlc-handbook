@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -33,7 +68,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../handbook/ch09-the-instrumented-codebase.html" rel="next">
+<link href="../handbook/ch09-the-runtime-machine.html" rel="next">
 <link href="../handbook/ch07-planning-the-transition.html" rel="prev">
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
@@ -47,9 +82,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7a01a0e4f5bf7a63e0d33cc700e47c3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark-70e91be22bf86b359a999b07fbc00959.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="../site_libs/bootstrap/bootstrap-7a01a0e4f5bf7a63e0d33cc700e47c3c.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-c25b1cc7189173f1b155a78bf3851d93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b58c5230e9b388ddf91b946a2f6918fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-c25b1cc7189173f1b155a78bf3851d93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -77,6 +112,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<meta name="mermaid-theme" content="neutral">
 <script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
 <script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
@@ -433,38 +469,68 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch09-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
+  <a href="../handbook/ch09-the-runtime-machine.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Agentic Runtime Machine</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch10-the-prose-specification.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
+  <a href="../handbook/ch10-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch11-context-engineering.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Context Engineering</span></span></a>
+  <a href="../handbook/ch11-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch12-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  <a href="../handbook/ch12-the-load-lifecycle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Load Lifecycle</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch13-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  <a href="../handbook/ch13-attention-and-context-economy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Attention and Context Economy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch14-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  <a href="../handbook/ch14-deterministic-probabilistic-boundary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Deterministic/Probabilistic Boundary</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch15-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch16-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch17-architectural-patterns-rosetta-stone.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Architectural Patterns: A Rosetta Stone</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch18-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/ch19-primitives-as-code.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Primitives as Code</span></span></a>
   </div>
 </li>
       </ul>
@@ -481,25 +547,25 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-apm-overhaul.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The APM Auth + Logging Overhaul</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The APM Auth + Logging Overhaul</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-publishing-pipeline.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Publishing Pipeline</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">The Publishing Pipeline</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../case-study-growth-engine.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Building a Growth Engine</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Building a Growth Engine</span></span></a>
   </div>
 </li>
       </ul>
@@ -515,8 +581,20 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch15-what-comes-next.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  <a href="../handbook/ch20-what-comes-next.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/appendix-a-cross-harness-reference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Appendix A: The Cross-Harness Reference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../handbook/appendix-b-genesis-worked-example.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Appendix B: Genesis worked example: Panel re-architecture</span></span></a>
   </div>
 </li>
       </ul>
@@ -547,7 +625,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></h1>
+<h1 class="title"><span id="sec-practitioners-mindset" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></h1>
 </div>
 
 
@@ -564,7 +642,24 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Block 1 answered what to decide. Block 2 answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Install Genesis as you read
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This Part III teaches the practice of agentic development as a discipline a human can learn. The agent-side companion that operationalizes the entire block is the open-source skill <strong><a href="https://github.com/danielmeppiel/genesis"><code>danielmeppiel/genesis</code></a></strong>. Install it at the start of this part — it gives you a working reference your agent can load while you work through the chapters.</p>
+<p>What Genesis gives you in one sentence: the same primitives, patterns, and disciplines you are about to read, packaged as one Agent Skill that any AGENTS.md-compatible harness (Copilot, Claude Code, Cursor, Codex, OpenCode) can load on demand. When Part III names a pattern (Wave, Panel, Supervised Execution), Genesis names the implementation. When this book argues a discipline (progressive disclosure, plan-write-then-reload, bounded-scope grounding), Genesis enforces it in operational form.</p>
+<p>Install:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apm</span> install danielmeppiel/genesis</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Or follow the per-harness installation notes in the Genesis README. Read this part with Genesis loaded; the chapters call out where Genesis names the same idea, in footnote form.</p>
+</div>
+</div>
+<p>Parts I–II answered what to decide. Part III answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.</p>
 <p><em>The practitioner chapters that follow draw primarily from the author’s direct experience building and using agentic development workflows. Where claims derive from the reference case study (PR #394, documented in Part IV), this is noted. Where heuristics are offered (such as thresholds or timing estimates), they reflect observed patterns from this practice, not controlled experiments. The reader should treat specific numbers as starting points for their own calibration, not as industry benchmarks.</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <hr>
 <section id="the-autocomplete-trap" class="level2" data-number="8.1">
@@ -581,7 +676,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="from-writing-code-to-engineering-context" class="level2" data-number="8.2">
 <h2 data-number="8.2" class="anchored" data-anchor-id="from-writing-code-to-engineering-context"><span class="header-section-number">8.2</span> From Writing Code to Engineering Context</h2>
 <p>In traditional development, your primary output is code. You read requirements, you think through the design, you type the implementation. The artifact is source files. Your skill is measured by the quality of what you write.</p>
-<p>In agentic development, your primary output shifts. You still write code, but the most leveraged thing you write is context. The instructions that tell agents what your system looks like, the constraints that prevent them from violating your architecture, the decomposition that breaks work into pieces sized for an agent’s context window. The artifact is still source files, but the source files are produced by agents operating within the boundaries you defined. Your skill is measured by the quality of the boundaries.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>In agentic development, your primary output shifts. You still write code, but the most impactful thing you write is context. The instructions that tell agents what your system looks like, the constraints that prevent them from violating your architecture, the decomposition that breaks work into pieces sized for an agent’s context window. The artifact is still source files, but the source files are produced by agents operating within the boundaries you defined. Your skill is measured by the quality of the boundaries.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>This is not a soft claim about “thinking at a higher level.” It is a concrete change in where your time goes.</p>
 <p>Consider a task: migrate 40 call sites from a deprecated logging helper to a new structured logging API. In traditional development, you open each file, find the call site, understand the surrounding context, make the edit, verify the tests. Your time is spent on the edits. In agentic development, you spend your time on the setup: defining which files are in scope, specifying the exact transformation pattern, identifying edge cases the agent should handle differently, setting the constraint that no behavioral changes are allowed beyond the migration. Then you dispatch and review.</p>
 <p>The shift is from execution to specification. And specification, it turns out, is harder than most developers expect.</p>
@@ -600,7 +695,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="8.3" class="anchored" data-anchor-id="your-three-roles"><span class="header-section-number">8.3</span> Your Three Roles</h2>
 <p>When you work with AI agents, you occupy three roles simultaneously. Understanding which role you are in at any given moment is the difference between effective collaboration and expensive supervision.</p>
 <p><strong>Architect.</strong> Before any agent writes a line of code, you design the work. You decompose the task into pieces that fit within an agent’s context window. You sequence those pieces so dependencies are respected. You define the constraints: what the agent must do, must not do, and must preserve. You choose which files belong to which agent, because two agents editing the same file in the same pass will create conflicts. You decide the granularity: too coarse, and the agent loses track of the requirements; too fine, and you spend more time dispatching than the agent saves.</p>
-<p>The architect role is where your leverage is highest. A well-decomposed plan with clear constraints produces reliable output from agents. A vague plan with implicit assumptions produces code that looks right until you review it carefully. Most failures in agentic development trace back to the planning phase, not the execution phase.</p>
+<p>The architect role is where your impact is highest. A well-decomposed plan with clear constraints produces reliable output from agents. A vague plan with implicit assumptions produces code that looks right until you review it carefully. Most failures in agentic development trace back to the planning phase, not the execution phase.</p>
 <p><strong>Reviewer.</strong> After the agent produces output, you evaluate it. This is not the same as traditional code review. In traditional review, you assess whether a human colleague made reasonable design decisions. In agentic review, you assess whether the agent stayed within the boundaries you defined and whether those boundaries were correct.</p>
 <p>Agent output has a specific failure signature: it is locally coherent and globally inconsistent. The function works. The tests pass. But the function uses a pattern your team abandoned six months ago, or it introduces a dependency you were trying to eliminate, or it handles errors in a way that is technically correct but inconsistent with every other error handler in the module. These failures are harder to catch than outright bugs because they look like working code.</p>
 <p>Effective review of agent output focuses on three questions: Did the agent follow the constraints I specified? Did my constraints miss anything important? Does this code fit with the rest of the system in ways the agent couldn’t have known? The first question catches agent failures. The second and third catch your own failures as an architect.</p>
@@ -701,7 +796,7 @@ Figure&nbsp;8.1: Decision framework: when to use agents and when to code manuall
 </div>
 </div>
 <p>The mindset is not complex. The AI is a capable, fast, amnesiac engineer. Your job is architect, reviewer, and escalation handler — the roles that require continuity, judgment, and accountability. The agent handles volume. You handle direction.</p>
-<p>The rest of Block 2 teaches you how.</p>
+<p>The rest of Part III teaches you how.</p>
 
 
 </section>
@@ -1134,8 +1229,8 @@ Figure&nbsp;8.1: Decision framework: when to use agents and when to code manuall
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../handbook/ch09-the-instrumented-codebase.html" class="pagination-link" aria-label="The Instrumented Codebase">
-        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../handbook/ch09-the-runtime-machine.html" class="pagination-link" aria-label="The Agentic Runtime Machine">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Agentic Runtime Machine</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

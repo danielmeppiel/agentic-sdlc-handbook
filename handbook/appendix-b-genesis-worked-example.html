@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Daniel Meppiel">
 
-<title>The Agentic SDLC Handbook</title>
+<title>26&nbsp; Appendix B: Genesis worked example: Panel re-architecture – The Agentic SDLC Handbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -24,67 +23,32 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./download.html" rel="next">
-<link href="./favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ff2f4ec1d259fce0384f9161ba8dc8d9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-5fd27172600e68466385c3ad0c7c1019.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-ff2f4ec1d259fce0384f9161ba8dc8d9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../handbook/appendix-a-cross-harness-reference.html" rel="prev">
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-c25b1cc7189173f1b155a78bf3851d93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b58c5230e9b388ddf91b946a2f6918fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-c25b1cc7189173f1b155a78bf3851d93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -112,8 +76,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<link rel="icon" type="image/svg+xml" href="./agentic-sdlc-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="./agentic-sdlc-handbook/apple-touch-icon.png">
+<meta name="mermaid-theme" content="neutral">
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="../agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="../agentic-sdlc-handbook/apple-touch-icon.png">
 <meta name="dc.rights" content="CC BY-NC-ND 4.0">
 <meta name="dc.rights.uri" content="https://creativecommons.org/licenses/by-nc-nd/4.0/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
@@ -147,7 +115,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<link rel="stylesheet" href="styles/handbook-cover.css">
+<link rel="stylesheet" href="../styles/handbook-cover.css">
 </head>
 
 <body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -321,7 +289,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch20-what-comes-next.html">Closing</a></li><li class="breadcrumb-item"><a href="../handbook/appendix-b-genesis-worked-example.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Appendix B: Genesis worked example: Panel re-architecture</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -336,7 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">The Agentic SDLC Handbook</a> 
+      <a href="../">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
@@ -374,13 +342,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./download.html" class="sidebar-item-text sidebar-link">
+  <a href="../download.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Download</span></a>
   </div>
 </li>
@@ -395,7 +363,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
   </div>
 </li>
@@ -412,37 +380,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
   </div>
 </li>
@@ -459,73 +427,73 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch09-the-runtime-machine.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch09-the-runtime-machine.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Agentic Runtime Machine</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch10-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch10-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch11-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch11-the-prose-specification.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch12-the-load-lifecycle.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch12-the-load-lifecycle.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Load Lifecycle</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch13-attention-and-context-economy.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch13-attention-and-context-economy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Attention and Context Economy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch14-deterministic-probabilistic-boundary.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch14-deterministic-probabilistic-boundary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Deterministic/Probabilistic Boundary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch15-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch15-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch16-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch16-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch17-architectural-patterns-rosetta-stone.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch17-architectural-patterns-rosetta-stone.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Architectural Patterns: A Rosetta Stone</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch18-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch18-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch19-primitives-as-code.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch19-primitives-as-code.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Primitives as Code</span></span></a>
   </div>
 </li>
@@ -542,25 +510,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./case-study-apm-overhaul.html" class="sidebar-item-text sidebar-link">
+  <a href="../case-study-apm-overhaul.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The APM Auth + Logging Overhaul</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
+  <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./case-study-publishing-pipeline.html" class="sidebar-item-text sidebar-link">
+  <a href="../case-study-publishing-pipeline.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">The Publishing Pipeline</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./case-study-growth-engine.html" class="sidebar-item-text sidebar-link">
+  <a href="../case-study-growth-engine.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Building a Growth Engine</span></span></a>
   </div>
 </li>
@@ -577,19 +545,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch20-what-comes-next.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch20-what-comes-next.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/appendix-a-cross-harness-reference.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/appendix-a-cross-harness-reference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Appendix A: The Cross-Harness Reference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/appendix-b-genesis-worked-example.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/appendix-b-genesis-worked-example.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Appendix B: Genesis worked example: Panel re-architecture</span></span></a>
   </div>
 </li>
@@ -605,132 +573,152 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
+  <li><a href="#sec-genesis-worked-example" id="toc-sec-genesis-worked-example" class="nav-link active" data-scroll-target="#sec-genesis-worked-example"><span class="header-section-number">27</span> Genesis worked example: Panel re-architecture</a>
   <ul class="collapse">
-  <li><a href="#why-this-book-exists" id="toc-why-this-book-exists" class="nav-link" data-scroll-target="#why-this-book-exists">Why This Book Exists</a></li>
-  <li><a href="#who-this-book-is-for" id="toc-who-this-book-is-for" class="nav-link" data-scroll-target="#who-this-book-is-for">Who This Book Is For</a></li>
-  <li><a href="#how-to-read-this-book" id="toc-how-to-read-this-book" class="nav-link" data-scroll-target="#how-to-read-this-book">How to Read This Book</a></li>
-  <li><a href="#about-the-author" id="toc-about-the-author" class="nav-link" data-scroll-target="#about-the-author">About the Author</a></li>
-  <li><a href="#a-note-on-methodology" id="toc-a-note-on-methodology" class="nav-link" data-scroll-target="#a-note-on-methodology">A Note on Methodology</a></li>
-  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
+  <li><a href="#the-anti-pattern-panel-in-one-thread" id="toc-the-anti-pattern-panel-in-one-thread" class="nav-link" data-scroll-target="#the-anti-pattern-panel-in-one-thread"><span class="header-section-number">27.1</span> The anti-pattern — panel-in-one-thread</a></li>
+  <li><a href="#the-corrected-design-fan-out-with-arbiter" id="toc-the-corrected-design-fan-out-with-arbiter" class="nav-link" data-scroll-target="#the-corrected-design-fan-out-with-arbiter"><span class="header-section-number">27.2</span> The corrected design — fan-out with arbiter</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7">The Agentic SDLC Handbook</h1></header>
+<main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch20-what-comes-next.html">Closing</a></li><li class="breadcrumb-item"><a href="../handbook/appendix-b-genesis-worked-example.html"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Appendix B: Genesis worked example: Panel re-architecture</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Appendix B: Genesis worked example: Panel re-architecture</span></h1>
+</div>
 
-<p class="subtitle lead">A Guide to AI-Native Software Development for Leaders and Practitioners</p>
-<p class="author">Daniel Meppiel</p>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
 
 </header>
 
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1>
-<div style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">
-<p><strong>Version 0.10.0</strong> · April 2026</p>
-</div>
-<div class="callout callout-style-simple callout-warning no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><strong>Pre-release edition.</strong> This is a living document — new chapters, case studies, and PROSE refinements ship continuously. Claims are grounded in direct experience shipping AI-native systems, with citations where third-party research is referenced. Where data comes from a single project — such as the APM auth + logging overhaul (PR #394) — it is labeled as such. Spotted an error? <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues">Open an issue</a>.</p>
-</div>
-</div>
-</div>
+<section id="sec-genesis-worked-example" class="level1" data-number="27">
+<h1 data-number="27"><span class="header-section-number">27</span> Genesis worked example: Panel re-architecture</h1>
+<p><em>Genesis-as-companion, applied to a panel-shaped problem: the appendix walks the broken anti-pattern, the corrected fan-out, the sequence diagram, and the compliance check the bundle’s <code>examples/02-review-panel-architecture.md</code> produced from a single fresh-context cold-load.</em></p>
+<p>The file is <a href="https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/examples/02-review-panel-architecture.md"><code>skills/genesis/examples/02-review-panel-architecture.md</code></a>. It opens with a panel that breaks, diagnoses why in three short truths, and ends with the version that works. The example is written for cold-load — the index at <a href="https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/examples/README.md"><code>skills/genesis/examples/README.md</code></a> flags it as readable without prior Genesis context. Same author as the handbook; installable via <code>apm install</code> <a href="https://github.com/danielmeppiel/genesis"><code>danielmeppiel/genesis</code></a>.</p>
+<section id="the-anti-pattern-panel-in-one-thread" class="level2" data-number="27.1">
+<h2 data-number="27.1" class="anchored" data-anchor-id="the-anti-pattern-panel-in-one-thread"><span class="header-section-number">27.1</span> The anti-pattern — panel-in-one-thread</h2>
+<p>The starting design runs five mandatory specialist lenses, one conditional specialist, and an arbiter — all inside one thread. The thread loads each persona file in turn, plays each lens, accumulates findings in working notes, then loads the arbiter persona and synthesizes a single output comment. It looks like a panel; it executes as a single loop.</p>
+<p>The example diagnoses the failure in three “durable truths” before it shows the fix.</p>
+<p><strong>Truth #1: context is finite and fragile.</strong> By the time the arbiter step runs, the thread’s window contains the orchestrator wrapper, five personas’ text, five sets of findings, the conditional persona, the arbiter persona, and the synthesis template. The first lens’s text is far from focus, and its nuances have decayed influence on the synthesis.</p>
 <div class="callout callout-style-simple callout-note no-icon">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-body-container">
-<p><strong>Also available as a free PDF &amp; EPUB.</strong> <a href="./download.html">📕 Download –&gt;</a></p>
+<p><strong>Cross-link — Ch13.</strong> Truth #1 is the attention-economy point in operational form: see <a href="ch13-attention-and-context-economy.html" class="quarto-xref"><span>Chapter 13</span></a>. The substrate vocabulary the corrected design relies on lives in <a href="https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/assets/runtime-affordances/common.md"><code>skills/genesis/assets/runtime-affordances/common.md</code></a>.</p>
 </div>
 </div>
 </div>
-<div style="text-align: center; margin: 2rem 0 3rem 0; font-style: italic; color: #555;">
-<p>For Delphine, Gabriel, Laia, and Adrian — everything else is context.</p>
-</div>
-<section id="why-this-book-exists" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-book-exists">Why This Book Exists</h2>
-<p>Every engineering organization is adopting AI coding agents. Almost none of them have a methodology for it.</p>
-<p>Teams are configuring Copilot with a single instructions file and calling it “AI-native development.” Leaders are measuring success by lines-of-code generated. Individual developers are discovering that AI-assisted code needs more rework, not less – because the underlying approach is wrong.</p>
-<p>This book provides what’s missing: a systematic methodology for building software with AI agents, from organizational strategy to the individual keystrokes. It introduces the <strong>PROSE framework</strong> – five architectural constraints that make AI agent output reliable, verifiable, and maintainable – and shows how to implement it with real tools and real workflows.</p>
-<p>The methodology in this book produced the book itself, and it powers <a href="https://github.com/microsoft/apm">APM</a>, an open-source agent package manager.</p>
-</section>
-<section id="who-this-book-is-for" class="level2">
-<h2 class="anchored" data-anchor-id="who-this-book-is-for">Who This Book Is For</h2>
-<p>This book speaks to two audiences:</p>
-<p><strong>Engineering leaders</strong> (CTO, VP Engineering, Director) who need to understand the strategic implications of AI-native development, make investment decisions, and transform their organizations. <strong>Read Part II first.</strong></p>
-<p><strong>Practitioners</strong> (developers, tech leads, architects) who need concrete techniques, patterns, and workflows for working effectively with AI coding agents. <strong>Read Part III first.</strong></p>
-<p>Part I provides the foundational thesis that both audiences share. The closing chapter looks ahead.</p>
-</section>
-<section id="how-to-read-this-book" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-read-this-book">How to Read This Book</h2>
-<p>You don’t need to read sequentially. Start with whichever part matches your role:</p>
-<ul>
-<li><strong>Part I – The Foundation:</strong> The thesis – why the current approach fails and what replaces it</li>
-<li><strong>Part II – For Leaders:</strong> The AI-native landscape, business case, reference architecture, governance, team structures, and transition planning</li>
-<li><strong>Part III – For Practitioners:</strong> Mindset, agentic runtime machine, instrumented codebase, PROSE specification, load lifecycle, attention economy, the deterministic/probabilistic seam, multi-agent orchestration, execution meta-process, architectural patterns, anti-patterns, and primitives-as-code</li>
-<li><strong>Part IV – Case Studies:</strong> APM, the handbook itself, the publishing pipeline, the growth engine</li>
-<li><strong>Closing:</strong> What comes next, plus a cross-harness reference appendix</li>
-</ul>
-<div class="callout callout-style-default callout-note callout-titled" title="The architect for agentic systems — install the companion">
-<div class="callout-header d-flex align-content-center">
+<p><strong>Truth #2: context must be explicit.</strong> The lenses cannot operate independently. Each lens reads the prior lenses’ findings whether the design wants that or not, because all share the window. The cross-pollination corrupts the “independent specialist” contract the design claims to deliver.</p>
+<p><strong>Truth #3: output is probabilistic.</strong> Variance is highest exactly where the design demands the most precision — the arbiter’s synthesis runs at the deepest point of attention degradation in the whole thread.</p>
+<p>The example then names the failures in the classical-principle vocabulary the rest of Genesis uses: shared mutable state (every lens writes to the same window), context thrash (one thread plays five distinct lenses), and an unreached escape hatch (a textbook fan-out target executed as a single loop).</p>
+<p>The compliance summary at the bottom of the anti-pattern half puts these failures in a table, so the recovery is auditable line by line:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Check</th>
+<th>Old design</th>
+<th>New design</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reduced Scope (per-lens fresh window)</td>
+<td>FAIL</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>Orchestrated Composition (independent contracts)</td>
+<td>FAIL</td>
+<td>PASS</td>
+</tr>
+<tr class="odd">
+<td>Single-writer interlock on output</td>
+<td>PASS</td>
+<td>PASS</td>
+</tr>
+<tr class="even">
+<td>God module avoidance</td>
+<td>FAIL (one thread = many lenses)</td>
+<td>PASS</td>
+</tr>
+<tr class="odd">
+<td>Fan-out where applicable</td>
+<td>FAIL</td>
+<td>PASS</td>
+</tr>
+</tbody>
+</table>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>The architect for agentic systems — install the companion
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Part III is where the book gets technical: the patterns and architectural concepts for building non-trivial agent-driven systems. The book teaches them; the companion applies them. Install:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apm</span> install danielmeppiel/genesis</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Genesis is a free, open-source Agent Skill — written by the same hand as the book — that ports the software architect’s role to agentic systems. Summon it in your agent with <code>/genesis &lt;what you want built&gt;</code> and it designs the architecture: which skills, custom agents, and instructions you need, and how they compose — the way a software architect lays out classes and modules for an Object-Oriented Programming (OO) system. Read the book to learn the patterns, or skip ahead and let the architect wield them on your project. Inspectable in full at <a href="https://github.com/danielmeppiel/genesis">github.com/danielmeppiel/genesis</a>. Works across Copilot, Claude Code, Cursor, Codex, and OpenCode.</p>
+<div class="callout-body-container">
+<p><strong>Cross-link — Ch18.</strong> The left column is the anti-pattern catalogue from <a href="ch18-anti-patterns-and-failure-modes.html" class="quarto-xref"><span>Chapter 18</span></a> rendered against one concrete module. The right column is what the recovery looks like once fan-out is reachable — the Old → New row pairs are the recovery path Ch18 leaves abstract.</p>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Where to start, by role and time budget">
-<div class="callout-header d-flex align-content-center">
+</div>
+</section>
+<section id="the-corrected-design-fan-out-with-arbiter" class="level2" data-number="27.2">
+<h2 data-number="27.2" class="anchored" data-anchor-id="the-corrected-design-fan-out-with-arbiter"><span class="header-section-number">27.2</span> The corrected design — fan-out with arbiter</h2>
+<p>The redesigned shape is fan-out plus a synthesizer realizing the panel pattern. Each lens gets its own thread with its own fresh context window. The orchestrator is the only writer to the output sink. The arbiter is a distinct persona that runs in its own thread, loaded with the arbiter persona file plus the lens findings as input — never the lens personas themselves.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    O{Panel orchestrator}
+    P((Architect))
+    L((Logging UX))
+    U((DevX UX))
+    Sec((Security))
+    G((Growth))
+    Auth((Auth))
+    A((Arbiter))
+    O --&gt; P
+    O --&gt; L
+    O --&gt; U
+    O --&gt; Sec
+    O --&gt; G
+    O -. conditional .-&gt; Auth
+    O --&gt; A
+    classDef new stroke-dasharray: 5 5;
+    class A new;
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+<p>The orchestrator spawns one child thread per lens, scoped to the PR under review; the conditional lens (Auth) spawns only when its trigger fires. Each child returns findings to the orchestrator; a completeness gate checks the set; the orchestrator then spawns the arbiter thread with the persona plus the collected findings, and writes the synthesized verdict to the output sink under a single-writer interlock. (Genesis continues with a handoff packet template — see source file.)</p>
+<p>The disambiguation the example insists on: a thread is a runtime spawn with a fresh context window; a persona is a markdown file used as a scoping prompt at thread start. The Architect thread is not the Architect persona; the persona is not a thread. The thread exists because the design needs fresh context; the persona exists because the design needs a focused lens. They cooperate across the spawn boundary.</p>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Where to start, by role and time budget
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you have <strong>45 minutes</strong> and need the strategic picture, read Part I, then skim Part II – the thesis plus the business case, architecture, and governance shape of AI-native delivery. If you have <strong>an hour</strong> and start coding Monday, jump to Part III and read the chapters that match what you’re about to ship: instrumentation, PROSE specification, attention economy, or orchestration. If you want proof the methodology survives contact with real systems, the <strong>Part IV case studies</strong> stand on their own in any order. The Parts are designed to be read in any order; the chapter sequence inside each Part is the only place sequence matters.</p>
+<div class="callout-body-container">
+<p><strong>Cross-link — Ch15.</strong> This is the Panel pattern <a href="ch15-multi-agent-orchestration.html" class="quarto-xref"><span>Chapter 15</span></a> teaches, executed as fan-out plus synthesizer rather than as a single thread playing many lenses. The orchestrator-as-single-writer rule is the SoC stance from <a href="https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/assets/composition-substrate.md"><code>skills/genesis/assets/composition-substrate.md</code></a> — composition over inheritance, with each lens persona depended on via link rather than inlined into the orchestrator.</p>
 </div>
 </div>
-</section>
-<section id="about-the-author" class="level2">
-<h2 class="anchored" data-anchor-id="about-the-author">About the Author</h2>
-<p>Daniel Meppiel is a Global Black Belt at <strong>Microsoft</strong> and the creator of <a href="https://github.com/microsoft/apm">APM (Agent Package Manager)</a>, an open-source tool for managing AI agent configurations across codebases. He designed the <strong>PROSE framework</strong>, a specification methodology for making AI coding agents reliable in professional software delivery. Connect with Daniel on <a href="https://www.linkedin.com/in/danielmeppiel/">LinkedIn</a>.</p>
-<p>With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise adoption, Daniel bridges the gap between technical architecture and business outcomes. His career arc runs from <strong>CERN</strong> (Product Lifecycle Management modernization for particle physics experiments), through <strong>Avaloq</strong> (legacy core-banking system migration) – the same classes of system modernization and code migration that AI agents now accelerate in the SDLC – to founding <strong>WeGaw</strong> as CTO for 4 years (building a complex AI-powered water intelligence platform from scratch, serving global energy companies), <strong>Sonar</strong> (code security), <strong>GitHub</strong> (developer tooling), and now <strong>Microsoft</strong>.</p>
-</section>
-<section id="a-note-on-methodology" class="level2">
-<h2 class="anchored" data-anchor-id="a-note-on-methodology">A Note on Methodology</h2>
-<p>This handbook was produced using the same methodology and tooling it describes. The case studies document real sessions executed by the author – who also designed the PROSE methodology. This creates an inherent advantage: the author knows when to push and when to intervene in ways not fully captured by the written method. Where authorial expertise likely mattered beyond what the methodology prescribes, the case studies flag it. Treat the documented patterns as a starting point, not a ceiling.</p>
-</section>
-<section id="acknowledgments" class="level2">
-<h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
-<p>This book exists because of the people who shaped its ideas and the people who trusted them.</p>
-<p>François Bouterouche brainstormed the kernel vision of the technology stack with me — the conversations that became the computing paradigm at the heart of Chapter 4. Francesco Manni, my manager and mentor for four years across GitHub and Microsoft, taught me serving leadership by example; his principles and trust created the space where this work could happen. Don Syme and Peli de Halleux, from GitHub Next, cultivated ingenuity and exploration with an openness that made ideas flow freely — and trusted APM’s foundational concepts enough to carry them into GitHub Agentic Workflows. Sébastien Le Calvez built the Software Global Black Belt team and go-to-market motion that created the feedback loop between real-world practice and the methodology in these pages.</p>
-<p>To Mondragon Unibertsitatea — for teaching curiosity, innovation, and self-starting spirit through rigorous engineering and Project-Based Learning. The methodology in this book owes more to those foundations than it might appear.</p>
-<p>To the early adopters and contributors of APM who believed in the project and in me — Sergio Sisternes, Sébastien Degodez, and François Descamps. Open source lives or dies on the people who show up first.</p>
-</section>
-<section id="license" class="level2">
-<h2 class="anchored" data-anchor-id="license">License</h2>
-<p>This book is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>. You are free to read, download, and share it with attribution — as long as you share it as-is. For commercial use, translations, or adaptations, <a href="https://www.linkedin.com/in/danielmeppiel/">reach out</a>.</p>
-<p><em>The views and opinions in this book are the author’s own and do not represent those of his employer.</em></p>
+</div>
+<p>The Compliance summary above flips four rows from FAIL to PASS once the fan-out is in place; Single-writer was already PASS but now holds by construction rather than by coincidence of the loop. For a denser instance with six personas plus an arbiter against a real PR-review surface, see <a href="https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/examples/04-pr-review-advisory.md"><code>skills/genesis/examples/04-pr-review-advisory.md</code></a>. For the restraint-as-discipline counterpart, see <a href="https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/examples/05-pr-review-verdict.md"><code>skills/genesis/examples/05-pr-review-verdict.md</code></a>, where the same cold-load discipline records <strong>A8 ALIGNMENT LOOP — CONSIDERED, REJECTED</strong> (“The first attempt is unlikely to satisfy the goal in one pass … Goal drift is a real risk over several rounds.” — not creative iteration; one-shot per PR event) and <strong>A5 WAVE EXECUTION — CONSIDERED, REJECTED</strong> (<em>“No DAG; lenses are mutually independent.”</em>). Reaching for a pattern is half the discipline; declining a near-miss with the WHEN-clause cited is the other half.</p>
 
 
 </section>
@@ -1152,18 +1140,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../handbook/appendix-a-cross-harness-reference.html" class="pagination-link" aria-label="Appendix A: The Cross-Harness Reference">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Appendix A: The Cross-Harness Reference</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./download.html" class="pagination-link" aria-label="Download">
-        <span class="nav-page-text">Download</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->
 <footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="./agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="../agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">

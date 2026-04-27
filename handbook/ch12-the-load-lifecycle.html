@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; The AI-Native Landscape – The Agentic SDLC Handbook</title>
+<title>12&nbsp; The Load Lifecycle – The Agentic SDLC Handbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -33,8 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../handbook/ch03-the-business-case.html" rel="next">
-<link href="../handbook/ch01-the-agentic-sdlc-thesis.html" rel="prev">
+<link href="../handbook/ch13-attention-and-context-economy.html" rel="next">
+<link href="../handbook/ch11-the-prose-specification.html" rel="prev">
 <link href="../favicon.ico" rel="icon">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
@@ -290,7 +290,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html">Part II: For Leaders</a></li><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch12-the-load-lifecycle.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Load Lifecycle</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -381,7 +381,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link active">
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
   </div>
 </li>
@@ -452,7 +452,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../handbook/ch12-the-load-lifecycle.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch12-the-load-lifecycle.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Load Lifecycle</span></span></a>
   </div>
 </li>
@@ -574,14 +574,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#market-velocity" id="toc-market-velocity" class="nav-link active" data-scroll-target="#market-velocity"><span class="header-section-number">2.1</span> Market Velocity</a></li>
-  <li><a href="#from-autocomplete-to-agents" id="toc-from-autocomplete-to-agents" class="nav-link" data-scroll-target="#from-autocomplete-to-agents"><span class="header-section-number">2.2</span> From Autocomplete to Agents</a></li>
-  <li><a href="#coding-tools-vs.-software-delivery-platforms" id="toc-coding-tools-vs.-software-delivery-platforms" class="nav-link" data-scroll-target="#coding-tools-vs.-software-delivery-platforms"><span class="header-section-number">2.3</span> Coding Tools vs.&nbsp;Software Delivery Platforms</a></li>
-  <li><a href="#the-landscape-today-capabilities-that-actually-matter" id="toc-the-landscape-today-capabilities-that-actually-matter" class="nav-link" data-scroll-target="#the-landscape-today-capabilities-that-actually-matter"><span class="header-section-number">2.4</span> The Landscape Today: Capabilities That Actually Matter</a></li>
-  <li><a href="#how-these-tools-are-priced" id="toc-how-these-tools-are-priced" class="nav-link" data-scroll-target="#how-these-tools-are-priced"><span class="header-section-number">2.5</span> How These Tools Are Priced</a></li>
-  <li><a href="#two-buying-motions-one-problem" id="toc-two-buying-motions-one-problem" class="nav-link" data-scroll-target="#two-buying-motions-one-problem"><span class="header-section-number">2.6</span> Two Buying Motions, One Problem</a></li>
-  <li><a href="#the-8-phase-evaluation-framework" id="toc-the-8-phase-evaluation-framework" class="nav-link" data-scroll-target="#the-8-phase-evaluation-framework"><span class="header-section-number">2.7</span> The 8-Phase Evaluation Framework</a></li>
-  <li><a href="#inaction-is-a-decision" id="toc-inaction-is-a-decision" class="nav-link" data-scroll-target="#inaction-is-a-decision"><span class="header-section-number">2.8</span> Inaction Is a Decision</a></li>
+  <li><a href="#the-four-phases" id="toc-the-four-phases" class="nav-link active" data-scroll-target="#the-four-phases"><span class="header-section-number">12.1</span> The four phases</a></li>
+  <li><a href="#resolve" id="toc-resolve" class="nav-link" data-scroll-target="#resolve"><span class="header-section-number">12.2</span> Resolve</a></li>
+  <li><a href="#materialize" id="toc-materialize" class="nav-link" data-scroll-target="#materialize"><span class="header-section-number">12.3</span> Materialize</a></li>
+  <li><a href="#bind" id="toc-bind" class="nav-link" data-scroll-target="#bind"><span class="header-section-number">12.4</span> Bind</a></li>
+  <li><a href="#activate" id="toc-activate" class="nav-link" data-scroll-target="#activate"><span class="header-section-number">12.5</span> Activate</a></li>
+  <li><a href="#what-this-chapter-does-not-cover" id="toc-what-this-chapter-does-not-cover" class="nav-link" data-scroll-target="#what-this-chapter-does-not-cover"><span class="header-section-number">12.6</span> What this chapter does NOT cover</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -589,9 +587,9 @@ ul.task-list li input[type="checkbox"] {
 <main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html">Part II: For Leaders</a></li><li class="breadcrumb-item"><a href="../handbook/ch02-the-ai-native-landscape.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch12-the-load-lifecycle.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Load Lifecycle</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></h1>
+<h1 class="title"><span id="sec-load-lifecycle" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Load Lifecycle</span></span></h1>
 </div>
 
 
@@ -608,485 +606,234 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Your developers are already using AI coding tools. Some of them expensed their own subscriptions. A few are running code through APIs you’ve never audited. The question isn’t whether AI-assisted development is happening in your organization. It’s whether you’re driving it or reacting to it.</p>
+<p>It is a Monday morning. A platform engineer — call her Priya — is finishing a skill that the team’s data engineers have been asking for. The skill is supposed to fire whenever an agent touches an Alembic migration: it loads the team’s conventions for naming revisions, scoping <code>op.batch_alter_table</code> calls, and writing reversible downgrades. Priya places the skill at <code>.github/skills/db-migrations/SKILL.md</code>. The frontmatter is correct. The <code>description</code> reads <em>“Activate when authoring or reviewing Alembic database migrations under <code>migrations/versions/</code>. Use for naming, batch operations, and reversible downgrade authoring.”</em> He runs the agent against a real migration file. The skill does not bind. The agent writes a perfectly competent migration that uses none of the team’s conventions. There is no error. There is no warning. There is no log entry that mentions the skill at all.</p>
+<p>Priya does what most developers do in this situation. He retypes the description three different ways. He adds a few keywords. He moves the file. He adds the migrations path to a glob in another file. None of it works. After an hour he runs the harness in verbose mode<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and reads the load trace. The trace tells him two things in two seconds. First, the skill is correctly registered — the harness sees it, parses its frontmatter, and adds its description to the activation pool. Second, the skill never gets the chance to bind because a parent instruction file at <code>.github/instructions/python.instructions.md</code> has <code>applyTo: "**/*.py"</code> and pulls in 6,200 tokens of Python guidance every time the agent touches a <code>.py</code> file. By the time the dispatcher considers on-demand skills, the load window is already three quarters full and the description-matcher has down-ranked everything that is not strictly required to satisfy the user’s literal request. The skill is not silent because of its description. It is silent because of someone else’s <code>applyTo</code> glob.</p>
+<p>Without the vocabulary of the load lifecycle, Priya’s hour is normal. With it, the diagnosis is the second sentence above and the fix is mechanical. The point of this chapter is to put the second sentence in your head before the first hour costs you a sprint. The agentic runtime machine described in <a href="ch09-the-runtime-machine.html" class="quarto-xref"><span>Chapter 9</span></a> has a defined sequence by which content reaches the model: the package manager <strong>resolves</strong> the dependency graph, the harness <strong>materializes</strong> files into the directory layout it parses, it <strong>binds</strong> files into context-loading units, and it <strong>activates</strong> the right ones for the task at hand. Each of those four verbs is observable, debuggable, and the place where a specific class of failure lives.</p>
 <hr>
-<section id="market-velocity" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="market-velocity"><span class="header-section-number">2.1</span> Market Velocity</h2>
-<p>The AI developer tools market is growing faster than any prior developer tooling category. The pattern is worth more than any snapshot figure, because the figures will be outdated by the time you read this. Here’s the pattern:</p>
-<p>The 2024 Stack Overflow Developer Survey found 76% of developers are using or plan to use AI coding tools — up from 44% in 2023. GitHub’s 2024 Octoverse report placed the figure higher: 97% of developers surveyed had used AI coding tools in some capacity. Even accounting for sampling bias (developers on GitHub are likelier to adopt developer tools), the direction is unambiguous.</p>
-<p>The supply side is moving as fast as the demand side. In 2021, GitHub Copilot launched as a technical preview — an autocomplete tool powered by OpenAI Codex. By mid-2025, the market includes more than ten well-funded products spanning code completion, agentic coding, and full-lifecycle platforms. Cursor has disclosed rapid growth, though specific ARR figures remain unconfirmed by the company.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Microsoft has cited GitHub Copilot subscriber growth and revenue contributions in quarterly earnings calls.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Anthropic has raised billions at valuations implying substantial API revenue, though the breakdown by use case — including code generation — is not publicly disclosed. The pattern across vendors is consistent: AI coding tools have become a high-growth commercial category, not a research curiosity.</p>
-<p>Gartner estimated in 2024 that by 2028, 75% of enterprise software engineers will use AI code assistants — up from fewer than 10% in early 2023. The adoption curve is not linear; it is compounding. And the tools are not static targets; each major release expands what “AI-assisted development” means, which means the definition of the market is shifting while you’re trying to evaluate it.</p>
-<p>Three things are driving this:</p>
-<p><strong>Model commoditization.</strong> In 2022, OpenAI’s models were the dominant option most developers had practical access to for code generation at production quality. By 2025, Anthropic’s Claude, Google’s Gemini, Meta’s Llama, and several other models compete credibly. This commoditization drives down model costs, which drives down tool pricing, which drives up adoption. Tools that once charged premium prices for model access now compete on integration, context management, and workflow design. The model is becoming the commodity layer; everything above it is where differentiation happens.</p>
-<p><strong>Developer-led adoption.</strong> Unlike most enterprise software categories, where procurement selects a tool and pushes it to employees, AI coding tools spread bottom-up. A single developer tries a tool, gets faster at certain tasks, and tells three colleagues. By the time engineering leadership notices, eight of twelve developers on a team may be using different tools, none centrally managed. This dynamic is not new (it drove Slack, GitHub, and Docker adoption), but the speed appears to exceed prior developer tool adoption curves because the tools produce immediate, visible productivity gains on individual tasks.</p>
-<p><strong>Platform consolidation.</strong> AI coding tools are expanding into adjacent phases of the software lifecycle. What started as autocomplete in an editor now reaches into code review, testing, CI/CD, documentation, and deployment. This blurs the line between “coding tool” and “software delivery platform,” a distinction that matters enormously for purchasing decisions, and one that most evaluations fail to make.</p>
-<hr>
-</section>
-<section id="from-autocomplete-to-agents" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="from-autocomplete-to-agents"><span class="header-section-number">2.2</span> From Autocomplete to Agents</h2>
-<p>The market’s evolution follows a clear progression, and understanding where you are on this curve determines what you should be evaluating.</p>
-<p><strong>Phase 1: Code completion (2021-2023).</strong> The original value proposition: type a comment or partial line, receive a multi-line suggestion. GitHub Copilot, Tabnine, Amazon CodeWhisperer (now Q Developer), and others competed primarily on suggestion quality: how often the completion was correct and useful. The interaction was passive: the developer wrote code, the tool offered predictions. Adoption was fast because the integration was minimal, a plugin in an existing editor, no workflow changes required. Most organizations still treat AI coding tools as “better autocomplete.” Many are stuck here.</p>
-<p><strong>Phase 2: Conversational assistance (2023-2024).</strong> ChatGPT’s launch in late 2022 shifted expectations. Developers began asking AI to explain code, generate boilerplate, debug errors, and plan implementations. Tools responded: Copilot Chat, Cursor’s chat panel, JetBrains AI Assistant, and others embedded conversational AI directly into the development environment. The interaction became active: developers described intent, AI produced code, developers reviewed and integrated it. This phase introduced a new failure mode: developers could now delegate larger tasks to AI, and the quality of the output became harder to verify at a glance.</p>
-<p><strong>Phase 3: Agentic coding (2024-2025).</strong> The current frontier. Agents don’t just suggest code; they execute multi-step tasks: read files, run commands, modify multiple files, execute tests, and iterate on failures. GitHub Copilot’s agent mode, Claude Code, Cursor’s Composer, and Windsurf’s Cascade operate in this space. The agent reads context, plans an approach, takes action, evaluates results, and repeats. The interaction model shifted again: the developer describes a goal, the agent works toward it with varying degrees of autonomy, and the developer reviews the result. This is where the Vibe Coding Cliff from Chapter 1 becomes acute — agents working without structured context make confident, plausible errors at scale.</p>
-<p><strong>Phase 4: Orchestrated SDLC (emerging).</strong> The leading edge of the market, where agents participate beyond the code editor — in issue triage, code review, testing, release management, and operations. GitHub’s Coding Agent assigns issues to an AI that works in a cloud environment, submits pull requests, and responds to review feedback. Anthropic’s Claude Code can read issues and produce PRs autonomously. Several startups (Devin, Factory, Codegen) are building similar workflows. No organization has publicly demonstrated a fully automated end-to-end SDLC at production scale, but the components exist for the first multi-phase automations. This is where governance becomes non-optional.</p>
-<div class="cell" data-fig-width="4.5" data-layout-align="default">
+<section id="the-four-phases" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="the-four-phases"><span class="header-section-number">12.1</span> The four phases</h2>
+<p>Every primitive that ends up in the model’s context arrives there through the same four-phase pipeline. The phases are sequential at session start, but they are not equally automatic — the first two are owned by tools the developer runs explicitly, and the last two are owned by the harness and run on every session.</p>
+<div class="cell" data-fig-width="6.5" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-ai-evolution" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-load-lifecycle" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-ai-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-load-lifecycle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-ai-evolution">flowchart LR
-    P1["&lt;b&gt;Phase 1&lt;/b&gt;&lt;br/&gt;Code Completion&lt;br/&gt;&lt;em&gt;2021–2023&lt;/em&gt;&lt;br/&gt;Passive suggestion"]
-    P2["&lt;b&gt;Phase 2&lt;/b&gt;&lt;br/&gt;Conversational&lt;br/&gt;&lt;em&gt;2023–2024&lt;/em&gt;&lt;br/&gt;Active Q&amp;A"]
-    P3["&lt;b&gt;Phase 3&lt;/b&gt;&lt;br/&gt;Agentic Coding&lt;br/&gt;&lt;em&gt;2024–2025&lt;/em&gt;&lt;br/&gt;Goal-directed execution"]
-    P4["&lt;b&gt;Phase 4&lt;/b&gt;&lt;br/&gt;Orchestrated SDLC&lt;br/&gt;&lt;em&gt;Emerging&lt;/em&gt;&lt;br/&gt;Autonomous lifecycle"]
-
-    P1 --&gt;|"risk ↑"| P2 --&gt;|"risk ↑"| P3 --&gt;|"risk ↑"| P4
-
+<pre class="mermaid mermaid-js" data-label="fig-load-lifecycle">flowchart LR
+    R["1. Resolve&lt;br/&gt;─&lt;br/&gt;Package manager walks&lt;br/&gt;the dependency graph&lt;br/&gt;and writes a lockfile"]
+    M["2. Materialize&lt;br/&gt;─&lt;br/&gt;Files land at the paths&lt;br/&gt;the harness parses&lt;br/&gt;(.github/, .claude/,&lt;br/&gt;.cursor/, AGENTS.md)"]
+    B["3. Bind&lt;br/&gt;─&lt;br/&gt;Harness classifies each&lt;br/&gt;file: eager preload,&lt;br/&gt;lazy on-demand, or&lt;br/&gt;dispatcher-mediated"]
+    A["4. Activate&lt;br/&gt;─&lt;br/&gt;Dispatcher selects which&lt;br/&gt;lazy primitives load,&lt;br/&gt;given the task and&lt;br/&gt;remaining budget"]
+    R --&gt; M --&gt; B --&gt; A
 </pre>
 </div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ai-evolution-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.1: Four phases of AI-assisted development evolution
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-load-lifecycle-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12.1: The four phases of the load lifecycle: package manager resolves the dependency graph, the developer (or installer) materializes files into the harness’s expected layout, the harness binds each file into a load mode, and at session start the dispatcher activates the subset that matches the current task.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<blockquote class="blockquote">
-<p><em>Each phase increases both capability and risk. Most organisations evaluate Phase 1–2 while their developers already operate at Phase 3.</em></p>
-</blockquote>
-<div data-tbl-colwidths="[15,25,25,20,15]">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 15%">
-<col style="width: 25%">
-<col style="width: 25%">
-<col style="width: 20%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Phase</th>
-<th>Interaction model</th>
-<th>Primary value</th>
-<th>Key risk</th>
-<th>Maturity</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Code completion</td>
-<td>Passive suggestion</td>
-<td>Speed on known tasks</td>
-<td>Low — easy to reject</td>
-<td>Available now</td>
-</tr>
-<tr class="even">
-<td>Conversational assistance</td>
-<td>Active Q&amp;A</td>
-<td>Exploration, boilerplate</td>
-<td>Medium — harder to verify</td>
-<td>Available now</td>
-</tr>
-<tr class="odd">
-<td>Agentic coding</td>
-<td>Goal-directed execution</td>
-<td>Multi-file, multi-step tasks</td>
-<td>High — confident errors at scale</td>
-<td>Available now</td>
-</tr>
-<tr class="even">
-<td>Orchestrated SDLC</td>
-<td>Autonomous lifecycle participation</td>
-<td>Cross-phase automation</td>
-<td>Very high — governance gap</td>
-<td>Emerging</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Most organizations are evaluating Phase 1-2 tools while their developers are already using Phase 3. This gap between what leadership is evaluating and what teams are actually doing is itself a risk.</p>
+<p>Phases one and two run once per install. Phases three and four run once per session — three at the top, four at every decision point where the dispatcher can pull more text into context. A primitive that fails to surface has failed in exactly one of these phases, and the fix lives at that phase. Treating the lifecycle as one undifferentiated black box is the error that produces hour-long debugging sessions. Naming the four phases reduces the search space to four small, falsifiable questions.</p>
 <hr>
 </section>
-<section id="coding-tools-vs.-software-delivery-platforms" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="coding-tools-vs.-software-delivery-platforms"><span class="header-section-number">2.3</span> Coding Tools vs.&nbsp;Software Delivery Platforms</h2>
-<p>The market has split into two categories that require different evaluation criteria, different procurement processes, and different governance models. Conflating them leads to purchasing decisions that satisfy neither developers nor leadership.</p>
-<p><strong>AI coding tools</strong> optimize the inner loop — the edit-build-test cycle a developer performs dozens of times per day. They live in the editor. Their value is speed and quality at the point of code production. Cursor, Claude Code, Windsurf, GitHub Copilot (in-editor), and Amazon Q Developer compete here. Developers choose these tools. Adoption is grassroots, driven by individual developers.</p>
-<p><strong>Software delivery platforms</strong> optimize the full lifecycle — from ideation through production operations. They span source control, CI/CD, security scanning, code review, deployment, and monitoring. They provide governance: who did what, when, with what authority, and with what audit trail. GitHub, GitLab, Azure DevOps, and Atlassian compete here. Organizations choose these platforms. It’s a leadership decision.</p>
-<p>The strategic tension: AI coding tools are expanding into platform territory (Cursor’s Bugbot for code review, Claude Code’s issue-to-PR workflow), and platforms are absorbing AI coding capabilities (GitHub Copilot spanning code to review to agents). The previously clean boundary between “tool” and “platform” is blurring.</p>
-<p>For evaluation purposes, the distinction still matters:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Criterion</th>
-<th>AI coding tool</th>
-<th>Software delivery platform</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Who decides</td>
-<td>Individual developer</td>
-<td>Engineering leadership</td>
-</tr>
-<tr class="even">
-<td>Primary value</td>
-<td>Coding speed and quality</td>
-<td>Lifecycle governance and automation</td>
-</tr>
-<tr class="odd">
-<td>Evaluation scope</td>
-<td>Editor experience, model quality</td>
-<td>Security, compliance, audit trails</td>
-</tr>
-<tr class="even">
-<td>Risk if ungoverned</td>
-<td>Inconsistent code quality</td>
-<td>Shadow IT, compliance exposure</td>
-</tr>
-<tr class="odd">
-<td>Switching cost</td>
-<td>Low (editor plugin)</td>
-<td>High (CI/CD, permissions, history)</td>
-</tr>
-<tr class="even">
-<td>SDLC coverage</td>
-<td>Code (+ expanding)</td>
-<td>Ideate through Operate</td>
-</tr>
-</tbody>
-</table>
-<p>The mistake most organizations make: evaluating platform decisions with coding-tool criteria (“which one has the best autocomplete?”), or evaluating coding-tool decisions with platform criteria (“does it integrate with our SSO?”). Both questions are valid. They apply to different purchasing decisions.</p>
+<section id="resolve" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="resolve"><span class="header-section-number">12.2</span> Resolve</h2>
+<p>The first phase is dependency resolution. When a project declares that it depends on an external primitive package — a shared logging skill, a security review agent, an organization’s policy bundle — a package manager walks the declared graph, picks compatible versions, and records the result. APM’s <code>apm install</code> performs this step for AGENTS.md-compatible projects: it reads the project’s manifest, walks each declared dependency to its published source, recurses into that source’s own manifest, and keeps recursing until the closure is built.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The resolved closure is written to a lockfile (<code>apm.lock</code> or equivalent) that pins every transitive dependency to a specific version or commit.</p>
+<p>The transitive-closure question is the one this phase answers, and it is the one most developers never ask of their primitives. When your project depends on a <code>security-review</code> skill, that skill may itself depend on a <code>secret-detection</code> instruction file, which may itself reference a shared anti-pattern catalogue.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> None of those nested files are visible in your project’s manifest, but every one of them will load into your agent’s context the day a security review fires. The lockfile is the only honest answer to the question <em>what actually loads when this primitive activates</em>. Without one, “next week’s <code>apm install</code>” produces different agent behavior with no code change visible — the same pathology that npm installs without <code>package-lock.json</code> had a decade ago, and the cure is the same one.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>Two practices fall out of this phase and should be habitual. First, run the resolver in dry-run mode (<code>apm install --dry-run</code>, <code>apm compile --dry-run</code>) and read the printed closure before you commit a manifest change. The output names every file that will load. Skim it; if anything surprises you, that is a pin you should be making explicit before the surprise becomes a bug. Second, treat the lockfile as a reviewable artifact. A pull request that updates the lockfile but not the manifest means a transitive dependency moved underneath you, and the diff is the only place you will see it.</p>
+<p>A primitive that is not declared as a dependency edge but is nonetheless required at runtime is a <em>phantom dependency</em> — the runtime “just happens” to load it because the developer’s environment has it, but a clean install on a teammate’s machine will not. Phantoms are silent in resolve and loud at activate, often weeks later, and the cure for them is also paid here: every file the primitive needs at runtime is either inlined into the primitive, sibling to it in the same source tree, or declared as an external module with a real edge in the graph.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <hr>
 </section>
-<section id="the-landscape-today-capabilities-that-actually-matter" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="the-landscape-today-capabilities-that-actually-matter"><span class="header-section-number">2.4</span> The Landscape Today: Capabilities That Actually Matter</h2>
-<p>A feature comparison grid is the most natural thing to produce and the least useful thing to read. Every vendor has one. They all look favorable to the vendor that made them. The table below attempts something different: an honest snapshot of where each tool actually is, what it can’t do by design, and, critically, which capabilities you should care about first.</p>
-<p>The maturity tiers: <strong>Now</strong> = available and shipping in production. <strong>Emerging</strong> = available but limited, or in public preview. <strong>Directional</strong> = announced, demonstrated in research, or on a public roadmap but not yet usable at production scale. <strong>N/A</strong> = not applicable — the tool’s architecture doesn’t target this capability, and that’s a design choice, not a gap.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<div class="landscape">
-<div data-tbl-colwidths="[20,12,12,12,12,10,12,10]">
+<section id="materialize" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="materialize"><span class="header-section-number">12.3</span> Materialize</h2>
+<p>The lockfile says <em>what</em>; materialization decides <em>where</em>. The harness is the compiler (<a href="ch09-the-runtime-machine.html" class="quarto-xref"><span>Chapter 9</span></a>), and every compiler has opinions about source layout. The install step’s job is to put each resolved primitive at the path the local harness will parse — and only at that path. A skill the package manager downloaded from <code>acme/security-skill@1.4.2</code> becomes, on disk, <code>.github/skills/security/SKILL.md</code> for a Copilot project, <code>.claude/skills/security/SKILL.md</code> for a Claude Code project, or both for a project that targets multiple harnesses. The agentskills.io standard pinned the entrypoint name and the activation contract, which is why skills materialize cleanly across harnesses; scope-attached rules and persona files have not converged, which is why they do not.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>The cross-harness materialization picture, for a single project that targets several harnesses, looks like this:</p>
 <table class="caption-top table">
 <colgroup>
+<col style="width: 14%">
+<col style="width: 21%">
 <col style="width: 20%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 12%">
-<col style="width: 10%">
-<col style="width: 12%">
-<col style="width: 10%">
+<col style="width: 21%">
+<col style="width: 21%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Capability</th>
+<th>Concept</th>
 <th>GitHub Copilot</th>
+<th>Anthropic Claude Code</th>
 <th>Cursor</th>
-<th>Claude Code</th>
-<th>Windsurf</th>
-<th>OpenCode</th>
-<th>Amazon Q Developer</th>
-<th>JetBrains AI</th>
+<th>Codex / OpenCode</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>Code completion</td>
-<td>Now</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>Now</td>
+<td>Project-wide rules</td>
+<td><code>.github/copilot-instructions.md</code><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></td>
+<td><code>CLAUDE.md</code> at repo root<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></td>
+<td><code>.cursor/rules/*.mdc</code><a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></td>
+<td><code>AGENTS.md</code> at repo root<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></td>
 </tr>
 <tr class="even">
-<td>Chat / explain</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
+<td>Scope-attached rules</td>
+<td><code>.github/instructions/*.instructions.md</code> with <code>applyTo</code> glob</td>
+<td>Nested <code>CLAUDE.md</code> per subtree</td>
+<td><code>.cursor/rules/*.mdc</code> with <code>globs</code></td>
+<td>Nested <code>AGENTS.md</code> per subtree</td>
 </tr>
 <tr class="odd">
-<td>Multi-file editing</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Emerging</td>
-<td>Emerging</td>
+<td>Skill (module entrypoint)</td>
+<td><code>.github/skills/&lt;name&gt;/SKILL.md</code></td>
+<td><code>.claude/skills/&lt;name&gt;/SKILL.md</code></td>
+<td>(none — partial via rules)</td>
+<td>(none — partial via AGENTS.md)</td>
 </tr>
 <tr class="even">
-<td>Agent mode (in-editor)</td>
-<td>Now</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Emerging</td>
-<td>Emerging</td>
+<td>Persona / specialist</td>
+<td><code>.github/agents/&lt;name&gt;.agent.md</code></td>
+<td><code>.claude/agents/&lt;name&gt;.md</code></td>
+<td>(none, modes are global)</td>
+<td>(none — convention varies)</td>
 </tr>
 <tr class="odd">
-<td>Terminal / CLI agent</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>N/A</td>
-</tr>
-<tr class="even">
-<td>Autonomous PR creation</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Now</td>
-<td>Directional</td>
-<td>Directional</td>
-<td>Directional</td>
-<td>N/A</td>
-</tr>
-<tr class="odd">
-<td>Code review agent</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Directional</td>
-<td>Directional</td>
-<td>N/A</td>
-<td>Emerging</td>
-<td>Directional</td>
-</tr>
-<tr class="even">
-<td>Multi-model routing</td>
-<td>Now</td>
-<td>Now</td>
-<td>N/A</td>
-<td>Now</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Now</td>
-</tr>
-<tr class="odd">
-<td>Custom instructions / rules</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Emerging</td>
-<td>Emerging</td>
-</tr>
-<tr class="even">
-<td>Enterprise governance</td>
-<td>Now</td>
-<td>Emerging</td>
-<td>Emerging</td>
-<td>Emerging</td>
-<td>N/A</td>
-<td>Now</td>
-<td>Emerging</td>
-</tr>
-<tr class="odd">
-<td>Full SDLC platform</td>
-<td>Now</td>
-<td>Directional</td>
-<td>N/A</td>
-<td>N/A</td>
-<td>N/A</td>
-<td>Emerging</td>
-<td>N/A</td>
+<td>User-scope override</td>
+<td><code>.copilot/instructions/</code></td>
+<td><code>~/.claude/CLAUDE.md</code></td>
+<td>Cursor settings (account)</td>
+<td><code>~/.codex/AGENTS.md</code> and equivalents</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<p><strong>Where to look first.</strong> Not every row matters equally. If you’re a CTO deciding where to invest evaluation time, three capabilities separate “we have a coding tool” from “we have a strategy”:</p>
-<ol type="1">
-<li><strong>Custom instructions / rules.</strong> This is the mechanism that addresses the Vibe Coding Cliff. Without it, every agent interaction starts from zero context. With it, your architectural decisions, conventions, and constraints are loaded automatically. This is the row that determines whether AI tools get more reliable over time or stay permanently mediocre. All major tools support this now, but the implementations differ: GitHub Copilot uses custom instructions and <code>.github/copilot-instructions.md</code>, Cursor uses <code>.cursor/rules</code>, Claude Code uses <code>CLAUDE.md</code>, and OpenCode uses <code>.opencode/instructions.md</code>. The methodology in this book is portable across all of them. The pattern is more uniform than the file paths suggest: every harness treats the repository’s filesystem as the loader for what the agent sees on each invocation — Part III (For Practitioners) calls this the <em>agent source code</em> and makes the load lifecycle explicit in Chapter 12 (<a href="ch12-the-load-lifecycle.html" class="quarto-xref"><span>Chapter 12</span></a>). The file paths are vendor-specific. The mechanism is not.</li>
-<li><strong>Enterprise governance.</strong> Audit logs, SSO, data residency controls, policy enforcement. Without these, you’re flying blind on compliance. This is where coding tools and platforms diverge most sharply, and where “good enough for a developer” and “acceptable for the organization” are different conversations.</li>
-<li><strong>Autonomous PR creation and code review agents.</strong> These are the frontier capabilities that move AI from “helps me type faster” to “participates in my workflow.” They’re also where the governance gap is widest — an agent that can open a PR or approve a review needs the same trust framework you’d apply to a new hire.</li>
-</ol>
-<p>The rest of the matrix (completion, chat, multi-file editing) is table stakes. Every serious tool does it. Don’t let a vendor differentiate on capabilities that stopped being differentiators in 2024.</p>
-<p>One more thing the matrix can’t show you: <strong>architecture shapes capability.</strong> Claude Code has no code completion and no in-editor agent mode because it’s a CLI tool, not an editor plugin — that’s a design decision, not a deficiency. Cursor has no terminal agent because it’s an editor-first experience. OpenCode is a terminal-native tool like Claude Code, focused on CLI workflows with multi-model routing — it’s the newest entrant and its capability set is still expanding. JetBrains AI doesn’t do autonomous PRs because it’s focused on the IDE experience. The N/A cells matter as much as the Now cells — they tell you what each tool is <em>trying to be</em>, which tells you whether it fits your workflow.</p>
-<p>As of mid-2025, Microsoft’s tools (GitHub Copilot + GitHub platform) cover the broadest set of categories across both coding-tool and platform dimensions.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> This is a factual observation; the author works at Microsoft and discloses this. Whether breadth matters more than depth at any given capability is a decision each organization makes for itself.</p>
+<p>The table is the cheat sheet. The lesson behind it is that materialization is a translation step, not a copy step. A monorepo that ships primitives for three harnesses pays the translation cost once, at install time, by emitting three layouts side by side. A project that maintains a single <code>AGENTS.md</code> and trusts every harness to pick it up pays the translation cost differently — it accepts that AGENTS.md-aware harnesses (Codex, OpenCode, increasingly Claude Code via convention) get the rules and Copilot does not.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> Either choice is defensible; choosing without knowing is the error.</p>
+<p>Materialization also surfaces the <em>bundle leakage</em> failure. When a published module ships with files outside its declared distribution boundary — eval scenarios, contributor scratch notes, dev-only fixtures — the consumer’s installer will happily place those files into the consumer’s harness layout, where the dispatcher may match against them as if they were real primitives.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> The cure is to keep maintainer-only files outside the directory the package manager auto-publishes, so the install step never has them to materialize. This is a publisher-side discipline; it appears here because the failure mode it prevents is a load-lifecycle failure on the consumer’s side.</p>
 <hr>
 </section>
-<section id="how-these-tools-are-priced" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="how-these-tools-are-priced"><span class="header-section-number">2.5</span> How These Tools Are Priced</h2>
-<p>Dollar figures go stale fast, so here’s the underlying pattern. AI coding tools follow three pricing models: <strong>per-seat subscription</strong> (Copilot, Cursor, Windsurf — flat monthly per developer), <strong>usage-based</strong> (API-driven tools like Claude Code — you pay for tokens consumed), and <strong>platform-bundled</strong> (AI capabilities included in a broader DevOps or cloud platform tier, as with Amazon Q and GitHub Enterprise). Enterprise tiers that add governance, SSO, and audit controls typically run 2–4× the individual price, depending on the vendor. The budget conversation that matters isn’t “what does the tool cost?” but “what does the tool cost relative to the developer time it displaces, and does the enterprise tier’s governance premium justify avoiding the shadow IT remediation cost?” Chapter 3 builds the business case for that math.</p>
-<hr>
-</section>
-<section id="two-buying-motions-one-problem" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="two-buying-motions-one-problem"><span class="header-section-number">2.6</span> Two Buying Motions, One Problem</h2>
-<p>How AI development tools enter an organization determines how governable they are.</p>
-<p><strong>Bottom-up adoption.</strong> A developer discovers Claude Code or Cursor, pays for a personal subscription (or uses a free tier), and begins using it on company code. The tool is fast. The developer gets more done. Colleagues notice. Within weeks, a team of twelve engineers may have eight people using different AI tools, none approved by IT, none covered by the company’s data processing agreements, none visible in security audit logs.</p>
-<p>This is shadow IT with a new coat of paint, and it carries the same risks: code flowing through unapproved APIs, intellectual property entering training datasets without consent, security and compliance policies circumvented not maliciously but inadvertently, because nobody told the developer that the tool’s terms of service include data retention they’d never accept for a production database.</p>
-<p><strong>Top-down mandates.</strong> Leadership selects a platform, negotiates an enterprise agreement, and rolls it out. The tools are governed, auditable, and compliant. The problem: developers may already prefer the tool they chose themselves. A top-down mandate that doesn’t match what developers actually use creates resentment, workarounds, and, in the worst case, developers continuing to use their preferred tool in parallel with the mandated one, creating the worst of both worlds: the cost of enterprise licensing and the risk of ungoverned usage.</p>
-<p><strong>The winning strategy addresses both motions simultaneously.</strong> Evaluate the tools developers are already using. Understand why they chose them. Then select a platform that satisfies the governance requirements leadership needs while providing the developer experience that drives voluntary adoption. This is harder than either approach alone, and it is the only one that works.</p>
-<p>A useful diagnostic: survey your engineering teams this week. Ask three questions: (1) Which AI coding tools are you currently using? (2) Are you using a personal or company-provided account? (3) What would you lose if the tool were removed?</p>
-<p>The answers will tell you whether you have a strategy or a gap.</p>
-<hr>
-</section>
-<section id="the-8-phase-evaluation-framework" class="level2" data-number="2.7">
-<h2 data-number="2.7" class="anchored" data-anchor-id="the-8-phase-evaluation-framework"><span class="header-section-number">2.7</span> The 8-Phase Evaluation Framework</h2>
-<p>Most AI tool evaluations focus on the coding phase. This is like evaluating a car by testing only the engine — you learn something, but you miss everything that determines whether the thing actually gets you where you’re going. Software delivery spans eight phases. If you’re only measuring AI’s impact on one of them, you’re not evaluating — you’re guessing.</p>
-<p><strong>The insight most organizations miss: code generation is the <em>most mature</em> phase — the one with the most capable tooling and the highest adoption. Plan, Test, and Review are where the next wave of high-value AI assistance will land — and where structured context (the kind this book teaches you to build) makes the difference between useful automation and expensive noise.</strong></p>
-<div data-tbl-colwidths="[12,30,30,28]">
+<section id="bind" class="level2" data-number="12.4">
+<h2 data-number="12.4" class="anchored" data-anchor-id="bind"><span class="header-section-number">12.4</span> Bind</h2>
+<p>A file at the right path is not yet a load. Binding is the harness’s classification step, run once at session start: for every materialized file the harness can see, decide <em>how</em> and <em>when</em> its body should reach the model. There are three binding modes, and they correspond to three points in the session timeline.</p>
+<p><strong>Eager preload.</strong> The file is read into context at session start, regardless of what the user has asked for. Project-wide rules are eager: Copilot’s <code>copilot-instructions.md</code>, Claude Code’s root <code>CLAUDE.md</code>, every harness’s <code>AGENTS.md</code> at the project root.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> <a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> <a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a> Scope-attached rules are eager but conditioned on a path predicate — Copilot’s <code>.instructions.md</code> files load eagerly the moment a thread touches a path matching their <code>applyTo</code> glob; Claude Code’s nested <code>CLAUDE.md</code> files load eagerly the moment a thread starts work in their subtree.<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a> Eager loads are deterministic. The harness either loads them or it does not, and you can predict which by reading the frontmatter and the path. Eager loads are also the budget consumers most likely to crowd out everything else, which is the failure mode Priya hit.</p>
+<p><strong>Lazy on-demand.</strong> The file is registered with the dispatcher at session start, but its body is not loaded until the dispatcher decides the current task warrants it. Skills are the canonical lazy primitive: the agentskills.io contract is that the <em>description</em> loads eagerly into a small registry, and the <em>body</em> loads only when the description matches the user’s task or the agent’s current step.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a> Lazy loads are partly probabilistic — the matching is description-driven and depends on the model’s reading of both the description and the task. They are the source of “my skill should have fired but did not” reports, and they are also the design pattern that lets a project ship a hundred specialist skills without burning the budget on any single session.</p>
+<p><strong>Dispatcher-mediated.</strong> The file is neither eager nor offered to the activation matcher. Instead, it sits behind a dispatcher — a Task tool, a sub-agent invocation, a wave protocol — that another primitive must invoke explicitly. Specialist persona files (<code>.github/agents/*.agent.md</code>, <code>.claude/agents/*.md</code>) are dispatcher-mediated; they only enter context when a parent thread spawns a child thread and names them. Panel skills, fan-out workers, and any primitive that runs in its own context window belong here. Dispatcher-mediated primitives have the cleanest budget story — they cost nothing in the parent session — and the most explicit invocation contract.</p>
+<p>The three modes map cleanly onto the project’s filesystem layout, and the mapping is what gives the agent stack trace its shape:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 12%">
-<col style="width: 30%">
-<col style="width: 30%">
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 39%">
 <col style="width: 28%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>Phase</th>
-<th>What happens</th>
-<th>What “good” looks like</th>
-<th>Your current state</th>
+<th>Primitive type</th>
+<th>Binding mode</th>
+<th>Loaded when</th>
+<th>Budget cost</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Ideate</strong></td>
-<td>Requirements gathering, research, exploration</td>
-<td>Agents surface prior art, draft specs from rough notes, and flag conflicting requirements before a human commits to a direction.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
+<td>Project-wide rules</td>
+<td>Eager preload</td>
+<td>Every session, immediately at start</td>
+<td>Paid every session, unconditionally</td>
 </tr>
 <tr class="even">
-<td><strong>Plan</strong></td>
-<td>Architecture decisions, task breakdown, estimation</td>
-<td>Agents generate ADRs, decompose epics into sized tasks, and produce dependency graphs that a tech lead reviews rather than builds from scratch.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
+<td>Scope-attached rules</td>
+<td>Eager (conditioned)</td>
+<td>Whenever a thread touches a matching path</td>
+<td>Paid on every session matching the scope</td>
 </tr>
 <tr class="odd">
-<td><strong>Code</strong></td>
-<td>Implementation, code generation, refactoring</td>
-<td>Agents produce code that respects your conventions, calls your actual APIs, and passes your linter on the first attempt — not just code that compiles.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
+<td>Persona file (specialist)</td>
+<td>Dispatcher-mediated</td>
+<td>Parent spawns a child thread and names the persona</td>
+<td>Paid only inside the child’s context</td>
 </tr>
 <tr class="even">
-<td><strong>Build</strong></td>
-<td>Compilation, dependency resolution, packaging</td>
-<td>Agents diagnose build failures, suggest dependency fixes, and resolve CI errors without a human reading the full log.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
+<td>Skill (<code>SKILL.md</code>)</td>
+<td>Lazy on-demand</td>
+<td>Description matches the task; dispatcher pulls the body</td>
+<td>Description: small, eager; body: full, on activation</td>
 </tr>
 <tr class="odd">
-<td><strong>Test</strong></td>
-<td>Unit tests, integration tests, test generation</td>
-<td>Agents generate tests that cover edge cases your team would write manually, achieve meaningful coverage increases, and don’t just parrot the implementation.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="even">
-<td><strong>Review</strong></td>
-<td>Code review, security review, standards checks</td>
-<td>Agents catch real issues — not style nits — and produce review comments specific enough that the author can act on them without a follow-up conversation.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="odd">
-<td><strong>Release</strong></td>
-<td>Deployment, release management, changelog</td>
-<td>Agents draft changelogs from commit history, flag breaking changes, and automate the mechanical parts of release so humans focus on go/no-go decisions.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
-</tr>
-<tr class="even">
-<td><strong>Operate</strong></td>
-<td>Monitoring, incident response, observability</td>
-<td>Agents correlate alerts to recent deployments, draft incident timelines, and suggest rollback actions — reducing mean-time-to-diagnose, not replacing on-call judgment.</td>
-<td>☐ Automated ☐ Assisted ☐ Manual</td>
+<td>Sub-agent / wave panel</td>
+<td>Dispatcher-mediated</td>
+<td>Parent invokes the dispatcher and the dispatcher selects</td>
+<td>Paid in each spawned child, not the parent</td>
 </tr>
 </tbody>
 </table>
-</div>
-<p>These eight phases group into three buckets that map to how leaders plan and budget:</p>
-<ul>
-<li><strong>Intent</strong> (Ideate + Plan): what are we building and why?</li>
-<li><strong>Build</strong> (Code + Build + Test + Review): turning intent into verified software.</li>
-<li><strong>Operate</strong> (Release + Operate): getting software to users and keeping it running.</li>
-</ul>
-<p>Most organizations in mid-2025 have agent assistance concentrated in the Code phase, partial coverage in Test and Review, and minimal or no coverage in everything else. That’s not a failure — Code was the most tractable phase to automate, and the tools started there. But it’s incomplete, and staying there means you’re optimizing the cheapest part of the process. The highest-value gains in the next 12–18 months will come from extending agent assistance into Plan, Test, and Review — phases where the work is expensive, the feedback loops are slow, and structured context can drive reliable automation.</p>
-<p>Fill in the checkboxes for your organization. The pattern of checks tells you where you have coverage, where you have gaps, and where your next pilot should focus.</p>
+<p>A primitive’s binding mode is not a stylistic choice; it is set by the file name, the folder, and the frontmatter. Move a skill body into an instructions file, and it switches from lazy to eager. Move an instructions file into a skill folder and remove its <code>applyTo</code>, and it switches from eager-conditioned to lazy. The lifecycle phase that owns this transformation is materialize, not author — which is why portability between harnesses sometimes requires more than copying text. Maya’s <code>api.instructions.md</code> from <a href="ch09-the-runtime-machine.html" class="quarto-xref"><span>Chapter 9</span></a> ports to Claude Code only if its content stays eager, which is why the recommended translation is a <code>CLAUDE.md</code> <code>@path</code> import, not a skill.</p>
 <hr>
 </section>
-<section id="inaction-is-a-decision" class="level2" data-number="2.8">
-<h2 data-number="2.8" class="anchored" data-anchor-id="inaction-is-a-decision"><span class="header-section-number">2.8</span> Inaction Is a Decision</h2>
-<p>The most dangerous position in the current market is “wait and see.” It feels like prudence. It is actually a decision — to let your developers self-select tools, to defer governance until a breach forces the conversation, and to fall behind organizations that are building the structured context that makes AI tools reliable. Here is what “wait and see” costs:</p>
-<p><strong>Talent risk.</strong> Developers increasingly expect AI tooling as a workplace standard. A 2023 GitHub-commissioned survey (Wakefield Research, n=500, U.S. enterprise developers at companies with 1,000+ employees) found that 92% report using AI coding tools at work or personally.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Offering no supported AI tools — or restricting them to basic autocomplete — makes your organization less attractive to the engineers you’re competing to hire and retain.</p>
-<p><strong>Shadow IT risk.</strong> Every month without a sanctioned tool is a month where developers find their own solutions. Each unsanctioned tool introduces data residency questions, IP exposure, and compliance gaps that compound over time. The remediation cost of unwinding six months of shadow AI usage is nontrivial.</p>
-<p><strong>Context accumulation risk.</strong> This is the least obvious and most consequential cost. The organizations investing now in structured context — documented conventions, machine-readable architecture decisions, curated instruction sets — are building a compounding asset. Their AI tools get more reliable over time. Yours, when you eventually adopt, will start from zero. The gap between “adopted in 2025” and “adopted in 2027” is not two years of tool usage — it is two years of context that the early adopter’s agents can use and yours cannot. Chapter 4 covers this in detail.</p>
-<p><strong>Competitive risk.</strong> If your competitors ship features faster because their developers can delegate routine implementation to agents while yours cannot, the productivity gap is not theoretical. It shows up in release cadence, in time-to-market, and in the quality of the problems your engineers spend their attention on.</p>
-<p>None of this is an argument for rushing. It is an argument for informed action. The decision matrix below provides a starting framework:</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Action</th>
-<th>Timeline</th>
-<th>What it requires</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Audit current usage</strong></td>
-<td>This week</td>
-<td>Survey engineering teams; catalog which tools are in use</td>
-</tr>
-<tr class="even">
-<td><strong>Evaluate coding-phase tools</strong></td>
-<td>This month</td>
-<td>Trial 2-3 options with a representative team</td>
-</tr>
-<tr class="odd">
-<td><strong>Establish governance baseline</strong></td>
-<td>This quarter</td>
-<td>Data residency policy, approved tool list, usage guidelines</td>
-</tr>
-<tr class="even">
-<td><strong>Pilot agentic capabilities</strong></td>
-<td>Next quarter</td>
-<td>Select one team, one workflow, measure before and after</td>
-</tr>
-<tr class="odd">
-<td><strong>Extend to adjacent phases</strong></td>
-<td>6-12 months</td>
-<td>Test, Review, and Plan phase automation with structured context</td>
-</tr>
-<tr class="even">
-<td><strong>Full lifecycle strategy</strong></td>
-<td>12-18 months</td>
-<td>Platform selection, organizational context investment, governance maturity</td>
-</tr>
-</tbody>
-</table>
-<p>The first two rows require no budget, no procurement, and no organizational change. They require a decision to look. That is where this starts.</p>
+<section id="activate" class="level2" data-number="12.5">
+<h2 data-number="12.5" class="anchored" data-anchor-id="activate"><span class="header-section-number">12.5</span> Activate</h2>
+<p>The first three phases are deterministic. The fourth is not. Once the harness has bound every materialized file to a load mode, the dispatcher runs at every decision point and selects which lazy primitives to actually pull into context. This is the phase Priya’s debugging time was burned in, and it is the phase developers most often confuse with the previous three.</p>
+<p>What makes activation deterministic versus probabilistic is itself enumerable, and the enumeration is the most useful thing this chapter has to offer:</p>
+<ul>
+<li><strong>Path predicates are deterministic.</strong> An <code>applyTo</code> glob either matches the current working path or it does not. There is no model in the loop. If your scope-attached rule did not bind, either the path does not match the glob or the glob is malformed; both are testable in seconds.</li>
+<li><strong>Frontmatter validity is deterministic.</strong> A YAML parser either accepts the frontmatter or it does not. A skill with a malformed frontmatter is invisible to the dispatcher; the harness’s verbose log will say so.<a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a></li>
+<li><strong>The lockfile-driven closure is deterministic.</strong> Once the manifest is resolved and pinned, the set of files materialized is fixed. The same <code>apm install</code> against the same lockfile produces the same layout on every machine.</li>
+<li><strong>Description matching is probabilistic.</strong> When a skill’s <code>description</code> is the only signal the dispatcher has, the match is the model’s reading of the description against the model’s reading of the current task. Two activations of the same skill on similar-but-not-identical tasks may differ. Description grammar matters: precise verbs, named triggers (“when authoring Alembic migrations”), explicit scope predicates (“under <code>migrations/versions/</code>”) raise hit rate; vague descriptions lower it.<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a></li>
+<li><strong>Budget pressure is probabilistic.</strong> When the eager preloads have already consumed a large fraction of the budget — Priya’s 6,200-token Python instructions file, an over-eager <code>applyTo: "**"</code> rule, a project-wide <code>CLAUDE.md</code> that grew to 800 lines — the dispatcher down-ranks lazy candidates that are not strictly required. The skill the user expected is not unloaded; it is <em>un-considered</em>. Verbose logs show this as a candidate that was registered but never pulled.</li>
+</ul>
+<p>These five lines of activation contract are what convert a Monday-morning failure into a Monday-morning fix. A skill that does not bind has failed at exactly one of those bullets, and each bullet has a falsifiable test. Glob mismatch: <code>git ls-files | grep -E "&lt;glob-as-regex&gt;"</code>. Frontmatter: <code>yamllint</code> on the file. Lockfile: <code>apm install --dry-run</code>. Description: read the verbose log entry that says <em>did not match</em>. Budget: read the verbose log entry that says <em>registered but not pulled</em>. The agent stack trace described in Ch18 is built on these tests; this chapter is what makes them sensible.</p>
+<p>The PROSE specification (<a href="ch11-the-prose-specification.html" class="quarto-xref"><span>Chapter 11</span></a>) is the normative side of the same story. P (Progressive Disclosure) is what keeps eager preload modest enough that lazy activation has budget room to maneuver. R (Reduced Scope) is what keeps <code>applyTo</code> globs from over-eagerly pulling in rules. O (Orchestrated Composition) is what keeps the binding modes coherent across primitives that work together. The constraints in Ch11 are not preference; they are the disciplines required to keep activation predictable. This chapter is the substrate they sit on.</p>
 <hr>
-<p>The market is moving. Your developers are moving with it. The question this chapter should have settled is not <em>what</em> to buy — that requires the business case in Chapter 3 and the reference architecture in Chapter 4. The question is whether you’re making deliberate decisions about a shift that is already happening inside your organization, or whether you’re discovering it after the fact.</p>
-<p>Chapter 3 builds the honest business case: what AI-assisted development actually costs, what it actually delivers, and how to measure value without inflating the numbers.</p>
+</section>
+<section id="what-this-chapter-does-not-cover" class="level2" data-number="12.6">
+<h2 data-number="12.6" class="anchored" data-anchor-id="what-this-chapter-does-not-cover"><span class="header-section-number">12.6</span> What this chapter does NOT cover</h2>
+<p>The lifecycle described here is the deterministic mechanics of <em>content reaching the model</em>. It stops at the moment the dispatcher decides what to load. What happens <em>inside</em> the model — how attention degrades over a long context window, why an 800-line instruction file produces worse output than a focused 40-line one even when both fit, how a session’s accumulated tool output crowds out the rules set at the start, how the agent should write a plan to a file mid-session and re-read it at decision points — is the <em>attention and context economy</em>, and it is the subject of <a href="ch13-attention-and-context-economy.html" class="quarto-xref"><span>Chapter 13</span></a>.</p>
+<p>The two chapters split a single discipline along a real seam. The deterministic side, here, is the one with the lockfile, the verbose log, the path predicate, the binding mode. The probabilistic side, next, is the one with the working set, the attention curve, the plan memento, the bounded-scope rule for grounding. A team that has internalized both can debug almost every “why did my agent do that?” report by asking, in order: <em>did the file load?</em> (this chapter), and <em>did the model attend to it once it loaded?</em> (the next).</p>
+<p>Genesis names the same split with substrate vocabulary: composition is what determines the closure that materializes; activation is what the dispatcher does with the closure once the session is alive.<a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> <a href="#fn21" class="footnote-ref" id="fnref21" role="doc-noteref"><sup>21</sup></a> Reading those substrate notes alongside the next chapter is the fastest way to make the seam concrete.</p>
+<hr>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>TL;DR — Resolve, Materialize, Bind, Activate
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Resolve</strong> the dependency graph and pin the closure. Every transitive primitive that loads must be in the lockfile, or it is a phantom.</li>
+<li><strong>Materialize</strong> files at the harness’s expected paths. The same primitive lands in different folders in Copilot, Claude Code, Cursor, Codex, and OpenCode. The translation is mechanical, not magical.</li>
+<li><strong>Bind</strong> every file into one of three modes — eager preload, lazy on-demand, dispatcher-mediated. The mode is set by file name, folder, and frontmatter, not by intent.</li>
+<li><strong>Activate</strong> the right primitives per task. Path predicates, lockfiles, and frontmatter are deterministic; description matching and budget pressure are probabilistic. Verbose logs surface both.</li>
+<li><strong>When a primitive is silent, ask which phase failed first.</strong> Each of the four has a one-minute test. The hour Priya lost is the hour you do not have to.</li>
+</ol>
+</div>
+</div>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Third-party analyses (e.g., Sacra, 2024) estimated Cursor’s ARR at $100M+ by early 2025, citing publicly observable hiring, usage, and fundraising signals. Anysphere (Cursor’s parent company) has not confirmed a specific revenue figure. Treat these estimates as directional, not authoritative.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Microsoft reported GitHub Copilot metrics in its FY2024 and FY2025 quarterly earnings. See Microsoft Investor Relations quarterly earnings transcripts at <a href="https://www.microsoft.com/en-us/investor">microsoft.com/en-us/investor</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>Ratings reflect the author’s assessment as of early 2025, based on official vendor documentation and hands-on evaluation. Capabilities evolve rapidly; consult vendor documentation for current status. Sources: <a href="https://docs.github.com/en/copilot/about-github-copilot/github-copilot-features">GitHub Copilot features</a>, <a href="https://www.cursor.com/features">Cursor features</a>, <a href="https://aws.amazon.com/q/developer/">Amazon Q Developer</a>, <a href="https://codeium.com/windsurf">Windsurf</a>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>Landscape snapshot as of mid-2025. The competitive landscape evolves quarterly; verify current capabilities at each vendor’s site before making tool decisions.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>GitHub, “Survey Reveals AI’s Impact on the Developer Experience,” June 2023. Survey conducted by Wakefield Research among 500 U.S.-based developers at companies with 1,000+ employees. See <a href="https://github.blog/news-insights/research/survey-reveals-ais-impact-on-the-developer-experience/">github.blog</a>.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>GitHub, “Adding custom instructions for GitHub Copilot,” <code>https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot</code>. Copilot loads <code>.github/copilot-instructions.md</code> at every session and <code>.github/instructions/*.instructions.md</code> files conditionally on the <code>applyTo</code> frontmatter glob matching the working path. Verbose mode (<code>gh copilot --verbose</code>, IDE-equivalent log panes) prints the materialized load order and the activation outcome of each candidate primitive.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>APM CLI documentation, “Dependency resolution and lockfile semantics,” <code>https://github.com/microsoft/apm</code>. The <code>apm install</code> command resolves the declared dependency graph, walks each transitive edge to its published source, and writes the resolved closure to <code>apm.lock</code>. The lockfile pins each module to a specific version or commit so that subsequent installs on different machines materialize the same closure. The <code>--dry-run</code> flag prints the closure without writing files; <code>apm compile --dry-run</code> prints the materialized layout for the current harness without modifying it.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The transitive-closure framing, the composition modes (inline / local sibling / external module), and the phantom-dependency / bundle-leakage failure pair are taken from <code>danielmeppiel/genesis</code>, <code>assets/composition-substrate.md</code>. <em>Agent-side reference; substrate concept.</em><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>APM CLI documentation, “Dependency resolution and lockfile semantics,” <code>https://github.com/microsoft/apm</code>. The <code>apm install</code> command resolves the declared dependency graph, walks each transitive edge to its published source, and writes the resolved closure to <code>apm.lock</code>. The lockfile pins each module to a specific version or commit so that subsequent installs on different machines materialize the same closure. The <code>--dry-run</code> flag prints the closure without writing files; <code>apm compile --dry-run</code> prints the materialized layout for the current harness without modifying it.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The transitive-closure framing, the composition modes (inline / local sibling / external module), and the phantom-dependency / bundle-leakage failure pair are taken from <code>danielmeppiel/genesis</code>, <code>assets/composition-substrate.md</code>. <em>Agent-side reference; substrate concept.</em><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>agentskills.io, the open registry standard for the <code>SKILL.md</code> entrypoint with description-driven activation. Adopted in substantially compatible form by Copilot (<code>.github/skills/&lt;name&gt;/SKILL.md</code>) and Claude Code (<code>.claude/skills/&lt;name&gt;/SKILL.md</code>). The contract: descriptions load eagerly into a small registry; bodies load lazily only when the dispatcher selects the skill for the current task. Skills port across harnesses more cleanly than scope-attached rules because the standard pinned the file name and the activation contract.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>GitHub, “Adding custom instructions for GitHub Copilot,” <code>https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot</code>. Copilot loads <code>.github/copilot-instructions.md</code> at every session and <code>.github/instructions/*.instructions.md</code> files conditionally on the <code>applyTo</code> frontmatter glob matching the working path. Verbose mode (<code>gh copilot --verbose</code>, IDE-equivalent log panes) prints the materialized load order and the activation outcome of each candidate primitive.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>Anthropic, “Claude Code: Memory,” <code>https://docs.claude.com/en/docs/claude-code/memory</code>. Claude Code reads <code>CLAUDE.md</code> from the project root, then walks the directory tree applying the closest nested <code>CLAUDE.md</code> to work in that subtree. The body may import other markdown via the <code>@path</code> syntax, which inlines the imported file at load time. There is no glob predicate; hierarchy is the only scope selector.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Cursor, “Rules for AI,” <code>https://docs.cursor.com/context/rules-for-ai</code>. Cursor stores scoped rules in <code>.cursor/rules/</code> as <code>.mdc</code> files whose frontmatter declares <code>globs:</code> and a rule type. The same substrate concept as Copilot’s instructions and Claude Code’s nested memories, with incompatible surface syntax.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>The AGENTS.md convention, <code>https://agents.md</code>. A single markdown file at the project root (and optionally nested) that AGENTS.md-aware harnesses load eagerly at session start. Adopted by Codex, OpenCode, and increasingly compatible across other harnesses as a portable lingua franca for project-scope rules.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>The AGENTS.md convention, <code>https://agents.md</code>. A single markdown file at the project root (and optionally nested) that AGENTS.md-aware harnesses load eagerly at session start. Adopted by Codex, OpenCode, and increasingly compatible across other harnesses as a portable lingua franca for project-scope rules.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>The transitive-closure framing, the composition modes (inline / local sibling / external module), and the phantom-dependency / bundle-leakage failure pair are taken from <code>danielmeppiel/genesis</code>, <code>assets/composition-substrate.md</code>. <em>Agent-side reference; substrate concept.</em><a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>GitHub, “Adding custom instructions for GitHub Copilot,” <code>https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot</code>. Copilot loads <code>.github/copilot-instructions.md</code> at every session and <code>.github/instructions/*.instructions.md</code> files conditionally on the <code>applyTo</code> frontmatter glob matching the working path. Verbose mode (<code>gh copilot --verbose</code>, IDE-equivalent log panes) prints the materialized load order and the activation outcome of each candidate primitive.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Anthropic, “Claude Code: Memory,” <code>https://docs.claude.com/en/docs/claude-code/memory</code>. Claude Code reads <code>CLAUDE.md</code> from the project root, then walks the directory tree applying the closest nested <code>CLAUDE.md</code> to work in that subtree. The body may import other markdown via the <code>@path</code> syntax, which inlines the imported file at load time. There is no glob predicate; hierarchy is the only scope selector.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>The AGENTS.md convention, <code>https://agents.md</code>. A single markdown file at the project root (and optionally nested) that AGENTS.md-aware harnesses load eagerly at session start. Adopted by Codex, OpenCode, and increasingly compatible across other harnesses as a portable lingua franca for project-scope rules.<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>Anthropic, “Claude Code: Memory,” <code>https://docs.claude.com/en/docs/claude-code/memory</code>. Claude Code reads <code>CLAUDE.md</code> from the project root, then walks the directory tree applying the closest nested <code>CLAUDE.md</code> to work in that subtree. The body may import other markdown via the <code>@path</code> syntax, which inlines the imported file at load time. There is no glob predicate; hierarchy is the only scope selector.<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p>agentskills.io, the open registry standard for the <code>SKILL.md</code> entrypoint with description-driven activation. Adopted in substantially compatible form by Copilot (<code>.github/skills/&lt;name&gt;/SKILL.md</code>) and Claude Code (<code>.claude/skills/&lt;name&gt;/SKILL.md</code>). The contract: descriptions load eagerly into a small registry; bodies load lazily only when the dispatcher selects the skill for the current task. Skills port across harnesses more cleanly than scope-attached rules because the standard pinned the file name and the activation contract.<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>GitHub, “Adding custom instructions for GitHub Copilot,” <code>https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot</code>. Copilot loads <code>.github/copilot-instructions.md</code> at every session and <code>.github/instructions/*.instructions.md</code> files conditionally on the <code>applyTo</code> frontmatter glob matching the working path. Verbose mode (<code>gh copilot --verbose</code>, IDE-equivalent log panes) prints the materialized load order and the activation outcome of each candidate primitive.<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>agentskills.io, the open registry standard for the <code>SKILL.md</code> entrypoint with description-driven activation. Adopted in substantially compatible form by Copilot (<code>.github/skills/&lt;name&gt;/SKILL.md</code>) and Claude Code (<code>.claude/skills/&lt;name&gt;/SKILL.md</code>). The contract: descriptions load eagerly into a small registry; bodies load lazily only when the dispatcher selects the skill for the current task. Skills port across harnesses more cleanly than scope-attached rules because the standard pinned the file name and the activation contract.<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>The transitive-closure framing, the composition modes (inline / local sibling / external module), and the phantom-dependency / bundle-leakage failure pair are taken from <code>danielmeppiel/genesis</code>, <code>assets/composition-substrate.md</code>. <em>Agent-side reference; substrate concept.</em><a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn21"><p>The eager / lazy / dispatcher-mediated binding-mode taxonomy generalizes the six runtime affordances enumerated in <code>danielmeppiel/genesis</code>, <code>assets/runtime-affordances/common.md</code> — persona scoping, module entrypoint (skill), scope-attached rule, child-thread spawn, trigger orchestrator, plan persistence — to whichever harness the project is materializing into. <em>Agent-side reference; substrate concept.</em><a href="#fnref21" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1506,13 +1253,13 @@ Figure&nbsp;2.1: Four phases of AI-assisted development evolution
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="pagination-link" aria-label="The Agentic SDLC Thesis">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span>
+      <a href="../handbook/ch11-the-prose-specification.html" class="pagination-link" aria-label="The PROSE Specification">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../handbook/ch03-the-business-case.html" class="pagination-link" aria-label="The Business Case">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The Business Case</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../handbook/ch13-attention-and-context-economy.html" class="pagination-link" aria-label="Attention and Context Economy">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Attention and Context Economy</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

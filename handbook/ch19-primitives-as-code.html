@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Daniel Meppiel">
 
-<title>The Agentic SDLC Handbook</title>
+<title>19&nbsp; Primitives as Code – The Agentic SDLC Handbook</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -62,29 +61,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./download.html" rel="next">
-<link href="./favicon.ico" rel="icon">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ff2f4ec1d259fce0384f9161ba8dc8d9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-5fd27172600e68466385c3ad0c7c1019.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-ff2f4ec1d259fce0384f9161ba8dc8d9.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../case-study-apm-overhaul.html" rel="next">
+<link href="../handbook/ch18-anti-patterns-and-failure-modes.html" rel="prev">
+<link href="../favicon.ico" rel="icon">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-c25b1cc7189173f1b155a78bf3851d93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark-b58c5230e9b388ddf91b946a2f6918fc.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../site_libs/bootstrap/bootstrap-c25b1cc7189173f1b155a78bf3851d93.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -112,8 +112,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
-<link rel="icon" type="image/svg+xml" href="./agentic-sdlc-handbook/favicon.svg">
-<link rel="apple-touch-icon" href="./agentic-sdlc-handbook/apple-touch-icon.png">
+<meta name="mermaid-theme" content="neutral">
+<script src="../site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="../site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="../site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="../agentic-sdlc-handbook/favicon.svg">
+<link rel="apple-touch-icon" href="../agentic-sdlc-handbook/apple-touch-icon.png">
 <meta name="dc.rights" content="CC BY-NC-ND 4.0">
 <meta name="dc.rights.uri" content="https://creativecommons.org/licenses/by-nc-nd/4.0/">
 <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
@@ -147,7 +151,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<link rel="stylesheet" href="styles/handbook-cover.css">
+<link rel="stylesheet" href="../styles/handbook-cover.css">
 </head>
 
 <body class="nav-sidebar floating quarto-light"><script id="quarto-html-before-body" type="application/javascript">
@@ -321,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Preface</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch19-primitives-as-code.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Primitives as Code</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -336,7 +340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">The Agentic SDLC Handbook</a> 
+      <a href="../">The Agentic SDLC Handbook</a> 
         <div class="sidebar-tools-main tools-wide">
     <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
     <div class="dropdown">
@@ -374,13 +378,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./download.html" class="sidebar-item-text sidebar-link">
+  <a href="../download.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Download</span></a>
   </div>
 </li>
@@ -395,7 +399,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch01-the-agentic-sdlc-thesis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">The Agentic SDLC Thesis</span></span></a>
   </div>
 </li>
@@ -412,37 +416,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch02-the-ai-native-landscape.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">The AI-Native Landscape</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch03-the-business-case.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">The Business Case</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch04-the-reference-architecture.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">The Agentic SDLC Reference Architecture</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch05-governance-for-ai-assisted-delivery.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Governance for AI-Assisted Delivery</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch06-team-structures.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Team Structures for AI-Augmented Delivery</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch07-planning-the-transition.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Planning the Transition</span></span></a>
   </div>
 </li>
@@ -459,73 +463,73 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch08-the-practitioners-mindset.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">The Practitioner’s Mindset</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch09-the-runtime-machine.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch09-the-runtime-machine.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">The Agentic Runtime Machine</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch10-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch10-the-instrumented-codebase.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">The Instrumented Codebase</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch11-the-prose-specification.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch11-the-prose-specification.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">The PROSE Specification</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch12-the-load-lifecycle.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch12-the-load-lifecycle.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Load Lifecycle</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch13-attention-and-context-economy.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch13-attention-and-context-economy.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Attention and Context Economy</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch14-deterministic-probabilistic-boundary.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch14-deterministic-probabilistic-boundary.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Deterministic/Probabilistic Boundary</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch15-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch15-multi-agent-orchestration.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Multi-Agent Orchestration</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch16-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch16-the-execution-meta-process.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Execution Meta-Process</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch17-architectural-patterns-rosetta-stone.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch17-architectural-patterns-rosetta-stone.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Architectural Patterns: A Rosetta Stone</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch18-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch18-anti-patterns-and-failure-modes.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch19-primitives-as-code.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch19-primitives-as-code.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Primitives as Code</span></span></a>
   </div>
 </li>
@@ -542,25 +546,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./case-study-apm-overhaul.html" class="sidebar-item-text sidebar-link">
+  <a href="../case-study-apm-overhaul.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The APM Auth + Logging Overhaul</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
+  <a href="../case-study-handbook-writing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Writing a ~68,000-Word Book with Agent Fleets</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./case-study-publishing-pipeline.html" class="sidebar-item-text sidebar-link">
+  <a href="../case-study-publishing-pipeline.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">The Publishing Pipeline</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./case-study-growth-engine.html" class="sidebar-item-text sidebar-link">
+  <a href="../case-study-growth-engine.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">Building a Growth Engine</span></span></a>
   </div>
 </li>
@@ -577,19 +581,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/ch20-what-comes-next.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/ch20-what-comes-next.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">What Comes Next</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/appendix-a-cross-harness-reference.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/appendix-a-cross-harness-reference.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">Appendix A: The Cross-Harness Reference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./handbook/appendix-b-genesis-worked-example.html" class="sidebar-item-text sidebar-link">
+  <a href="../handbook/appendix-b-genesis-worked-example.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">Appendix B: Genesis worked example: Panel re-architecture</span></span></a>
   </div>
 </li>
@@ -605,135 +609,315 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#preface" id="toc-preface" class="nav-link active" data-scroll-target="#preface">Preface</a>
-  <ul class="collapse">
-  <li><a href="#why-this-book-exists" id="toc-why-this-book-exists" class="nav-link" data-scroll-target="#why-this-book-exists">Why This Book Exists</a></li>
-  <li><a href="#who-this-book-is-for" id="toc-who-this-book-is-for" class="nav-link" data-scroll-target="#who-this-book-is-for">Who This Book Is For</a></li>
-  <li><a href="#how-to-read-this-book" id="toc-how-to-read-this-book" class="nav-link" data-scroll-target="#how-to-read-this-book">How to Read This Book</a></li>
-  <li><a href="#about-the-author" id="toc-about-the-author" class="nav-link" data-scroll-target="#about-the-author">About the Author</a></li>
-  <li><a href="#a-note-on-methodology" id="toc-a-note-on-methodology" class="nav-link" data-scroll-target="#a-note-on-methodology">A Note on Methodology</a></li>
-  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
-  <li><a href="#license" id="toc-license" class="nav-link" data-scroll-target="#license">License</a></li>
-  </ul></li>
+  <li><a href="#from-file-to-package" id="toc-from-file-to-package" class="nav-link active" data-scroll-target="#from-file-to-package"><span class="header-section-number">19.1</span> From file to package</a></li>
+  <li><a href="#modules-over-monoliths" id="toc-modules-over-monoliths" class="nav-link" data-scroll-target="#modules-over-monoliths"><span class="header-section-number">19.2</span> Modules over monoliths</a></li>
+  <li><a href="#separation-of-concerns-by-dependency" id="toc-separation-of-concerns-by-dependency" class="nav-link" data-scroll-target="#separation-of-concerns-by-dependency"><span class="header-section-number">19.3</span> Separation of concerns, by dependency</a></li>
+  <li><a href="#the-lockfile-and-what-it-pins" id="toc-the-lockfile-and-what-it-pins" class="nav-link" data-scroll-target="#the-lockfile-and-what-it-pins"><span class="header-section-number">19.4</span> The lockfile and what it pins</a></li>
+  <li><a href="#overrides-without-forking" id="toc-overrides-without-forking" class="nav-link" data-scroll-target="#overrides-without-forking"><span class="header-section-number">19.5</span> Overrides without forking</a></li>
+  <li><a href="#versioning-the-description-is-the-api" id="toc-versioning-the-description-is-the-api" class="nav-link" data-scroll-target="#versioning-the-description-is-the-api"><span class="header-section-number">19.6</span> Versioning: the description is the API</a></li>
+  <li><a href="#a-walkthrough-from-one-file-to-one-package" id="toc-a-walkthrough-from-one-file-to-one-package" class="nav-link" data-scroll-target="#a-walkthrough-from-one-file-to-one-package"><span class="header-section-number">19.7</span> A walkthrough, from one file to one package</a></li>
+  <li><a href="#what-this-chapter-unlocks" id="toc-what-this-chapter-unlocks" class="nav-link" data-scroll-target="#what-this-chapter-unlocks"><span class="header-section-number">19.8</span> What this chapter unlocks</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><h1 class="title display-7">The Agentic SDLC Handbook</h1></header>
+<main class="content" id="quarto-document-content">
 
 
-<header id="title-block-header">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../handbook/ch08-the-practitioners-mindset.html">Part III: For Practitioners</a></li><li class="breadcrumb-item"><a href="../handbook/ch19-primitives-as-code.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Primitives as Code</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-primitives-as-code" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Primitives as Code</span></span></h1>
+</div>
 
-<p class="subtitle lead">A Guide to AI-Native Software Development for Leaders and Practitioners</p>
-<p class="author">Daniel Meppiel</p>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
 
 </header>
 
 
-<section id="preface" class="level1 unnumbered">
-<h1 class="unnumbered">Preface</h1>
-<div style="color: #666; font-size: 0.9rem; margin-bottom: 1.5rem;">
-<p><strong>Version 0.10.0</strong> · April 2026</p>
+<p>It is a Monday morning. A staff engineer — call her Priya — is reviewing a pull request on her team’s payments service. She has spent the last quarter calibrating two skills the team relies on every day: a <code>python-review</code> skill that walks an agent through correctness, architecture, and security checks, and a <code>pr-description</code> skill that writes the body of the eventual pull request from the same diff. Both have been refined by hand, in many small commits, against many real reviews. Both work.</p>
+<p>This morning, on a single PR, the two skills disagree. The <code>python-review</code> skill files a verdict that the change is acceptable but adds two non-blocking nits about error wrapping. The <code>pr-description</code> skill, asked moments later to summarize the same review for the description body, writes that the change <em>needs revision</em> and lists a different set of concerns. Two voices. Same diff. Same agent. Same model.</p>
+<p>Priya pulls up the two SKILL.md files side by side and finds it in two minutes. Both skills carry their own copy of the team’s review checklist, inline. Six months ago they were identical. Three months ago a teammate sharpened the wording in <code>python-review</code> after a postmortem. Last month another teammate added a new bullet to <code>pr-description</code> for a different reason. Neither edit propagated. The two checklists have drifted. Whichever skill the agent loaded first won the framing — and on this PR they had both loaded, in opposite orders, in two different turns of the same session.</p>
+<p>Nothing in either skill is wrong on its own. What is wrong is structural. A piece of content that two skills both depend on is <em>embedded</em> in each, instead of <em>declared</em> by each. There is no single source of truth for the team’s review checklist, even though both authors believe there is one — the one in the skill they happened to edit. The handbook’s earlier chapters described primitives as files (Ch10, <a href="ch10-the-instrumented-codebase.html" class="quarto-xref"><span>Chapter 10</span></a>) and named the patterns that compose them (Ch17, <a href="ch17-architectural-patterns-rosetta-stone.html#sec-composition-patterns" class="quarto-xref"><span>Section 17.5</span></a>). Primitives are the typed catalogue from which an <em>agentic system</em> — the unit a team actually ships — is composed. This chapter is what changes when you stop treating those files as documents and start treating them as packages.</p>
+<hr>
+<section id="from-file-to-package" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="from-file-to-package"><span class="header-section-number">19.1</span> From file to package</h2>
+<p>Chapter 10 catalogued seven primitive types and named their load modes. The mental model that chapter establishes is one primitive, one file: an instruction file with <code>applyTo</code>, an agent file with a tool boundary, a <code>SKILL.md</code> with a description and a body. That model is correct for the smallest useful primitives. It stops being sufficient the moment a primitive needs more than its body to do its job — when a code-review skill needs example diffs, when a security-audit skill needs a checklist that another skill also wants, when an orchestration spec needs a sub-step authored by a different team.</p>
+<p>The unit that handles those needs is the <strong>package</strong>. A skill is the runtime’s analogue of a Module / Facade (Ch17, <a href="ch17-architectural-patterns-rosetta-stone.html#sec-composition-patterns" class="quarto-xref"><span>Section 17.5</span></a>): one named entrypoint, one stable description, hidden internal structure. A bundle — a skill that contains other skills or carries asset files alongside its body — is the runtime’s Composite. A dependency edge from one skill to another is a Package Reference, the same shape npm and Maven settled on three decades ago.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The consequences for the developer are concrete and immediate.</p>
+<div class="cell" data-fig-width="7.5" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-package-and-lockfile" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-package-and-lockfile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-package-and-lockfile">flowchart LR
+    subgraph Bundle["Skill bundle (author view)"]
+        direction TB
+        S["python-review/&lt;br/&gt;SKILL.md&lt;br/&gt;(entrypoint + description)"]
+        A["assets/&lt;br/&gt;rubric.md&lt;br/&gt;style-guide-example.md"]
+        M["apm.yml&lt;br/&gt;dependencies:&lt;br/&gt;- code-review-rubric@1.2&lt;br/&gt;- style-guide-python@2.0"]
+        S --&gt; A
+        S --&gt; M
+    end
+    subgraph Lock["Lockfile (consumer view)"]
+        direction TB
+        L1["python-review @ 1.4&lt;br/&gt;sha256: a2f3..."]
+        L2["code-review-rubric @ 1.2&lt;br/&gt;sha256: 9d10..."]
+        L3["style-guide-python @ 2.0&lt;br/&gt;sha256: 4b87..."]
+        L4["resolved sources&lt;br/&gt;+ content hashes&lt;br/&gt;for every node"]
+        L1 --&gt; L2
+        L1 --&gt; L3
+        L2 --&gt; L4
+        L3 --&gt; L4
+    end
+    Bundle -- "apm install" --&gt; Lock
+</pre>
 </div>
-<div class="callout callout-style-simple callout-warning no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
-<p><strong>Pre-release edition.</strong> This is a living document — new chapters, case studies, and PROSE refinements ship continuously. Claims are grounded in direct experience shipping AI-native systems, with citations where third-party research is referenced. Where data comes from a single project — such as the APM auth + logging overhaul (PR #394) — it is labeled as such. Spotted an error? <a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues">Open an issue</a>.</p>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-package-and-lockfile-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19.1: A skill bundle and its lockfile snapshot
+</figcaption>
+</figure>
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><strong>Also available as a free PDF &amp; EPUB.</strong> <a href="./download.html">📕 Download –&gt;</a></p>
-</div>
-</div>
-</div>
-<div style="text-align: center; margin: 2rem 0 3rem 0; font-style: italic; color: #555;">
-<p>For Delphine, Gabriel, Laia, and Adrian — everything else is context.</p>
-</div>
-<section id="why-this-book-exists" class="level2">
-<h2 class="anchored" data-anchor-id="why-this-book-exists">Why This Book Exists</h2>
-<p>Every engineering organization is adopting AI coding agents. Almost none of them have a methodology for it.</p>
-<p>Teams are configuring Copilot with a single instructions file and calling it “AI-native development.” Leaders are measuring success by lines-of-code generated. Individual developers are discovering that AI-assisted code needs more rework, not less – because the underlying approach is wrong.</p>
-<p>This book provides what’s missing: a systematic methodology for building software with AI agents, from organizational strategy to the individual keystrokes. It introduces the <strong>PROSE framework</strong> – five architectural constraints that make AI agent output reliable, verifiable, and maintainable – and shows how to implement it with real tools and real workflows.</p>
-<p>The methodology in this book produced the book itself, and it powers <a href="https://github.com/microsoft/apm">APM</a>, an open-source agent package manager.</p>
+<p>The leap from file to package is what fixes Priya’s drift problem. Once the team’s review checklist is its own package — <code>code-review-rubric</code> — both <code>python-review</code> and <code>pr-description</code> can declare a dependency on it. There is now exactly one source of truth, with one version history. A change to the checklist is a change to one file, reviewed once, propagated everywhere on the next install. The two skills no longer disagree because they are no longer carrying two copies of the same content.</p>
+<hr>
 </section>
-<section id="who-this-book-is-for" class="level2">
-<h2 class="anchored" data-anchor-id="who-this-book-is-for">Who This Book Is For</h2>
-<p>This book speaks to two audiences:</p>
-<p><strong>Engineering leaders</strong> (CTO, VP Engineering, Director) who need to understand the strategic implications of AI-native development, make investment decisions, and transform their organizations. <strong>Read Part II first.</strong></p>
-<p><strong>Practitioners</strong> (developers, tech leads, architects) who need concrete techniques, patterns, and workflows for working effectively with AI coding agents. <strong>Read Part III first.</strong></p>
-<p>Part I provides the foundational thesis that both audiences share. The closing chapter looks ahead.</p>
+<section id="modules-over-monoliths" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="modules-over-monoliths"><span class="header-section-number">19.2</span> Modules over monoliths</h2>
+<p>A <code>SKILL.md</code> body that crosses a few hundred lines is almost always a hint that the primitive has accreted concerns that should belong to neighbours. The same instinct that makes a senior engineer extract a function from a 400-line method applies here, and the test is the same: <em>does this section have its own reason to change?</em> If yes, it wants to be its own primitive — its own module, with its own description, its own version, and its own owner.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Anatomy of a skill bundle</th>
+<th>Role</th>
+<th>Visibility to consumers</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>SKILL.md</code> (entrypoint)</td>
+<td>Description-driven activation contract; the body the agent reads when the skill binds.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></td>
+<td>Public. The <code>description</code> is the API.</td>
+</tr>
+<tr class="even">
+<td><code>assets/</code></td>
+<td>Reference material the body cites — example diffs, decision tables, checklists too long to inline.</td>
+<td>Loaded transitively when the body links them.</td>
+</tr>
+<tr class="odd">
+<td>Sub-skills</td>
+<td>A child <code>SKILL.md</code> under the same bundle directory, activated independently or via a parent reference.</td>
+<td>Public if the parent re-exports; private otherwise.</td>
+</tr>
+<tr class="even">
+<td><code>apm.yml</code> (or equivalent)</td>
+<td>Declared dependencies, version, license, ownership.</td>
+<td>Public. Drives the lockfile.</td>
+</tr>
+<tr class="odd">
+<td>Tests</td>
+<td>Activation tests, link-integrity checks, schema validation against the manifest.</td>
+<td>Internal to the package; CI gate.</td>
+</tr>
+</tbody>
+</table>
+<p>Two principles hold across the table. First, the entrypoint is <em>small</em>. A skill body that lists every consideration the team has ever cared about is a monolith; the same skill that names two or three load-bearing decision rules and links to assets for the rest is a module. Progressive disclosure (Ch13, the attention economy) is enforced at the package boundary as well as inside the body — a consumer who installs the skill should pay for the description at session start, the body when the skill activates, and the assets only when the body cites them.</p>
+<p>Second, the content a skill <em>imports</em> is named, not pasted. A single decision rule reused by three skills is a sign that the rule wants to live in a fourth skill on which the other three depend. The cost is one new package; the benefit is one source of truth, one version, one review history. Ch17’s Composition vocabulary is exactly the design language this judgement uses — Skill, Bundle, Primitive, Dependency, Override (<a href="ch17-architectural-patterns-rosetta-stone.html#sec-composition-patterns" class="quarto-xref"><span>Section 17.5</span></a>). The chapter you are reading is that vocabulary made operational on disk.</p>
+<hr>
 </section>
-<section id="how-to-read-this-book" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-read-this-book">How to Read This Book</h2>
-<p>You don’t need to read sequentially. Start with whichever part matches your role:</p>
-<ul>
-<li><strong>Part I – The Foundation:</strong> The thesis – why the current approach fails and what replaces it</li>
-<li><strong>Part II – For Leaders:</strong> The AI-native landscape, business case, reference architecture, governance, team structures, and transition planning</li>
-<li><strong>Part III – For Practitioners:</strong> Mindset, agentic runtime machine, instrumented codebase, PROSE specification, load lifecycle, attention economy, the deterministic/probabilistic seam, multi-agent orchestration, execution meta-process, architectural patterns, anti-patterns, and primitives-as-code</li>
-<li><strong>Part IV – Case Studies:</strong> APM, the handbook itself, the publishing pipeline, the growth engine</li>
-<li><strong>Closing:</strong> What comes next, plus a cross-harness reference appendix</li>
-</ul>
-<div class="callout callout-style-default callout-note callout-titled" title="The architect for agentic systems — install the companion">
+<section id="separation-of-concerns-by-dependency" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="separation-of-concerns-by-dependency"><span class="header-section-number">19.3</span> Separation of concerns, by dependency</h2>
+<p>Priya’s fix, in mechanical detail, looks like this. She extracts the duplicated checklist into a new skill, <code>code-review-rubric</code>, with its own <code>SKILL.md</code> and its own version history. The bundle’s body is the rubric. Its description is the activation contract: <em>use whenever the agent is grading a code change against the team’s standards.</em> It owns no language-specific advice and no PR-formatting concerns. It owns one thing.</p>
+<p>Then she edits both consumers. The <code>python-review</code> skill declares the rubric as a dependency in its manifest:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/skills/python-review/apm.yml</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> python-review</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="fl">1.4.0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">: </span><span class="ch">&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  Activate when reviewing changes under src/payments/ for correctness,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  architecture, and security.</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">apm</span><span class="kw">:</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> org/code-review-rubric</span><span class="co">#v1.2</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> org/style-guide-python</span><span class="co">#v2.0</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The body of <code>python-review/SKILL.md</code> no longer contains the checklist. It points at the dependency: <em>apply the rubric in <code>code-review-rubric</code>, then add the Python-specific concerns below.</em> The <code>pr-description</code> skill does the same. One source of truth; two consumers; zero drift.</p>
+<p>The cost of the refactor is one new bundle and two manifest edits. The benefit is structural: the team’s checklist now has the same status as any other piece of code they ship — one owner, one history, one place to land a change. The next postmortem that sharpens a rubric line lands in <code>code-review-rubric@v1.3</code>, both consumers pick it up on the next install, and Monday morning produces one verdict instead of two.</p>
+<p>Two kinds of duplication used to be tolerable when primitives were files: short paragraphs that happened to overlap, and example fragments that repeat across skills. Once primitives are packages, only one of them stays tolerable. <em>Coincidental</em> overlap — two unrelated skills that happen to use a similar phrase — is fine; it carries no expectation of synchronization. <em>Essential</em> overlap — content that is supposed to be the same in both places because the team has one position on it — is not. The cure for essential overlap is always the same: extract a package, declare a dependency, delete the copy.</p>
+<hr>
+</section>
+<section id="the-lockfile-and-what-it-pins" class="level2" data-number="19.4">
+<h2 data-number="19.4" class="anchored" data-anchor-id="the-lockfile-and-what-it-pins"><span class="header-section-number">19.4</span> The lockfile and what it pins</h2>
+<p>A dependency declaration is an intent (<em>I want the rubric, version 1.2</em>). A lockfile is a fact (<em>on the date of this install, the rubric resolved to commit <code>9d10…</code>, content hash <code>sha256:9d10…</code>, fetched from this source URL</em>). The two are different and both are necessary, for the same reasons npm’s <code>package.json</code> and <code>package-lock.json</code> are different.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> <a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Layer</th>
+<th>Manifest (<code>apm.yml</code>)</th>
+<th>Lockfile (<code>apm.lock.yaml</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Records</td>
+<td>What the project depends on, by version range.</td>
+<td>What was actually resolved on a given date, by content hash.</td>
+</tr>
+<tr class="even">
+<td>Edited by</td>
+<td>Humans, on every dependency change.</td>
+<td>The CLI, on every install.</td>
+</tr>
+<tr class="odd">
+<td>Reviewed in</td>
+<td>Pull requests, like any code change.</td>
+<td>Pull requests, as a snapshot artifact.</td>
+</tr>
+<tr class="even">
+<td>Answers</td>
+<td>“What does this project want?”</td>
+<td>“What did this project see, last time it built?”</td>
+</tr>
+<tr class="odd">
+<td>Breaks if</td>
+<td>A consumer adds an undeclared dependency.</td>
+<td>A resolved file is republished under the same version with different content.</td>
+</tr>
+</tbody>
+</table>
+<p>The lockfile is what makes a primitive set <em>reproducible</em> across machines and across time. Without it, last week’s <code>apm install</code> and this week’s <code>apm install</code> will produce different agent behavior on the same project — different transitive closure, different content, different output — with no diff on the consumer’s branch to point at. The wave protocol Ch16 describes (<a href="ch16-the-execution-meta-process.html" class="quarto-xref"><span>Chapter 16</span></a>) depends on this kind of reproducibility: a wave’s verdict is honest only if the next wave can be re-run against an identical context. The lockfile is what gives that next wave the same source tree the previous one saw.</p>
+<p>A second function the lockfile serves is integrity. Every resolved entry carries a content hash. If a consumer’s install resolves <code>code-review-rubric@v1.2</code> to a file whose hash does not match the lockfile, the install fails. Republishing a tag with different content is a supply-chain attack; the lockfile is the local check that catches it.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Ch20 picks up the supply-chain thread in detail.</p>
+<p>Pinning is therefore not bureaucracy. It is the only mechanism by which the <em>transitive closure</em> of a primitive — the full set of files that load when the skill activates, including the contents of every dependency — is observable, diff-able, and reviewable. The closure is the thing that actually steers the agent. Without a lockfile, the closure is whatever the registry served the last time anyone installed; with one, it is exactly what the team committed.</p>
+<hr>
+</section>
+<section id="overrides-without-forking" class="level2" data-number="19.5">
+<h2 data-number="19.5" class="anchored" data-anchor-id="overrides-without-forking"><span class="header-section-number">19.5</span> Overrides without forking</h2>
+<p>The cleanest way to compose a dependency is to use it unchanged. The next-cleanest way is to override one named section without taking ownership of the rest. Ch17 names the pattern: Template Method (<a href="ch17-architectural-patterns-rosetta-stone.html#sec-composition-patterns" class="quarto-xref"><span>Section 17.5</span></a>). The base module — here, the upstream skill — defines an invariant skeleton with named slots. A consumer replaces a slot in their own project without rewriting the skeleton.</p>
+<p>The shape on disk is mundane. The upstream <code>code-review-rubric</code> skill names slots in its body — typically section headings whose names are part of its public contract: <em>Style guide</em>, <em>Domain-specific concerns</em>, <em>Stop conditions</em>. A consumer’s project carries a small override file that says, in effect: <em>for this project, replace the Style guide section with the contents of <code>./style/payments-house-style.md</code></em>. Every other slot is inherited unchanged. The next time the upstream skill ships a new section, the consumer’s override does not need to be touched; the new section flows through.</p>
+<p>Two practical disciplines make overrides safe to live with.</p>
+<p>The first is <strong>slot stability</strong>. The names of overrideable sections are part of the skill’s public contract. Renaming <code>Style guide</code> to <code>Style conventions</code> in a minor version is a breaking change for every downstream override that points at the old name, even if the body of the section is unchanged. The same engineering caution that applies to renaming a public function applies here. The version-bump rules below are how that caution is signalled.</p>
+<p>The second is <strong>the override is the smallest unit you own</strong>. A consumer who finds themselves overriding three slots, then four, then six, has crossed the threshold where forking the dependency is more honest. The override mechanism is for project-local specialization of an otherwise-shared module; when most of the module is local, the dependency edge is no longer paying for itself. Drop it, fork, take ownership.</p>
+<p>Override is what lets the team in Priya’s company use <code>code-review-rubric</code> as it ships from the central platform team while still reflecting the payments-team house style on the one section where the two genuinely differ. Without overrides, the choice is binary — adopt the upstream rubric in full, or fork it and inherit nothing future. With overrides, specialization stays local without giving up shared evolution.</p>
+<hr>
+</section>
+<section id="versioning-the-description-is-the-api" class="level2" data-number="19.6">
+<h2 data-number="19.6" class="anchored" data-anchor-id="versioning-the-description-is-the-api"><span class="header-section-number">19.6</span> Versioning: the description is the API</h2>
+<p>Software versioning is hard because the question <em>what is this package’s public surface?</em> admits many honest answers. For a skill, the question has one. The public surface is the description in the <code>SKILL.md</code> frontmatter, plus any slot names a consumer might override. The body of the skill is implementation; the description is the API.</p>
+<p>This is not a rhetorical flourish. The description is exactly what the harness reads when deciding whether to activate the skill on a given task (Ch10, <a href="ch10-the-instrumented-codebase.html" class="quarto-xref"><span>Chapter 10</span></a>, on lazy on-demand load). A consumer who installs the skill is buying that activation contract. Rewording the description — <em>activate when reviewing code</em> becomes <em>use whenever an agent is asked about code</em> — changes which threads the skill binds in. That is a breaking change. It deserves a major version bump and a release note, the same way renaming a public function does.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Change</th>
+<th>SemVer rule</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Edit the body without changing the description or slot names.</td>
+<td>Patch.</td>
+<td>Safe by construction.</td>
+</tr>
+<tr class="even">
+<td>Add a new slot or new asset; existing consumers unaffected.</td>
+<td>Minor.</td>
+<td>Strictly additive.</td>
+</tr>
+<tr class="odd">
+<td>Reword the description’s activation criteria.</td>
+<td>Major.</td>
+<td>Bindings shift; consumers must re-evaluate.</td>
+</tr>
+<tr class="even">
+<td>Rename or remove an overrideable slot.</td>
+<td>Major.</td>
+<td>Existing overrides break.</td>
+</tr>
+<tr class="odd">
+<td>Change a transitive dependency’s resolved version such that the closure’s content changes.</td>
+<td>Reflected in the lockfile, not the package version.</td>
+<td>The package version describes <em>this</em> package; the lockfile describes the closure.</td>
+</tr>
+</tbody>
+</table>
+<p>The last row is the one teams get wrong most often. A skill’s version describes what <em>that</em> skill ships. When <code>code-review-rubric@v1.2</code> depends on <code>style-guide-python@v2.0</code>, and the style guide ships a major v3.0 with breaking slot renames, the rubric’s published version does not change <em>because the rubric did not change</em>. What changes is the lockfile of any project that re-runs <code>apm install</code>. The rubric and the consuming skills will pick up the new style guide (or fail to resolve it) on the next install; the breaking event is recorded in the lockfile diff, not in the rubric’s version history. This separation of concerns — package versioning describes the package; lockfile snapshotting describes the closure — is what keeps the system tractable as the dependency tree grows.</p>
+<hr>
+</section>
+<section id="a-walkthrough-from-one-file-to-one-package" class="level2" data-number="19.7">
+<h2 data-number="19.7" class="anchored" data-anchor-id="a-walkthrough-from-one-file-to-one-package"><span class="header-section-number">19.7</span> A walkthrough, from one file to one package</h2>
+<p>The full lifecycle is short enough to put on a page. Take Priya’s <code>code-review-rubric</code>, from extraction to consumption.</p>
+<ol type="1">
+<li><strong>Single file.</strong> The rubric lives inline in <code>python-review/SKILL.md</code>. It is a heading and forty lines.</li>
+<li><strong>Extracted bundle.</strong> Priya creates <code>org/code-review-rubric/</code>. Inside: a <code>SKILL.md</code> with the description <em>use whenever the agent is grading a code change against the team’s standards</em>; a body that contains the rubric, factored into named slots; an <code>assets/</code> directory with one file, <code>examples/good-vs-bad.md</code>, that the body cites; an <code>apm.yml</code> declaring <code>version: 1.0.0</code>, no further dependencies, MIT license, the platform team as owner.</li>
+<li><strong>Published.</strong> The bundle is pushed to the org’s repository. A tag, <code>v1.0.0</code>, points at the commit. The publish workflow runs schema validation on the manifest, link-integrity on the body, and an activation test that loads the description into a sandboxed harness and checks that it activates on a synthetic review task.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></li>
+<li><strong>Consumed.</strong> Priya edits <code>python-review</code>’s <code>apm.yml</code> to add <code>org/code-review-rubric#v1.0.0</code> to its dependencies. She runs <code>apm install</code>. The CLI resolves the dependency, downloads the bundle, writes a content hash into <code>apm.lock.yaml</code>, and stages the rubric’s files into the project’s <code>apm_modules/</code> (or equivalent) tree. The body of <code>python-review/SKILL.md</code> now reads, in part, <em>apply the rubric in <code>code-review-rubric</code>, then add the Python-specific concerns below.</em></li>
+<li><strong>Overridden.</strong> A second team in the company adopts <code>python-review</code> but has its own house style. They add an override file in their project that replaces the rubric’s <em>Style guide</em> slot with their own one-page guide. The rest of the rubric flows through unchanged.</li>
+<li><strong>Iterated.</strong> A postmortem motivates a sharper line in the rubric. Priya edits <code>code-review-rubric/SKILL.md</code>, bumps to <code>v1.0.1</code>, publishes. Both consuming projects run <code>apm install</code> on their next CI build; the lockfile updates; the new rubric line appears in both teams’ next agent reviews. No drift.</li>
+<li><strong>Audited.</strong> Six months later, an enterprise security review asks <em>which version of the rubric was loaded into the agent that approved PR #4711?</em> The answer is one lockfile lookup against the commit on which the PR was approved. The closure is reconstructible.</li>
+</ol>
+<p>Step 7 is what turns the package layer from an aesthetic choice into a governance one. Reproducibility, integrity, and provenance are the same property viewed from three angles, and all three are properties of the lockfile. A team that runs primitives without a manifest and a lockfile cannot answer step 7 honestly. A team that runs them with both can — which is, ultimately, what <em>primitives as code</em> means. Code has a build system. Code has a lockfile. Code has a publish pipeline. So do these.</p>
+<hr>
+</section>
+<section id="what-this-chapter-unlocks" class="level2" data-number="19.8">
+<h2 data-number="19.8" class="anchored" data-anchor-id="what-this-chapter-unlocks"><span class="header-section-number">19.8</span> What this chapter unlocks</h2>
+<p>Once a team accepts that primitives are packages and not files, the rest of the discipline follows. Pull requests review manifest changes the way they review API changes. Releases bump versions the way they bump library versions. Lockfile diffs go through the same eyes the source diff does. The disciplines named in earlier chapters — progressive disclosure (Ch13), the load-lifecycle reasoning that asks <em>what files actually arrived in the context?</em> (Ch12, <a href="ch12-the-load-lifecycle.html" class="quarto-xref"><span>Chapter 12</span></a>) — get a structural support beam: the package boundary is now the unit of composition, the unit of ownership, the unit of versioning, and the unit of audit, all at once.</p>
+<p>What this chapter has <em>not</em> covered is the supply-chain question one layer up. When the rubric your team installs is published by another team, in another org, possibly under another company’s name — <em>whose chain of trust is that?</em> What does it mean to publish a primitive? What is the marketplace topology that lets Priya’s payments team install <code>code-review-rubric</code> from the platform team without first vetting every transitive dependency by hand? Ch20 (What Comes Next) picks up that thread. The package-management discipline this chapter installs is the prerequisite — without manifests, lockfiles, versions, and overrides, the marketplace question has nowhere to land. With them, it is the next problem worth solving.</p>
+<hr>
+<div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>The architect for agentic systems — install the companion
+<span class="screen-reader-only">Tip</span>TL;DR — Primitives are packages
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Part III is where the book gets technical: the patterns and architectural concepts for building non-trivial agent-driven systems. The book teaches them; the companion applies them. Install:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apm</span> install danielmeppiel/genesis</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Genesis is a free, open-source Agent Skill — written by the same hand as the book — that ports the software architect’s role to agentic systems. Summon it in your agent with <code>/genesis &lt;what you want built&gt;</code> and it designs the architecture: which skills, custom agents, and instructions you need, and how they compose — the way a software architect lays out classes and modules for an Object-Oriented Programming (OO) system. Read the book to learn the patterns, or skip ahead and let the architect wield them on your project. Inspectable in full at <a href="https://github.com/danielmeppiel/genesis">github.com/danielmeppiel/genesis</a>. Works across Copilot, Claude Code, Cursor, Codex, and OpenCode.</p>
+<ol type="1">
+<li><strong>A skill is a module, not a file.</strong> Entrypoint + body + assets + manifest. The Module / Facade pattern from Ch17 (<a href="ch17-architectural-patterns-rosetta-stone.html#sec-composition-patterns" class="quarto-xref"><span>Section 17.5</span></a>), made concrete on disk.</li>
+<li><strong>Don’t duplicate; declare.</strong> When two skills share content, extract a third skill they both depend on. Essential overlap is a missing dependency edge.</li>
+<li><strong>Manifest declares intent; lockfile records fact.</strong> The lockfile pins the transitive closure with content hashes. Without it, agent behavior is not reproducible across machines or weeks.</li>
+<li><strong>The description is the API.</strong> Rewording the activation contract is a breaking change. So is renaming an overrideable slot. Bump major; ship a release note.</li>
+<li><strong>Override before forking.</strong> Specialize one slot; inherit the rest. When most of the module is local, the dependency is no longer paying for itself.</li>
+</ol>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled" title="Where to start, by role and time budget">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tip</span>Where to start, by role and time budget
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>If you have <strong>45 minutes</strong> and need the strategic picture, read Part I, then skim Part II – the thesis plus the business case, architecture, and governance shape of AI-native delivery. If you have <strong>an hour</strong> and start coding Monday, jump to Part III and read the chapters that match what you’re about to ship: instrumentation, PROSE specification, attention economy, or orchestration. If you want proof the methodology survives contact with real systems, the <strong>Part IV case studies</strong> stand on their own in any order. The Parts are designed to be read in any order; the chapter sequence inside each Part is the only place sequence matters.</p>
-</div>
-</div>
-</section>
-<section id="about-the-author" class="level2">
-<h2 class="anchored" data-anchor-id="about-the-author">About the Author</h2>
-<p>Daniel Meppiel is a Global Black Belt at <strong>Microsoft</strong> and the creator of <a href="https://github.com/microsoft/apm">APM (Agent Package Manager)</a>, an open-source tool for managing AI agent configurations across codebases. He designed the <strong>PROSE framework</strong>, a specification methodology for making AI coding agents reliable in professional software delivery. Connect with Daniel on <a href="https://www.linkedin.com/in/danielmeppiel/">LinkedIn</a>.</p>
-<p>With 14+ years spanning pre-sales, post-sales, product strategy, and enterprise adoption, Daniel bridges the gap between technical architecture and business outcomes. His career arc runs from <strong>CERN</strong> (Product Lifecycle Management modernization for particle physics experiments), through <strong>Avaloq</strong> (legacy core-banking system migration) – the same classes of system modernization and code migration that AI agents now accelerate in the SDLC – to founding <strong>WeGaw</strong> as CTO for 4 years (building a complex AI-powered water intelligence platform from scratch, serving global energy companies), <strong>Sonar</strong> (code security), <strong>GitHub</strong> (developer tooling), and now <strong>Microsoft</strong>.</p>
-</section>
-<section id="a-note-on-methodology" class="level2">
-<h2 class="anchored" data-anchor-id="a-note-on-methodology">A Note on Methodology</h2>
-<p>This handbook was produced using the same methodology and tooling it describes. The case studies document real sessions executed by the author – who also designed the PROSE methodology. This creates an inherent advantage: the author knows when to push and when to intervene in ways not fully captured by the written method. Where authorial expertise likely mattered beyond what the methodology prescribes, the case studies flag it. Treat the documented patterns as a starting point, not a ceiling.</p>
-</section>
-<section id="acknowledgments" class="level2">
-<h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
-<p>This book exists because of the people who shaped its ideas and the people who trusted them.</p>
-<p>François Bouterouche brainstormed the kernel vision of the technology stack with me — the conversations that became the computing paradigm at the heart of Chapter 4. Francesco Manni, my manager and mentor for four years across GitHub and Microsoft, taught me serving leadership by example; his principles and trust created the space where this work could happen. Don Syme and Peli de Halleux, from GitHub Next, cultivated ingenuity and exploration with an openness that made ideas flow freely — and trusted APM’s foundational concepts enough to carry them into GitHub Agentic Workflows. Sébastien Le Calvez built the Software Global Black Belt team and go-to-market motion that created the feedback loop between real-world practice and the methodology in these pages.</p>
-<p>To Mondragon Unibertsitatea — for teaching curiosity, innovation, and self-starting spirit through rigorous engineering and Project-Based Learning. The methodology in this book owes more to those foundations than it might appear.</p>
-<p>To the early adopters and contributors of APM who believed in the project and in me — Sergio Sisternes, Sébastien Degodez, and François Descamps. Open source lives or dies on the people who show up first.</p>
-</section>
-<section id="license" class="level2">
-<h2 class="anchored" data-anchor-id="license">License</h2>
-<p>This book is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/">CC BY-NC-ND 4.0</a>. You are free to read, download, and share it with attribution — as long as you share it as-is. For commercial use, translations, or adaptations, <a href="https://www.linkedin.com/in/danielmeppiel/">reach out</a>.</p>
-<p><em>The views and opinions in this book are the author’s own and do not represent those of his employer.</em></p>
 
 
 </section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>The dependency-and-lockfile pattern adopted here is the one that npm settled on for JavaScript and that Maven and Cargo settled on for Java and Rust respectively: a manifest declaring intent, a lockfile recording the resolved closure, and content hashing for integrity. Ch17 (<a href="ch17-architectural-patterns-rosetta-stone.html#sec-composition-patterns" class="quarto-xref"><span>Section 17.5</span></a>) names the same idea as Package Reference and observes that the older “Decorator” framing for dependency in early agentic literature is a near miss. The package-system framing is the right one.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>agentskills.io specifies the <code>SKILL.md</code> entrypoint and the description-driven activation predicate. The same activation contract is implemented in substantially compatible form by Copilot (<code>.github/skills/&lt;name&gt;/SKILL.md</code>), Claude Code (<code>.claude/skills/&lt;name&gt;/SKILL.md</code>), and several others; the convergence is what lets a skill bundle ship across harnesses with one description rather than many.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The dependency-and-lockfile pattern adopted here is the one that npm settled on for JavaScript and that Maven and Cargo settled on for Java and Rust respectively: a manifest declaring intent, a lockfile recording the resolved closure, and content hashing for integrity. Ch17 (<a href="ch17-architectural-patterns-rosetta-stone.html#sec-composition-patterns" class="quarto-xref"><span>Section 17.5</span></a>) names the same idea as Package Reference and observes that the older “Decorator” framing for dependency in early agentic literature is a near miss. The package-system framing is the right one.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Genesis treats the substrate vocabulary this chapter names as agent-loadable assets. The taxonomy in <a href="https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/assets/primitives.md"><code>skills/genesis/assets/primitives.md</code></a> enumerates the six concepts every harness implements under different folder names — <strong>PERSONA SCOPING FILE</strong>, <strong>MODULE ENTRYPOINT</strong>, <strong>SCOPE-ATTACHED RULE FILE</strong>, <strong>CHILD-THREAD SPAWN</strong>, <strong>TRIGGER ORCHESTRATOR</strong>, <strong>PLAN PERSISTENCE</strong> — so a fresh agent context can name them once, regardless of which harness it is sitting in. The package itself is also inspectable: <a href="https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/apm.yml"><code>apm.yml</code></a> and <a href="https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/apm.lock.yaml"><code>apm.lock.yaml</code></a> carry the manifest / lockfile shape this chapter walks through — one author’s stack, inspectable; inspect it, do not inherit it. <em>Agent-side reference; substrate primitive names verbatim.</em><a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>The APM CLI (<code>apm install</code>, <code>apm.yml</code>, <code>apm.lock.yaml</code>, <code>apm publish</code>, <code>apm audit</code>) is one open-source realization of the manifest-and-lockfile discipline this chapter describes. See <code>https://microsoft.github.io/apm/</code>. Other realizations are possible; the discipline does not depend on any one tool. The walkthrough above uses APM’s surface syntax because it is the realization the rest of this part has cited.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The APM CLI (<code>apm install</code>, <code>apm.yml</code>, <code>apm.lock.yaml</code>, <code>apm publish</code>, <code>apm audit</code>) is one open-source realization of the manifest-and-lockfile discipline this chapter describes. See <code>https://microsoft.github.io/apm/</code>. Other realizations are possible; the discipline does not depend on any one tool. The walkthrough above uses APM’s surface syntax because it is the realization the rest of this part has cited.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -1152,10 +1336,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="../handbook/ch18-anti-patterns-and-failure-modes.html" class="pagination-link" aria-label="Anti-Patterns and Failure Modes">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Anti-Patterns and Failure Modes</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./download.html" class="pagination-link" aria-label="Download">
-        <span class="nav-page-text">Download</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../case-study-apm-overhaul.html" class="pagination-link" aria-label="The APM Auth + Logging Overhaul">
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">The APM Auth + Logging Overhaul</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
@@ -1163,7 +1350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
   <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
   <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-  <a href="./agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+  <a href="../agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
 </div>
 <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
   <p style="margin: 0;">

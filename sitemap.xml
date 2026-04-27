@@ -2,86 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/index.html</loc>
-    <lastmod>2026-04-22T20:26:02.264Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.663Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/download.html</loc>
-    <lastmod>2026-04-22T20:26:02.258Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.657Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch01-the-agentic-sdlc-thesis.html</loc>
-    <lastmod>2026-04-22T20:26:02.259Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.657Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch02-the-ai-native-landscape.html</loc>
-    <lastmod>2026-04-22T20:26:02.259Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.657Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch03-the-business-case.html</loc>
-    <lastmod>2026-04-22T20:26:02.259Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.658Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch04-the-reference-architecture.html</loc>
-    <lastmod>2026-04-22T20:26:02.259Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.658Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch05-governance-for-ai-assisted-delivery.html</loc>
-    <lastmod>2026-04-22T20:26:02.259Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.658Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch06-team-structures.html</loc>
-    <lastmod>2026-04-22T20:26:02.259Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.658Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch07-planning-the-transition.html</loc>
-    <lastmod>2026-04-22T20:26:02.260Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.658Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch08-the-practitioners-mindset.html</loc>
-    <lastmod>2026-04-22T20:26:02.260Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.659Z</lastmod>
   </url>
   <url>
-    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch09-the-instrumented-codebase.html</loc>
-    <lastmod>2026-04-22T20:26:02.260Z</lastmod>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch09-the-runtime-machine.html</loc>
+    <lastmod>2026-04-27T20:13:06.659Z</lastmod>
   </url>
   <url>
-    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch10-the-prose-specification.html</loc>
-    <lastmod>2026-04-22T20:26:02.260Z</lastmod>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch10-the-instrumented-codebase.html</loc>
+    <lastmod>2026-04-27T20:13:06.659Z</lastmod>
   </url>
   <url>
-    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch11-context-engineering.html</loc>
-    <lastmod>2026-04-22T20:26:02.260Z</lastmod>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch11-the-prose-specification.html</loc>
+    <lastmod>2026-04-27T20:13:06.659Z</lastmod>
   </url>
   <url>
-    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch12-multi-agent-orchestration.html</loc>
-    <lastmod>2026-04-22T20:26:02.260Z</lastmod>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch12-the-load-lifecycle.html</loc>
+    <lastmod>2026-04-27T20:13:06.659Z</lastmod>
   </url>
   <url>
-    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch13-the-execution-meta-process.html</loc>
-    <lastmod>2026-04-22T20:26:02.261Z</lastmod>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch13-attention-and-context-economy.html</loc>
+    <lastmod>2026-04-27T20:13:06.659Z</lastmod>
   </url>
   <url>
-    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch14-anti-patterns-and-failure-modes.html</loc>
-    <lastmod>2026-04-22T20:26:02.261Z</lastmod>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch14-deterministic-probabilistic-boundary.html</loc>
+    <lastmod>2026-04-27T20:13:06.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch15-multi-agent-orchestration.html</loc>
+    <lastmod>2026-04-27T20:13:06.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch16-the-execution-meta-process.html</loc>
+    <lastmod>2026-04-27T20:13:06.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch17-architectural-patterns-rosetta-stone.html</loc>
+    <lastmod>2026-04-27T20:13:06.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch18-anti-patterns-and-failure-modes.html</loc>
+    <lastmod>2026-04-27T20:13:06.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch19-primitives-as-code.html</loc>
+    <lastmod>2026-04-27T20:13:06.660Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/case-study-apm-overhaul.html</loc>
-    <lastmod>2026-04-22T20:26:02.258Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.656Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/case-study-handbook-writing.html</loc>
-    <lastmod>2026-04-22T20:26:02.258Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.656Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/case-study-publishing-pipeline.html</loc>
-    <lastmod>2026-04-22T20:26:02.258Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.656Z</lastmod>
   </url>
   <url>
     <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/case-study-growth-engine.html</loc>
-    <lastmod>2026-04-22T20:26:02.258Z</lastmod>
+    <lastmod>2026-04-27T20:13:06.656Z</lastmod>
   </url>
   <url>
-    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch15-what-comes-next.html</loc>
-    <lastmod>2026-04-22T20:26:02.261Z</lastmod>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch20-what-comes-next.html</loc>
+    <lastmod>2026-04-27T20:13:06.660Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/appendix-a-cross-harness-reference.html</loc>
+    <lastmod>2026-04-27T20:13:06.657Z</lastmod>
+  </url>
+  <url>
+    <loc>https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/appendix-b-genesis-worked-example.html</loc>
+    <lastmod>2026-04-27T20:13:06.657Z</lastmod>
   </url>
 </urlset>
