@@ -39,7 +39,7 @@ Every anti-pattern maps to a PROSE constraint. This isn't a taxonomy imposed aft
 
 :::
 
-Patterns 1–5 are the foundational anti-patterns from Chapter 1. Patterns 6–10 emerge from multi-agent execution mechanics. Patterns 11–19 are session-level and resource-level failure modes identified through systematic audit of early agentic practice. All nineteen are real. All nineteen have cost teams real time, money, and trust.
+Patterns 1–5 are the foundational anti-patterns from Chapter 1. Patterns 6–10 emerge from multi-agent execution mechanics. Patterns 11–19 are session-level and resource-level failure modes identified through systematic audit of early agentic practice. All nineteen are real. All nineteen have cost teams real time, money, and trust.[^ch18-verbatim-inheritance]
 
 ---
 
@@ -500,6 +500,8 @@ If you encounter a failure not in this chapter, add it using the same format: sy
 These 19 patterns represent the collective scar tissue of early agentic development practice — the failures that wasted the most time, burned the most tokens, and eroded the most trust. Learn from them, and you skip the most expensive part of the learning curve.
 
 [^ch14-plausible]: The "plausible but wrong" failure mode is well-documented in the AI safety literature. See, e.g., the concept of "sycophantic behavior" in Perez et al., "Discovering Language Model Behaviors with Model-Written Evaluations" (2022), where models produce confident, fluent output that aligns with user expectations rather than ground truth.
+
+[^ch18-verbatim-inheritance]: The same companion names the verbatim-inheritance rule for anti-patterns at the head of [`skills/genesis/assets/architectural-patterns.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/assets/architectural-patterns.md): *"When you recognize a Tier-3 shape, name it and inherit its anti-patterns verbatim. Re-deriving it from raw Tier-2 patterns risks rediscovering its failure modes the hard way."* The PANEL entry is the worked instance: any system that adopts the shape inherits **PANEL-WITHOUT-SYNTHESIS**, **PANEL-IN-ONE-CONTEXT**, and **IMBALANCED PANEL** as the failure-mode set the design must defend against. *Agent-side reference; inheritance rule verbatim.*
 
 ---
 

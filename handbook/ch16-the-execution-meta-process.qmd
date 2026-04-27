@@ -28,7 +28,7 @@ flowchart LR
     ADAPT --> PLAN
 ```
 
-**Audit** — understand the codebase from the perspectives that matter for this change. **Plan** — define scope, decompose into dependency-ordered waves, assign agent teams. **Wave** — execute each wave as a batch of parallel agents, one file per agent. **Validate** — test after every wave, spot-check critical changes, commit. **Ship** — final verification and merge.
+**Audit** — understand the codebase from the perspectives that matter for this change. **Plan** — define scope, decompose into dependency-ordered waves, assign agent teams. **Wave** — execute each wave as a batch of parallel agents, one file per agent. **Validate** — test after every wave, spot-check critical changes, commit. **Ship** — final verification and merge.[^ch16-plan-memento]
 
 The ADAPT loop connects wave execution back to planning. When a wave fails (a test breaks, an agent gets stuck, a dependency was missed), you diagnose, adjust the plan, and re-execute. The loop is not a sign of failure. It is the mechanism that makes the process resilient.
 
@@ -318,3 +318,5 @@ But following a process correctly is only half the challenge. The other half is 
 [^ch13-brooks]: Brooks makes the same argument in *The Mythical Man-Month* (1975): "Plan to throw one away; you will, anyhow." The meta-process inverts this — invest disproportionately in the plan so you don't have to throw the execution away.
 
 [^ch13-conway]: This decomposition pattern echoes Conway's Law: "Organizations which design systems are constrained to produce designs which are copies of the communication structures of these organizations." Here, agent team boundaries mirror module boundaries by design, not accident.
+
+[^ch16-plan-memento]: Genesis encodes the plan-as-handoff rule as **B4 PLAN MEMENTO** in [`skills/genesis/assets/design-patterns.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/assets/design-patterns.md), with a hard rule in [`skills/genesis/SKILL.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/SKILL.md) that pins the discipline this five-phase process names: *"The handoff packet at step 6 is the only artifact passed forward. No tacit context."* The plan is written before execution and reloaded at every re-grounding boundary — start of each step, return from each spawn, after each tool failure. *Agent-side reference; Step 6 hard rule verbatim.*

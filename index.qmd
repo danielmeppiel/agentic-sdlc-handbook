@@ -112,6 +112,25 @@ You don't need to read sequentially. Start with whichever part matches your role
 - **Part IV -- Case Studies:** APM, the handbook itself, the publishing pipeline, the growth engine
 - **Closing:** What comes next, plus a cross-harness reference appendix
 
+::: {.callout-note title="A note on Part III — the architectural threshold"}
+Part III is one author's first honest map of the other side of **the
+architectural threshold**: the size and coupling at which "write more
+careful prose" stops scaling and design discipline takes over. The
+chapters teach the discipline. **Genesis is the tool I wished existed**
+when I started — the same disciplines packaged as an Agent Skill the
+harness already knows how to load. With it loaded, the chapters' pattern
+names resolve to a companion the agent can read on disk:
+
+```bash
+apm install danielmeppiel/genesis
+```
+
+Works across Copilot, Claude Code, Cursor, Codex, and OpenCode via the
+agentskills.io entrypoint contract. The book stands without it; the
+later chapters' Genesis footnotes are callbacks to this companion, not
+fresh introductions.
+:::
+
 ::: {.callout-tip title="Where to start, by role and time budget"}
 If you have **45 minutes** and need the strategic picture, read Part I, then skim Part II -- the thesis plus the business case, architecture, and governance shape of AI-native delivery. If you have **an hour** and start coding Monday, jump to Part III and read the chapters that match what you're about to ship: instrumentation, PROSE specification, attention economy, or orchestration. If you want proof the methodology survives contact with real systems, the **Part IV case studies** stand on their own in any order. The Parts are designed to be read in any order; the chapter sequence inside each Part is the only place sequence matters.
 :::

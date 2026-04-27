@@ -171,7 +171,7 @@ You now have the vocabulary the rest of Part III is going to spend. A short forw
 1. **Name the four parts.** Model, harness, filesystem-as-loader, trigger surface. When something behaves differently between two setups, ask which of the four changed first.
 2. **Treat your markdown as code.** It is parsed, linked, loaded, and executed. Version it, review it, lint it, and write it precisely enough that the next agent does not hedge.
 3. **The harness is the compiler.** Two harnesses given the same primitives produce different running programs. Cross-harness portability is a project plan, not a mystery.
-4. **Inference is per-thread; the filesystem is shared.** Threads are amnesiac; the filesystem is the only memory that persists. Every coordination pattern in the rest of this book follows from that asymmetry.
+4. **Inference is per-thread; the filesystem is shared.** Threads are amnesiac; the filesystem is the only memory that persists. Every coordination pattern in the rest of this book follows from that asymmetry.[^ch9-threshold]
 :::
 
 [^ch9-copilot]: GitHub, "Adding custom instructions for GitHub Copilot," `https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot`. The `applyTo` frontmatter field accepts a glob and binds the instruction file to any thread whose work path matches. Files live in `.github/instructions/` for project scope and `.copilot/instructions/` for user scope.
@@ -191,3 +191,5 @@ You now have the vocabulary the rest of Part III is going to spend. A short forw
 [^ch9-genesis]: Genesis ships per-harness adapters under `skills/genesis/assets/runtime-affordances/per-harness/` — one each for Copilot, Claude Code, Cursor, Codex, and OpenCode — each mapping the six substrate concepts to that harness's concrete file paths and frontmatter fields. *Agent-side reference; substrate concept.*
 
 [^ch9-substrate2]: The transitive-closure framing — the full graph of files that load when a primitive activates, including dependencies of dependencies — is borrowed from `danielmeppiel/genesis`, `assets/composition-substrate.md`. *Agent-side reference; substrate concept.*
+
+[^ch9-threshold]: The four-part runtime machine this chapter just named is the substrate **the architectural threshold** refers to — the substrate at which the discipline Part III opens with stops being optional. The companion this part opened with is one packaged answer to that discipline. *Cross-reference; threshold framing.*
