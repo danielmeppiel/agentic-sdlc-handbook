@@ -123,9 +123,10 @@ apm install danielmeppiel/genesis
 
 Genesis is a free, open-source Agent Skill — written by the same hand
 as the book — that ports the software architect's role to agentic
-systems. Summon it in your agent with `/genesis <what you want
-designed>` and it returns a named pattern, an execution diagram, an
-acceptance test, and a written plan before a single file is touched.
+systems. Summon it in your agent with `/genesis <what you want built>`
+and it designs the architecture: which skills, custom agents, and
+instructions you need, and how they compose — the way a software
+architect lays out classes and modules for an OO system.
 Read the book to learn the patterns, or skip ahead and let the
 architect wield them on your project. Inspectable in full at
 [github.com/danielmeppiel/genesis](https://github.com/danielmeppiel/genesis).
