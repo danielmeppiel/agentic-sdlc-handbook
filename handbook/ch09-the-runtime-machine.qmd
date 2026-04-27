@@ -1,23 +1,23 @@
 
 # The Agentic Runtime Machine {#sec-runtime-machine}
 
+::: {.callout-note}
+## 30-second glossary, before the story
+
+The story below uses three filename shapes that recur across every harness. If they are new, here is enough to read on without losing the thread. Chapter 10 (@sec-instrumented-codebase) catalogues all seven primitive types with full examples and design tests.
+
+- **`.instructions.md`** — scoped conventions. YAML frontmatter `applyTo` glob (e.g. `applyTo: "src/api/**"`). When an agent thread touches a matching file, the harness preloads the body. Closest analogue: a `.editorconfig` the AI reads.
+- **`SKILL.md`** — a reusable decision framework the agent itself decides to load when the task description matches the skill's declared purpose. Activated on demand, not on every file touch.
+- **`.agent.md`** — a specialist persona. A separate sub-thread is routed to it through the harness's delegation tool, inheriting its declared model, tools, and instructions.
+
+For the rest of this chapter, treat these three as concrete instances of the broader category this chapter will name *the filesystem-as-loader*.
+:::
+
 It is a Monday morning. A senior engineer — call her Maya — has spent the last two sprints instrumenting a service repository for agentic development under GitHub Copilot. Conventions live in `.github/instructions/api.instructions.md` with an `applyTo: "src/api/**"` frontmatter. A reusable code-review framework lives in `.github/skills/code-review/SKILL.md`. A specialist persona lives in `.github/agents/security-auditor.agent.md`. Agents bind reliably; reviews are sharper; her teammates have stopped relitigating naming conventions in pull requests. The instrumentation works.
 
 This morning her team lead asks her to evaluate Claude Code on the same project. Maya clones the repo onto a fresh machine, installs the CLI, runs `claude` from the project root, and asks it to add an endpoint following the existing API conventions. Claude Code drafts the endpoint without consulting the convention file. The new code uses the deprecated authentication helper. None of the rules in `api.instructions.md` made it into the model's context. The skill in `.github/skills/code-review/` did not surface during the review. The security-auditor persona — the one her team has been calibrating for a month — is invisible.
 
 Same files. Same model family. Different harness. Silence.
-
-::: {.callout-note}
-## If those filenames are new
-
-Each of the three files in Maya's repo above is a distinct shape of agent-loadable markdown. Glossary-depth definitions follow, enough to read this chapter without losing the thread. Chapter 10 (@sec-instrumented-codebase) catalogues all seven primitive types with full examples and design tests.
-
-- **`.instructions.md`** -- scoped conventions. YAML frontmatter `applyTo` glob (Maya's: `applyTo: "src/api/**"`). When an agent thread touches a matching file, the harness preloads the body. Closest analogue: a `.editorconfig` the AI reads.
-- **`SKILL.md`** -- a reusable decision framework the agent itself decides to load when the task description matches the skill's declared purpose. Maya's `code-review/SKILL.md` is activated on demand, not on every file touch.
-- **`.agent.md`** -- a specialist persona. A separate sub-thread is routed to it through the harness's delegation tool, inheriting its declared model, tools, and instructions. Maya's `security-auditor.agent.md` is the security specialist her team has spent a month calibrating.
-
-For the rest of this chapter, treat these three as concrete instances of the broader category Ch9 will name *the filesystem-as-loader*.
-:::
 
 There is nothing wrong with Maya's primitives, and nothing wrong with Claude Code. What has happened is that Maya has been writing programs in a language whose compiler she did not know she was using. Copilot's loader recognizes `.instructions.md` files with an `applyTo` glob and reads them into context whenever a thread touches a matching path.[^ch9-copilot] Claude Code's loader does not. Claude Code reads a file called `CLAUDE.md` from the project root and then walks the directory tree for nested `CLAUDE.md` files, applying the closest one to whatever subtree the agent is working in.[^ch9-claude] The two harnesses agree on what a "scoped rule" *means* — text the model sees automatically when working in a particular part of the codebase — but they disagree, completely, on the file name, the folder, and the scope predicate. A developer who cannot name this disagreement experiences it as magic that comes and goes. A developer who can name it has a one-minute fix: write a `CLAUDE.md` at the repo root that says *for API code, follow the rules in `.github/instructions/api.instructions.md`*, and Claude Code will pull the file in via its `@path` import syntax.
 
