@@ -6,7 +6,7 @@
 
 This Part III teaches the practice of agentic development as a discipline a human can learn. The agent-side companion that operationalizes the entire block is the open-source skill **[`danielmeppiel/genesis`](https://github.com/danielmeppiel/genesis)**. Install it at the start of this part — it gives you a working reference your agent can load while you work through the chapters.
 
-What Genesis gives you in one sentence: the same primitives, patterns, and disciplines you are about to read, packaged as one Agent Skill that any AGENTS.md-compatible harness (Copilot, Claude Code, Cursor, Codex, OpenCode) can load on demand. When the practitioner block names a pattern (Wave, Panel, Supervised Execution), Genesis names the implementation. When this book argues a discipline (progressive disclosure, plan-write-then-reload, bounded-scope grounding), Genesis enforces it in operational form.
+What Genesis gives you in one sentence: the same primitives, patterns, and disciplines you are about to read, packaged as one Agent Skill that any AGENTS.md-compatible harness (Copilot, Claude Code, Cursor, Codex, OpenCode) can load on demand. When Part III names a pattern (Wave, Panel, Supervised Execution), Genesis names the implementation. When this book argues a discipline (progressive disclosure, plan-write-then-reload, bounded-scope grounding), Genesis enforces it in operational form.
 
 Install:
 
@@ -17,7 +17,7 @@ apm install danielmeppiel/genesis
 Or follow the per-harness installation notes in the Genesis README. Read this part with Genesis loaded; the chapters call out where Genesis names the same idea, in footnote form.
 :::
 
-Block 1 answered what to decide. Block 2 answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.
+Parts I–II answered what to decide. Part III answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.
 
 *The practitioner chapters that follow draw primarily from the author's direct experience building and using agentic development workflows. Where claims derive from the reference case study (PR #394, documented in Part IV), this is noted. Where heuristics are offered (such as thresholds or timing estimates), they reflect observed patterns from this practice, not controlled experiments. The reader should treat specific numbers as starting points for their own calibration, not as industry benchmarks.*[^ch8-n1]
 
@@ -193,7 +193,7 @@ Four role transitions in twenty minutes. None of them required conscious effort 
 
 The mindset is not complex. The AI is a capable, fast, amnesiac engineer. Your job is architect, reviewer, and escalation handler — the roles that require continuity, judgment, and accountability. The agent handles volume. You handle direction.
 
-The rest of Block 2 teaches you how.
+The rest of Part III teaches you how.
 
 [^ch8-n1]: The limitations of single-case methodology are well-documented. See Flyvbjerg, "Five Misunderstandings About Case-Study Research," *Qualitative Inquiry* 12, no. 2 (2006): 219–245. Our approach follows his argument that a well-chosen single case can be decisive for theory development.
 [^ch8-cognitive]: Sweller's Cognitive Load Theory (1988) provides the theoretical basis for why reducing extraneous cognitive load improves performance. Agent-delegated execution reduces extraneous load (build mechanics, file navigation) while preserving germane load (architecture decisions, review).
