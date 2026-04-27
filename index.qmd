@@ -112,23 +112,21 @@ You don't need to read sequentially. Start with whichever part matches your role
 - **Part IV -- Case Studies:** APM, the handbook itself, the publishing pipeline, the growth engine
 - **Closing:** What comes next, plus a cross-harness reference appendix
 
-::: {.callout-note title="A note on Part III — the architectural threshold"}
-Part III is one author's first honest map of the other side of **the
-architectural threshold**: the size and coupling at which "write more
-careful prose" stops scaling and design discipline takes over. The
-chapters teach the discipline. **Genesis is the tool I wished existed**
-when I started — the same disciplines packaged as an Agent Skill the
-harness already knows how to load. With it loaded, the chapters' pattern
-names resolve to a companion the agent can read on disk:
+::: {.callout-note title="Before you read Part III: a free companion"}
+Part III is the design-discipline block of the book — the chapters that
+teach how to build non-trivial agent-driven systems.
+
+You can read it on its own. If you want the same patterns loaded into
+the AI you code with while you read, install the companion:
 
 ```bash
 apm install danielmeppiel/genesis
 ```
 
-Works across Copilot, Claude Code, Cursor, Codex, and OpenCode via the
-agentskills.io entrypoint contract. The book stands without it; the
-later chapters' Genesis footnotes are callbacks to this companion, not
-fresh introductions.
+Genesis is a free, open-source Agent Skill — written by the same hand
+as the book and inspectable in full at
+[github.com/danielmeppiel/genesis](https://github.com/danielmeppiel/genesis).
+Works across Copilot, Claude Code, Cursor, Codex, and OpenCode.
 :::
 
 ::: {.callout-tip title="Where to start, by role and time budget"}

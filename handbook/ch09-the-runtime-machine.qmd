@@ -192,4 +192,4 @@ You now have the vocabulary the rest of Part III is going to spend. A short forw
 
 [^ch9-substrate2]: The transitive-closure framing — the full graph of files that load when a primitive activates, including dependencies of dependencies — is borrowed from `danielmeppiel/genesis`, `assets/composition-substrate.md`. *Agent-side reference; substrate concept.*
 
-[^ch9-threshold]: The four-part runtime machine this chapter just named is the substrate **the architectural threshold** refers to — the substrate at which the discipline Part III opens with stops being optional. The companion this part opened with is one packaged answer to that discipline. *Cross-reference; threshold framing.*
+[^ch9-threshold]: The four-part runtime machine this chapter just named is the substrate at which the design discipline of Part III stops being optional. The companion the part opener pointed at is one packaged answer to that discipline. *Cross-reference; substrate framing.*
