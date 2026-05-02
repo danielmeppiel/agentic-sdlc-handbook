@@ -1,11 +1,11 @@
 
 # The Instrumented Codebase {#sec-instrumented-codebase}
 
-Chapter 9 named the four parts of the agentic runtime machine — Model, harness, agent source code, client — and identified the *agent source code* as the part the developer programs against. Maya's port from Copilot to Claude Code failed at exactly that layer: same files, same model family, different compiler reading them. This chapter is the catalogue of files you put on disk for the compiler to read. Each entry names what the file does and *which load mode* it triggers — eager preload, lazy on-demand, dispatcher-mediated, user-invoked, event-driven — vocabulary Chapter 12 (@sec-load-lifecycle) develops in mechanical detail.
+Chapter 10 named the four parts of the agentic runtime machine — Model, harness, agent source code, client — and identified the *agent source code* as the part the developer programs against. Maya's port from Copilot to Claude Code failed at exactly that layer: same files, same model family, different compiler reading them. This chapter is the catalogue of files you put on disk for the compiler to read. Each entry names what the file does and *which load mode* it triggers — eager preload, lazy on-demand, dispatcher-mediated, user-invoked, event-driven — vocabulary Chapter 13 (@sec-load-lifecycle) develops in mechanical detail.
 
-A repository instrumented for agentic work is full of markdown that isn't documentation. The files are parsed, linked, loaded, and executed — Chapter 9's four properties of a code artifact. They version-control alongside the application code they steer, review in pull requests, and create a feedback loop: when an agent misbehaves, you fix the file that should have prevented the mistake, not the generated code. Seven primitive types cover the working set, each addressing a distinct gap between what is in the source and what the agent needs to know.
+A repository instrumented for agentic work is full of markdown that isn't documentation. The files are parsed, linked, loaded, and executed — Chapter 10's four properties of a code artifact. They version-control alongside the application code they steer, review in pull requests, and create a feedback loop: when an agent misbehaves, you fix the file that should have prevented the mistake, not the generated code. Seven primitive types cover the working set, each addressing a distinct gap between what is in the source and what the agent needs to know.
 
-The word *primitive* is deliberate. These artifacts are the atomic units of agentic behaviour. Like functions in code, they do one thing, they compose, and they're testable in isolation. Unlike prompts typed into a chat window and forgotten, they persist, accumulate value, and improve through iteration. What makes a primitive *useful* — the prose discipline that fits inside it — is Chapter 11 (@sec-prose). What makes a primitive *bind* — when the harness loads it and against which budget — is Chapter 12. What it *costs* once loaded is Chapter 13 (@sec-attention-economy). This chapter is the prior question: what, specifically, are you building?
+The word *primitive* is deliberate. These artifacts are the atomic units of agentic behaviour. Like functions in code, they do one thing, they compose, and they're testable in isolation. Unlike prompts typed into a chat window and forgotten, they persist, accumulate value, and improve through iteration. What makes a primitive *useful* — the prose discipline that fits inside it — is Chapter 12 (@sec-prose). What makes a primitive *bind* — when the harness loads it and against which budget — is Chapter 13. What it *costs* once loaded is Chapter 14 (@sec-attention-economy). This chapter is the prior question: what, specifically, are you building?
 
 ---
 
@@ -21,7 +21,7 @@ Instrumentation is the practice of converting the second kind into structured fi
 
 Seven categories cover the full range of knowledge an agent needs. Each addresses a distinct gap between what's in the code and what an agent needs to know. Not every project needs all seven on day one (the instrumentation audit later in this chapter helps you decide where to start) but understanding the complete set is necessary before making that decision.
 
-Each primitive carries an implicit *load mode* — the moment the harness decides to read it into the model's context. There are five modes in play, and naming them up front lets the catalogue read as a typed system rather than a list of file extensions. Three modes are deterministic: **eager preload** (the harness reads the file at session start, scoped or unscoped); **dispatcher-mediated** (the harness routes a thread to a specialist via a delegation tool); **event-driven** (a client process — a workflow runner, a webhook receiver, a scheduler — invokes the harness against the file in response to an outside event). Two are agent- or user-mediated: **lazy on-demand** (the agent itself decides to load the file based on a description match); **user-invoked** (the developer runs the file as a workflow). Chapter 12 covers the mechanics of each — token budgets, transitive closure, when bindings silently fail. For now it is enough to know which mode each primitive triggers.
+Each primitive carries an implicit *load mode* — the moment the harness decides to read it into the model's context. There are five modes in play, and naming them up front lets the catalogue read as a typed system rather than a list of file extensions. Three modes are deterministic: **eager preload** (the harness reads the file at session start, scoped or unscoped); **dispatcher-mediated** (the harness routes a thread to a specialist via a delegation tool); **event-driven** (a client process — a workflow runner, a webhook receiver, a scheduler — invokes the harness against the file in response to an outside event). Two are agent- or user-mediated: **lazy on-demand** (the agent itself decides to load the file based on a description match); **user-invoked** (the developer runs the file as a workflow). Chapter 13 covers the mechanics of each — token budgets, transitive closure, when bindings silently fail. For now it is enough to know which mode each primitive triggers.
 
 ```{mermaid}
 %%| fig-width: 5.0
@@ -41,7 +41,7 @@ block-beta
 
 ### Instructions
 
-**Load mode:** eager preload, scoped by `applyTo` glob. The harness reads matching instruction files into context whenever a thread touches a path the glob covers — Maya's `api.instructions.md` from Chapter 9 is the canonical example.
+**Load mode:** eager preload, scoped by `applyTo` glob. The harness reads matching instruction files into context whenever a thread touches a path the glob covers — Maya's `api.instructions.md` from Chapter 10 is the canonical example.
 
 **Purpose:** Encode project conventions scoped to specific files, directories, or file types. Instructions are the most granular context artifact; they tell an agent "when you touch code in this scope, follow these rules."
 
@@ -75,7 +75,7 @@ description: "API layer conventions for endpoint implementation"
 
 ### Agents
 
-**Load mode:** dispatcher-mediated. The persona file isn't preloaded; a parent thread (or the developer) routes a sub-thread to it through the harness's delegation tool. The selected agent's frontmatter then governs the new thread's model, tool set, and instructions. Chapter 15 builds on this seam.
+**Load mode:** dispatcher-mediated. The persona file isn't preloaded; a parent thread (or the developer) routes a sub-thread to it through the harness's delegation tool. The selected agent's frontmatter then governs the new thread's model, tool set, and instructions. Chapter 16 builds on this seam.
 
 **Purpose:** Define specialist personas with domain expertise, calibrated judgment, and explicit behavioral boundaries. An agent configuration is the answer to "who should work on this?", not in terms of a human team member, but in terms of what expertise, priorities, and constraints the task requires.
 
@@ -225,7 +225,7 @@ Prompts are the bridge between ad-hoc chat and systematic workflows. Without the
 
 ### Memory
 
-**Load mode:** eager preload, persistent. The harness reads the memory file (or the equivalent store) at every session start — the file is the only thing that survives the per-thread amnesia identified in Chapter 9. Memory is what makes a session that ends at 6pm useful to a session that starts at 9am tomorrow.
+**Load mode:** eager preload, persistent. The harness reads the memory file (or the equivalent store) at every session start — the file is the only thing that survives the per-thread amnesia identified in Chapter 10. Memory is what makes a session that ends at 6pm useful to a session that starts at 9am tomorrow.
 
 **Purpose:** Preserve knowledge across sessions. Agents are stateless; every conversation starts from zero. Memory files give them access to accumulated decisions, resolved trade-offs, and project history that would otherwise vanish between sessions.
 
@@ -306,7 +306,7 @@ Specification files matter because they make the "Reduced Scope" constraint oper
 
 ### Hooks
 
-**Load mode:** event-driven, harness-mediated. The hook file is agent source code; what fires it is a *client process* — a cron daemon, a webhook receiver, a CI runner, a `gh-aw` workflow, an IDE save handler — that observes an outside event (a file save, a git commit, a pull-request webhook, a scheduled tick) and invokes the harness against the hook's bootstrap context. Clients can be interactive (terminals, IDEs) or programmatic (workflows, schedulers, webhook receivers); the *Client* role from Chapter 9's four-part vocabulary is the layer hooks live behind.
+**Load mode:** event-driven, harness-mediated. The hook file is agent source code; what fires it is a *client process* — a cron daemon, a webhook receiver, a CI runner, a `gh-aw` workflow, an IDE save handler — that observes an outside event (a file save, a git commit, a pull-request webhook, a scheduled tick) and invokes the harness against the hook's bootstrap context. Clients can be interactive (terminals, IDEs) or programmatic (workflows, schedulers, webhook receivers); the *Client* role from Chapter 10's four-part vocabulary is the layer hooks live behind.
 
 **Purpose:** Define automated actions triggered by development events. Hooks bridge the gap between passive context (instructions, memory) and active behavior, making the instrumented codebase reactive rather than waiting to be queried.
 
@@ -376,7 +376,7 @@ project/
 └── ...
 ```
 
-Three observations. **Context files live in `.github/`**, centralised so the knowledge layer is findable in one place; the exceptions are `AGENTS.md` files, which live in the directories they describe because they participate in a discovery hierarchy Chapter 11 covers. **Each primitive type has its own directory** — instructions, agents, skills, prompts, specs, and hooks don't mix; this makes auditing what you have straightforward. **The structure is flat within each directory.** Resist the urge to nest. A flat list of 15 descriptively-named files scans faster than a three-level tree, and most projects need 8-12 instruction files, not 50.
+Three observations. **Context files live in `.github/`**, centralised so the knowledge layer is findable in one place; the exceptions are `AGENTS.md` files, which live in the directories they describe because they participate in a discovery hierarchy Chapter 12 covers. **Each primitive type has its own directory** — instructions, agents, skills, prompts, specs, and hooks don't mix; this makes auditing what you have straightforward. **The structure is flat within each directory.** Resist the urge to nest. A flat list of 15 descriptively-named files scans faster than a three-level tree, and most projects need 8-12 instruction files, not 50.
 
 ---
 
@@ -409,7 +409,7 @@ flowchart TD
 
 When an agent is asked to modify `src/api/users.py`, the effective context assembles from global principles, the `applyTo: "src/api/**"` instruction file (frontend instructions stay out), the API middleware skill (activated by route patterns), the backend-dev agent (persona, model, tools), and the memory file (versioning decisions, deprecated `SessionAuth`, rate limit timeouts). Each layer adds specificity; none contradicts the layer above. A conflict indicates a design error in the instrumentation, not a resolution the agent should attempt.
 
-This composition is what Chapter 11's *Explicit Hierarchy* constraint makes concrete. Global rules provide consistency, scoped rules provide domain adaptation, skills provide decision frameworks, agent configurations provide expertise, prompts and specs provide task structure, memory provides history, hooks provide event-driven reactivity. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone's head.[^ch9-scope]
+This composition is what Chapter 12's *Explicit Hierarchy* constraint makes concrete. Global rules provide consistency, scoped rules provide domain adaptation, skills provide decision frameworks, agent configurations provide expertise, prompts and specs provide task structure, memory provides history, hooks provide event-driven reactivity. Together, they give the agent the same information a tenured team member would bring to the task — without requiring that information to fit in anyone's head.[^ch9-scope]
 
 ---
 
@@ -613,7 +613,7 @@ The following excerpts are from a real Copilot CLI session — not a reconstruct
 **Result:** [PR #394](https://github.com/microsoft/apm/pull/394) — 75 files changed · **Duration:** 207 turns across 2 sessions · [Full metrics](../case-study-apm-overhaul.qmd)
 :::
 
-**Turn 0 — The messy start.** The session opens with the developer pasting raw terminal output of an authentication failure and role-casting the agent in a single breath. This is the Architect role from Chapter 8 — not writing a plan document, but framing the problem and the expertise needed to solve it:
+**Turn 0 — The messy start.** The session opens with the developer pasting raw terminal output of an authentication failure and role-casting the agent in a single breath. This is the Architect role from Chapter 9 — not writing a plan document, but framing the problem and the expertise needed to solve it:
 
 > "So I try to install a package from a GitHub EMU organization (requires auth) and it goes as: `apm install mcaps-microsoft/mcaps-software-poya#v1.0.0` Validating 1 package(s)... ✗ mcaps-microsoft/mcaps-software-poya#v1.0.0 - not accessible or doesn't exist [...] Can you think as a world class UX expert and work with an APM logging mechanism implementation expert on what is going on here and how to fix the experience as a whole"
 
@@ -633,7 +633,7 @@ One turn later, the correction sharpened into an instrumentation fix — not jus
 
 > "Sorry but I do not think 'ghu\_' is identifying EMUs. I have a 'github\_pat\_' starting token and it comes from an EMU, it's fine grained. It's rather ghp (classic PAT) and github\_pat (fine grained pat) prefixes. 'ghu\_' is for OAuth User Tokens. This is critical knowledge for the auth expert agent.md to be updated."
 
-That last sentence is this chapter's entire thesis in twelve words. The developer didn't just fix the code — they fixed the context file so every future agent inherits the correction. This is the *Silent Semantic Failure* anti-pattern from Chapter 18 caught and resolved at the primitive layer.
+That last sentence is this chapter's entire thesis in twelve words. The developer didn't just fix the code — they fixed the context file so every future agent inherits the correction. This is the *Silent Semantic Failure* anti-pattern from Chapter 19 caught and resolved at the primitive layer.
 
 **Turn 23 — Multi-agent debugging with real output.** After initial fixes, auth still failed. The developer invoked the agent team and pasted verbose terminal output showing the full authentication resolution chain:
 
@@ -647,7 +647,7 @@ The agent traced the failure through real debug logs: `Auth resolved → Trying 
 
 This is instrumentation at the orchestration layer. The developer didn't write more code or more tests — they changed which agents were in the room and how they coordinated. The custom `.agent.md` files (described below) gave each agent persistent domain knowledge that outlives the session.
 
-**Turn 71 — Granular review, then delegation.** The developer shifted into the Reviewer role (Chapter 8) at its most specific, then handed off to specialists:
+**Turn 71 — Granular review, then delegation.** The developer shifted into the Reviewer role (Chapter 9) at its most specific, then handed off to specialists:
 
 > "you are printing the hashes twice? [...] And if we are in verbose mode, why aren't you printing live in the logs the 22 files we skipped? [...] I'll let the logging expert and UX expert on world class logs plan and decide. This expert agent needs to look at each of these commands with a team of clone subagents working for him and assess whether this is really killer full verbose logs"
 
@@ -704,11 +704,11 @@ This book was partly born from the patterns it describes. By Turn 79, the develo
 
 **Three things to notice.**
 
-**The developer's value was domain knowledge, not keystrokes.** Across 207 turns and 75 changed files, the developer wrote no application code. Their contributions were the problem frame (Turn 0), the domain corrections (Turns 4–5), the team composition decisions (Turns 50, 71), and the context file fixes (Turns 5, 73). This is the role shift Chapter 8 described: architect, reviewer, escalation handler — operating through instrumentation rather than implementation.
+**The developer's value was domain knowledge, not keystrokes.** Across 207 turns and 75 changed files, the developer wrote no application code. Their contributions were the problem frame (Turn 0), the domain corrections (Turns 4–5), the team composition decisions (Turns 50, 71), and the context file fixes (Turns 5, 73). This is the role shift Chapter 9 described: architect, reviewer, escalation handler — operating through instrumentation rather than implementation.
 
 **Every correction became a permanent artifact.** A developer without instrumentation would have fixed the auth code and moved on. The same EMU confusion would recur next month, with a different agent, on a different task. Instead, the correction went into the `auth-expert.agent.md` (Turn 5) and the logging skill (Turn 73) — context files that prevent the *class* of error, not just the instance. This is the feedback loop that makes instrumentation compound over time.
 
-**The hardest bugs were semantic, not syntactic.** The agent's assumption that EMU means `*.ghe.com` was plausible, consistent with documentation, and wrong. No linter catches that. No test catches it unless the test author already knows the correct answer — in which case you don't need the test. This is the *Silent Semantic Failure* anti-pattern Chapter 18 catalogues. The safety net was a human with domain expertise reviewing agent output with enough context (verbose logs, Turn 23) to see where the reasoning broke. Agent-augmented development does not eliminate the need for human judgment. It changes *where* that judgment is applied — and instrumentation determines whether it has lasting effect.
+**The hardest bugs were semantic, not syntactic.** The agent's assumption that EMU means `*.ghe.com` was plausible, consistent with documentation, and wrong. No linter catches that. No test catches it unless the test author already knows the correct answer — in which case you don't need the test. This is the *Silent Semantic Failure* anti-pattern Chapter 19 catalogues. The safety net was a human with domain expertise reviewing agent output with enough context (verbose logs, Turn 23) to see where the reasoning broke. Agent-augmented development does not eliminate the need for human judgment. It changes *where* that judgment is applied — and instrumentation determines whether it has lasting effect.
 
 ---
 
@@ -737,15 +737,15 @@ The instrumented codebase is not a finished state. It is a practice — an ongoi
 
 You now have the catalogue. Three chapters follow, each treating one face of the same artifact:
 
-**Chapter 11 — The PROSE Specification (@sec-prose).** How to *write* the prose inside these files so it actually steers the model. Each PROSE constraint — Progressive Disclosure, Reduced Scope, Orchestrated Composition, Specification, Explicit Hierarchy — is a normative rule for the body of a primitive. Chapter 11 is the writing chapter; this one was the typing chapter.
+**Chapter 12 — The PROSE Specification (@sec-prose).** How to *write* the prose inside these files so it actually steers the model. Each PROSE constraint — Progressive Disclosure, Reduced Scope, Orchestrated Composition, Specification, Explicit Hierarchy — is a normative rule for the body of a primitive. Chapter 12 is the writing chapter; this one was the typing chapter.
 
-**Chapter 12 — The Load Lifecycle (@sec-load-lifecycle).** How the harness *loads* these files. The five load modes named in this chapter — eager preload, lazy on-demand, dispatcher-mediated, user-invoked, event-driven — get their mechanics there: load order, transitive closure, the dispatcher's binding window, why a correctly-placed skill stays silent when a parent instruction overflows the context budget. Chapter 12 is the chapter you reach for when a primitive does not bind.
+**Chapter 13 — The Load Lifecycle (@sec-load-lifecycle).** How the harness *loads* these files. The five load modes named in this chapter — eager preload, lazy on-demand, dispatcher-mediated, user-invoked, event-driven — get their mechanics there: load order, transitive closure, the dispatcher's binding window, why a correctly-placed skill stays silent when a parent instruction overflows the context budget. Chapter 13 is the chapter you reach for when a primitive does not bind.
 
-**Chapter 13 — Attention and Context Economy (@sec-attention-economy).** What these files *cost* once loaded. Loading is deterministic; attention is not. A 40-line instruction file and a 400-line one bind identically and behave nothing alike. Chapter 13 is the physics — why context is a working set rather than a budget, why doubling input length more than halves output quality past a threshold, why progressive disclosure is the price of admission rather than polish.
+**Chapter 14 — Attention and Context Economy (@sec-attention-economy).** What these files *cost* once loaded. Loading is deterministic; attention is not. A 40-line instruction file and a 400-line one bind identically and behave nothing alike. Chapter 14 is the physics — why context is a working set rather than a budget, why doubling input length more than halves output quality past a threshold, why progressive disclosure is the price of admission rather than polish.
 
-This chapter showed you what to build. Chapter 11 shows you how to write it. Chapter 12 shows you when it loads. Chapter 13 shows you what it costs.
+This chapter showed you what to build. Chapter 12 shows you how to write it. Chapter 13 shows you when it loads. Chapter 14 shows you what it costs.
 
-[^ch9-lint]: Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Semantic Failure in Chapter 18.
+[^ch9-lint]: Static analysis tools (ESLint, Pylint, Ruff) catch syntactic violations but not semantic ones — an agent can pass all linters while violating domain conventions. The instruction files complement, rather than replace, automated linting. See also the discussion of Silent Semantic Failure in Chapter 19.
 [^ch9-scope]: The principle of scoped, hierarchical configuration mirrors established patterns in software engineering — from CSS specificity to Git's nested .gitignore files. The key insight is that agents benefit from the same locality-of-reference that makes these patterns effective for humans.
 [^ch10-skills]: agentskills.io is the open registry standard for the `SKILL.md` entrypoint with description-driven activation. The same standard has been adopted in substantially compatible form by GitHub Copilot (`.github/skills/<name>/SKILL.md`), Claude Code (`.claude/skills/<name>/SKILL.md`), and several others — skills port across harnesses more cleanly than scope-attached rules because the standard pinned both the file name and the activation contract.
 [^ch10-genesis-skill]: Genesis's [`skills/genesis/SKILL.md`](https://github.com/danielmeppiel/genesis/blob/613f2a64a4a193cacd45fd4439a093044ae3178d/skills/genesis/SKILL.md) is explicit about its scope under the "Hard rules" heading: *"The output of this skill is DESIGN ARTIFACTS, not finished modules. A separate coding step emits the natural-language modules from the artifacts."* That is the design-test discipline applied to design itself — the activation contract this section teaches, drawn at the boundary I had to set before the skill could ship. *Agent-side reference; activation contract verbatim.*
