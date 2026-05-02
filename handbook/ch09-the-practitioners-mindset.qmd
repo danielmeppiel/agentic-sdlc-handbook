@@ -1,6 +1,8 @@
 
 # The Practitioner's Mindset {#sec-practitioners-mindset}
 
+> With the map in hand, the question becomes what this asks of *you*.
+
 ::: {.callout-tip}
 ## Install Genesis as you read
 
@@ -19,7 +21,7 @@ Or follow the per-harness installation notes in the Genesis README. Read this pa
 
 Parts I–II answered what to decide. Part III answers what to do. But before doing anything, you need to understand what changes about how you think — because the shift from traditional development to agentic development is not primarily a shift in tools. It is a shift in role.
 
-*The practitioner chapters that follow draw primarily from the author's direct experience building and using agentic development workflows. Where claims derive from the reference case study (PR #394, documented in Part IV), this is noted. Where heuristics are offered (such as thresholds or timing estimates), they reflect observed patterns from this practice, not controlled experiments. The reader should treat specific numbers as starting points for their own calibration, not as industry benchmarks.*[^ch8-n1]
+*The practitioner chapters that follow draw primarily from the author's direct experience building and using agentic development workflows. Where claims derive from the reference case study (PR #394, documented in Part IV), this is noted. Where heuristics are offered (such as thresholds or timing estimates), they reflect observed patterns from this practice, not controlled experiments. The reader should treat specific numbers as starting points for their own calibration, not as industry benchmarks.*[^ch9-n1]
 
 ---
 
@@ -45,7 +47,7 @@ This is the mental model that works: AI is a capable but amnesiac engineer that 
 
 In traditional development, your primary output is code. You read requirements, you think through the design, you type the implementation. The artifact is source files. Your skill is measured by the quality of what you write.
 
-In agentic development, your primary output shifts. You still write code, but the most impactful thing you write is context. The instructions that tell agents what your system looks like, the constraints that prevent them from violating your architecture, the decomposition that breaks work into pieces sized for an agent's context window. The artifact is still source files, but the source files are produced by agents operating within the boundaries you defined. Your skill is measured by the quality of the boundaries.[^ch8-cognitive]
+In agentic development, your primary output shifts. You still write code, but the most impactful thing you write is context. The instructions that tell agents what your system looks like, the constraints that prevent them from violating your architecture, the decomposition that breaks work into pieces sized for an agent's context window. The artifact is still source files, but the source files are produced by agents operating within the boundaries you defined. Your skill is measured by the quality of the boundaries.[^ch9-cognitive]
 
 This is not a soft claim about "thinking at a higher level." It is a concrete change in where your time goes.
 
@@ -87,7 +89,7 @@ Your job as escalation handler is to be available for these moments and to resol
 
 The ratio between these roles shifts as you gain experience. Early on, you spend most of your time reviewing, checking agent output carefully, catching failures, building intuition for what agents get wrong. As you develop better specifications and better instincts for decomposition, the review burden decreases and the architect role dominates. The escalation handler role remains roughly constant; some decisions always require a human.
 
-**These three roles are not theoretical categories.** Chapter 13 traces a real pull request — [PR #394](https://github.com/microsoft/apm/pull/394), a 75-file change with 3 human interventions during wave execution — and each intervention maps directly to one of these roles. The first was a scope decision during planning: include all severity levels rather than deferring moderate issues. That was the Architect. The second was an agent recovery: an agent stalled mid-migration, and the practitioner split the remaining work across two replacement agents. That was the Escalation Handler. The third was test triage after the recovery wave: an ordering issue in the migration required a targeted fix. That was the Reviewer. Three interventions, three roles, no overlap. The full session — including two additional escalation events caught during verification — is documented in the [APM Overhaul case study](../case-study-apm-overhaul.qmd).
+**These three roles are not theoretical categories.** Chapter 14 traces a real pull request — [PR #394](https://github.com/microsoft/apm/pull/394), a 75-file change with 3 human interventions during wave execution — and each intervention maps directly to one of these roles. The first was a scope decision during planning: include all severity levels rather than deferring moderate issues. That was the Architect. The second was an agent recovery: an agent stalled mid-migration, and the practitioner split the remaining work across two replacement agents. That was the Escalation Handler. The third was test triage after the recovery wave: an ordering issue in the migration required a targeted fix. That was the Reviewer. Three interventions, three roles, no overlap. The full session — including two additional escalation events caught during verification — is documented in the [APM Overhaul case study](../case-study-apm-overhaul.qmd).
 
 ---
 
@@ -195,5 +197,5 @@ The mindset is not complex. The AI is a capable, fast, amnesiac engineer. Your j
 
 The rest of Part III teaches you how.
 
-[^ch8-n1]: The limitations of single-case methodology are well-documented. See Flyvbjerg, "Five Misunderstandings About Case-Study Research," *Qualitative Inquiry* 12, no. 2 (2006): 219–245. Our approach follows his argument that a well-chosen single case can be decisive for theory development.
-[^ch8-cognitive]: Sweller's Cognitive Load Theory (1988) provides the theoretical basis for why reducing extraneous cognitive load improves performance. Agent-delegated execution reduces extraneous load (build mechanics, file navigation) while preserving germane load (architecture decisions, review).
+[^ch9-n1]: The limitations of single-case methodology are well-documented. See Flyvbjerg, "Five Misunderstandings About Case-Study Research," *Qualitative Inquiry* 12, no. 2 (2006): 219–245. Our approach follows his argument that a well-chosen single case can be decisive for theory development.
+[^ch9-cognitive]: Sweller's Cognitive Load Theory (1988) provides the theoretical basis for why reducing extraneous cognitive load improves performance. Agent-delegated execution reduces extraneous load (build mechanics, file navigation) while preserving germane load (architecture decisions, review).

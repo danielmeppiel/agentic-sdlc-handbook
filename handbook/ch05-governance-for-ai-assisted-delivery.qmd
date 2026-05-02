@@ -153,7 +153,7 @@ Your agents consume context — instruction files, documentation, configuration,
 ::: {.callout-warning}
 ## Organizational Policy: The Permanent Governance Gap
 
-One limitation of AI-assisted governance that no model improvement will resolve: organizational policy awareness lives nowhere in training data. An agent can enforce coding standards from a rules file. It can run 22 automated policy checks in CI. But it cannot know that your organization's legal team requires review for any feature touching PII, or that a PR linking a personal asset from a corporate repository creates a compliance risk — unless that policy is explicitly encoded in the context layer. This is why governance primitives must include organizational policies, not just technical standards. Part III makes the underlying mechanism concrete: Chapter 10 explains how to instrument the codebase so policy gates fail loudly rather than silently, Chapter 14 explains how those gates sit at the seam where the agent's action meets the deterministic system, and Chapter 19 explains how policy primitives are versioned and shared the way application code is. The [Growth Engine case study](../case-study-growth-engine.qmd) documents this finding in detail: fifteen agent personas across seven expert panels missed a compliance constraint that a human caught in seconds.
+One limitation of AI-assisted governance that no model improvement will resolve: organizational policy awareness lives nowhere in training data. An agent can enforce coding standards from a rules file. It can run 22 automated policy checks in CI. But it cannot know that your organization's legal team requires review for any feature touching PII, or that a PR linking a personal asset from a corporate repository creates a compliance risk — unless that policy is explicitly encoded in the context layer. This is why governance primitives must include organizational policies, not just technical standards. Part III makes the underlying mechanism concrete: Chapter 11 explains how to instrument the codebase so policy gates fail loudly rather than silently, Chapter 15 explains how those gates sit at the seam where the agent's action meets the deterministic system, and Chapter 20 explains how policy primitives are versioned and shared the way application code is. The [Growth Engine case study](../case-study-growth-engine.qmd) documents this finding in detail: fifteen agent personas across seven expert panels missed a compliance constraint that a human caught in seconds.
 :::
 
 ### The Organizational Knowledge Gap {#sec-organizational-policy-gap}
@@ -287,3 +287,34 @@ The governance framework above is not theoretical. The APM project implements ea
 
 The pattern generalizes: governance primitives that can be expressed as CI checks should be. The ones that cannot — organizational policy, legal review triggers, risk classification — must be encoded as explicit context for agents and humans alike.
 :::
+
+---
+
+## The Architecture Decision Matrix
+
+The checklist above tells you what governance capabilities to build. The matrix below tells you, for each material decision an agent might participate in, *who decides what, with which evidence, gated by which check.* It is the governance overlay that sits on top of the **Governance and Distribution** layer of the reference architecture (Chapter 4) — the layer that ships primitives and lockfiles between teams. The Decision Matrix is what turns those primitives and lockfiles into auditable governance gates.
+
+The matrix has six columns. Each row is a class of decision. Use it as a starting template; adapt the rows to the decision classes that recur in your organization's pull-request reviews and incident postmortems.
+
+::: {tbl-colwidths="[18,14,14,18,18,18]"}
+
+| Decision class | Agent role | Human role | Evidence captured | Gate | Reversibility |
+|---|---|---|---|---|---|
+| **Code change in a low-risk module** (internal tooling, dev docs, non-production scripts) | Author the diff; run tests; open the PR | Review and merge | Diff, test output, agent stack trace | PR review by one human reviewer | Reversible: revert the commit |
+| **Code change in a regulated path** (auth, payments, data access, customer PII handlers) | Draft the diff; cite the constraint | Review with security-aware reviewer; sign off | Diff, agent stack trace, the loaded scope-attached rules, the cited constraint | Two human approvers; one must hold the relevant security or compliance label | Reversible at code level; downstream effects (data writes) may not be |
+| **Architecture decision affecting two or more teams** (API contract, shared module boundary, cross-cutting convention) | Draft an Architecture Decision Record (ADR); enumerate alternatives | Decide; sign the ADR | Draft ADR, discussion thread, the prior ADRs the agent cited | Architecture review forum; named decision owner signs | Reversible only by another ADR; cost of reversal is the migration |
+| **Production deploy** (any change reaching customer-facing systems) | Build artefact; produce deployment manifest; run pre-deploy checks | Approve the rollout; monitor canary | Artefact hash, lockfile, deployment manifest, pre-deploy check output | CI gate (deterministic); deployment approval (human) | Reversible by rollback within the deployment window; not reversible after data migrations land |
+| **External dependency adoption** (new library, new agentic primitive bundle from outside the org) | Identify the candidate; produce the lockfile diff and the supply-chain summary | Review the supply chain; approve or reject | Lockfile diff, signature verification output, license report, the agent's supply-chain summary | Security review; named library owner signs | Reversible only by removing the dependency and refactoring consumers |
+| **Production incident response** (active outage, data exposure, security event) | Surface diagnostic context; draft remediation candidates; never execute | The on-call engineer decides and executes | Incident timeline, the diagnostic queries the agent ran, the candidates it drafted, the chosen path | Human-only execution; agent runs in advisory mode | Decision-by-decision; the agent does not hold the write capability |
+
+:::
+
+Three principles read across every row.
+
+**The agent never holds the write capability for an irreversible action.** Code commits are reversible (you can revert). Production deploys are partly reversible (you can roll back within a window). Data migrations and external API calls with side effects are not. Wherever the row says the action is not reversible, the human is in the gate, not adjacent to it. This is the *strong-form supervised execution* bar from the readiness checklist above, applied row-by-row: the matrix is what makes the abstract bar concrete for the decision classes your organization actually encounters.
+
+**Evidence is captured as artefacts, not as memory.** Every row's "Evidence captured" column lists files: the diff, the lockfile, the ADR, the agent stack trace, the loaded scope-attached rules. None of these are "the agent's reasoning" or "the reviewer's recollection." When an auditor or a postmortem asks *what was loaded into the agent at decision time*, the answer is the lockfile and the trace, not a story. Part III names this discipline; Chapter 20 (@sec-primitives-as-code) makes it operational at the package layer.
+
+**Gates are layered, not duplicated.** A single decision often passes through more than one gate: a CI gate (deterministic checks), a code review gate (human judgement on the diff), a security review gate (human judgement on the supply-chain or constraint surface). The matrix names which gates apply to which decision class. Adding a gate slows the decision; removing a load-bearing one is how an agent-led pipeline produces a quietly non-compliant outcome that nobody notices until the audit. The matrix is how you keep that decision deliberate.
+
+The matrix is the artefact your governance team should adapt and post next to the readiness checklist. The checklist tells you whether the *capability* exists; the matrix tells you whether each *decision* uses it. Together they are the governance layer your AI investment deserves.

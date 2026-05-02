@@ -1,0 +1,69 @@
+
+# A Map for Part III {#sec-part-iii-preface}
+
+> *Five minutes of vocabulary before the practitioner chapters begin.*
+
+You have just finished Part II's leader-grade material — or you have arrived here cold from the engineering side without the leadership chapters. Either way, this short preface gives you the vocabulary the rest of Part III will operate in: the eight terms a practitioner cannot avoid, the five-layer picture of the system the chapters will fill in, and the names of the multi-agent patterns Chapter 16 will operate against. Nothing here is a chapter-grade treatment. The treatments are in the chapters that follow. The map is so you can read those chapters without footnoting every term.
+
+Chapter 4 was deliberately vendor-neutral and deliberately silent on a vocabulary list a practitioner cannot avoid. We name that vocabulary now, once, at the top, so the rest of Part III can use it without footnoting:
+
+- **`primitive`** -- the unit at the Context & Capabilities layer: a `Skill`, a `Persona`, or a `Context` bundle. Markdown on disk.
+- **`manifest`** -- `apm.yml`. Declares which primitives this repository depends on, by name and version range.
+- **`lockfile`** -- `apm.lock.yaml`. Pins the resolved transitive graph by content hash. The artefact the audit reads.
+- **`CODEOWNERS`** -- the GitHub-native file that says who is allowed to merge a change to a primitive. The policy gate Chapter 4 called "ownership rules".
+- **`harness`** -- the runtime application Chapter 4 called "agent runtime". Codex CLI, Claude Code, Copilot, Cursor, OpenCode. Chapter 10 (@sec-runtime-machine) is the canonical practitioner treatment.
+- **`subagent`** -- a thread the harness spawns with its own context budget. The unit of dispatch when a `Persona` reaches into a deeper `Skill`.
+- **`recursion bound`** -- the operational limit (context budget plus panel-orchestration policy) that keeps the dispatch tree from running away. Treated in Chapter 16.
+- **`MCP`** -- the Model Context Protocol, an open standard now stewarded by LF Projects (Linux Foundation). *One* of the access mechanisms a `Persona` uses to reach a live system; not the architecture.
+
+With those eight words on the table, the rest of Part III is mechanical.
+
+## Five layers, one supply chain {#sec-part-iii-preface-layers}
+
+The five layers, drawn as a stacked supply chain bottom-to-top, are the load-bearing diagram of this book.
+
+```{mermaid}
+%%| label: fig-five-layers-preface
+%%| fig-cap: "The five-layer reference architecture, drawn as a supply chain. Each edge is labelled with the relationship the lower layer carries to the layer above. Platform at the bottom; SDLC phases at the top. The Governance and Distribution box is named generically; APM is the most developed open-source instance of that layer at writing, and Anthropic's plugin.json is one of the harness-side load formats that supply chain can target as an output."
+%%| fig-alt: "A bottom-to-top flowchart with five stacked layers. From bottom to top: Platform (Azure, AWS, GCP infra; GitHub, GitLab source control); Context and Capabilities (Skills, Personas, Context bundles authored as markdown); Governance and Distribution (capability supply chain: manifest, lockfile, registry, CODEOWNERS); Agent Harness (Codex, Claude Code, Copilot, Cursor, OpenCode); SDLC phases (Plan, Spec, Build, Review, Test, Deploy, Operate). Edges are labelled per layer: Platform hosts Context and Capabilities; Context and Capabilities is authored as Governance and Distribution; Governance and Distribution resolves and ships to the Agent Harness; the Agent Harness executes as SDLC phases."
+%%| fig-width: 5.5
+flowchart BT
+    L1["<b>Platform</b><br/>Azure / AWS / GCP infra<br/>GitHub / GitLab source control"]
+    L2["<b>Context &amp; Capabilities</b><br/>Skills, Personas, Context bundles<br/>authored as markdown"]
+    L3["<b>Governance and Distribution</b><br/>Capability supply chain<br/>(manifest, lockfile, registry, CODEOWNERS)"]
+    L4["<b>Agent Harness</b><br/>Codex, Claude Code, Copilot,<br/>Cursor, OpenCode"]
+    L5["<b>SDLC phases</b><br/>Plan, Spec, Build, Review,<br/>Test, Deploy, Operate"]
+
+    L1 -- "hosts" --> L2
+    L2 -- "authored as" --> L3
+    L3 -- "resolves and ships" --> L4
+    L4 -- "executes as" --> L5
+```
+
+Each layer has a job, an artefact on disk, and a primary author. One paragraph each, in order; the chapters that follow do the depth.
+
+**`Platform`** is the substrate the rest sits on: Azure, AWS, or GCP for compute, identity, and data; GitHub or GitLab for source control, pull requests, and CI. There is nothing agent-specific on this layer; Part III does not return to it.
+
+**`Context & Capabilities`** is where the markdown primitives live. A `Skill` is the procedure for one named task -- "review a pull request", "draft an ADR", "triage a CVE". A `Persona` is a reusable lens -- security reviewer, accessibility reviewer, staff engineer -- that can be loaded by many Skills. A `Context` bundle is everything the harness can reach to ground a model invocation: files in the repository, output from a CLI tool, a web page, a structured API, a multi-modal artefact like a screenshot or a PDF. All three are text on disk, version-controlled with the application code or in a sibling repository, reviewed in pull requests. Chapter 11 (@sec-instrumented-codebase) catalogues the seven primitive types and their authoring conventions.
+
+**`Governance and Distribution`** is the package-manager layer. APM is the most developed open-source instance of this layer at writing -- modelled on npm, with a manifest, a lockfile, a content-addressable registry, transitive resolution, and a publishing flow. The artefacts at this layer are the manifest and lockfile checked into the repository; the actions are install and publish; the policy lives in CODEOWNERS files and the registry's tenancy boundaries. The author of this layer is the platform-engineering team that already operates the organisation's npm, Maven, or NuGet registry. The reason this layer is load-bearing is that the primitive set running in production at any given moment is the answer to every governance question an enterprise will eventually be asked about its agents -- *which Skills did this agent run last quarter and at what versions?* is read from the lockfile or it is not answered. Chapter 13 (@sec-load-lifecycle) treats the lifecycle, Chapter 20 (@sec-primitives-as-code) treats the package boundary, and the Part III capstone (Chapter 21) carries the full APM-to-npm mapping table for procurement-time use.
+
+**`Agent Harness`** is the runtime. The Codex CLI, Claude Code, GitHub Copilot, Cursor, OpenCode -- each of them is a harness that resolves the lockfile, materialises the `Context & Capabilities` bundle into the directory layout it parses, binds the resulting primitives into the model's context, and dispatches the model against a task. Different harnesses bind different primitives differently -- Appendix A is the portability matrix -- but the layer they occupy in the supply chain is the same. Chapter 10 takes the harness apart into its four-part runtime machine and is the canonical practitioner treatment of this layer.
+
+**`SDLC phases`** is the top of the stack: the application output. Plan, Spec, Build, Review, Test, Deploy, Operate. The agentic SDLC does not invent a new lifecycle; the architectural contribution is to put each phase on the same substrate so that the `Skill` that drafts a spec, the `Skill` that runs a review, and the `Skill` that triages an incident travel through the same registry, are loaded by the same harnesses, and inherit the same governance.
+
+There is also a practitioner-grade view that pulls the harness layer apart into seven (LLM, harness, PROSE constraints, markdown primitives, package managers, frameworks, agentic workflows); Chapter 18 (@sec-layered-model) carries the substrate-lens reconciliation between the leadership-grade five above and the practitioner-grade seven for readers who need it. The lenses do not contradict each other. They project the same architecture onto different decision surfaces.
+
+## One rule, applied recursively {#sec-part-iii-preface-recursion}
+
+The supply-chain diagram describes the vocabulary. It does not yet describe the most consequential property of the system, which is that composition is recursive. The same `{Skill, Persona, Context} triplet` repeats at every depth: a `Skill` dispatches one or more `Personas`; a `Persona`, in its own subagent thread, may dispatch further `Skills`; each of those `Skills` may dispatch further `Personas`. One composition rule, applied many times, produces a dependency graph that has the same shape an npm dependency graph has -- the same well-typed primitive sits at every node.
+
+Two conventions make the recursion *governable* rather than runaway: every Skill carries an eval (so the parent has a stop condition), and every dispatch persists its plan (so the parent can read the artefact instead of re-dispatching). The actual depth bound is operational -- context budget and panel-orchestration policy -- and Chapter 16 (@sec-multi-agent) carries it. We name the bound at the architectural level here because Chapter 16 and Chapter 20 both reference it; we do not work it out. The capstone (Chapter 21) walks the recursion against a real Skill end to end.
+
+## The composition pattern names {#sec-part-iii-preface-patterns}
+
+Part III refers to four composition patterns by name, and they are easier to read once they have been introduced. The field has converged on these four shapes for how multiple agent threads coordinate against a single piece of work. **Panel** is a Mediator with a Scatter-Gather distribution: multiple specialist threads review the same artefact in parallel and a synthesiser reconciles their findings into one decision. **Wave** is a Pipeline: one thread's output becomes the next thread's input, executed in sequence. **Scatter-Gather** is itself a named pattern: fan out, collect, return; no synthesis lens layered on top. **Subagent** is the threading-pattern term of art for any thread the harness spawns with its own context budget. The four are not exclusive -- a Panel is often a Scatter-Gather under the hood, and a Wave can dispatch a Panel at any step. Chapter 16 operates them; the Part III capstone (Chapter 21) walks Panel end to end against a real review Skill.
+
+## How to read Part III {#sec-part-iii-preface-how-to-read}
+
+With this map in hand, the next chapter turns inward: not what the architecture is, but what working inside it asks of *you*.

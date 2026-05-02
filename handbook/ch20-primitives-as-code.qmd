@@ -7,15 +7,15 @@ This morning, on a single PR, the two skills disagree. The `python-review` skill
 
 Priya pulls up the two SKILL.md files side by side and finds it in two minutes. Both skills carry their own copy of the team's review checklist, inline. Six months ago they were identical. Three months ago a teammate sharpened the wording in `python-review` after a postmortem. Last month another teammate added a new bullet to `pr-description` for a different reason. Neither edit propagated. The two checklists have drifted. Whichever skill the agent loaded first won the framing — and on this PR they had both loaded, in opposite orders, in two different turns of the same session.
 
-Nothing in either skill is wrong on its own. What is wrong is structural. A piece of content that two skills both depend on is *embedded* in each, instead of *declared* by each. There is no single source of truth for the team's review checklist, even though both authors believe there is one — the one in the skill they happened to edit. The handbook's earlier chapters described primitives as files (Ch10, @sec-instrumented-codebase) and named the patterns that compose them (Ch17, @sec-composition-patterns). Primitives are the typed catalogue from which an *agentic system* — the unit a team actually ships — is composed. This chapter is what changes when you stop treating those files as documents and start treating them as packages.
+Nothing in either skill is wrong on its own. What is wrong is structural. A piece of content that two skills both depend on is *embedded* in each, instead of *declared* by each. There is no single source of truth for the team's review checklist, even though both authors believe there is one — the one in the skill they happened to edit. The handbook's earlier chapters described primitives as files (Ch11, @sec-instrumented-codebase) and named the patterns that compose them (Ch18, @sec-composition-patterns). Primitives are the typed catalogue from which an *agentic system* — the unit a team actually ships — is composed. This chapter is what changes when you stop treating those files as documents and start treating them as packages.
 
 ---
 
 ## From file to package
 
-Chapter 10 catalogued seven primitive types and named their load modes. The mental model that chapter establishes is one primitive, one file: an instruction file with `applyTo`, an agent file with a tool boundary, a `SKILL.md` with a description and a body. That model is correct for the smallest useful primitives. It stops being sufficient the moment a primitive needs more than its body to do its job — when a code-review skill needs example diffs, when a security-audit skill needs a checklist that another skill also wants, when an orchestration spec needs a sub-step authored by a different team.
+Chapter 11 catalogued seven primitive types and named their load modes. The mental model that chapter establishes is one primitive, one file: an instruction file with `applyTo`, an agent file with a tool boundary, a `SKILL.md` with a description and a body. That model is correct for the smallest useful primitives. It stops being sufficient the moment a primitive needs more than its body to do its job — when a code-review skill needs example diffs, when a security-audit skill needs a checklist that another skill also wants, when an orchestration spec needs a sub-step authored by a different team.
 
-The unit that handles those needs is the **package**. A skill is the runtime's analogue of a Module / Facade (Ch17, @sec-composition-patterns): one named entrypoint, one stable description, hidden internal structure. A bundle — a skill that contains other skills or carries asset files alongside its body — is the runtime's Composite. A dependency edge from one skill to another is a Package Reference, the same shape npm and Maven settled on three decades ago.[^ch19-pkg] The consequences for the developer are concrete and immediate.
+The unit that handles those needs is the **package**. A skill is the runtime's analogue of a Module / Facade (Ch18, @sec-composition-patterns): one named entrypoint, one stable description, hidden internal structure. A bundle — a skill that contains other skills or carries asset files alongside its body — is the runtime's Composite. A dependency edge from one skill to another is a Package Reference, the same shape npm and Maven settled on three decades ago.[^ch19-pkg] The consequences for the developer are concrete and immediate.
 
 ```{mermaid}
 %%| fig-width: 7.5
@@ -61,9 +61,9 @@ A `SKILL.md` body that crosses a few hundred lines is almost always a hint that 
 | `apm.yml` (or equivalent) | Declared dependencies, version, license, ownership. | Public. Drives the lockfile. |
 | Tests | Activation tests, link-integrity checks, schema validation against the manifest. | Internal to the package; CI gate. |
 
-Two principles hold across the table. First, the entrypoint is *small*. A skill body that lists every consideration the team has ever cared about is a monolith; the same skill that names two or three load-bearing decision rules and links to assets for the rest is a module. Progressive disclosure (Ch13, the attention economy) is enforced at the package boundary as well as inside the body — a consumer who installs the skill should pay for the description at session start, the body when the skill activates, and the assets only when the body cites them.
+Two principles hold across the table. First, the entrypoint is *small*. A skill body that lists every consideration the team has ever cared about is a monolith; the same skill that names two or three load-bearing decision rules and links to assets for the rest is a module. Progressive disclosure (Ch14, the attention economy) is enforced at the package boundary as well as inside the body — a consumer who installs the skill should pay for the description at session start, the body when the skill activates, and the assets only when the body cites them.
 
-Second, the content a skill *imports* is named, not pasted. A single decision rule reused by three skills is a sign that the rule wants to live in a fourth skill on which the other three depend. The cost is one new package; the benefit is one source of truth, one version, one review history. Ch17's Composition vocabulary is exactly the design language this judgement uses — Skill, Bundle, Primitive, Dependency, Override (@sec-composition-patterns). The chapter you are reading is that vocabulary made operational on disk.
+Second, the content a skill *imports* is named, not pasted. A single decision rule reused by three skills is a sign that the rule wants to live in a fourth skill on which the other three depend. The cost is one new package; the benefit is one source of truth, one version, one review history. Ch18's Composition vocabulary is exactly the design language this judgement uses — Skill, Bundle, Primitive, Dependency, Override (@sec-composition-patterns). The chapter you are reading is that vocabulary made operational on disk.
 
 ---
 
@@ -106,9 +106,9 @@ A dependency declaration is an intent (*I want the rubric, version 1.2*). A lock
 | Answers | "What does this project want?" | "What did this project see, last time it built?" |
 | Breaks if | A consumer adds an undeclared dependency. | A resolved file is republished under the same version with different content. |
 
-The lockfile is what makes a primitive set *reproducible* across machines and across time. Without it, last week's `apm install` and this week's `apm install` will produce different agent behavior on the same project — different transitive closure, different content, different output — with no diff on the consumer's branch to point at. The wave protocol Ch16 describes (@sec-meta-process) depends on this kind of reproducibility: a wave's verdict is honest only if the next wave can be re-run against an identical context. The lockfile is what gives that next wave the same source tree the previous one saw.
+The lockfile is what makes a primitive set *reproducible* across machines and across time. Without it, last week's `apm install` and this week's `apm install` will produce different agent behavior on the same project — different transitive closure, different content, different output — with no diff on the consumer's branch to point at. The wave protocol Ch17 describes (@sec-meta-process) depends on this kind of reproducibility: a wave's verdict is honest only if the next wave can be re-run against an identical context. The lockfile is what gives that next wave the same source tree the previous one saw.
 
-A second function the lockfile serves is integrity. Every resolved entry carries a content hash. If a consumer's install resolves `code-review-rubric@v1.2` to a file whose hash does not match the lockfile, the install fails. Republishing a tag with different content is a supply-chain attack; the lockfile is the local check that catches it.[^ch19-apm] Ch20 picks up the supply-chain thread in detail.
+A second function the lockfile serves is integrity. Every resolved entry carries a content hash. If a consumer's install resolves `code-review-rubric@v1.2` to a file whose hash does not match the lockfile, the install fails. Republishing a tag with different content is a supply-chain attack; the lockfile is the local check that catches it.[^ch19-apm] Ch21 picks up the supply-chain thread in detail.
 
 Pinning is therefore not bureaucracy. It is the only mechanism by which the *transitive closure* of a primitive — the full set of files that load when the skill activates, including the contents of every dependency — is observable, diff-able, and reviewable. The closure is the thing that actually steers the agent. Without a lockfile, the closure is whatever the registry served the last time anyone installed; with one, it is exactly what the team committed.
 
@@ -116,7 +116,7 @@ Pinning is therefore not bureaucracy. It is the only mechanism by which the *tra
 
 ## Overrides without forking
 
-The cleanest way to compose a dependency is to use it unchanged. The next-cleanest way is to override one named section without taking ownership of the rest. Ch17 names the pattern: Template Method (@sec-composition-patterns). The base module — here, the upstream skill — defines an invariant skeleton with named slots. A consumer replaces a slot in their own project without rewriting the skeleton.
+The cleanest way to compose a dependency is to use it unchanged. The next-cleanest way is to override one named section without taking ownership of the rest. Ch18 names the pattern: Template Method (@sec-composition-patterns). The base module — here, the upstream skill — defines an invariant skeleton with named slots. A consumer replaces a slot in their own project without rewriting the skeleton.
 
 The shape on disk is mundane. The upstream `code-review-rubric` skill names slots in its body — typically section headings whose names are part of its public contract: *Style guide*, *Domain-specific concerns*, *Stop conditions*. A consumer's project carries a small override file that says, in effect: *for this project, replace the Style guide section with the contents of `./style/payments-house-style.md`*. Every other slot is inherited unchanged. The next time the upstream skill ships a new section, the consumer's override does not need to be touched; the new section flows through.
 
@@ -134,7 +134,7 @@ Override is what lets the team in Priya's company use `code-review-rubric` as it
 
 Software versioning is hard because the question *what is this package's public surface?* admits many honest answers. For a skill, the question has one. The public surface is the description in the `SKILL.md` frontmatter, plus any slot names a consumer might override. The body of the skill is implementation; the description is the API.
 
-This is not a rhetorical flourish. The description is exactly what the harness reads when deciding whether to activate the skill on a given task (Ch10, @sec-instrumented-codebase, on lazy on-demand load). A consumer who installs the skill is buying that activation contract. Rewording the description — *activate when reviewing code* becomes *use whenever an agent is asked about code* — changes which threads the skill binds in. That is a breaking change. It deserves a major version bump and a release note, the same way renaming a public function does.
+This is not a rhetorical flourish. The description is exactly what the harness reads when deciding whether to activate the skill on a given task (Ch11, @sec-instrumented-codebase, on lazy on-demand load). A consumer who installs the skill is buying that activation contract. Rewording the description — *activate when reviewing code* becomes *use whenever an agent is asked about code* — changes which threads the skill binds in. That is a breaking change. It deserves a major version bump and a release note, the same way renaming a public function does.
 
 | Change | SemVer rule | Notes |
 |---|---|---|
@@ -164,18 +164,38 @@ Step 7 is what turns the package layer from an aesthetic choice into a governanc
 
 ---
 
+## Three concerns when authoring a Skill {#sec-skill-authoring-triplet}
+
+The package treatment above answers *how a Skill ships*. The complementary question is *who authors what inside one Skill bundle*. Chapter 6 (@sec-domain-specialist) names three roles that own the agentic SDLC at the team level — **Domain Specialist**, **Agentic Workflow Engineer**, **Agent Operations Specialist**. The same triplet appears, one zoom level down, when a single Skill is being authored. Each role owns one of three concerns; together they account for everything a published Skill must answer for.
+
+| Concern | Owner | Authoring artefacts | Question the artefacts must answer |
+|---|---|---|---|
+| **WHAT the Skill encodes** | Domain Specialist (SME / Domain Owner) | The procedure, the success criteria, the ground-truth references the Skill cites, the eval set | "When this Skill runs to completion, what observable outcome counts as a pass?" |
+| **HOW the Skill composes** | Agentic Workflow Engineer | The `.skill.md` body, the PROSE-level composition, the dispatched Personas, the recursion bound, the plan-persistence discipline | "Given the WHAT, which Personas does this Skill dispatch in which order, and what is the bound on the dispatch tree?" |
+| **OPERATIONS once the Skill runs** | Agent Operations Specialist | The cost ceiling, the trace expectations, the eval drift threshold, the rate-limit policy, the rollback procedure | "When this Skill is in production, what telemetry tells us it is still doing the WHAT, within budget?" |
+
+Two notes on how the triplet operates inside one bundle.
+
+**The roles are concerns, not headcount.** In a small team, one engineer wears all three hats; the value of the triplet is that each concern is *named*, so that when the Skill is reviewed, the reviewer knows which question to ask first (the WHAT, before the HOW, before the OPERATIONS) and which artefact answers it. In a larger team, the concerns split across people and the same review structure scales without losing what to look for. Chapter 6 (@sec-domain-specialist, @sec-agentic-workflow-engineer, @sec-agent-operations-specialist) treats the staffing maturity in detail.
+
+**The triplet is recursive across the dispatch tree.** A Skill that dispatches Personas inherits the triplet for each dispatched unit: the dispatched Persona has its own WHAT, its own HOW, and its own OPERATIONS, and the parent Skill's recursion bound (the HOW concern) caps the depth at which this recursion terminates. The Part III preface names this bound at the architectural level; Chapter 14 (@sec-attention-economy) treats the attention-budget consequences; this section is the authoring-time expression of the same constraint. A Skill that does not declare its dispatched Personas, its recursion depth, and its eval coverage across the dispatch tree has not finished the HOW concern, regardless of how polished its prose is.
+
+The package layer above and the triplet here are complementary. The package layer is what makes a Skill *shippable, reproducible, and auditable*. The triplet is what makes it *correct, composable, and operable*. A Skill that satisfies one without the other is the failure mode this chapter exists to prevent.
+
+---
+
 ## What this chapter unlocks
 
-Once a team accepts that primitives are packages and not files, the rest of the discipline follows. Pull requests review manifest changes the way they review API changes. Releases bump versions the way they bump library versions. Lockfile diffs go through the same eyes the source diff does. The disciplines named in earlier chapters — progressive disclosure (Ch13), the load-lifecycle reasoning that asks *what files actually arrived in the context?* (Ch12, @sec-load-lifecycle) — get a structural support beam: the package boundary is now the unit of composition, the unit of ownership, the unit of versioning, and the unit of audit, all at once.
+Once a team accepts that primitives are packages and not files, the rest of the discipline follows. Pull requests review manifest changes the way they review API changes. Releases bump versions the way they bump library versions. Lockfile diffs go through the same eyes the source diff does. The disciplines named in earlier chapters — progressive disclosure (Ch14), the load-lifecycle reasoning that asks *what files actually arrived in the context?* (Ch13, @sec-load-lifecycle) — get a structural support beam: the package boundary is now the unit of composition, the unit of ownership, the unit of versioning, and the unit of audit, all at once.
 
-What this chapter has *not* covered is the supply-chain question one layer up. When the rubric your team installs is published by another team, in another org, possibly under another company's name — *whose chain of trust is that?* What does it mean to publish a primitive? What is the marketplace topology that lets Priya's payments team install `code-review-rubric` from the platform team without first vetting every transitive dependency by hand? Ch20 (What Comes Next) picks up that thread. The package-management discipline this chapter installs is the prerequisite — without manifests, lockfiles, versions, and overrides, the marketplace question has nowhere to land. With them, it is the next problem worth solving.
+What this chapter has *not* covered is the supply-chain question one layer up. When the rubric your team installs is published by another team, in another org, possibly under another company's name — *whose chain of trust is that?* What does it mean to publish a primitive? What is the marketplace topology that lets Priya's payments team install `code-review-rubric` from the platform team without first vetting every transitive dependency by hand? Ch21 (What Comes Next) picks up that thread. The package-management discipline this chapter installs is the prerequisite — without manifests, lockfiles, versions, and overrides, the marketplace question has nowhere to land. With them, it is the next problem worth solving.
 
 ---
 
 ::: {.callout-tip}
 ## TL;DR — Primitives are packages
 
-1. **A skill is a module, not a file.** Entrypoint + body + assets + manifest. The Module / Facade pattern from Ch17 (@sec-composition-patterns), made concrete on disk.
+1. **A skill is a module, not a file.** Entrypoint + body + assets + manifest. The Module / Facade pattern from Ch18 (@sec-composition-patterns), made concrete on disk.
 2. **Don't duplicate; declare.** When two skills share content, extract a third skill they both depend on. Essential overlap is a missing dependency edge.
 3. **Manifest declares intent; lockfile records fact.** The lockfile pins the transitive closure with content hashes. Without it, agent behavior is not reproducible across machines or weeks.
 4. **The description is the API.** Rewording the activation contract is a breaking change. So is renaming an overrideable slot. Bump major; ship a release note.
@@ -184,7 +204,7 @@ What this chapter has *not* covered is the supply-chain question one layer up. W
 
 [^ch19-skills-spec]: agentskills.io specifies the `SKILL.md` entrypoint and the description-driven activation predicate. The same activation contract is implemented in substantially compatible form by Copilot (`.github/skills/<name>/SKILL.md`), Claude Code (`.claude/skills/<name>/SKILL.md`), and several others; the convergence is what lets a skill bundle ship across harnesses with one description rather than many.
 
-[^ch19-pkg]: The dependency-and-lockfile pattern adopted here is the one that npm settled on for JavaScript and that Maven and Cargo settled on for Java and Rust respectively: a manifest declaring intent, a lockfile recording the resolved closure, and content hashing for integrity. Ch17 (@sec-composition-patterns) names the same idea as Package Reference and observes that the older "Decorator" framing for dependency in early agentic literature is a near miss. The package-system framing is the right one.
+[^ch19-pkg]: The dependency-and-lockfile pattern adopted here is the one that npm settled on for JavaScript and that Maven and Cargo settled on for Java and Rust respectively: a manifest declaring intent, a lockfile recording the resolved closure, and content hashing for integrity. Ch18 (@sec-composition-patterns) names the same idea as Package Reference and observes that the older "Decorator" framing for dependency in early agentic literature is a near miss. The package-system framing is the right one.
 
 [^ch19-apm]: The APM CLI (`apm install`, `apm.yml`, `apm.lock.yaml`, `apm publish`, `apm audit`) is one open-source realization of the manifest-and-lockfile discipline this chapter describes. See `https://microsoft.github.io/apm/`. Other realizations are possible; the discipline does not depend on any one tool. The walkthrough above uses APM's surface syntax because it is the realization the rest of this part has cited.
 

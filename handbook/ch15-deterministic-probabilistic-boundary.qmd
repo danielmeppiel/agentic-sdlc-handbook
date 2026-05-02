@@ -36,7 +36,7 @@ The right way to read any agentic system diagram is to draw a line down the midd
 
 Read each row as a constraint. The deterministic side is what you can audit. The probabilistic side is what you cannot. Anything consequential — anything with a side effect that costs real money or real trust to undo — must be executed on the deterministic side. The probabilistic side is allowed to *propose* anything; it is allowed to *do* nothing.
 
-The phrase "the agent is a junior engineer" from Chapter 8 was a mindset metaphor. The two-computers framing is the architecture metaphor that goes with it. A junior engineer with a write token to production is a liability. The cure is the same in both worlds: the junior engineer drafts a PR; the CI system, the reviewers, and the merge queue execute the change. The agent drafts an action; the substrate executes it.
+The phrase "the agent is a junior engineer" from Chapter 9 was a mindset metaphor. The two-computers framing is the architecture metaphor that goes with it. A junior engineer with a write token to production is a liability. The cure is the same in both worlds: the junior engineer drafts a PR; the CI system, the reviewers, and the merge queue execute the change. The agent drafts an action; the substrate executes it.
 
 ---
 

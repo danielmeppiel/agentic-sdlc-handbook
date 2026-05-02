@@ -4,7 +4,7 @@
 ::: {.callout-note}
 ## 30-second glossary, before the story
 
-The story below uses three filename shapes that recur across every harness. If they are new, here is enough to read on without losing the thread. Chapter 10 (@sec-instrumented-codebase) catalogues all seven primitive types with full examples and design tests.
+The story below uses three filename shapes that recur across every harness. If they are new, here is enough to read on without losing the thread. Chapter 11 (@sec-instrumented-codebase) catalogues all seven primitive types with full examples and design tests.
 
 - **`.instructions.md`** — scoped conventions. YAML frontmatter `applyTo` glob (e.g. `applyTo: "src/api/**"`). When an agent thread touches a matching file, the harness preloads the body. Closest analogue: a `.editorconfig` the AI reads.
 - **`SKILL.md`** — a reusable decision framework the agent itself decides to load when the task description matches the skill's declared purpose. Activated on demand, not on every file touch.
@@ -84,7 +84,7 @@ It is not documentation. It has every property of a code artifact:
 
 The implication is uncomfortable but freeing: every property you expect of code applies to these files. They have versions. They have tests (usually informal — does the agent behave correctly with this rule loaded?). They have regressions. They have linters and dependency closures. Treating them as documentation that occasionally affects the agent leaves you debugging through guesswork. Treating them as code lets you bring the full apparatus of code review, version control, and observability to bear.
 
-This is not metaphor. Chapter 19 will treat primitives as code in operational detail — lint, test, lockfile, CI. That chapter is the practical consequence of the claim this one just made.
+This is not metaphor. Chapter 20 will treat primitives as code in operational detail — lint, test, lockfile, CI. That chapter is the practical consequence of the claim this one just made.
 
 ---
 
@@ -143,7 +143,7 @@ Notice that the *steps* line up — both harnesses do user-scope, then project-s
 ::: {.callout-note}
 ## Probing your harness
 
-If you are running Genesis as recommended in Chapter 8, you can probe the substrate model directly. Ask your agent: *load Genesis, then list the six runtime-affordance primitives and tell me which file in this project realizes each one for our current harness*. The skill walks its own per-harness adapter and prints the mapping. It is the fastest way to confirm what your harness will and will not see — and to spot the gaps Maya hit before they cost a sprint.[^ch9-genesis]
+If you are running Genesis as recommended in Chapter 9, you can probe the substrate model directly. Ask your agent: *load Genesis, then list the six runtime-affordance primitives and tell me which file in this project realizes each one for our current harness*. The skill walks its own per-harness adapter and prints the mapping. It is the fastest way to confirm what your harness will and will not see — and to spot the gaps Maya hit before they cost a sprint.[^ch9-genesis]
 :::
 
 The compiler analogy has a second consequence worth stating. When you choose a harness, you are choosing a compiler. The decision is not reversible by editing a config file. Switching harnesses is a port, with all the same costs and gotchas as porting a program from one language to another. Most projects pay this cost only once, and pay it deliberately. The vocabulary of this chapter is what makes the port a project plan rather than a mystery.
@@ -160,7 +160,7 @@ When the harness spawns a session, it allocates a thread of inference — a cont
 
 The filesystem, by contrast, is the only thing that survives. Every primitive lives there. Every plan, every memento, every lockfile. When two threads run in parallel — a parent dispatching a child via Claude Code's Task tool, or a developer running two `gh copilot` sessions in two terminals — they share zero context. They communicate, if at all, by writing to and reading from the filesystem. The filesystem is the shared memory of every multi-thread agentic system that has ever existed.
 
-This is why the disciplines in Chapter 12 (load lifecycle) and Chapter 15 (multi-agent orchestration) center on the filesystem. When a long session loses the thread, the cure is *plan-write-then-reload* — the agent writes its plan to a file mid-session and re-reads the file at decision points. The plan survives the inference; the inference does not survive the plan. When a parent agent fans work out to children, the children inherit nothing from the parent's context except what the parent wrote down. A worker that needs to know the architecture decision its parent just made cannot ask the parent; it must read a file the parent wrote.
+This is why the disciplines in Chapter 13 (load lifecycle) and Chapter 16 (multi-agent orchestration) center on the filesystem. When a long session loses the thread, the cure is *plan-write-then-reload* — the agent writes its plan to a file mid-session and re-reads the file at decision points. The plan survives the inference; the inference does not survive the plan. When a parent agent fans work out to children, the children inherit nothing from the parent's context except what the parent wrote down. A worker that needs to know the architecture decision its parent just made cannot ask the parent; it must read a file the parent wrote.
 
 If you accept one sentence from this chapter, accept that one. The amnesia of the model and the persistence of the filesystem are the load-bearing asymmetry. Every other discipline in this part of the book is a consequence of it.
 
@@ -170,13 +170,13 @@ If you accept one sentence from this chapter, accept that one. The amnesia of th
 
 You now have the vocabulary the rest of Part III is going to spend. A short forward map:
 
-**Chapter 10** treats agent source code as a thing you build, primitive by primitive. Now that you know the harness is the compiler and the agent source code is the source tree, the seven-primitive catalogue stops being a list of tools and starts looking like a small programming language.
+**Chapter 11** treats agent source code as a thing you build, primitive by primitive. Now that you know the harness is the compiler and the agent source code is the source tree, the seven-primitive catalogue stops being a list of tools and starts looking like a small programming language.
 
-**Chapter 12** treats the load lifecycle in detail. You will learn what to look for in the harness's verbose output, how to compute the transitive closure of files that load when a primitive activates, and why your skill is silent when a parent rule file overflows the context budget.[^ch9-substrate2]
+**Chapter 13** treats the load lifecycle in detail. You will learn what to look for in the harness's verbose output, how to compute the transitive closure of files that load when a primitive activates, and why your skill is silent when a parent rule file overflows the context budget.[^ch9-substrate2]
 
-**Chapter 14** locates the deterministic seam — the line between what the harness deterministically does and what the model probabilistically guesses. The model is one of the four parts. It is the only one that hallucinates. Knowing where it sits is what lets you put the irreversible side effects somewhere else.
+**Chapter 15** locates the deterministic seam — the line between what the harness deterministically does and what the model probabilistically guesses. The model is one of the four parts. It is the only one that hallucinates. Knowing where it sits is what lets you put the irreversible side effects somewhere else.
 
-**Chapter 15** uses the per-thread/shared-filesystem asymmetry to design multi-agent topologies that stay coordinated when they fan out.
+**Chapter 16** uses the per-thread/shared-filesystem asymmetry to design multi-agent topologies that stay coordinated when they fan out.
 
 **Appendix A** is the cross-harness reference. When you need to actually port Maya's project, that is where the matrix lives.
 

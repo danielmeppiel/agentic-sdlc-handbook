@@ -363,7 +363,7 @@ Use CSS modules. Follow BEM naming...
 
 Every agent, regardless of what it is working on, loads all of this. The Python backend agent processes CSS naming conventions. The database migration agent processes React accessibility guidelines. Attention is wasted. Worse, rules from unrelated domains can interfere — the agent might apply the "use modules" CSS guidance to Python module organization, producing unexpected results.
 
-**Fix:** Split by scope. Python rules in a Python-scoped file. React rules in a frontend-scoped file. Authentication rules in an auth-scoped file. Each agent loads only what applies to its current task. Chapter 13 covers the engineering details: how to size each layer for the context budget, compose the hierarchy at runtime, and maintain it as your codebase evolves (see @sec-attention-economy).
+**Fix:** Split by scope. Python rules in a Python-scoped file. React rules in a frontend-scoped file. Authentication rules in an auth-scoped file. Each agent loads only what applies to its current task. Chapter 14 covers the engineering details: how to size each layer for the context budget, compose the hierarchy at runtime, and maintain it as your codebase evolves (see @sec-attention-economy).
 
 ---
 
@@ -558,7 +558,7 @@ Use this checklist to evaluate whether your current setup satisfies PROSE constr
 
 ---
 
-The five constraints are the specification. The chapters that follow (the load lifecycle and attention economy in Chapters 12 and 13, multi-agent orchestration in Chapter 15, and the execution meta-process in Chapter 16) are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.[^ch10-spec]
+The five constraints are the specification. The chapters that follow (the load lifecycle and attention economy in Chapters 13 and 14, multi-agent orchestration in Chapter 16, and the execution meta-process in Chapter 17) are the implementation. Every technique in those chapters traces back to one or more constraints defined here. When a technique works, it is because it satisfies the relevant constraint. When it fails, the constraint it violates tells you where to look.[^ch10-spec]
 
 ---
 
