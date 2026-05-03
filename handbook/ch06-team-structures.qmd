@@ -58,7 +58,7 @@ Three patterns matter.
 
 **Review becomes harder, not easier.** Agent-generated code is the output of a statistical process: syntactically correct, test-passing, and potentially hiding subtle misunderstandings of intent. Chapter 5 covered the governance structures around this; the team implication is that review skill becomes a core competency, not a chore to minimize.
 
-**Context engineering appears as a new activity category.** Someone has to build and maintain the instructions, conventions, and agent configurations that determine whether agents produce useful output or confident nonsense. Chapter 4 established why context is the moat; this chapter addresses who builds it.
+**Context engineering appears as a new activity category.** Someone has to build and maintain the instructions, conventions, and agent configurations that determine whether agents produce useful output or confident nonsense. Chapter 4 established why context is the moat — it is the **Context & Capabilities** layer of the 5-layer landscape; this chapter addresses who builds it.
 
 ---
 
@@ -70,7 +70,7 @@ An engineer working alone with an AI agent can produce code faster. But output q
 
 The teams that extract the most value from agentic tools share four properties:
 
-- **Explicit knowledge.** Conventions documented, not tribal. Architecture decisions recorded, not remembered. The context layer from Chapter 4, built and maintained as an organizational asset.
+- **Explicit knowledge.** Conventions documented, not tribal. Architecture decisions recorded, not remembered. The **Context & Capabilities** layer from Chapter 4, built and maintained as an organizational asset.
 - **Strong review culture.** Reviewing agent output is a skill. Teams where review is valued, structured, and staffed appropriately catch defects that individual developers miss. Teams where review is a speed bump produce fragile systems.
 - **Clear specification habits.** The quality of agent output is strongly correlated with the quality of the specification it receives. Teams that invest in writing clear, scoped specifications get better results from agents than teams that write vague tickets and expect agents to fill in the gaps.
 - **Feedback loops.** Teams that capture what went wrong (which agent outputs required rework, which context gaps caused failures) and feed corrections back into their context layer improve continuously. Teams that treat each agent interaction as independent repeat the same failures.
@@ -115,13 +115,101 @@ Tech leads also become the primary feedback loop owners, tracking which context 
 
 ---
 
-## New Roles
+## Ownership Across the Five-Layer Reference Architecture
 
-Two roles emerge that did not exist before agentic development. Neither requires hiring new people in most cases; they are specializations that existing team members grow into.
+Chapter 4 introduces the agentic SDLC as a five-layer stacked supply chain — `Platform`, `Context & Capabilities`, `Governance and Distribution`, `Agent Harness`, `SDLC phases`. The architectural picture answers *what supplies primitives to whom*. The organizational picture answers *who owns each layer*. This section maps the second onto the first; the rows below are the staffing decisions that follow from the architecture.
 
-**Context engineer.** The person responsible for building, maintaining, and optimizing the context layer that shapes agent behavior. In small teams, this is a hat worn by a senior engineer. In larger organizations, it becomes a dedicated role, often within a platform or developer experience team. The context engineer's output is not code; it is the knowledge infrastructure that makes agent-produced code reliable. The role requires deep codebase knowledge, strong technical writing skills, and a systematic approach to testing whether context changes improve agent output.
+```{mermaid}
+%%| fig-width: 7.5
+%%| label: fig-ownership-swimlane
+%%| fig-cap: "Per-layer ownership across the five-layer reference architecture from Chapter 4."
+%%| fig-alt: "A horizontal swimlane diagram with five rows, one per layer of the reference architecture. From top to bottom: SDLC phases (Plan, Spec, Build, Review, Test, Deploy, Operate) owned by stream-aligned teams; Agent Harness (Copilot CLI, Codex, Claude Code, Cursor) owned by the platform team; Governance and Distribution (APM lockfile, manifest, registry) jointly owned by platform team and Security and Compliance; Context and Capabilities (markdown primitives: agent files, skill files, instruction files, context bundles) jointly owned by the Domain Specialist and the Agentic Workflow Engineer; Platform (Azure or AWS or GCP infra, GitHub or GitLab source control) owned by the platform team. To the right of the diagram, two cross-cutting bands span all five layers: Composition across Skills owned by the Agent Operations Specialist; Identity and policy plane sitting above the lockfile, jointly owned by the platform team and Security and Compliance, cross-linked to Chapter 4 Section 5."
+flowchart LR
+    subgraph L5["SDLC phases"]
+        SDLC["Plan / Spec / Build / Review / Test / Deploy / Operate<br/><i>owned by: stream-aligned teams</i>"]
+    end
+    subgraph L4["Agent Harness"]
+        HARNESS["Copilot CLI / Codex / Claude Code / Cursor<br/><i>owned by: Platform team</i>"]
+    end
+    subgraph L3["Governance and Distribution"]
+        GOV["APM lockfile / manifest / registry<br/><i>owned by: Platform team + Security/Compliance</i><br/><i>(see Chapter 5 for the policy gates)</i>"]
+    end
+    subgraph L2["Context and Capabilities"]
+        CTX["Markdown primitives: .agent.md, .skill.md, .instructions.md, context bundles<br/><i>owned by: Domain Specialist (WHAT) + Agentic Workflow Engineer (HOW)</i>"]
+    end
+    subgraph L1["Platform"]
+        PLAT["Azure / AWS / GCP infra; GitHub / GitLab source control<br/><i>owned by: Platform team</i>"]
+    end
+    L1 --> L2 --> L3 --> L4 --> L5
+    XCOMP["Composition across Skills<br/><i>owned by: Agent Operations Specialist</i><br/><i>(emerges only at scale)</i>"]
+    XID["Identity / policy plane above the lockfile<br/><i>owned by: Platform team + Security/Compliance</i><br/><i>(see Chapter 4 Section 5)</i>"]
+    L5 -.-> XCOMP
+    L3 -.-> XID
+```
 
-**Agent operations specialist.** In organizations using orchestrated SDLC workflows (where agents participate in issue triage, code review, testing, or deployment), someone needs to monitor agent behavior, tune configurations, and manage cost and rate limits. This role overlaps with platform engineering and SRE. It is emerging, not established, and most organizations will not need it until they reach Phase 4 maturity as described in Chapter 2. The agent operations specialist's day-to-day work centers on a small set of multi-agent composition patterns the field has converged on — *Panel* (multiple specialist agents review the same artifact), *Wave* (agents execute in coordinated phases against a shared plan), *Scatter-Gather* (one orchestrator dispatches parallel subtasks), and *Subagent* (a parent agent delegates a scoped slice to a child). Part III operates these patterns in detail; the staffing point is that the role exists to *run* the patterns, not to invent them.
+> *Every layer of the reference architecture has a named owner. Two cross-cutting concerns — composition across Skills, and the identity/policy plane sitting above the lockfile — span the stack and emerge only at scale.*
+
+Three of the rows in the diagram name roles that did not exist before agentic development. The remainder of this section defines them. None of these roles requires hiring outside the existing engineering organization; each is a specialization that an existing team member grows into when the work crosses the threshold where a dedicated owner is cheaper than a shared one.
+
+### Domain Specialist {#sec-domain-specialist}
+
+The **Domain Specialist** is the role that owns *what a Skill encodes*. The person trained on a specific domain — what large enterprises call a Subject Matter Expert (SME) or Domain Owner. The Domain Specialist defines WHAT the procedure encodes; the Agentic Workflow Engineer encodes it; the Agent Operations Specialist runs it once it operates across Skills.
+
+In a payments team, the Domain Specialist is the engineer (or compliance officer, or risk analyst) who knows what a refund flow must check before issuing money — the regulatory constraints, the fraud heuristics, the customer-experience guardrails. In a legal team, the Domain Specialist is the attorney who knows what a contract review must catch before sign-off. The role is industry-standard; agentic development gives it a new authoring surface — markdown primitives that the Agent Harness loads on every relevant invocation — but the underlying expertise has always existed under the SME label.
+
+Two practical points:
+
+**The Domain Specialist is not always an engineer.** Where the procedure encodes domain judgement that the engineer does not hold (regulatory review, M&A diligence, clinical decision support), the Domain Specialist is the domain expert and the Agentic Workflow Engineer pairs with them to turn the judgement into Skill structure. This is what makes the agentic SDLC carry non-engineering work without architectural change: non-developer roles get first-class authoring surfaces, not just consumption rights.
+
+**SME and Domain Owner are recognised synonyms.** Different organizations use different vocabulary for the same role. The handbook standardises on Domain Specialist for clarity, but `SME` and `Domain Owner` appear in passing throughout — when they do, they refer to the same person.
+
+### Agentic Workflow Engineer {#sec-agentic-workflow-engineer}
+
+The **Agentic Workflow Engineer** is the role that owns *how a Skill composes*. The engineer who turns the Domain Specialist's procedure into the actual `.skill.md` body, the dispatched Personas, the recursion bound, the eval scaffolding, and the plan-persistence discipline. Where the Domain Specialist names the WHAT, the Agentic Workflow Engineer encodes the HOW.
+
+::: {.callout-note title="A name collision worth naming once"}
+Business Process Management (BPM) and workflow-orchestration tooling — Airflow, Camunda, Activiti, classical BPMN suites — have used the term *workflow engineer* for procedural and DAG work for two decades. Here we mean something different: the engineer who composes Skills and Personas into agentic workflows, not the engineer who builds DAGs in a BPM tool. The collision is real and we will not over-defend the name; once acknowledged, the context disambiguates. Where the rest of the handbook says Agentic Workflow Engineer, it means the agentic-workflow role.
+:::
+
+The Agentic Workflow Engineer's day-to-day artefacts are the `.skill.md` body, the PROSE-level composition that decides which Personas a Skill dispatches, the eval that bounds the recursion, and the plan that persists across the Skill's invocations. The role overlaps with senior engineering and platform engineering: in small teams the senior engineer wears the hat; at scale a dedicated role emerges, often inside the platform or developer-experience team.
+
+### Agent Operations Specialist {#sec-agent-operations-specialist}
+
+The **Agent Operations Specialist** is the role that owns *operations once Skills run in production* — cost, traces, eval drift, rate limits, and the cross-Skill composition that emerges when more than one Skill begins dispatching another. Sidebar B of the Part III capstone (Chapter 21) references this role; the definitional home for it is here.
+
+Per the maturity guidance in the staffing principles below: **the Agent Operations Specialist emerges only at scale.** In small teams the senior Agentic Workflow Engineer wears the hat. Do not staff the role before the work exists. The work exists when (a) more than one Skill is in production, (b) cost or eval drift has begun to require dedicated attention, and (c) the composition across Skills is no longer something a stream-aligned team can manage out of its own backlog. Most organizations will not need the role until they reach Phase 4 maturity as described in Chapter 2.
+
+The day-to-day work centers on a small set of multi-agent composition patterns the field has converged on — *Panel*, *Wave*, *Scatter-Gather*, *Subagent* — operated, not invented. Part III treats these patterns in depth; Chapter 18 (@sec-composition-patterns) is the catalogue. The staffing point is that the role exists to *run* the patterns, not to design them.
+
+::: {.callout-tip title="The 3-concern authorship triplet"}
+At the surface introduced in Chapter 4, the three roles separate cleanly along three concerns:
+
+- **Domain Specialist** owns WHAT the Skill encodes (the procedure, the success criteria, the eval)
+- **Agentic Workflow Engineer** owns HOW the Skill composes (the body, the PROSE-level composition, the eval scaffolding)
+- **Agent Operations Specialist** owns the OPERATIONS once the Skill runs (cost, traces, eval drift, rate limits)
+
+The same triplet recurs at the *Skill-authoring* level in Chapter 20 (@sec-primitives-as-code) — Ch20 carries the deep treatment of who does what when AUTHORING a single Skill bundle, complementary to the per-layer ownership table above.
+:::
+
+---
+
+## How developers work in the agentic SDLC {#sec-developer-day-to-day}
+
+The three roles above are concerns; the developer is the constant. The agentic SDLC does not retire the developer -- it changes the *unit* of work the developer ships. The developer remains the author of code, the owner of pull requests, and the operator of the build/test loop. What expands is the set of artefacts under the developer's name: alongside source code, the developer now authors `Skill`, `Persona`, and `Context` bundles in the same repository, alongside the code that exercises them. PR review becomes review of two artefact classes -- the code change and the agent-primitive change -- and CODEOWNERS extends to cover `apm.yml` and the primitive directories the same way it already covers source modules. A change to a review `Skill` is reviewed with the same seriousness as a change to the code that Skill reviews; both ship through the same pipeline.
+
+The day-to-day shape splits across two loops. In the inner-loop the developer runs Skills locally against their own working tree -- Codex, Claude Code, Copilot, or Cursor -- and the harness choice is theirs. The lockfile is what keeps the team consistent: whichever harness loads the bundle, the bundle is the same one CI will load tonight. In the outer-loop the same Skills run on every PR as a Panel review, and the eval gates that the Domain Specialist wrote against each Skill block merge when they fail. Failure of a Skill is a build failure, not a vibe; the merge button is gated on the same green/red signal a unit-test suite produces.
+
+The dev / non-dev split inside the `Domain Specialist` role survives unchanged at this layer. The developer does not become a Domain Specialist for legal review or compliance -- those belong to the SME who owns the procedure. The developer is the Domain Specialist *for developer-domain procedures*: code-review patterns, refactor patterns, migration scripts, on-call runbooks. Authored once, version-pinned, exercised on every PR. Part III walks one developer-authored Skill (`Code Modernization`) end to end through genesis -- the same supply chain underwrites it that underwrites the dissected SDLC in the Part III capstone (Chapter 21).
+
+---
+
+## New Roles (legacy framing)
+
+Two roles emerge that did not exist before agentic development. Neither requires hiring new people in most cases; they are specializations that existing team members grow into. Both map onto the three roles defined above — the framing here is for organizations that do not yet have the Domain Specialist / Agentic Workflow Engineer / Agent Operations Specialist split staffed and is preserved for continuity.
+
+**Context engineer.** The person responsible for building, maintaining, and optimizing the context layer that shapes agent behavior. In small teams, this is a hat worn by a senior engineer. In larger organizations, it becomes a dedicated role, often within a platform or developer experience team. The context engineer's output is not code; it is the knowledge infrastructure that makes agent-produced code reliable. The role requires deep codebase knowledge, strong technical writing skills, and a systematic approach to testing whether context changes improve agent output. As an organization matures, the context engineer's responsibilities split between the Domain Specialist (the domain judgement encoded in the context) and the Agentic Workflow Engineer (the composition and load discipline that ships it).
+
+**Agent operations specialist.** In organizations using orchestrated SDLC workflows (where agents participate in issue triage, code review, testing, or deployment), someone needs to monitor agent behavior, tune configurations, and manage cost and rate limits. This role overlaps with platform engineering and SRE. It is emerging, not established, and most organizations will not need it until they reach Phase 4 maturity as described in Chapter 2. The agent operations specialist's day-to-day work centers on a small set of multi-agent composition patterns the field has converged on — *Panel* (multiple specialist agents review the same artifact), *Wave* (agents execute in coordinated phases against a shared plan), *Scatter-Gather* (one orchestrator dispatches parallel subtasks), and *Subagent* (a parent agent delegates a scoped slice to a child). Part III operates these patterns in detail; the staffing point is that the role exists to *run* the patterns, not to invent them. This is the role formalised above as **Agent Operations Specialist**.
 
 Neither role should be created by fiat. Both emerge from demonstrated need. If your context layer is small and stable, you do not need a dedicated context engineer. If you are not running autonomous agent workflows, you do not need an agent operations specialist. Create the role when the work exists, not when the job title sounds innovative.
 

@@ -1,0 +1,16 @@
+---
+pagetitle: "Reading paths"
+---
+
+# Reading paths {.unnumbered}
+
+The book has four parts. Each has a natural audience, but none are gated — read what's useful to you.
+
+| Part | For | What you'll get |
+|------|-----|-----------------|
+| **[Part I: The Foundation](handbook/ch01-the-agentic-sdlc-thesis.qmd)** | Everyone | The thesis. The shift from human-only to AI-native delivery, why it's happening now, and the vocabulary the rest of the book uses. Start here regardless of role. |
+| **[Part II: For Leaders](handbook/ch02-the-ai-native-landscape.qmd)** | CEO, CTO, CIO, VP Engineering, Director, Head of Platform | Landscape, business case, reference architecture, governance, team structures, transition planning. The frame for deciding what to build, buy, or compose — and how to organize the team that will do it. |
+| **[Part III: For Practitioners](handbook/ch08-part-iii-preface.qmd)** | Staff/Principal engineer, tech lead, senior developer building with agents this week | The runtime machine, the instrumented codebase, PROSE, the load lifecycle, attention economy, multi-agent orchestration, primitives as code. The substrate practitioners design and operate against. |
+| **[Part IV: Case Studies](case-study-apm-overhaul.qmd)** | Everyone | Four worked examples — APM, this book, the publishing pipeline, the growth engine — showing the methodology in production. Read after Part II or Part III for grounding, or sample any one as a standalone. |
+
+The two appendices ([Cross-harness reference](handbook/appendix-a-cross-harness-reference.qmd), [Genesis worked example](handbook/appendix-b-genesis-worked-example.qmd)) are reference material — bookmark them, return as needed.

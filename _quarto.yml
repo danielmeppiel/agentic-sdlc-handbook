@@ -16,6 +16,7 @@ book:
   chapters:
     - index.qmd
     - download.qmd
+    - reading-paths.qmd
     - part: "Part I: The Foundation"
       chapters:
         - handbook/ch01-the-agentic-sdlc-thesis.qmd
@@ -29,18 +30,20 @@ book:
         - handbook/ch07-planning-the-transition.qmd
     - part: "Part III: For Practitioners"
       chapters:
-        - handbook/ch08-the-practitioners-mindset.qmd
-        - handbook/ch09-the-runtime-machine.qmd
-        - handbook/ch10-the-instrumented-codebase.qmd
-        - handbook/ch11-the-prose-specification.qmd
-        - handbook/ch12-the-load-lifecycle.qmd
-        - handbook/ch13-attention-and-context-economy.qmd
-        - handbook/ch14-deterministic-probabilistic-boundary.qmd
-        - handbook/ch15-multi-agent-orchestration.qmd
-        - handbook/ch16-the-execution-meta-process.qmd
-        - handbook/ch17-architectural-patterns-rosetta-stone.qmd
-        - handbook/ch18-anti-patterns-and-failure-modes.qmd
-        - handbook/ch19-primitives-as-code.qmd
+        - handbook/ch08-part-iii-preface.qmd
+        - handbook/ch09-the-practitioners-mindset.qmd
+        - handbook/ch10-the-runtime-machine.qmd
+        - handbook/ch11-the-instrumented-codebase.qmd
+        - handbook/ch12-the-prose-specification.qmd
+        - handbook/ch13-the-load-lifecycle.qmd
+        - handbook/ch14-attention-and-context-economy.qmd
+        - handbook/ch15-deterministic-probabilistic-boundary.qmd
+        - handbook/ch16-multi-agent-orchestration.qmd
+        - handbook/ch17-the-execution-meta-process.qmd
+        - handbook/ch18-architectural-patterns-rosetta-stone.qmd
+        - handbook/ch19-anti-patterns-and-failure-modes.qmd
+        - handbook/ch20-primitives-as-code.qmd
+        - handbook/ch21-the-reference-architecture-earned.qmd
     - part: "Part IV: Case Studies"
       chapters:
         - case-study-apm-overhaul.qmd
@@ -49,9 +52,10 @@ book:
         - case-study-growth-engine.qmd
     - part: "Closing"
       chapters:
-        - handbook/ch20-what-comes-next.qmd
-        - handbook/appendix-a-cross-harness-reference.qmd
-        - handbook/appendix-b-genesis-worked-example.qmd
+        - handbook/ch22-what-comes-next.qmd
+  appendices:
+    - handbook/appendix-a-cross-harness-reference.qmd
+    - handbook/appendix-b-genesis-worked-example.qmd
 
 format:
   html:
@@ -97,7 +101,7 @@ format:
           <div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); padding: 2rem; margin-top: 3rem; border-radius: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.1);">
             <p style="color: #e0e0e0; margin: 0 0 0.5rem 0; font-size: 1.1rem; font-weight: 600;">📕 Get the PDF &amp; EPUB — free download</p>
             <p style="color: #a0a0a0; margin: 0 0 1rem 0; font-size: 0.9rem;">Plus ~1 update/month max. No spam. Unsubscribe anytime.</p>
-            <a href="/agentic-sdlc-handbook/download.html" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
+            <a href="https://danielmeppiel.github.io/agentic-sdlc-handbook/download.html" onclick="if(location.hostname==='localhost'||location.hostname==='127.0.0.1'){this.href='/download.html';}" style="display: inline-block; background: #0d6efd; color: white; padding: 0.5rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 500;">Download the Handbook</a>
           </div>
           <div style="text-align: center; margin-top: 1.5rem; padding: 0.75rem; font-size: 0.85rem; color: #888;">
             <p style="margin: 0;">

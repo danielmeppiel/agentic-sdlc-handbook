@@ -5,6 +5,10 @@ A single agent thread can modify a file, and even several files in sequence if t
 
 This chapter covers when to use multiple agent threads, how to specialize them, how to run them in parallel safely, how to resolve conflicts when they arise, and what the human's role is in all of it.
 
+> **The Panel pattern as the anchor case.** The Part III preface names *Panel* alongside *Wave*, *Scatter-Gather*, and *Subagent* as the four composition patterns the field has converged on. Panel is the one to start with, because it concentrates every other discipline in this chapter into a single, observable case: multiple specialist agent threads review the same artefact in parallel; each thread loads its own scope-attached rules and produces an independent finding; a synthesizer (human or named arbiter agent) reconciles the findings into one decision. Panel is what made multi-agent practice legible to teams that had previously experienced "multi-agent" as either marketing or chaos. Throughout this chapter, where a discipline applies more sharply to one pattern than the others, the example will be drawn from Panel; the principles generalize. The Part III capstone (Chapter 21) walks Panel end to end against a real Skill; this chapter operates the four patterns.
+>
+> **The recursion bound is hard.** Every pattern in this chapter dispatches subagents, and every dispatched subagent is itself capable of dispatching further. Without a bound, a fan-out becomes a fan-out tree that the operator cannot price or audit. The discipline this chapter assumes — and that the Part III preface names architecturally — is that *every Skill that dispatches subagents declares its recursion depth and its maximum fan-out at the dispatch site*, and the harness enforces the bound. The bound is not a tuning parameter; it is the load-bearing constraint that keeps the cost and trace of a Panel (or Wave, or Scatter-Gather) explicable after the fact.
+
 ---
 
 ## When One Agent Is Enough
@@ -77,7 +81,7 @@ For cross-cutting changes, organize agents by area of expertise rather than by w
 | **Context loaded** | Type definitions, Module boundaries, Pattern catalog, Dependency graph | Output conventions, Symbol dictionaries, UX guidelines, Migration patterns |
 | **Owns** | Type safety fixes, Dead code removal, API consolidation | Verbose coverage, Logger migration, Formatting cleanup |
 
-In the auth-logging overhaul ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in the [case study](../case-study-apm-overhaul.qmd) and summarized in Chapter 16), this two-team structure (architecture team led by an architect agent, domain team led by a logging expert agent) handled a 75-file change across five concerns. The architecture team carried type definitions and architectural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
+In the auth-logging overhaul ([PR #394](https://github.com/microsoft/apm/pull/394), detailed in the [case study](../case-study-apm-overhaul.qmd) and summarized in Chapter 17), this two-team structure (architecture team led by an architect agent, domain team led by a logging expert agent) handled a 75-file change across five concerns. The architecture team carried type definitions and architectural patterns. The domain team carried output conventions and migration examples. Neither team needed the other's context, and both produced output consistent with their specialization.
 
 This pattern scales by adding teams. A security concern adds a security team. A documentation concern adds a documentation team. Each team brings its own specialized context, its own instruction files, and its own validation criteria. The coordination cost is between teams, not within them.[^ch15-genesis-panel]
 
@@ -433,7 +437,7 @@ This state includes:
 
 The agent sessions are stateless workers. The coordination layer is the stateful manager. Keeping this separation clean is what makes multi-agent orchestration predictable. When the coordination state is mixed into agent sessions — when an agent is asked to "track which files you've changed and tell the next agent" — the result is fragile and error-prone.
 
-What we have been describing is the *runtime* layer of the agentic computing stack (Chapter 4). Just as an operating system manages processes, memory, and I/O for a CPU, the orchestration harness manages sessions, context loading, and file I/O for the LLM. The harness doesn't do the thinking — it creates the conditions under which thinking produces reliable results.
+What we have been describing is the **Agent Harness** layer of the 5-layer landscape (Chapter 4). Just as an operating system manages processes, memory, and I/O for a CPU, the orchestration harness manages sessions, context loading, and file I/O for the LLM. The harness doesn't do the thinking — it creates the conditions under which thinking produces reliable results.
 
 ---
 

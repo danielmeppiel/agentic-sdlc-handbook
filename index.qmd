@@ -108,7 +108,7 @@ You don't need to read sequentially. Start with whichever part matches your role
 
 - **Part I -- The Foundation:** The thesis -- why the current approach fails and what replaces it
 - **Part II -- For Leaders:** The AI-native landscape, business case, reference architecture, governance, team structures, and transition planning
-- **Part III -- For Practitioners:** Mindset, agentic runtime machine, instrumented codebase, PROSE specification, load lifecycle, attention economy, the deterministic/probabilistic seam, multi-agent orchestration, execution meta-process, architectural patterns, anti-patterns, and primitives-as-code
+- **Part III -- For Practitioners:** Mindset, agentic runtime machine, instrumented codebase, PROSE constraints, load lifecycle, attention economy, the deterministic/probabilistic seam, multi-agent orchestration, execution meta-process, architectural patterns, anti-patterns, and primitives-as-code
 - **Part IV -- Case Studies:** APM, the handbook itself, the publishing pipeline, the growth engine
 - **Closing:** What comes next, plus a cross-harness reference appendix
 
@@ -134,7 +134,7 @@ Works across Copilot, Claude Code, Cursor, Codex, and OpenCode.
 :::
 
 ::: {.callout-tip title="Where to start, by role and time budget"}
-If you have **45 minutes** and need the strategic picture, read Part I, then skim Part II -- the thesis plus the business case, architecture, and governance shape of AI-native delivery. If you have **an hour** and start coding Monday, jump to Part III and read the chapters that match what you're about to ship: instrumentation, PROSE specification, attention economy, or orchestration. If you want proof the methodology survives contact with real systems, the **Part IV case studies** stand on their own in any order. The Parts are designed to be read in any order; the chapter sequence inside each Part is the only place sequence matters.
+Four reading paths cover the four most common reasons people open this book — strategic frame, engineering leadership, senior practitioner, mid-level developer. See [Reading paths](reading-paths.qmd) for the chapter chain that matches your role and time budget.
 :::
 
 ## About the Author

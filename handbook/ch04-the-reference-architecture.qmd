@@ -2,19 +2,29 @@
 title: "The Agentic SDLC Reference Architecture"
 ---
 
-Most organizations planning AI adoption ask "which tool should we buy?" The better question is "which layers of our software lifecycle should agents touch first, and what infrastructure do they need?" This chapter provides the diagram that answers both — and explains why the context you accumulate along the way matters more than any tool you select.
+*What to standardise, what to leave to your teams, and why the tool you pick at the runtime layer matters less than the supply chain underneath it.*
+
+## The wrong unit of architecture
+
+You are sitting through your fifth agent-platform pitch this quarter. The decks are interchangeable. Each vendor draws their own product at the centre of the same ring of capabilities — a planner here, a code-assistant there, a review bot, a deploy companion, an incident assistant — and each promises that adopting the suite will end the sprawl. Your inbox already has three previous decks making the same promise about three earlier suites. Your platform engineering lead has flagged that two of the pilots from last year are now running in parallel against overlapping budgets. The procurement instinct is to pick a winner and consolidate. The architectural instinct says you have seen this movie before.
+
+The seven-tool sprawl is not a procurement mistake to be corrected by better procurement; it is an architectural mistake about *what an enterprise should standardise*. Every vendor in those decks is solving the visible problem — pick the most capable agent for one phase of the lifecycle — and ignoring the invisible one: the *output* of one phase has to become the *input* of the next phase, across teams, across business units, across vendors, for years. Tools change on a quarterly cadence. The architecture that lets the work compound across tools changes on a decade cadence. Standardising on a tool when you should be standardising on the architecture below the tool is how organisations end up with the same problem in a more expensive form, eighteen months later.
+
+The argument of this chapter is that the unit worth standardising on is not the agent and not the platform but the layered supply chain that connects them. Once that supply chain is named, several of the questions that have looked like procurement debates resolve into engineering decisions your platform team is already qualified to make.
+
+By the end of this chapter you will know three things: the **Three-Layer model** that explains *who participates* in the agentic SDLC; the **Five-Layer landscape** that explains *what supply chain you architect* across them once your organisation runs more than one team using AI capabilities; and the three decisions you owe your CTO this quarter — which lifecycle phase to start with, where to invest before agents arrive, and what posture to take on build, buy, or compose.
 
 ---
 
 ## The Three Layers
 
-At every phase of the software development lifecycle, work happens across three distinct layers. Understanding them is the difference between a coherent AI strategy and a collection of disconnected tool purchases.
+At every phase of the software development lifecycle, work happens across three distinct participant layers. Understanding them is the difference between a coherent AI strategy and a collection of disconnected tool purchases.
 
-**The Human Layer** is where judgment, accountability, and strategic decisions live. Humans set objectives, make architectural choices, define quality standards, and bear responsibility for what ships. No current AI system replaces these functions. The question is not whether humans remain in the loop (they do) but which decisions require human judgment and which are better delegated.
+**The `Human Layer`** is where judgment, accountability, and strategic decisions live. Humans set objectives, make architectural choices, define quality standards, and bear responsibility for what ships. No current AI system replaces these functions. The question is not whether humans remain in the loop (they do) but which decisions require human judgment and which are better delegated.
 
-**The Agent Layer** is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy, from passive suggestion to autonomous task execution, but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.
+**The `Agent Layer`** is where AI capabilities execute within defined boundaries. Agents generate code, produce reviews, draft tests, surface patterns in data, and automate repetitive cognitive work. They operate with varying degrees of autonomy, from passive suggestion to autonomous task execution, but always within constraints set by the Human Layer. The PROSE framework from Chapter 1 defines those constraints: Progressive Disclosure determines what context agents receive, Safety Boundaries determine what they can do with it.
 
-**The Platform Layer** is the infrastructure that enables both humans and agents: source control, CI/CD pipelines, identity and access management, observability, artifact registries, and the APIs that connect them. This layer is often invisible in AI adoption conversations, which is precisely why adoption stalls. An agent that can generate code but cannot run tests, read build output, or access your dependency graph is an agent working blind.
+**The `Platform Layer`** is the infrastructure that enables both humans and agents: source control, CI/CD pipelines, identity and access management, observability, artifact registries, and the APIs that connect them. This layer is often invisible in AI adoption conversations, which is precisely why adoption stalls. An agent that can generate code but cannot run tests, read build output, or access your dependency graph is an agent working blind.
 
 The layers are not independent. They form a stack where each depends on the one below it:
 
@@ -50,15 +60,7 @@ flowchart LR
 
 ```
 
-This structure is not a proposal. It is a description of what already exists in any organization using AI coding tools — whether they've designed it deliberately or not. The agent in your developer's editor is already operating across these three layers. The question is whether the boundaries, the context flow, and the governance are intentional.
-
-### Where the Layers Meet: Naming the Seam
-
-The interesting failure modes in agentic systems do not happen *inside* a layer. They happen at the boundary where the Agent Layer meets the Platform Layer — every time the probabilistic engine produces a token sequence that has to become a deterministic action: a tool call, a file write, a network request, a shell command. Part III calls this boundary *the seam*, and treats it as the load-bearing architectural feature of the whole stack.
-
-The seam is asymmetric. On the agent side, the model emits a structured intent that *looks* like a function call but is, mechanically, the same kind of token sampling that produced the prose around it — confident, fluent, and capable of being confidently wrong. On the platform side, a runtime takes that intent, validates it against a tool schema, executes a deterministic action, and returns a result. Everything that happens at this boundary — schema validation, capability gates, audit trails, error budgets, retry policy — is what determines whether the system is auditable or unauditable, recoverable or unrecoverable, safe to scale or quietly accumulating risk.
-
-For leaders, the seam is the architectural fact that explains why "the model got better" is rarely the right investment. The agent's quality at the seam is bounded by how well the platform side enforces its half of the contract. A more capable model crossing a poorly designed seam produces more articulate failures, not fewer. Chapter 14 (Part III) operates the seam in detail; the planning point here is that every governance, audit, and safety conversation in the rest of this block is, structurally, a conversation about how the seam is enforced in your organization.
+This structure is not a proposal. It is a description of what already exists in any organization using AI coding tools — whether they have designed it deliberately or not. The agent in your developer's editor is already operating across these three layers. The question is whether the boundaries, the context flow, and the governance are intentional.
 
 ---
 
@@ -92,7 +94,7 @@ Executives do not need to think in eight phases. They need three buckets that ma
 
 **Build** (Code + Build + Test + Review) answers "how do we turn intent into verified software?" This is where agent capabilities are most mature. Code generation, build diagnostics, test generation, and automated code review all have production-ready implementations across multiple vendors. This is also where most organizations start, and where the Vibe Coding Cliff from Chapter 1 hits hardest if context is not structured.
 
-**Operate** (Release + Operate) answers "how do we get software to users and keep it running?" Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions. These capabilities exist in point solutions (e.g., PagerDuty's AIOps, Datadog's Watchdog) but not yet in workflows integrated end-to-end with the development lifecycle.
+**Operate** (Release + Operate) answers "how do we get software to users and keep it running?" Agent assistance in release management is emerging; in incident response, it is directional. Correlating alerts to recent deployments, drafting incident timelines, suggesting rollback actions — these capabilities exist today as point solutions inside specialised observability and incident-management products, but not yet in workflows integrated end-to-end with the development lifecycle.
 
 The practical implication: based on vendor maturity and published adoption patterns, most organizations appear to have concentrated investment in the Build bucket, with minimal coverage in Intent and almost none in Operate. This is not a failure. It reflects where the technology is mature. But it means the next high-value investments are in Plan, Test, and Review — where the work is expensive, the feedback loops are slow, and structured context makes the difference between useful automation and expensive noise.
 
@@ -105,17 +107,52 @@ Vendor presentations tend to show the full architecture as if it were all availa
 | Phase | Agent capability | Maturity | Justification |
 |---|---|---|---|
 | **Ideate** | Research synthesis, prior-art surfacing | Emerging | Available in conversational tools; no reliable autonomous implementation |
-| **Plan** | ADR drafting, task decomposition, estimation | Emerging | Early implementations exist (GitHub Copilot, Claude); accuracy varies significantly |
-| **Code** | Multi-file generation, refactoring, boilerplate | Now | Production-ready across GitHub Copilot, Cursor, Claude Code, Windsurf, others |
+| **Plan** | ADR drafting, task decomposition, estimation | Emerging | Early implementations exist across multiple coding-assistant vendors; accuracy varies significantly |
+| **Code** | Multi-file generation, refactoring, boilerplate | Now | Production-ready across multiple coding-assistant vendors |
 | **Build** | Build failure diagnosis, dependency resolution | Now | CI integration available in multiple tools; quality depends on structured error output |
 | **Test** | Test generation, coverage gap analysis | Emerging | Generation works; strategic test design still requires human judgment |
-| **Review** | Automated code review, defect detection | Now | Shipping in GitHub Copilot, Amazon Q; effectiveness depends on documented standards |
+| **Review** | Automated code review, defect detection | Now | Shipping in multiple code-review assistants; effectiveness depends on documented standards |
 | **Release** | Changelog drafting, breaking-change detection | Emerging | Partial implementations in CI tools; end-to-end release automation is not production-ready |
 | **Operate** | Alert correlation, incident timeline drafting | Directional | Research demos and early integrations; no vendor ships reliable autonomous incident response |
 
 :::
 
-The pattern is clear. Build-phase capabilities are mature. Intent-phase and Operate-phase capabilities are early. If a vendor tells you they have end-to-end lifecycle automation today, ask which cells in this table they would tag as Now, and how they define the term. The honest answer will tell you more about the vendor than any feature demo.
+The pattern is clear. Build-phase capabilities are mature. Intent-phase and Operate-phase capabilities are early. If a vendor tells you they have end-to-end lifecycle automation today, ask which cells in this table they would tag as `Now`, and how they define the term. The honest answer will tell you more about the vendor than any feature demo.
+
+---
+
+## The Five-Layer Landscape: the AI-capability supply chain
+
+The previous section told you *who participates* in the agentic SDLC. This section tells you *what supply chain you architect across them* once your organisation runs more than one team using AI capabilities. The Three-Layer model is fine for one team and one tool; the moment a second team adopts a different runtime against the same source-control platform, against the same identity provider, with overlapping but non-identical knowledge bundles, you have a supply-chain problem.
+
+```{mermaid}
+%%| label: fig-five-layers
+%%| fig-cap: "The Five-Layer landscape, drawn as a supply chain. Each edge is the relationship the lower layer carries to the layer above. Platform at the bottom; SDLC phases at the top."
+%%| fig-alt: "A bottom-to-top flowchart with five stacked layers. From bottom to top: Platform (cloud, source control, identity, audit substrate); Context and Capabilities (the AI capabilities your organisation authors and reuses, expressed as text and version-controlled with the rest of your code); Governance and Distribution (agent dependencies, registry, package manager, ownership); Agent Harness (the runtime application your developers and business users actually run); SDLC phases (Plan, Spec, Build, Review, Test, Deploy, Operate). Edges are labelled per layer: Platform hosts Context and Capabilities; Context and Capabilities is declared into Governance and Distribution; Governance and Distribution resolves and ships to the Agent Harness; the Agent Harness executes as SDLC phases."
+%%| fig-width: 5.5
+%%| fig-height: 6
+flowchart BT
+    L1["<b>Platform</b><br/>Cloud, source control,<br/>identity, audit substrate"]
+    L2["<b>Context &amp; Capabilities</b><br/>The AI capabilities your<br/>organisation authors and reuses"]
+    L3["<b>Governance and Distribution</b><br/>agent dependencies, registry,<br/>package manager, ownership"]
+    L4["<b>Agent Harness</b><br/>The runtime your developers<br/>and business users run"]
+    L5["<b>SDLC phases</b><br/>Plan, Spec, Build, Review,<br/>Test, Deploy, Operate"]
+
+    L1 -- "hosts" --> L2
+    L2 -- "declared into" --> L3
+    L3 -- "resolves and ships" --> L4
+    L4 -- "executes as" --> L5
+```
+
+Read the diagram bottom-to-top. **`Platform`** is the cloud, source-control, identity, and audit substrate your platform team already operates. There is nothing agent-specific about it. **`Context & Capabilities`** is where the AI capabilities your organisation authors and reuses live — the procedures (how to review a pull request, how to draft an architecture decision record), the lenses (security reviewer, accessibility reviewer), and the knowledge bundles your teams ground agents against, all expressed as text, version-controlled with the rest of your code. **`Governance and Distribution`** is the catalogue and approval rules that ship those capabilities between teams: the declared agent dependencies, the internal registry the platform team operates, the package manager that resolves and installs, and the ownership rules that say who is allowed to approve a change. **`Agent Harness`** (an "agent runtime") is the runtime application your developers — and increasingly your business users — actually run. Different vendors, same load contract. **`SDLC phases`** is the application output: the runtime executes as a Plan step, a Spec step, a Build step, a Review step.
+
+This is a *supply chain*, not a stack. The artefact that flows up the layers is the AI capability itself, behaving the way a software dependency behaves in the supply chain you already operate: declared by a consuming team, resolved against a registry, installed at a known version into a runtime, and replaced when a new version is published. The reason the cold open's seven-tool sprawl does not compound is that today, in most organisations, this supply chain does not exist. Every team's capabilities live inside their chosen runtime and travel only within that runtime's vendor boundary. The supply chain is what your enterprise has to architect for capabilities to compound across teams, across runtimes, and across the second and third year of the programme.
+
+The platform-governance plane your enterprise already bought — the identity and data-governance controls your security and compliance functions have standardised on, regardless of vendor — covers the Platform layer cleanly. It is *necessary but not sufficient*. It does not cover layers two and three, because those layers concern a class of artefact that did not exist when those controls were procured: an AI capability authored by a team, declared as a dependency by a consuming team, resolved against a catalogue, and loaded into a runtime. That is the new investment, and it decides whether the supply chain is one you operate or one each vendor operates inside their own boundary.
+
+This is also where the audit conversation lands. When a regulator or an internal auditor asks which AI capabilities ran in production last quarter and at what versions, the answer comes from the third layer. The auditable record of which AI capabilities ran in production, at what version, and with whose approval, lives at the `Governance and Distribution` layer — not at the runtime, which can change quarterly, and not at the platform, which knows about identity and access but not about which procedure an agent executed. That is the sentence to put on a slide for the next conversation with your CISO.
+
+This chapter draws the architecture; it does not yet draw the mechanics. How a capability is declared, how versions are pinned, how the registry resolves transitive dependencies, how a runtime materialises a bundle into the directory layout it parses — all of that belongs to the practitioner block, where the architectural mechanics of how the supply chain composes are catalogued in detail. The governance overlay that sits on top of the Five-Layer landscape — who approves which capabilities, what evidence is captured at each step, how risk tiers map to release controls — is the subject of the next chapter.[^ch4-rosetta]
 
 ---
 
@@ -135,82 +172,17 @@ The three-layer model clarifies what happens to human roles when agents enter th
 
 :::
 
-The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the fundamental properties of language models described in Chapter 1: they process and generate; they do not decide or bear responsibility.
+The pattern across every row: agents absorb the mechanical and information-processing work, while humans focus on the judgment, strategy, and accountability work. This is not a temporary state. It reflects the fundamental properties of language models described in Chapter 1: they process and generate; they do not decide or bear responsibility. The compounding business case for accumulating organisation-specific context — what the chapter on the business case calls the context moat — sits underneath every row of this table.
 
-Chapter 6 covers the organizational design implications in detail: team structures, the junior pipeline, and new hiring profiles. Here, the point is architectural: the Human Layer does not shrink. It concentrates on the activities that require human judgment, and those activities become more visible and more important.
+The table accounts for the existing roles. The Five-Layer landscape also implies new ones. Authoring procedures and lenses at layer two is the work of a Domain Specialist, often paired with an Agentic Workflow Engineer when the procedure has non-trivial composition. Operating the third-layer registry, the package-manager flow, and the ownership rules is the work of an Agent Operations Specialist who, in most organisations, sits inside the platform team that already runs the source-control system and the existing software-package registries.
 
----
-
-## The Context Moat
-
-Your competitors have access to the same AI models you do. They can license the same coding tools. What they cannot replicate is your organization's accumulated engineering knowledge — if you have made it structured and agent-consumable. If you have not, your AI tools are working with the same generic training data as everyone else's. This is the context moat.
-
-**Why context beats models.** Model quality commoditizes. In 2022, OpenAI's Codex was the dominant commercial code-generation offering. By mid-2025, several model families compete credibly (OpenAI, Anthropic, Google, Meta, Mistral, among others). Pricing has trended downward as competition increases. The model powering your agent is a procurement decision, not a strategic advantage. Context is the opposite: it is proprietary, it accumulates over time, and it directly determines the quality of every agent interaction.
-
-Consider two teams of similar size, working on codebases of similar complexity, using identical AI tools on the same underlying model. Team A has documented its coding conventions, API patterns, error-handling standards, and module boundaries in structured instruction files that agents load automatically. Team B has not; its conventions exist in senior engineers' heads and scattered code comments.
-
-Team A's agents generate code that passes linting on the first attempt, follows the internal API surface, and produces pull requests that reviewers approve with minor comments. Team B's agents generate plausible code that calls deprecated APIs, invents its own error patterns, and produces pull requests that require substantial rework. The rework cost compounds across every developer, every day. Over six months, Team A's context investment has paid for itself many times over, while Team B is still debating whether AI tools are "worth it."
-
-The difference is not the tool. It is the context.
-
-Context operates across three domains, each with different characteristics:
-
-::: {tbl-colwidths="[15,30,30,25]"}
-
-| Context Layer | What It Contains | Examples | Sources |
-|---|---|---|---|
-| **Work Context** | Decisions, requirements, meeting outcomes, strategic priorities | ADRs, sprint plans, product briefs, stakeholder notes | Collaboration tools, wikis, project management systems |
-| **Data Context** | Business intelligence, domain models, analytics, structured domain knowledge | Data dictionaries, domain glossaries, schema docs | BI platforms, data catalogs, knowledge graphs |
-| **Code Context** | Architecture, conventions, dependency graphs, API surfaces | Coding standards, instruction files, module boundaries | Repositories, CI/CD systems, artifact registries |
-
-:::
-
-**Work context** captures *why* decisions were made and *what* the organization intends. Most of this knowledge exists today in meeting notes, Slack threads, and individual memory. Making it machine-readable — through structured ADRs, specification templates, and decision logs — is a documentation investment with a new payoff: agents that understand the reasoning behind the code, not just the code itself.
-
-**Data context** captures the domain the software operates in. A financial services team whose agents can reference the company's data dictionary and regulatory terminology will produce more accurate code than one whose agents work from generic training data alone. This context is often the hardest to structure because it lives in specialized systems outside the engineering toolchain.
-
-**Code context** captures how the codebase works and what conventions it follows. This is the most immediately actionable domain, because it maps directly to the instruction files, custom rules, and agent configurations that current AI coding tools support. Documenting your API conventions, error-handling patterns, module boundaries, and architectural invariants — and structuring them so agents can consume them — is the highest-ROI starting investment for any team.
-
-### The Compounding Mechanism
-
-Structured context is not a one-time cost. It compounds.
-
-When an agent produces a code review using your team's documented quality standards, that review generates structured feedback. When a developer resolves the feedback and updates a convention document, the convention becomes richer. When the next agent interaction loads that richer convention, the output improves. Each cycle reinforces the next:
-
-```{mermaid}
-%%| fig-width: 4.5
-%%| label: fig-context-flywheel
-%%| fig-cap: "The context compounding flywheel"
-%%| fig-alt: "A circular flywheel showing three stages: structured context leads to better agent output, which produces richer artifacts, which feed back into structured context"
-graph LR
-    A["Structured<br/>context"] --> B["Better agent<br/>output"]
-    B --> C["Richer<br/>artifacts"]
-    C --> A
-```
-
-This flywheel means the gap between organizations that invest in context early and those that defer widens over time. It is not a linear gap. An organization that starts structuring context in 2025 does not just have two years' head start over one that starts in 2027; it has two years of compounding context that the late starter must build from scratch while the early adopter's agents are already drawing on it.
-
-**Evidence: the 75-file PR.** This book's primary case study — [PR #394](https://github.com/microsoft/apm/pull/394), a pull request touching 75 files — did not succeed because the AI model was unusually powerful. It succeeded because the repository had accumulated context primitives over the preceding weeks: coding conventions, architecture decision records, module boundary definitions, error-handling patterns, and instruction files scoped from global rules down to directory-specific overrides. Each was created when an agent interaction failed due to a context gap. Without that accumulated context, the same task on the same model would have produced 75 files of plausible code riddled with convention violations — the exact failure mode described in Chapter 1's Vibe Coding Cliff. The delta between "75 files of rework" and "75 files merged" *is* the context moat, demonstrated. Full metrics and escalation details are documented in the [APM Overhaul case study](../case-study-apm-overhaul.qmd).
-
-**Why the moat actually compounds: the load lifecycle.** Context only helps when it reaches the agent's working set on the right invocations. Part III names the mechanism that decides this — the *load lifecycle*: a sequence of resolve, materialize, bind, and activate steps that together choose which instruction files, which conventions, and which capabilities are present in any given agent run. The 75-file PR succeeded not just because the repository had accumulated context, but because the load lifecycle was disciplined: scope-narrow rules loaded only inside the directories that needed them, global rules loaded everywhere, and irrelevant context stayed out of the agent's working set. Teams that treat context architecture as "more is better" — dumping every convention into one global file — discover that their agents get worse as the context layer grows, not better. The load lifecycle is the discipline that prevents this regression.
-
-**The economy underneath the lifecycle.** The reason the load lifecycle matters is that the agent's working set is finite. Part III calls this the *attention economy*: every token the agent holds in focus is a token it cannot use for the actual task. When too much irrelevant context loads, the relevant context degrades, and the agent produces plausible-but-wrong output. The 30–60% rework figure from Chapter 1 has this mechanism as one of its structural causes. The strategic implication for leaders is that the context investment is not "write more documentation" — it is "write the right documentation, scoped correctly, so the load lifecycle delivers it on the invocations that need it." The compounding flywheel only turns when the lifecycle is disciplined; without that discipline, more context can make agents demonstrably worse.
-
-**Convergence evidence: the platform intelligence layer.** This pattern is not unique to one vendor. Microsoft's own platform architecture illustrates the convergence: WorkIQ (workplace intelligence from M365 — meetings, email, calendar), FoundryIQ (AI model and deployment intelligence), and FabricIQ (data and analytics intelligence) each contribute organizational context that no coding tool can replicate independently. This three-layer intelligence stack — workplace, AI, and data — mirrors the broader industry pattern: the defensible advantage in AI-assisted development is not the model or the IDE, but the organizational context layer that connects them. As platform vendors integrate these intelligence surfaces, the context moat deepens for organizations that structure their knowledge to take advantage.
-
-### Technical Debt Gets a New Cost
-
-AI changes the ROI calculus for documentation debt, convention debt, and knowledge-base debt. Consider an illustrative example: in a representative scenario, documenting your API conventions might take two days of engineering time. Without that documentation, agents hallucinate your internal patterns. In teams we have observed, pull request reviews frequently caught three to five convention violations that required rework. With documentation, the agent generates convention-compliant code from the first attempt. The payback period in these cases was roughly two weeks.
-
-This recalculation applies across the codebase. Undocumented module boundaries, implicit architectural decisions, tribal knowledge stored only in senior engineers' heads: all of these were always technical debt. AI makes the cost of that debt visible on every agent interaction, because the agent fails precisely where the documentation fails.
-
-The implication for leaders: re-prioritize your backlog. Items that were perpetually deferred — "document the authentication flow," "write down the module ownership model," "formalize the error-handling conventions" — now have a concrete, measurable payoff that they did not have before AI tools existed. Chapter 10 provides the methodology for auditing and structuring this context systematically.
+Which leaves the talent question every leader asks at this point: **extend the platform team you have, or stand up a new function?** The defensible answer for most organisations is: extend. Layers one, three, and most of four describe work the platform team is already qualified for — they already operate registries, ownership conventions, and runtime catalogues for software packages, and the agentic supply chain is mechanically the same shape. Layer two is where new authoring talent joins the picture, and that is the place to invest in net-new capability rather than reorganisation. The chapter on team structures works the answer in detail, including the org-design implications of making this call wrong in either direction.
 
 ---
 
 ## The Architecture Decision Matrix
 
-The reference architecture is an adoption map, not a prerequisite checklist. Any phase can run as a single agent-assisted loop — or expand into governed, multi-agent workflows as maturity grows. The question for leaders is where to start and how to expand.
+The reference architecture is an adoption map, not a prerequisite checklist. Any phase can run as a single agent-assisted loop — or expand into governed, multi-team workflows as maturity grows. The question for leaders is where to start and how to expand.
 
 The matrix below maps adoption decisions across two dimensions: the lifecycle phase and the investment required. Use it to scope your first pilot and plan the expansion path.
 
@@ -233,74 +205,29 @@ Three observations from the matrix:
 
 **Start where the tooling is mature and the payoff is immediate.** Code, Review, and Test have production-ready agent capabilities across multiple vendors. They are also the phases where structured context produces the most measurable improvement. Most organizations should start here.
 
-**Invest in context before investing in agents.** Every row in the matrix lists a maturity prerequisite — and most of those prerequisites are documentation, structure, and tooling that should exist regardless of AI adoption. If your conventions are not documented, your tests are not reliable, and your CI pipeline does not produce structured output, no agent tool will compensate. Fix the foundation first.
+**Invest in context before investing in agents.** Every row in the matrix lists a maturity prerequisite — and most of those prerequisites are documentation, structure, and tooling that should exist regardless of AI adoption. If your conventions are not documented, your tests are not reliable, and your CI pipeline does not produce structured output, no agent tool will compensate. Fix the foundation first. The architectural mechanics of how that context is then declared, packaged, and shipped between teams are the subject of the practitioner block.
 
-**Expand based on evidence, not ambition.** Move to the next phase when the current one is producing measurable results — faster reviews, fewer convention violations, higher test coverage. Do not expand because a vendor demo looked impressive. Chapter 10 provides the metrics that distinguish real improvement from optimistic interpretation.
+**Expand based on evidence, not ambition.** Move to the next phase when the current one is producing measurable results — faster reviews, fewer convention violations, higher test coverage. Do not expand because a vendor demo looked impressive. The metrics chapter provides the indicators that distinguish real improvement from optimistic interpretation.
 
 ---
 
 ## Build, Buy, or Compose
 
-For each context domain, leaders face a decision: build internal tooling, buy from a platform vendor, or compose solutions from multiple sources.
+For each context domain, leaders face a decision: build internal tooling, buy from a platform vendor, or compose solutions from multiple sources. The shape of the decision is the one every CIO recognises from cloud transformation a decade ago — compose buys you optionality at the cost of integration burden; buy gets you fast at the cost of long-term lock-in to one vendor's roadmap; build gets you fit at the cost of headcount. The novelty is not the decision; it is the layer at which it now has to be made.
 
 ::: {tbl-colwidths="[15,28,28,29]"}
 
 | Context domain | Build | Buy | Compose |
 |---|---|---|---|
-| **Work context** | Internal knowledge base, custom ADR tooling | Platform-integrated wikis (Notion, Confluence, GitHub Wikis) | API connectors bridging collaboration tools to agent context |
-| **Data context** | Custom domain model documentation, internal domain taxonomies | Data catalog platforms (Collibra, Alation, dbt) | Federation layers that expose data definitions to coding agents |
-| **Code context** | Instruction files, custom rules, agent configurations | IDE-integrated context from platform vendors | Open-source primitive packages, shared community configurations |
+| **Work context** | Internal knowledge base, custom decision-record tooling | Internal-knowledge-base SaaS, collaboration-platform wikis | API connectors bridging collaboration tools to agent context |
+| **Data context** | Custom domain model documentation, internal domain taxonomies | Data catalog platforms, governed metadata services | Federation layers that expose data definitions to coding agents |
+| **Code context** | Internal capability authoring, custom rules, agent configurations | Runtime-vendor integrated context surfaces | Open-source community-shared capability bundles, registry-distributed configurations |
 
 :::
 
-The pattern: work and data context often require building or composing because they are organization-specific. Code context is the most composable because the formats are increasingly standardized — custom instructions in GitHub Copilot, rule files in Cursor, `CLAUDE.md` in Claude Code — and community-shared configurations can provide a starting point that teams customize.
+The pattern: work and data context often require building or composing because they are organization-specific. Code context is the most composable because the formats are increasingly standardised across the runtime category, and community-shared configurations distributed through the third-layer registry can provide a starting point that teams customise. The Build column is heaviest where the asset is proprietary by definition; the Buy column is heaviest where the substrate is generic (a wiki is a wiki); the Compose column is heaviest at the code-context layer, which is precisely where the third-layer registry is doing the work the platform team understands.
 
-No single vendor covers all three context domains comprehensively today. This is a practical observation, not a criticism; the integration surface is large, and the standards are still forming. Plan for a composed solution and evaluate vendors on how well they expose APIs for context integration, not on whether they claim to cover everything.
-
-**The composability story has a name: primitives-as-code.** What makes "compose" a credible third option — rather than a polite way of saying "build from scratch" — is that the context layer has converged on a discipline Part III calls *primitives-as-code*. The primitives the agent consumes (instruction files, agent configurations, prompt templates, tool schemas) are stored in version control alongside application code, reviewed in pull requests like application code, tested in CI like application code, and distributed through package managers like application code. That convergence is what turns one team's context investment into another team's reusable artefact, and it is what makes the compose column of the table above a real procurement option rather than a placeholder. Leaders evaluating vendors should treat support for versioned, exportable primitives as a procurement criterion: a context layer that cannot be checked into a repository, reviewed, and shared is not composable, regardless of what the marketing claims.
-
-## The Agentic Computing Stack
-
-### Three Architectural Lenses
-
-The Three Layers section above (Human, Agent, Platform) is one lens on the same system. It is the *organizational* lens — the one that maps cleanly onto staffing, governance, and budget conversations. Part III introduces two more lenses on the same architecture, and it is worth naming them here so the rest of this chapter — and the chapters that follow — read as views of one system rather than competing architectures.
-
-The second lens is the *substrate* lens. Chapter 17 (Part III) names this as a four-layer model: Foundation (the LLM and the harness that runs it), Assembly (how primitives are loaded into a single agent invocation), Composition (how multiple invocations and multiple agents are coordinated), and Execution (how the resulting actions cross the seam to the platform). The substrate lens is the one practitioners actually program against. It is the lens you would draw on a whiteboard if you were asking "where does this bug live?"
-
-The third lens is the *computing-stack* lens — the seven-layer stack diagrammed below. This is the lens this section uses to frame build-buy-compose decisions, because it maps the agentic stack onto the classical computing stack (CPU, runtime, language, framework, application) that procurement, vendor evaluation, and competitive positioning conversations have used for forty years.
-
-The three lenses do not contradict each other. They project the same architecture onto different decision surfaces. The Three-Layer lens answers organizational questions. The four-layer substrate lens answers engineering questions. The seven-layer computing-stack lens answers procurement and strategy questions. Part III reconciles all three explicitly; for the strategic decisions this chapter sets up, the computing-stack lens is the one to use.
-
-The components in the build-buy-compose decision above are not independent purchases. They are layers in a technology stack, and as with any stack, each layer depends on the ones below it.
-
-```{mermaid}
-%%| label: fig-agentic-stack
-%%| fig-cap: "The Agentic Computing Stack — seven layers mapping agentic components to their classical analogs."
-%%| fig-width: 5.5
-%%| fig-height: 5
-flowchart BT
-    L1["<b>LLM</b><br/>GPT, Claude, Gemini<br/><i>≈ CPU</i>"]
-    L2["<b>Harness</b><br/>Copilot CLI, Cursor, Claude Code<br/><i>≈ Runtime / OS</i>"]
-    L3["<b>PROSE Constraints</b><br/><i>≈ Arch Standards</i>"]
-    L4["<b>Markdown Primitives</b><br/>.instructions.md, .agent.md<br/><i>≈ Source / Config</i>"]
-    L5["<b>Package Managers</b><br/>(APM, plugin.json, …)<br/><i>≈ Package Manager</i>"]
-    L6["<b>Spec-Kit, Squad</b><br/><i>≈ Frameworks</i>"]
-    L7["<b>Agentic Workflows</b><br/><i>≈ Applications</i>"]
-
-    L1 --> L2 --> L3 --> L4 --> L5 --> L6 --> L7
-
-    style L1 fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a
-    style L2 fill:#e8f0fe,stroke:#4285f4,color:#1a1a1a
-    style L3 fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a
-    style L4 fill:#fef7e0,stroke:#f9ab00,color:#1a1a1a
-    style L5 fill:#e6f4ea,stroke:#34a853,color:#1a1a1a
-    style L6 fill:#e6f4ea,stroke:#34a853,color:#1a1a1a
-    style L7 fill:#fce8e6,stroke:#ea4335,color:#1a1a1a
-```
-
-This stack is not a theoretical proposal — it is forming independently across vendors, which is the strongest evidence that the layers are real. Anthropic's Claude `plugin.json` converged on manifest-based primitive bundling independently of APM[^ch4-plugin]. GitHub's Agentic Workflows bring CI/CD-native execution to the application layer. Brady Gaster's Squad[^ch4-squad] and GitHub's Spec-Kit[^ch4-speckit] represent framework-layer emergence: opinionated ways to compose primitives into multi-agent orchestration and spec-driven development. Spec-Kit and Squad are to agentic development what Spring and React are to traditional development — they make orchestration easier in one dimension, constrain freedom in another. They consume primitives via package managers. Any harness can run the resulting workflows. When independent efforts converge on the same layering without coordination, the layers are not an abstraction. They are a discovery.
-
-The maturity distribution across this stack tells you where to invest. The processing layer (LLMs) is powerful and improving on a cadence measured in weeks. The package management and framework layers are embryonic — roughly where `npm` was in 2012 or where web frameworks were in the early Rails era. This maturity gap between the bottom and top of the stack is exactly what the early PC era looked like: powerful CPUs, primitive operating systems, no standardized distribution. The strategic implication is clear: invest in the layers that compound — primitives, context infrastructure, distribution standards — not the layers that commoditize. Models get cheaper. Context gets more valuable.
+The framing is the one cloud transformation taught the field. No single vendor covers the AI-capability supply chain end-to-end today, and the organisations that learned the cloud lesson the hard way know that "single throat to choke" is a procurement comfort that becomes an architectural cost over the second and third year. A vendor that owns layers one, three, and four of your supply chain owns the cadence at which you can change runtimes, the cost at which you can move capabilities between teams, and the leverage they hold in the next renewal. Plan for a composed solution. Evaluate vendors on how their pieces fit your supply chain, not on whether they claim to cover everything.
 
 ---
 
@@ -308,24 +235,20 @@ The maturity distribution across this stack tells you where to invest. The proce
 
 The architecture presented in this chapter is designed to be adopted incrementally. There is no prerequisite checklist that must be completed before you begin. The following thresholds are starting points based on patterns observed across early-adopter teams; calibrate them to your baseline. The most common — and most effective — starting point:
 
-**Month 1.** Pick one team, one phase (usually Code), and one investment (custom instructions encoding your top five conventions). Measure agent output quality before and after. *Gate to expand:* agent-generated code passes linting on first attempt ≥70% of the time, and the team has documented at least five conventions in machine-readable form.
+**Month 1.** Pick one team, one phase (usually Code), and one investment (custom instructions encoding your top five conventions). Measure agent output quality before and after. *Gate to expand:* agent-generated code passes linting on first attempt 70% or more of the time, and the team has documented at least five conventions in machine-readable form.
 
-**Month 3.** Extend to Review. Add agent-assisted code review with human sign-off on every PR. Measure review turnaround time and defect escape rate. *Gate to expand:* agent-assisted PRs achieve a review rejection rate no worse than the team's human-only baseline, and median review turnaround time has decreased by ≥15%.
+**Month 3.** Extend to Review. Add agent-assisted code review with human sign-off on every PR. Measure review turnaround time and defect escape rate. *Gate to expand:* agent-assisted PRs achieve a review rejection rate no worse than the team's human-only baseline, and median review turnaround time has decreased by 15% or more.
 
-**Month 6.** Add Test. Use agents to generate test cases for new features, with human-defined test strategy. Measure coverage change and test maintenance cost. *Gate to expand:* test coverage has increased by ≥10 percentage points on agent-covered modules, and agent-generated tests require human rework less than 30% of the time.
+**Month 6.** Add Test. Use agents to generate test cases for new features, with human-defined test strategy. Measure coverage change and test maintenance cost. *Gate to expand:* test coverage has increased by 10 percentage points or more on agent-covered modules, and agent-generated tests require human rework less than 30% of the time.
 
-**Month 12.** Evaluate Plan and Build phases. By this point, your team has accumulated six months of structured context, and your agents are materially more effective than they were on day one — the compounding flywheel at work. *Gate to expand:* the team's human intervention rate on agent tasks has declined by ≥20% from the Month 3 baseline, and at least two context feedback cycles have produced measurable improvement in agent output quality.
+**Month 12.** Evaluate Plan and Build phases. By this point, your team has accumulated six months of structured context, and your agents are materially more effective than they were on day one — the compounding flywheel at work. *Gate to expand:* the team's human intervention rate on agent tasks has declined by 20% or more from the Month 3 baseline, and at least two context feedback cycles have produced measurable improvement in agent output quality.
 
-**Month 18.** Assess readiness for Operate phase automation. This requires the most mature infrastructure and the strongest governance — Chapter 5 covers the governance requirements in detail. *Gate:* the team has structured runbooks for ≥80% of common incident types, and agent-assisted alert correlation achieves ≥90% accuracy in retrospective testing against the past quarter's incidents.
+**Month 18.** Assess readiness for Operate phase automation. This requires the most mature infrastructure and the strongest governance — the next chapter covers the governance requirements in detail. *Gate:* the team has structured runbooks for 80% or more of common incident types, and agent-assisted alert correlation achieves 90% or more accuracy in retrospective testing against the past quarter's incidents.
 
 This is a planning horizon, not a schedule. Some organizations will move faster; some will spend longer at each stage. The sequence matters more than the timeline: start where the tooling is mature and the context is structured, expand where the evidence supports it, and invest in context continuously.
 
----
+The pattern generalises beyond the SDLC. Software delivery is the canonical case in this book because the substrate, the tools, and the early evidence are most mature there, but the Five-Layer landscape describes a shape — a procedure-shaped piece of enterprise work, expressed as text, declared as a dependency, distributed through a registry, executed by a runtime — that fits any procedure-shaped enterprise function. Legal review, financial close, M&A diligence, marketing approvals, regulatory filings: each is a procedure your enterprise already runs, with its own specialists, quality bar, and audit obligations, and each will be re-architected through the same supply chain over the same horizon. This book itself was written with the assistance of agents working through a similar capability supply chain, and the agentic era has begun.
 
-The reference architecture gives you a shared vocabulary for planning. The context moat gives you a reason to start now rather than wait. But architecture without governance is a blueprint without building codes. Chapter 5 addresses the hardest question in AI-assisted delivery: who is accountable when agents are participants in your software lifecycle, and how do you build the trust frameworks that make autonomous work auditable and safe?
+The reference architecture gives you a shared vocabulary for planning. The Five-Layer landscape gives you the supply chain to architect on top of it. But architecture without governance is a blueprint without building codes. The next chapter addresses the hardest question in AI-assisted delivery: who is accountable when agents are participants in your software lifecycle, and how do you build the trust frameworks that make autonomous work auditable and safe?
 
-[^ch4-plugin]: Anthropic, "Claude Code Plugins," https://docs.anthropic.com/en/docs/claude-code/plugins
-
-[^ch4-squad]: Brady Gaster, "How Squad Runs Coordinated AI Agents Inside Your Repository," GitHub Blog, March 2026. https://github.blog/ai-and-ml/github-copilot/how-squad-runs-coordinated-ai-agents-inside-your-repository/
-
-[^ch4-speckit]: GitHub, "Spec Kit — Build High-Quality Software Faster," https://github.com/github/spec-kit
+[^ch4-rosetta]: A reconciliation of the four-, five-, and seven-layer formulations practitioners encounter in the field — including the seven-layer agentic computing stack introduced in Chapter 1 — is provided in the appendix-grade Rosetta chapter at the end of this book.
