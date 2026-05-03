@@ -1,5 +1,5 @@
 ---
-title: "Appendix A: The Cross-Harness Reference"
+pagetitle: "The Cross-Harness Reference"
 ---
 
 # The Cross-Harness Reference {#sec-cross-harness-reference}
@@ -16,7 +16,7 @@ Refresh cadence for this appendix: annually, or on a major release of any listed
 
 ---
 
-## A.1 At a glance — the substrate matrix
+## At a glance — the substrate matrix
 
 The first table is the one most readers come here for. Rows are the primitive concepts the handbook teaches; columns are the five harnesses; each cell is the path or file convention the harness uses to materialize that concept. Empty cells (`—`) are real: they mean the harness does not have a native binding for that primitive type, and the concept must be approximated through one of the cells that does exist (typically a project-wide rule file). The path conventions for the APM-side translations are taken from the APM CLI's `KNOWN_TARGETS` registry,[^appx-a-apm] which is the single source of truth for the `apm install --target` mappings.
 
@@ -42,11 +42,11 @@ A few conventions in the matrix above are worth flagging up front, because they 
 
 ---
 
-## A.2 Per-harness sections
+## Per-harness sections
 
 Each section below covers one harness in five fields: load order at session start, scope rules (how a primitive is attached to a path), override semantics (what happens when two files claim the same scope), gotchas (the specific failure modes this harness is prone to), and the vendor doc footnote. Sections are deliberately short; the matrix above is the bulk of the reference.
 
-### A.2.1 GitHub Copilot
+### GitHub Copilot
 
 **Load order.** At session start, Copilot reads user-level config from `~/.copilot/`, then the project-level `.github/copilot-instructions.md` if present, then walks `.github/instructions/` and pre-loads every `*.instructions.md` file whose `applyTo:` glob matches the current working path. Skills under `.github/skills/<name>/SKILL.md` are registered (their descriptions enter the activation pool) but their bodies load lazily. Agents under `.github/agents/<name>.agent.md` are available for explicit invocation.[^appx-a-copilot]
 
@@ -56,7 +56,7 @@ Each section below covers one harness in five fields: load order at session star
 
 **Gotchas.** Over-eager `applyTo: "**"` is the single most common Copilot failure: an instructions file matches every path in the repo and consumes the eager-preload budget so completely that lazy skills are never selected (the failure narrated in @sec-load-lifecycle). The `--verbose` log shows the materialized load order; reach for it before retyping skill descriptions.
 
-### A.2.2 Anthropic Claude Code
+### Anthropic Claude Code
 
 **Load order.** Claude Code reads `~/.claude/CLAUDE.md` at user scope, then `./CLAUDE.md` at the project root, then walks the directory tree downward and applies the *closest* nested `CLAUDE.md` to whatever subtree the agent is working in. Bodies may use the `@path` import syntax to inline other markdown files at load time. Skills under `.claude/skills/<name>/SKILL.md` register lazily; subagents under `.claude/agents/<name>.md` are invoked through the Task tool.[^appx-a-claude]
 
@@ -66,7 +66,7 @@ Each section below covers one harness in five fields: load order at session star
 
 **Gotchas.** A nested `CLAUDE.md` placed too deep can be invisible to threads working outside its subtree, so a rule that "should always apply" must live at the root. Conversely, a root `CLAUDE.md` that grows past 200 lines pulls into every session and crowds out the skill activation budget. Use `@path` imports to keep the root file thin and let the imports load only when referenced.
 
-### A.2.3 Cursor
+### Cursor
 
 **Load order.** Cursor reads user-scope settings from the Cursor Settings UI (not the filesystem) and project-scope rules from `.cursor/rules/*.mdc`. Each `.mdc` file has frontmatter declaring `globs:` (the scope predicate), `alwaysApply:` (true for project-wide), and a rule `type:`. Modes (Cursor's persona equivalent) are configured globally in the IDE rather than per-project.[^appx-a-cursor]
 
@@ -76,7 +76,7 @@ Each section below covers one harness in five fields: load order at session star
 
 **Gotchas.** Cursor's user-scope rules are not file-based, which means they do not version-control alongside the project. A team relying on user-scope rules has hidden state in each developer's IDE settings — the silent-onboarding failure. Skills support is partial as of 2026-04: the `SKILL.md` registration works, but description-driven activation is less reliable than in Copilot or Claude Code, and a skill that is silent in Cursor is often best re-expressed as a rule with `alwaysApply: true` on a narrow `globs:`.
 
-### A.2.4 OpenAI Codex CLI
+### OpenAI Codex CLI
 
 **Load order.** Codex reads `AGENTS.md` from the project root at session start and walks the directory tree for nested `AGENTS.md` files, applying the closest one to the working subtree. Agents (Codex's persona equivalent) live under `.codex/agents/<name>.toml`. Hooks merge into a single `.codex/hooks.json`. MCP servers are configured in `.codex/config.toml` under the `[mcp_servers]` table.[^appx-a-codex]
 
@@ -86,7 +86,7 @@ Each section below covers one harness in five fields: load order at session star
 
 **Gotchas.** Codex's skill convention diverges from the other harnesses: skills materialize to `.agents/<name>/SKILL.md` (a cross-tool directory shared with the agent skills standard) rather than under `.codex/`. The APM CLI handles this via the `deploy_root` override on the Codex target; if you write a skill installer by hand, the cross-tool directory is the trap. Codex also has no separate prompts primitive — repeatable workflows are written as agents or as section in `AGENTS.md`.
 
-### A.2.5 OpenCode
+### OpenCode
 
 **Load order.** OpenCode reads `~/.config/opencode/AGENTS.md` at user scope and `./AGENTS.md` at the project root, walking nested `AGENTS.md` files exactly as Codex does. Agents live under `.opencode/agents/<name>.md`, skills under `.opencode/skills/<name>/SKILL.md`, and repeatable workflows under `.opencode/commands/<name>.md`. There is no native hooks concept.[^appx-a-opencode]
 
@@ -98,7 +98,7 @@ Each section below covers one harness in five fields: load order at session star
 
 ---
 
-## A.3 agentskills.io as the cross-harness convergence {#sec-skills-convergence}
+## agentskills.io as the cross-harness convergence {#sec-skills-convergence}
 
 The matrix in A.1 shows one row that ports almost cleanly — the skill row. Every harness in the matrix that has a skills concept uses the same file name (`SKILL.md`), the same directory shape (`<root>/skills/<name>/SKILL.md`), and substantially the same activation contract: the skill's frontmatter `description:` field loads eagerly into a small registry at session start, and the skill's body loads lazily only when the dispatcher selects the skill for the current task. This convergence is not accidental. It is the agentskills.io open registry standard, adopted in compatible form by Copilot, Claude Code, Cursor, OpenCode, and (with the cross-tool directory wrinkle) Codex.[^appx-a-skills]
 
@@ -108,7 +108,7 @@ The practical implication for portable instrumentation: when a primitive *can* b
 
 ---
 
-## A.4 Forward references
+## Forward references
 
 The lifecycle vocabulary used throughout this appendix — Resolve, Materialize, Bind, Activate — is defined in @sec-load-lifecycle. The four-part runtime decomposition (Model, harness, agent source code, client) is @sec-runtime-machine. The seven primitive types (instructions, agents, skills, prompts, memory, orchestration, hooks) are catalogued in @sec-instrumented-codebase, which is the canonical APM-side naming this appendix's "concept" column maps from. When a row in the A.1 matrix is empty, the corresponding section of @sec-instrumented-codebase explains what concept the harness is missing and what to substitute.
 

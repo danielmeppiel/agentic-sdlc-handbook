@@ -1,5 +1,5 @@
 ---
-title: "Appendix B: Genesis worked example: Panel re-architecture"
+pagetitle: "Genesis worked example: Panel re-architecture"
 ---
 
 # Genesis worked example: Panel re-architecture {#sec-genesis-worked-example}

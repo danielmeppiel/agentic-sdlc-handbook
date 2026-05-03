@@ -15,8 +15,8 @@ book:
   reader-mode: true
   chapters:
     - index.qmd
-    - reading-paths.qmd
     - download.qmd
+    - reading-paths.qmd
     - part: "Part I: The Foundation"
       chapters:
         - handbook/ch01-the-agentic-sdlc-thesis.qmd
@@ -53,8 +53,9 @@ book:
     - part: "Closing"
       chapters:
         - handbook/ch22-what-comes-next.qmd
-        - handbook/appendix-a-cross-harness-reference.qmd
-        - handbook/appendix-b-genesis-worked-example.qmd
+  appendices:
+    - handbook/appendix-a-cross-harness-reference.qmd
+    - handbook/appendix-b-genesis-worked-example.qmd
 
 format:
   html:

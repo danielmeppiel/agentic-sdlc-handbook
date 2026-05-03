@@ -1,16 +1,16 @@
 ---
-title: "Reading paths"
+pagetitle: "Reading paths"
 ---
 
 # Reading paths {.unnumbered}
 
-This book has four parts, twenty-one chapters, four case studies, and two appendices. Reading it cover-to-cover takes most readers a long weekend. Almost no one needs to. The four paths below cover the four most common reasons people pick this book up; pick the one that matches your current job, read it in order, and skim or skip the rest.
+The book has four parts. Each has a natural audience, but none are gated — read what's useful to you.
 
-| Path | For | Time | Read in this order |
-|------|-----|------|--------------------|
-| **Strategic frame** | CEO, CTO, CIO, board member assessing AI-native delivery | ~45 min | Preface → Ch1 (Thesis) → Ch3 (Business case) → Ch6 (Team structures) → Ch7 (Transition) |
-| **Engineering leadership** | VP Engineering, Director, Head of Platform building the rollout plan | ~2 hrs | Path 1 → Ch4 (Reference architecture) → Ch5 (Governance) → Ch8 (Part III map) → Ch11 (Instrumented codebase) → Ch16 (Multi-agent orchestration) |
-| **Senior practitioner** | Staff/Principal engineer, tech lead designing primitives this week | ~3 hrs | Ch8 (Part III map) → Ch9 (Mindset) → Ch10 (Runtime machine) → Ch11 (Instrumented codebase) → Ch12 (PROSE constraints) → Ch13 (Load lifecycle) → Ch14 (Attention) → Ch20 (Primitives as code) → Appendix A (Cross-harness reference) |
-| **Mid-level developer** | 3–5 years experience, shipping with an agent on Monday | ~90 min | Ch9 (Mindset) → Ch12 (PROSE constraints) → Ch13 (Load lifecycle) → Ch14 (Attention) → Ch19 (Anti-patterns) → one Part IV case study that matches your stack |
+| Part | For | What you'll get |
+|------|-----|-----------------|
+| **[Part I: The Foundation](handbook/ch01-the-agentic-sdlc-thesis.qmd)** | Everyone | The thesis. The shift from human-only to AI-native delivery, why it's happening now, and the vocabulary the rest of the book uses. Start here regardless of role. |
+| **[Part II: For Leaders](handbook/ch02-the-ai-native-landscape.qmd)** | CEO, CTO, CIO, VP Engineering, Director, Head of Platform | Landscape, business case, reference architecture, governance, team structures, transition planning. The frame for deciding what to build, buy, or compose — and how to organize the team that will do it. |
+| **[Part III: For Practitioners](handbook/ch08-part-iii-preface.qmd)** | Staff/Principal engineer, tech lead, senior developer building with agents this week | The runtime machine, the instrumented codebase, PROSE, the load lifecycle, attention economy, multi-agent orchestration, primitives as code. The substrate practitioners design and operate against. |
+| **[Part IV: Case Studies](case-study-apm-overhaul.qmd)** | Everyone | Four worked examples — APM, this book, the publishing pipeline, the growth engine — showing the methodology in production. Read after Part II or Part III for grounding, or sample any one as a standalone. |
 
-The four parts are designed to be read in any order; the chapter sequence inside each part is the only place sequence matters. Part IV (case studies) and the appendices stand on their own and can be sampled at any point — the Cross-harness reference (Appendix A) in particular is worth bookmarking before you start, regardless of path.
+The two appendices ([Cross-harness reference](handbook/appendix-a-cross-harness-reference.qmd), [Genesis worked example](handbook/appendix-b-genesis-worked-example.qmd)) are reference material — bookmark them, return as needed.
