@@ -147,11 +147,15 @@ Show your team the before-and-after. Not a presentation — a 15-minute demo at 
 
 ### The Agent-Side Companion
 
-The week described above is the human-side ramp. The agent-side ramp is one install.
+The week described above is the human-side ramp. The agent side has a packaged companion built by this book's author — [`danielmeppiel/genesis`](https://github.com/danielmeppiel/genesis), open source, available to install in any AGENTS.md-compatible harness.
+
+::: {.callout-note appearance="simple"}
+**Author disclosure.** Genesis is built by the author of this book. It is one of several emerging answers to the discipline these chapters argue for; it is not a prerequisite. The chapters stand without it. Read this section as worked example, not endorsement.
+:::
 
 I wrote the book first; then I built the tool I wished existed when I started. The companion this part opened with is round one — one author's first packaged answer to the discipline these chapters argue for, written by the same hand and put on disk in the form a harness already loads.[^ch20-genesis] Round two is your turn. The patterns will harden, the catalogue will fill in, the rejected near-misses will outnumber the accepted ones; that is the field maturing, not a roadmap. Treat this part's chapters as the floor, the companion as one floor-plan, and your own first packaged answer as the next entry in the catalogue.
 
-This is not a dependency on the book's part — every chapter stands without it — and it is not the only such companion the field will produce. It is a worked example of what the practice looks like packaged as a primitive set, written by the same hand. Install it Monday morning, read this part with it loaded, and when a chapter names a pattern (Wave, Panel, Supervised Execution), grep the skill for the same name. The agent will surface the operational form. Use whichever name lands first in the conversation.
+This is not a dependency on the book's part — every chapter stands without it — and it is not the only such companion the field will produce. It is a worked example of what the practice looks like packaged as a primitive set, written by the same hand. If you choose to load it, when a chapter names a pattern (Wave, Panel, Supervised Execution), grep the skill for the same name. The agent will surface the operational form. Use whichever name lands first in the conversation.
 
 ### For Leaders, Additionally
 

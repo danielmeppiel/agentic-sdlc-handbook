@@ -1,6 +1,10 @@
 
 # A Map for Part III {#sec-part-iii-preface}
 
+::: {.callout-note appearance="simple"}
+**A handoff, not a continuation.** Part III is *not* a more-detailed version of Part II — it is the practitioner-grade rewrite of the same system. Leaders who finished Part II have the strategic frame; the chapters below are the on-disk mechanics that earn it. If you read Part II as a leader and stop here, you have what you came for. If you read Part II as a practitioner, the next nine chapters are why you bought the book.
+:::
+
 > *Five minutes of vocabulary before the practitioner chapters begin.*
 
 You have just finished Part II's leader-grade material — or you have arrived here cold from the engineering side without the leadership chapters. Either way, this short preface gives you the vocabulary the rest of Part III will operate in: the eight terms a practitioner cannot avoid, the five-layer picture of the system the chapters will fill in, and the names of the multi-agent patterns Chapter 16 will operate against. Nothing here is a chapter-grade treatment. The treatments are in the chapters that follow. The map is so you can read those chapters without footnoting every term.

@@ -737,7 +737,7 @@ The instrumented codebase is not a finished state. It is a practice — an ongoi
 
 You now have the catalogue. Three chapters follow, each treating one face of the same artifact:
 
-**Chapter 12 — The PROSE Specification (@sec-prose).** How to *write* the prose inside these files so it actually steers the model. Each PROSE constraint — Progressive Disclosure, Reduced Scope, Orchestrated Composition, Specification, Explicit Hierarchy — is a normative rule for the body of a primitive. Chapter 12 is the writing chapter; this one was the typing chapter.
+**Chapter 12 — The PROSE Constraints (@sec-prose).** How to *write* the prose inside these files so it actually steers the model. Each PROSE constraint — Progressive Disclosure, Reduced Scope, Orchestrated Composition, Specification, Explicit Hierarchy — is a normative rule for the body of a primitive. Chapter 12 is the writing chapter; this one was the typing chapter.
 
 **Chapter 13 — The Load Lifecycle (@sec-load-lifecycle).** How the harness *loads* these files. The five load modes named in this chapter — eager preload, lazy on-demand, dispatcher-mediated, user-invoked, event-driven — get their mechanics there: load order, transitive closure, the dispatcher's binding window, why a correctly-placed skill stays silent when a parent instruction overflows the context budget. Chapter 13 is the chapter you reach for when a primitive does not bind.
 

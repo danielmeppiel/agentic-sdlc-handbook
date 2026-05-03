@@ -29,7 +29,7 @@
 |---|---------|-------|
 | 8 | [The Practitioner's Mindset](ch08-the-practitioners-mindset.md) | 3,979 |
 | 9 | [The Instrumented Codebase](ch09-the-instrumented-codebase.md) | 5,002 |
-| 10 | [The PROSE Specification](ch10-the-prose-specification.md) | 4,930 |
+| 10 | [The PROSE Constraints](ch10-the-prose-specification.md) | 4,930 |
 | 11 | [Context Engineering](ch11-context-engineering.md) | 3,802 |
 | 12 | [Multi-Agent Orchestration](ch12-multi-agent-orchestration.md) | 4,896 |
 | 13 | [The Execution Meta-Process](ch13-the-execution-meta-process.md) | 4,446 |

@@ -4,6 +4,10 @@ title: "Appendix B: Genesis worked example: Panel re-architecture"
 
 # Genesis worked example: Panel re-architecture {#sec-genesis-worked-example}
 
+::: {.callout-note appearance="simple"}
+**Author disclosure.** Genesis is built by the author of this book and is the implementation this appendix walks through. It is one of several emerging answers to the discipline the practitioner chapters argue for, MIT-licensed and open source. The mechanics it demonstrates — Panel anti-pattern, fan-out fix, compliance check — port to any package-managed primitive set; the file paths and slash commands do not.
+:::
+
 *Genesis-as-companion, applied to a panel-shaped problem: the appendix walks the broken anti-pattern, the corrected fan-out, the sequence diagram, and the compliance check the bundle's `examples/02-review-panel-architecture.md` produced from a single fresh-context cold-load.*
 
 The file is [`skills/genesis/examples/02-review-panel-architecture.md`](https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/examples/02-review-panel-architecture.md). It opens with a panel that breaks, diagnoses why in three short truths, and ends with the version that works. The example is written for cold-load — the index at [`skills/genesis/examples/README.md`](https://github.com/danielmeppiel/genesis/blob/main/skills/genesis/examples/README.md) flags it as readable without prior Genesis context. Same author as the handbook; installable via `apm install` [`danielmeppiel/genesis`](https://github.com/danielmeppiel/genesis).

@@ -84,7 +84,7 @@ How the five constraints relate:
 
 ```{mermaid}
 %%| fig-width: 4.5
-%%| fig-cap: "The five PROSE specification principles and their relationships"
+%%| fig-cap: "The five PROSE constraints principles and their relationships"
 %%| fig-alt: "A flowchart showing five PROSE principles arranged in a hierarchy. Explicit Hierarchy filters rules into Progressive Disclosure, which fills Reduced Scope, which decomposes into Orchestrated Composition. Safety Boundaries constrains all execution of Orchestrated Composition and limits the scope of Reduced Scope. The flow is left to right with Safety Boundaries acting as a cross-cutting constraint on the other four principles."
 %%| label: fig-prose-principles
 flowchart LR
