@@ -2,6 +2,8 @@ project:
   type: book
   output-dir: _book
   pre-render: scripts/stamp-version.sh
+  resources:
+    - assets/infographics/*.png
 
 book:
   title: "The Agentic SDLC Handbook"
