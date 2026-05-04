@@ -72,7 +72,7 @@ The five constraints, and the failure modes each addresses:
 
 Each constraint is necessary to address its failure mode. Together, these five constraints cover the failure modes we've observed in every production codebase we've studied.
 
-These constraints sound abstract. Later in this book, we trace [a single pull request that modified 75 files](https://github.com/microsoft/apm/pull/394) and demonstrate what these constraints produce in practice — what worked and what required human escalation. It is evidence, not a sales pitch. The full metrics are in the [APM Overhaul case study](case-study-apm-overhaul.qmd).
+These constraints sound abstract. Later in this book, we trace [a single pull request that modified 75 files](https://github.com/microsoft/apm/pull/394) and demonstrate what these constraints produce in practice — what worked and what required human escalation. It is evidence, not a sales pitch. The full metrics are in the [APM Overhaul case study](../case-study-apm-overhaul.qmd).
 
 **The REST parallel is specific, not decorative.** REST's statelessness constraint meant servers didn't maintain session state between requests — which seemed limiting, but induced scalability. PROSE's Reduced Scope constraint means complex work is decomposed into tasks sized to fit available context — which seems slower, but induces consistent quality. REST's uniform interface meant all resources were accessed the same way — which seemed rigid, but induced independent evolution. PROSE's Explicit Hierarchy means instructions form a global-to-local tree — which seems bureaucratic, but induces domain adaptation without context pollution.
 
