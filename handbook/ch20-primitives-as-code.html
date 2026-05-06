@@ -148,7 +148,91 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     --mermaid-fg-color: #e2e8f0 !important;
     --mermaid-edge-color: #a0aec0 !important;
   }
+  /* Mermaid lightbox — click to expand any mermaid figure */
+  figure.figure:has(svg.mermaid-js) { cursor: zoom-in; }
+  figure.figure:has(svg.mermaid-js):hover { outline: 1px dashed #888; outline-offset: 4px; }
+  #mermaid-lightbox-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    z-index: 10000; display: none; align-items: center; justify-content: center;
+    padding: 2rem; cursor: zoom-out; flex-direction: column;
+  }
+  #mermaid-lightbox-overlay.open { display: flex; }
+  #mermaid-lightbox-overlay .ml-stage {
+    max-width: 95vw; max-height: 90vh;
+    background: #fff; padding: 1.5rem; border-radius: 8px;
+    overflow: auto; cursor: default;
+  }
+  body.quarto-dark #mermaid-lightbox-overlay .ml-stage { background: #1a202c; }
+  /* Render SVG at intrinsic viewBox dimensions; stage scrolls if larger than viewport */
+  #mermaid-lightbox-overlay .ml-stage svg {
+    display: block; width: auto; height: auto;
+    max-width: none; max-height: none;
+  }
+  #mermaid-lightbox-overlay .ml-caption {
+    color: #fff; max-width: 95vw; margin-top: 1rem;
+    font-size: 0.9rem; text-align: center;
+  }
+  #mermaid-lightbox-overlay .ml-close {
+    position: absolute; top: 1rem; right: 1.5rem;
+    background: none; border: none; color: #fff;
+    font-size: 2rem; cursor: pointer; line-height: 1;
+  }
 </style>
+<script>
+  // Mermaid lightbox: wraps mermaid SVGs in a click-to-expand overlay.
+  // Quarto's built-in lightbox only handles <img>; this shim covers <svg> mermaid output.
+  document.addEventListener('DOMContentLoaded', function () {
+    var overlay = document.createElement('div');
+    overlay.id = 'mermaid-lightbox-overlay';
+    overlay.innerHTML = '<button class="ml-close" aria-label="Close">&times;</button><div class="ml-stage"></div><div class="ml-caption"></div>';
+    document.body.appendChild(overlay);
+    var stage = overlay.querySelector('.ml-stage');
+    var cap = overlay.querySelector('.ml-caption');
+    function close() { overlay.classList.remove('open'); stage.innerHTML = ''; cap.textContent = ''; }
+    overlay.addEventListener('click', function (e) { if (e.target === overlay || e.target.classList.contains('ml-close')) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+    function wireFigures() {
+      document.querySelectorAll('svg.mermaid-js').forEach(function (svg) {
+        var fig = svg.closest('figure.figure');
+        if (!fig || fig.dataset.mlWired) return;
+        fig.dataset.mlWired = '1';
+        fig.title = 'Click to expand';
+        fig.addEventListener('click', function (ev) {
+          if (ev.target.closest('a')) return;
+          ev.preventDefault();
+          var clone = svg.cloneNode(true);
+          clone.removeAttribute('style');
+          clone.removeAttribute('width');
+          clone.removeAttribute('height');
+          // Use viewBox to derive intrinsic width; size the SVG generously for readability
+          var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(parseFloat);
+          if (vb.length === 4 && vb[2] > 0 && vb[3] > 0) {
+            var ratio = vb[2] / vb[3];
+            var maxH = window.innerHeight * 0.85;
+            var maxW = window.innerWidth * 0.9;
+            // Prefer using the full available width unless that overflows height
+            var w = maxW;
+            var h = w / ratio;
+            if (h > maxH) { h = maxH; w = h * ratio; }
+            // Floor at a comfortable readable size; stage scrolls if it exceeds viewport
+            w = Math.max(w, Math.min(1400, vb[2]));
+            h = w / ratio;
+            clone.setAttribute('width', w);
+            clone.setAttribute('height', h);
+          }
+          stage.innerHTML = '';
+          stage.appendChild(clone);
+          var capEl = fig.querySelector('figcaption');
+          cap.textContent = capEl ? capEl.textContent.trim() : '';
+          overlay.classList.add('open');
+        });
+      });
+    }
+    wireFigures();
+    // Re-wire when mermaid finishes async rendering
+    new MutationObserver(wireFigures).observe(document.body, { childList: true, subtree: true });
+  });
+</script>
 
 
 <link rel="stylesheet" href="../styles/handbook-cover.css">
@@ -673,9 +757,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>It is a Monday morning. A staff engineer — call her Nadia — is reviewing a pull request on her team’s payments service. She has spent the last quarter calibrating two skills the team relies on every day: a <code>python-review</code> skill that walks an agent through correctness, architecture, and security checks, and a <code>pr-description</code> skill that writes the body of the eventual pull request from the same diff. Both have been refined by hand, in many small commits, against many real reviews. Both work.</p>
-<p>This morning, on a single PR, the two skills disagree. The <code>python-review</code> skill files a verdict that the change is acceptable but adds two non-blocking nits about error wrapping. The <code>pr-description</code> skill, asked moments later to summarize the same review for the description body, writes that the change <em>needs revision</em> and lists a different set of concerns. Two voices. Same diff. Same agent. Same model.</p>
-<p>Nadia pulls up the two SKILL.md files side by side and finds it in two minutes. Both skills carry their own copy of the team’s review checklist, inline. Six months ago they were identical. Three months ago a teammate sharpened the wording in <code>python-review</code> after a postmortem. Last month another teammate added a new bullet to <code>pr-description</code> for a different reason. Neither edit propagated. The two checklists have drifted. Whichever skill the agent loaded first won the framing — and on this PR they had both loaded, in opposite orders, in two different turns of the same session.</p>
+<p>Two skills, edited by two teammates, three months apart. Each carries its own copy of the team’s review checklist. They have drifted, and on the morning’s pull request to the payments service, they disagree.</p>
+<p>The first is a <code>python-review</code> skill that walks an agent through correctness, architecture, and security checks. The second is a <code>pr-description</code> skill that writes the body of the eventual pull request from the same diff. Both have been refined by hand, in many small commits, against many real reviews. Both work — separately. On this PR, the <code>python-review</code> skill files a verdict that the change is acceptable but adds two non-blocking nits about error wrapping. The <code>pr-description</code> skill, asked moments later to summarize the same review for the description body, writes that the change <em>needs revision</em> and lists a different set of concerns. Two voices. Same diff. Same agent. Same model.</p>
+<p>Pull up the two <code>SKILL.md</code> files side by side and the cause is visible in two minutes. Both skills carry their own copy of the team’s review checklist, inline. Six months ago they were identical. Three months ago a teammate sharpened the wording in <code>python-review</code> after a postmortem. Last month another teammate added a new bullet to <code>pr-description</code> for a different reason. Neither edit propagated. The two checklists have drifted. Whichever skill the agent loaded first won the framing — and on this PR they had both loaded, in opposite orders, in two different turns of the same session.</p>
 <p>Nothing in either skill is wrong on its own. What is wrong is structural. A piece of content that two skills both depend on is <em>embedded</em> in each, instead of <em>declared</em> by each. There is no single source of truth for the team’s review checklist, even though both authors believe there is one — the one in the skill they happened to edit. The handbook’s earlier chapters described primitives as files (Ch11, <a href="ch11-the-instrumented-codebase.html" class="quarto-xref"><span>Chapter 11</span></a>) and named the patterns that compose them (Ch18, <a href="ch18-architectural-patterns-rosetta-stone.html#sec-composition-patterns" class="quarto-xref"><span>Section 18.5</span></a>). Primitives are the typed catalogue from which an <em>agentic system</em> — the unit a team actually ships — is composed. This chapter is what changes when you stop treating those files as documents and start treating them as packages.</p>
 <hr>
 <section id="from-file-to-package" class="level2" data-number="20.1">
@@ -719,7 +803,7 @@ Figure&nbsp;20.1: A skill bundle and its lockfile snapshot
 </div>
 </div>
 </div>
-<p>The leap from file to package is what fixes Nadia’s drift problem. Once the team’s review checklist is its own package — <code>code-review-rubric</code> — both <code>python-review</code> and <code>pr-description</code> can declare a dependency on it. There is now exactly one source of truth, with one version history. A change to the checklist is a change to one file, reviewed once, propagated everywhere on the next install. The two skills no longer disagree because they are no longer carrying two copies of the same content.</p>
+<p>The leap from file to package is what fixes the drift problem from the opening. Once the team’s review checklist is its own package — <code>code-review-rubric</code> — both <code>python-review</code> and <code>pr-description</code> can declare a dependency on it. There is now exactly one source of truth, with one version history. A change to the checklist is a change to one file, reviewed once, propagated everywhere on the next install. The two skills no longer disagree because they are no longer carrying two copies of the same content.</p>
 <div class="callout callout-style-simple callout-note">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -782,7 +866,7 @@ Figure&nbsp;20.1: A skill bundle and its lockfile snapshot
 </section>
 <section id="separation-of-concerns-by-dependency" class="level2" data-number="20.3">
 <h2 data-number="20.3" class="anchored" data-anchor-id="separation-of-concerns-by-dependency"><span class="header-section-number">20.3</span> Separation of concerns, by dependency</h2>
-<p>Nadia’s fix, in mechanical detail, looks like this. She extracts the duplicated checklist into a new skill, <code>code-review-rubric</code>, with its own <code>SKILL.md</code> and its own version history. The bundle’s body is the rubric. Its description is the activation contract: <em>use whenever the agent is grading a code change against the team’s standards.</em> It owns no language-specific advice and no PR-formatting concerns. It owns one thing.</p>
+<p>The fix, in mechanical detail, looks like this. The team extracts the duplicated checklist into a new skill, <code>code-review-rubric</code>, with its own <code>SKILL.md</code> and its own version history. The bundle’s body is the rubric. Its description is the activation contract: <em>use whenever the agent is grading a code change against the team’s standards.</em> It owns no language-specific advice and no PR-formatting concerns. It owns one thing.</p>
 <p>Then she edits both consumers. The <code>python-review</code> skill declares the rubric as a dependency in its manifest:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># .github/skills/python-review/apm.yml</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> python-review</span></span>
@@ -855,7 +939,7 @@ Figure&nbsp;20.1: A skill bundle and its lockfile snapshot
 <p>Two practical disciplines make overrides safe to live with.</p>
 <p>The first is <strong>slot stability</strong>. The names of overrideable sections are part of the skill’s public contract. Renaming <code>Style guide</code> to <code>Style conventions</code> in a minor version is a breaking change for every downstream override that points at the old name, even if the body of the section is unchanged. The same engineering caution that applies to renaming a public function applies here. The version-bump rules below are how that caution is signalled.</p>
 <p>The second is <strong>the override is the smallest unit you own</strong>. A consumer who finds themselves overriding three slots, then four, then six, has crossed the threshold where forking the dependency is more honest. The override mechanism is for project-local specialization of an otherwise-shared module; when most of the module is local, the dependency edge is no longer paying for itself. Drop it, fork, take ownership.</p>
-<p>Override is what lets the team in Nadia’s company use <code>code-review-rubric</code> as it ships from the central platform team while still reflecting the payments-team house style on the one section where the two genuinely differ. Without overrides, the choice is binary — adopt the upstream rubric in full, or fork it and inherit nothing future. With overrides, specialization stays local without giving up shared evolution.</p>
+<p>Override is what lets the payments team use <code>code-review-rubric</code> as it ships from the central platform team while still reflecting the payments-team house style on the one section where the two genuinely differ. Without overrides, the choice is binary — adopt the upstream rubric in full, or fork it and inherit nothing future. With overrides, specialization stays local without giving up shared evolution.</p>
 <hr>
 </section>
 <section id="versioning-the-description-is-the-api" class="level2" data-number="20.6">
@@ -908,14 +992,14 @@ Figure&nbsp;20.1: A skill bundle and its lockfile snapshot
 </section>
 <section id="a-walkthrough-from-one-file-to-one-package" class="level2" data-number="20.7">
 <h2 data-number="20.7" class="anchored" data-anchor-id="a-walkthrough-from-one-file-to-one-package"><span class="header-section-number">20.7</span> A walkthrough, from one file to one package</h2>
-<p>The full lifecycle is short enough to put on a page. Take Nadia’s <code>code-review-rubric</code>, from extraction to consumption.</p>
+<p>The full lifecycle is short enough to put on a page. Take <code>code-review-rubric</code>, from extraction to consumption.</p>
 <ol type="1">
 <li><strong>Single file.</strong> The rubric lives inline in <code>python-review/SKILL.md</code>. It is a heading and forty lines.</li>
-<li><strong>Extracted bundle.</strong> Nadia creates <code>org/code-review-rubric/</code>. Inside: a <code>SKILL.md</code> with the description <em>use whenever the agent is grading a code change against the team’s standards</em>; a body that contains the rubric, factored into named slots; an <code>assets/</code> directory with one file, <code>examples/good-vs-bad.md</code>, that the body cites; an <code>apm.yml</code> declaring <code>version: 1.0.0</code>, no further dependencies, MIT license, the platform team as owner.</li>
+<li><strong>Extracted bundle.</strong> The platform team creates <code>org/code-review-rubric/</code>. Inside: a <code>SKILL.md</code> with the description <em>use whenever the agent is grading a code change against the team’s standards</em>; a body that contains the rubric, factored into named slots; an <code>assets/</code> directory with one file, <code>examples/good-vs-bad.md</code>, that the body cites; an <code>apm.yml</code> declaring <code>version: 1.0.0</code>, no further dependencies, MIT license, the platform team as owner.</li>
 <li><strong>Published.</strong> The bundle is pushed to the org’s repository. A tag, <code>v1.0.0</code>, points at the commit. The publish workflow runs schema validation on the manifest, link-integrity on the body, and an activation test that loads the description into a sandboxed harness and checks that it activates on a synthetic review task.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></li>
-<li><strong>Consumed.</strong> Nadia edits <code>python-review</code>’s <code>apm.yml</code> to add <code>org/code-review-rubric#v1.0.0</code> to its dependencies. She runs <code>apm install</code>. The CLI resolves the dependency, downloads the bundle, writes a content hash into <code>apm.lock.yaml</code>, and stages the rubric’s files into the project’s <code>apm_modules/</code> (or equivalent) tree. The body of <code>python-review/SKILL.md</code> now reads, in part, <em>apply the rubric in <code>code-review-rubric</code>, then add the Python-specific concerns below.</em></li>
+<li><strong>Consumed.</strong> A maintainer edits <code>python-review</code>’s <code>apm.yml</code> to add <code>org/code-review-rubric#v1.0.0</code> to its dependencies. They run <code>apm install</code>. The CLI resolves the dependency, downloads the bundle, writes a content hash into <code>apm.lock.yaml</code>, and stages the rubric’s files into the project’s <code>apm_modules/</code> (or equivalent) tree. The body of <code>python-review/SKILL.md</code> now reads, in part, <em>apply the rubric in <code>code-review-rubric</code>, then add the Python-specific concerns below.</em></li>
 <li><strong>Overridden.</strong> A second team in the company adopts <code>python-review</code> but has its own house style. They add an override file in their project that replaces the rubric’s <em>Style guide</em> slot with their own one-page guide. The rest of the rubric flows through unchanged.</li>
-<li><strong>Iterated.</strong> A postmortem motivates a sharper line in the rubric. Nadia edits <code>code-review-rubric/SKILL.md</code>, bumps to <code>v1.0.1</code>, publishes. Both consuming projects run <code>apm install</code> on their next CI build; the lockfile updates; the new rubric line appears in both teams’ next agent reviews. No drift.</li>
+<li><strong>Iterated.</strong> A postmortem motivates a sharper line in the rubric. The owner edits <code>code-review-rubric/SKILL.md</code>, bumps to <code>v1.0.1</code>, publishes. Both consuming projects run <code>apm install</code> on their next CI build; the lockfile updates; the new rubric line appears in both teams’ next agent reviews. No drift.</li>
 <li><strong>Audited.</strong> Six months later, an enterprise security review asks <em>which version of the rubric was loaded into the agent that approved PR #4711?</em> The answer is one lockfile lookup against the commit on which the PR was approved. The closure is reconstructible.</li>
 </ol>
 <p>Step 7 is what turns the package layer from an aesthetic choice into a governance one. Reproducibility, integrity, and provenance are the same property viewed from three angles, and all three are properties of the lockfile. A team that runs primitives without a manifest and a lockfile cannot answer step 7 honestly. A team that runs them with both can — which is, ultimately, what <em>primitives as code</em> means. Code has a build system. Code has a lockfile. Code has a publish pipeline. So do these.</p>
@@ -969,7 +1053,7 @@ Figure&nbsp;20.1: A skill bundle and its lockfile snapshot
 <section id="what-this-chapter-unlocks" class="level2" data-number="20.9">
 <h2 data-number="20.9" class="anchored" data-anchor-id="what-this-chapter-unlocks"><span class="header-section-number">20.9</span> What this chapter unlocks</h2>
 <p>Once a team accepts that primitives are packages and not files, the rest of the discipline follows. Pull requests review manifest changes the way they review API changes. Releases bump versions the way they bump library versions. Lockfile diffs go through the same eyes the source diff does. The disciplines named in earlier chapters — progressive disclosure (Ch14), the load-lifecycle reasoning that asks <em>what files actually arrived in the context?</em> (Ch13, <a href="ch13-the-load-lifecycle.html" class="quarto-xref"><span>Chapter 13</span></a>) — get a structural support beam: the package boundary is now the unit of composition, the unit of ownership, the unit of versioning, and the unit of audit, all at once.</p>
-<p>What this chapter has <em>not</em> covered is the supply-chain question one layer up. When the rubric your team installs is published by another team, in another org, possibly under another company’s name — <em>whose chain of trust is that?</em> What does it mean to publish a primitive? What is the marketplace topology that lets Nadia’s payments team install <code>code-review-rubric</code> from the platform team without first vetting every transitive dependency by hand? Ch21 (What Comes Next) picks up that thread. The package-management discipline this chapter installs is the prerequisite — without manifests, lockfiles, versions, and overrides, the marketplace question has nowhere to land. With them, it is the next problem worth solving.</p>
+<p>What this chapter has <em>not</em> covered is the supply-chain question one layer up. When the rubric your team installs is published by another team, in another org, possibly under another company’s name — <em>whose chain of trust is that?</em> What does it mean to publish a primitive? What is the marketplace topology that lets a payments team install <code>code-review-rubric</code> from the platform team without first vetting every transitive dependency by hand? Ch21 (What Comes Next) picks up that thread. The package-management discipline this chapter installs is the prerequisite — without manifests, lockfiles, versions, and overrides, the marketplace question has nowhere to land. With them, it is the next problem worth solving.</p>
 <hr>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">

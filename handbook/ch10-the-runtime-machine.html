@@ -113,7 +113,91 @@ ul.task-list li input[type="checkbox"] {
     --mermaid-fg-color: #e2e8f0 !important;
     --mermaid-edge-color: #a0aec0 !important;
   }
+  /* Mermaid lightbox — click to expand any mermaid figure */
+  figure.figure:has(svg.mermaid-js) { cursor: zoom-in; }
+  figure.figure:has(svg.mermaid-js):hover { outline: 1px dashed #888; outline-offset: 4px; }
+  #mermaid-lightbox-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    z-index: 10000; display: none; align-items: center; justify-content: center;
+    padding: 2rem; cursor: zoom-out; flex-direction: column;
+  }
+  #mermaid-lightbox-overlay.open { display: flex; }
+  #mermaid-lightbox-overlay .ml-stage {
+    max-width: 95vw; max-height: 90vh;
+    background: #fff; padding: 1.5rem; border-radius: 8px;
+    overflow: auto; cursor: default;
+  }
+  body.quarto-dark #mermaid-lightbox-overlay .ml-stage { background: #1a202c; }
+  /* Render SVG at intrinsic viewBox dimensions; stage scrolls if larger than viewport */
+  #mermaid-lightbox-overlay .ml-stage svg {
+    display: block; width: auto; height: auto;
+    max-width: none; max-height: none;
+  }
+  #mermaid-lightbox-overlay .ml-caption {
+    color: #fff; max-width: 95vw; margin-top: 1rem;
+    font-size: 0.9rem; text-align: center;
+  }
+  #mermaid-lightbox-overlay .ml-close {
+    position: absolute; top: 1rem; right: 1.5rem;
+    background: none; border: none; color: #fff;
+    font-size: 2rem; cursor: pointer; line-height: 1;
+  }
 </style>
+<script>
+  // Mermaid lightbox: wraps mermaid SVGs in a click-to-expand overlay.
+  // Quarto's built-in lightbox only handles <img>; this shim covers <svg> mermaid output.
+  document.addEventListener('DOMContentLoaded', function () {
+    var overlay = document.createElement('div');
+    overlay.id = 'mermaid-lightbox-overlay';
+    overlay.innerHTML = '<button class="ml-close" aria-label="Close">&times;</button><div class="ml-stage"></div><div class="ml-caption"></div>';
+    document.body.appendChild(overlay);
+    var stage = overlay.querySelector('.ml-stage');
+    var cap = overlay.querySelector('.ml-caption');
+    function close() { overlay.classList.remove('open'); stage.innerHTML = ''; cap.textContent = ''; }
+    overlay.addEventListener('click', function (e) { if (e.target === overlay || e.target.classList.contains('ml-close')) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+    function wireFigures() {
+      document.querySelectorAll('svg.mermaid-js').forEach(function (svg) {
+        var fig = svg.closest('figure.figure');
+        if (!fig || fig.dataset.mlWired) return;
+        fig.dataset.mlWired = '1';
+        fig.title = 'Click to expand';
+        fig.addEventListener('click', function (ev) {
+          if (ev.target.closest('a')) return;
+          ev.preventDefault();
+          var clone = svg.cloneNode(true);
+          clone.removeAttribute('style');
+          clone.removeAttribute('width');
+          clone.removeAttribute('height');
+          // Use viewBox to derive intrinsic width; size the SVG generously for readability
+          var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(parseFloat);
+          if (vb.length === 4 && vb[2] > 0 && vb[3] > 0) {
+            var ratio = vb[2] / vb[3];
+            var maxH = window.innerHeight * 0.85;
+            var maxW = window.innerWidth * 0.9;
+            // Prefer using the full available width unless that overflows height
+            var w = maxW;
+            var h = w / ratio;
+            if (h > maxH) { h = maxH; w = h * ratio; }
+            // Floor at a comfortable readable size; stage scrolls if it exceeds viewport
+            w = Math.max(w, Math.min(1400, vb[2]));
+            h = w / ratio;
+            clone.setAttribute('width', w);
+            clone.setAttribute('height', h);
+          }
+          stage.innerHTML = '';
+          stage.appendChild(clone);
+          var capEl = fig.querySelector('figcaption');
+          cap.textContent = capEl ? capEl.textContent.trim() : '';
+          overlay.classList.add('open');
+        });
+      });
+    }
+    wireFigures();
+    // Re-wire when mermaid finishes async rendering
+    new MutationObserver(wireFigures).observe(document.body, { childList: true, subtree: true });
+  });
+</script>
 
 
 <link rel="stylesheet" href="../styles/handbook-cover.css">
@@ -653,7 +737,7 @@ ul.task-list li input[type="checkbox"] {
 <p>For the rest of this chapter, treat these three as concrete instances of the broader category this chapter will name <em>agent source code</em>.</p>
 </div>
 </div>
-<p>It is a Monday morning. A senior engineer — call her Maya — has spent the last two sprints instrumenting a service repository for agentic development under GitHub Copilot. Conventions live in <code>.github/instructions/api.instructions.md</code> with an <code>applyTo: "src/api/**"</code> frontmatter. A reusable code-review framework lives in <code>.github/skills/code-review/SKILL.md</code>. A specialist persona lives in <code>.github/agents/security-auditor.agent.md</code>. Agents bind reliably; reviews are sharper; her teammates have stopped relitigating naming conventions in pull requests. The instrumentation works.</p>
+<p>A senior engineer — call her Maya — has spent the last two sprints instrumenting a service repository for agentic development under GitHub Copilot. Conventions live in <code>.github/instructions/api.instructions.md</code> with an <code>applyTo: "src/api/**"</code> frontmatter. A reusable code-review framework lives in <code>.github/skills/code-review/SKILL.md</code>. A specialist persona lives in <code>.github/agents/security-auditor.agent.md</code>. Agents bind reliably; reviews are sharper; her teammates have stopped relitigating naming conventions in pull requests. The instrumentation works.</p>
 <p>This morning her team lead asks her to evaluate Claude Code on the same project. Maya clones the repo onto a fresh machine, installs the CLI, runs <code>claude</code> from the project root, and asks it to add an endpoint following the existing API conventions. Claude Code drafts the endpoint without consulting the convention file. The new code uses the deprecated authentication helper. None of the rules in <code>api.instructions.md</code> made it into the model’s context. The skill in <code>.github/skills/code-review/</code> did not surface during the review. The security-auditor persona — the one her team has been calibrating for a month — is invisible.</p>
 <p>Same files. Same model family. Different harness. Silence.</p>
 <p>There is nothing wrong with Maya’s primitives, and nothing wrong with Claude Code. What has happened is that Maya has been writing programs in a language whose compiler she did not know she was using. Copilot’s loader recognizes <code>.instructions.md</code> files with an <code>applyTo</code> glob and reads them into context whenever a thread touches a matching path.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Claude Code’s loader does not. Claude Code reads a file called <code>CLAUDE.md</code> from the project root and then walks the directory tree for nested <code>CLAUDE.md</code> files, applying the closest one to whatever subtree the agent is working in.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The two harnesses agree on what a “scoped rule” <em>means</em> — text the model sees automatically when working in a particular part of the codebase — but they disagree, completely, on the file name, the folder, and the scope predicate. A developer who cannot name this disagreement experiences it as magic that comes and goes. A developer who can name it has a one-minute fix: write a <code>CLAUDE.md</code> at the repo root that says <em>for API code, follow the rules in <code>.github/instructions/api.instructions.md</code></em>. When Claude Code reads that <code>CLAUDE.md</code>, it will use the <code>@path</code> import directive to inline the instruction file’s contents into the model’s context at session start.</p>

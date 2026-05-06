@@ -113,7 +113,91 @@ ul.task-list li input[type="checkbox"] {
     --mermaid-fg-color: #e2e8f0 !important;
     --mermaid-edge-color: #a0aec0 !important;
   }
+  /* Mermaid lightbox — click to expand any mermaid figure */
+  figure.figure:has(svg.mermaid-js) { cursor: zoom-in; }
+  figure.figure:has(svg.mermaid-js):hover { outline: 1px dashed #888; outline-offset: 4px; }
+  #mermaid-lightbox-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    z-index: 10000; display: none; align-items: center; justify-content: center;
+    padding: 2rem; cursor: zoom-out; flex-direction: column;
+  }
+  #mermaid-lightbox-overlay.open { display: flex; }
+  #mermaid-lightbox-overlay .ml-stage {
+    max-width: 95vw; max-height: 90vh;
+    background: #fff; padding: 1.5rem; border-radius: 8px;
+    overflow: auto; cursor: default;
+  }
+  body.quarto-dark #mermaid-lightbox-overlay .ml-stage { background: #1a202c; }
+  /* Render SVG at intrinsic viewBox dimensions; stage scrolls if larger than viewport */
+  #mermaid-lightbox-overlay .ml-stage svg {
+    display: block; width: auto; height: auto;
+    max-width: none; max-height: none;
+  }
+  #mermaid-lightbox-overlay .ml-caption {
+    color: #fff; max-width: 95vw; margin-top: 1rem;
+    font-size: 0.9rem; text-align: center;
+  }
+  #mermaid-lightbox-overlay .ml-close {
+    position: absolute; top: 1rem; right: 1.5rem;
+    background: none; border: none; color: #fff;
+    font-size: 2rem; cursor: pointer; line-height: 1;
+  }
 </style>
+<script>
+  // Mermaid lightbox: wraps mermaid SVGs in a click-to-expand overlay.
+  // Quarto's built-in lightbox only handles <img>; this shim covers <svg> mermaid output.
+  document.addEventListener('DOMContentLoaded', function () {
+    var overlay = document.createElement('div');
+    overlay.id = 'mermaid-lightbox-overlay';
+    overlay.innerHTML = '<button class="ml-close" aria-label="Close">&times;</button><div class="ml-stage"></div><div class="ml-caption"></div>';
+    document.body.appendChild(overlay);
+    var stage = overlay.querySelector('.ml-stage');
+    var cap = overlay.querySelector('.ml-caption');
+    function close() { overlay.classList.remove('open'); stage.innerHTML = ''; cap.textContent = ''; }
+    overlay.addEventListener('click', function (e) { if (e.target === overlay || e.target.classList.contains('ml-close')) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+    function wireFigures() {
+      document.querySelectorAll('svg.mermaid-js').forEach(function (svg) {
+        var fig = svg.closest('figure.figure');
+        if (!fig || fig.dataset.mlWired) return;
+        fig.dataset.mlWired = '1';
+        fig.title = 'Click to expand';
+        fig.addEventListener('click', function (ev) {
+          if (ev.target.closest('a')) return;
+          ev.preventDefault();
+          var clone = svg.cloneNode(true);
+          clone.removeAttribute('style');
+          clone.removeAttribute('width');
+          clone.removeAttribute('height');
+          // Use viewBox to derive intrinsic width; size the SVG generously for readability
+          var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(parseFloat);
+          if (vb.length === 4 && vb[2] > 0 && vb[3] > 0) {
+            var ratio = vb[2] / vb[3];
+            var maxH = window.innerHeight * 0.85;
+            var maxW = window.innerWidth * 0.9;
+            // Prefer using the full available width unless that overflows height
+            var w = maxW;
+            var h = w / ratio;
+            if (h > maxH) { h = maxH; w = h * ratio; }
+            // Floor at a comfortable readable size; stage scrolls if it exceeds viewport
+            w = Math.max(w, Math.min(1400, vb[2]));
+            h = w / ratio;
+            clone.setAttribute('width', w);
+            clone.setAttribute('height', h);
+          }
+          stage.innerHTML = '';
+          stage.appendChild(clone);
+          var capEl = fig.querySelector('figcaption');
+          cap.textContent = capEl ? capEl.textContent.trim() : '';
+          overlay.classList.add('open');
+        });
+      });
+    }
+    wireFigures();
+    // Re-wire when mermaid finishes async rendering
+    new MutationObserver(wireFigures).observe(document.body, { childList: true, subtree: true });
+  });
+</script>
 
 
 <link rel="stylesheet" href="../styles/handbook-cover.css">
@@ -641,10 +725,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>It is a Monday morning. A staff engineer — call her Nadia — opens the team’s pull-request queue and finds three reviews from the agentic code-reviewer that all missed the same thing: a use of the deprecated <code>auth_v1</code> helper inside a new endpoint. The reviewer is supposed to flag exactly this. Its scope-attached instruction file says, in the second paragraph, <em>Treat any use of <code>auth_v1</code> outside <code>legacy/</code> as a blocking review comment, never a suggestion.</em> The file is loaded. Nadia checks the harness’s verbose log to be certain. The file is in context. The model just ignored it.</p>
+<p>There is a difference between an instruction the model has read and an instruction the model has seen. This chapter is about the gap, why it widens silently, and what closes it.</p>
+<p>A staff engineer opens her team’s pull-request queue and finds three reviews from the agentic code-reviewer that all missed the same thing: a use of the deprecated <code>auth_v1</code> helper inside a new endpoint. The reviewer is supposed to flag exactly this. Its scope-attached instruction file says, in the second paragraph, <em>Treat any use of <code>auth_v1</code> outside <code>legacy/</code> as a blocking review comment, never a suggestion.</em> The file is loaded. She checks the harness’s verbose log to be certain. The file is in context. The model just ignored it.</p>
 <p>Nothing has changed about the prompt. Nothing has changed about the model. What changed, two weeks ago, was that the team added an 800-line architectural-decisions document to the same scope, because someone reasoned that a code reviewer ought to have the architecture in mind when it reviews code. The document is well-written. It is also, when added on top of the existing instructions and the diff and the conversation history, the difference between an instruction the model attends to and an instruction the model has technically read but cannot find.</p>
-<p>Nadia’s first instinct is to file a bug against the model vendor. Her second, after talking to a colleague who has read the load-lifecycle chapter, is to ask the harness to tell her how many tokens are in context at the moment of the review and where the <code>auth_v1</code> rule sits inside that span. The answer is uncomfortable. The rule is on line 62 of an instruction file that loads into the middle third of a 35,000-token context payload. The model read it. The model did not see it.</p>
-<p>This chapter is about the difference between <em>read</em> and <em>seen</em>. A context window is not a budget you spend on more material; it is a working set in which attention is finite, position-sensitive, and degrades non-linearly under load. The disciplines that fall out of this — progressive disclosure, subagent isolation, plan-write-then-reload — are not stylistic preferences. They are the small set of countermeasures that keep the attention economy solvent.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> If Chapter 13 was about the deterministic mechanics of <em>what loads</em>,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> this chapter is about the probabilistic consequences of <em>what gets attended to</em>.</p>
+<p>Her first instinct is to file a bug against the model vendor. Her second, after talking to a colleague who has read the load-lifecycle chapter, is to ask the harness to tell her how many tokens are in context at the moment of the review and where the <code>auth_v1</code> rule sits inside that span. The answer is uncomfortable. The rule is on line 62 of an instruction file that loads into the middle third of a 35,000-token context payload. The model read it. The model did not see it.</p>
+<p>A context window is not a budget you spend on more material; it is a working set in which attention is finite, position-sensitive, and degrades non-linearly under load. The disciplines that fall out of this — progressive disclosure, subagent isolation, plan-write-then-reload — are not stylistic preferences. They are the small set of countermeasures that keep the attention economy solvent.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> If Chapter 13 was about the deterministic mechanics of <em>what loads</em>,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> this chapter is about the probabilistic consequences of <em>what gets attended to</em>.</p>
 <hr>
 <section id="window-and-attention-are-different-quantities" class="level2" data-number="14.1">
 <h2 data-number="14.1" class="anchored" data-anchor-id="window-and-attention-are-different-quantities"><span class="header-section-number">14.1</span> Window and attention are different quantities</h2>
@@ -748,7 +833,7 @@ Figure&nbsp;14.1: Position-by-time view of effective attention across a long age
 <section id="lever-one-progressive-disclosure" class="level3" data-number="14.4.1">
 <h3 data-number="14.4.1" class="anchored" data-anchor-id="lever-one-progressive-disclosure"><span class="header-section-number">14.4.1</span> Lever one: progressive disclosure</h3>
 <p>The first lever is <em>only load the thing when you need it</em>. The convention has crystallised in the agentskills.io standard for skills, where the contract is explicit: a skill’s <code>SKILL.md</code> exposes a description and an activation predicate; the body and any referenced assets are only pulled into context when the harness’s dispatcher matches the description against the current task.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> A skill that lives in <code>.claude/skills/api-review/</code> does not cost any tokens during a frontend bug-fix session. It costs tokens only when the dispatcher decides the current work is API review. The same idea, generalised: split rules by scope so that auth rules unload when the agent moves to the frontend; reference modules instead of inlining them; let on-demand fetch tools pull external grounding only when the agent asks. Every byte that is <em>available</em> without being <em>loaded</em> is a byte that has not yet taxed your attention budget.</p>
-<p>The mistake progressive disclosure prevents is the architectural-decisions document Nadia’s team added. The intent — <em>the reviewer should know the architecture</em> — was correct. The implementation — load it on every review — was the mistake. The right shape was a skill that reads architectural-decisions only when the diff touches an interface boundary, with the rest of the document staying on disk. Progressive disclosure is not laziness; it is the only way a primitive set can grow without each new primitive making every existing primitive perform worse.</p>
+<p>The mistake progressive disclosure prevents is the architectural-decisions document the team added. The intent — <em>the reviewer should know the architecture</em> — was correct. The implementation — load it on every review — was the mistake. The right shape was a skill that reads architectural-decisions only when the diff touches an interface boundary, with the rest of the document staying on disk. Progressive disclosure is not laziness; it is the only way a primitive set can grow without each new primitive making every existing primitive perform worse.</p>
 </section>
 <section id="lever-two-subagent-isolation" class="level3" data-number="14.4.2">
 <h3 data-number="14.4.2" class="anchored" data-anchor-id="lever-two-subagent-isolation"><span class="header-section-number">14.4.2</span> Lever two: subagent isolation</h3>

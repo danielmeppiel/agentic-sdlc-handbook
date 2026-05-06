@@ -23,6 +23,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -113,7 +148,91 @@ ul.task-list li input[type="checkbox"] {
     --mermaid-fg-color: #e2e8f0 !important;
     --mermaid-edge-color: #a0aec0 !important;
   }
+  /* Mermaid lightbox — click to expand any mermaid figure */
+  figure.figure:has(svg.mermaid-js) { cursor: zoom-in; }
+  figure.figure:has(svg.mermaid-js):hover { outline: 1px dashed #888; outline-offset: 4px; }
+  #mermaid-lightbox-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    z-index: 10000; display: none; align-items: center; justify-content: center;
+    padding: 2rem; cursor: zoom-out; flex-direction: column;
+  }
+  #mermaid-lightbox-overlay.open { display: flex; }
+  #mermaid-lightbox-overlay .ml-stage {
+    max-width: 95vw; max-height: 90vh;
+    background: #fff; padding: 1.5rem; border-radius: 8px;
+    overflow: auto; cursor: default;
+  }
+  body.quarto-dark #mermaid-lightbox-overlay .ml-stage { background: #1a202c; }
+  /* Render SVG at intrinsic viewBox dimensions; stage scrolls if larger than viewport */
+  #mermaid-lightbox-overlay .ml-stage svg {
+    display: block; width: auto; height: auto;
+    max-width: none; max-height: none;
+  }
+  #mermaid-lightbox-overlay .ml-caption {
+    color: #fff; max-width: 95vw; margin-top: 1rem;
+    font-size: 0.9rem; text-align: center;
+  }
+  #mermaid-lightbox-overlay .ml-close {
+    position: absolute; top: 1rem; right: 1.5rem;
+    background: none; border: none; color: #fff;
+    font-size: 2rem; cursor: pointer; line-height: 1;
+  }
 </style>
+<script>
+  // Mermaid lightbox: wraps mermaid SVGs in a click-to-expand overlay.
+  // Quarto's built-in lightbox only handles <img>; this shim covers <svg> mermaid output.
+  document.addEventListener('DOMContentLoaded', function () {
+    var overlay = document.createElement('div');
+    overlay.id = 'mermaid-lightbox-overlay';
+    overlay.innerHTML = '<button class="ml-close" aria-label="Close">&times;</button><div class="ml-stage"></div><div class="ml-caption"></div>';
+    document.body.appendChild(overlay);
+    var stage = overlay.querySelector('.ml-stage');
+    var cap = overlay.querySelector('.ml-caption');
+    function close() { overlay.classList.remove('open'); stage.innerHTML = ''; cap.textContent = ''; }
+    overlay.addEventListener('click', function (e) { if (e.target === overlay || e.target.classList.contains('ml-close')) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+    function wireFigures() {
+      document.querySelectorAll('svg.mermaid-js').forEach(function (svg) {
+        var fig = svg.closest('figure.figure');
+        if (!fig || fig.dataset.mlWired) return;
+        fig.dataset.mlWired = '1';
+        fig.title = 'Click to expand';
+        fig.addEventListener('click', function (ev) {
+          if (ev.target.closest('a')) return;
+          ev.preventDefault();
+          var clone = svg.cloneNode(true);
+          clone.removeAttribute('style');
+          clone.removeAttribute('width');
+          clone.removeAttribute('height');
+          // Use viewBox to derive intrinsic width; size the SVG generously for readability
+          var vb = (svg.getAttribute('viewBox') || '').split(/\s+/).map(parseFloat);
+          if (vb.length === 4 && vb[2] > 0 && vb[3] > 0) {
+            var ratio = vb[2] / vb[3];
+            var maxH = window.innerHeight * 0.85;
+            var maxW = window.innerWidth * 0.9;
+            // Prefer using the full available width unless that overflows height
+            var w = maxW;
+            var h = w / ratio;
+            if (h > maxH) { h = maxH; w = h * ratio; }
+            // Floor at a comfortable readable size; stage scrolls if it exceeds viewport
+            w = Math.max(w, Math.min(1400, vb[2]));
+            h = w / ratio;
+            clone.setAttribute('width', w);
+            clone.setAttribute('height', h);
+          }
+          stage.innerHTML = '';
+          stage.appendChild(clone);
+          var capEl = fig.querySelector('figcaption');
+          cap.textContent = capEl ? capEl.textContent.trim() : '';
+          overlay.classList.add('open');
+        });
+      });
+    }
+    wireFigures();
+    // Re-wire when mermaid finishes async rendering
+    new MutationObserver(wireFigures).observe(document.body, { childList: true, subtree: true });
+  });
+</script>
 
 
 <link rel="stylesheet" href="../styles/handbook-cover.css">
@@ -603,10 +722,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-recursion-mechanics" id="toc-sec-recursion-mechanics" class="nav-link active" data-scroll-target="#sec-recursion-mechanics"><span class="header-section-number">21.1</span> One rule, applied recursively</a></li>
-  <li><a href="#sec-panel-worked-mechanics" id="toc-sec-panel-worked-mechanics" class="nav-link" data-scroll-target="#sec-panel-worked-mechanics"><span class="header-section-number">21.2</span> A Panel, end to end</a></li>
-  <li><a href="#sec-starter-shape-mechanics" id="toc-sec-starter-shape-mechanics" class="nav-link" data-scroll-target="#sec-starter-shape-mechanics"><span class="header-section-number">21.3</span> What ‘start anywhere’ looks like in code</a></li>
-  <li><a href="#sec-generalises-mechanics" id="toc-sec-generalises-mechanics" class="nav-link" data-scroll-target="#sec-generalises-mechanics"><span class="header-section-number">21.4</span> The pattern generalises (and the proof is this book)</a></li>
+  <li><a href="#sec-recursion-mechanics" id="toc-sec-recursion-mechanics" class="nav-link active" data-scroll-target="#sec-recursion-mechanics"><span class="header-section-number">21.1</span> Composition is recursive</a></li>
+  <li><a href="#what-makes-the-recursion-governable" id="toc-what-makes-the-recursion-governable" class="nav-link" data-scroll-target="#what-makes-the-recursion-governable"><span class="header-section-number">21.2</span> What makes the recursion governable</a></li>
+  <li><a href="#sec-panel-worked" id="toc-sec-panel-worked" class="nav-link" data-scroll-target="#sec-panel-worked"><span class="header-section-number">21.3</span> A Panel, walked end to end</a></li>
+  <li><a href="#what-this-changes-for-the-architect" id="toc-what-this-changes-for-the-architect" class="nav-link" data-scroll-target="#what-this-changes-for-the-architect"><span class="header-section-number">21.4</span> What this changes for the architect</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/danielmeppiel/agentic-sdlc-handbook/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
@@ -633,123 +752,191 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<blockquote class="blockquote">
-<p><em>The architecture you have been operating in for ten chapters, rendered in code.</em></p>
-</blockquote>
-<p>You have been operating in this vocabulary for ten chapters. Chapter 10 took the harness apart into its four-part runtime machine. Chapter 11 catalogued the seven primitive types and their authoring contracts. Chapter 12 argued the PROSE constraints. Chapter 13 walked the load lifecycle. Chapter 14 rationed attention. Chapter 15 drew the deterministic / probabilistic seam. Chapter 16 made multi-agent orchestration legible against the Panel pattern. Chapters 17-19 walked the meta-process, the patterns Rosetta, and the anti-patterns. Chapter 20 closed the loop with primitives as code. Each chapter built one piece of the substrate inductively, against a Monday-morning incident or a working artefact, and stood on its own. This chapter is the recognition moment: the map you saw at the start of Part III is now the architecture you have earned. The five layers are the supply chain you have been authoring against; the recursion bound is the discipline you watched Chapter 16 enforce; the Panel pattern is the shape Chapter 16 operated, and this chapter walks it end to end. From here the chapter steps out one altitude further: the npm mapping for procurement, and the Monday decision frame for the team that has just finished the book and is asking what to do first.</p>
-<p>The chapter does four things in order. It walks the recursion bound at the architectural level, where Chapter 16 stopped at the operational treatment. It works one Panel end to end, against the same review Skill the rest of the book has been hinting at, with the synthesiser explicit and the dispatched CVE-triage subagent visible. It maps the supply-chain vocabulary onto the npm vocabulary your platform-engineering team already knows, in the artefact-by-artefact form a procurement reviewer can use. And it closes on the Monday decision: not which agent platform to standardise on, but which registry to operate, who CODEOWNS the primitives, and which <code>SDLC phase</code> the first <code>Skill</code> will target. The closing meditation observes that the proof of the architecture is the artefact in the reader’s hands – this handbook was authored against the same supply chain it describes.</p>
+<p>Composition is recursive. Almost everything else in this part is a consequence of that.</p>
+<p>Pull request #4711 on the payments service is a twelve-file diff that touches <code>payments/charge.py</code> and bumps <code>stripe-python</code> from 7.2 to 7.4. Maya labels it <code>needs-review</code> and switches windows.</p>
+<p>Behind the label, the team’s review Skill has loaded. It fans out to six Personas in their own subagent threads — Tech Lead, Senior Backend Engineer, Security Reviewer, Accessibility Reviewer, Documentation Editor, Product Reviewer — each reading the diff against its own rubric and its own slice of context. The Security Reviewer hits the version bump, treats it as a class of change its rubric does not cover in line, and dispatches a CVE Triage Skill in a fresh thread. CVE Triage loads its own pair of Personas — Threat Modeller, Compliance Check — against the advisory feed and the org’s allow-list, returns a verdict, persists its plan, and exits.</p>
+<p>By the time Maya’s notification fires, three Skills have run, eight Personas have weighed in, and a Tech Lead synthesiser has turned the reasoning traces into a single comment on the PR. She reads one verdict. The audit trail underneath it is reconstructible from a lockfile.</p>
+<p>That is the architecture this part has been building.</p>
 <section id="sec-recursion-mechanics" class="level2" data-number="21.1">
-<h2 data-number="21.1" class="anchored" data-anchor-id="sec-recursion-mechanics"><span class="header-section-number">21.1</span> One rule, applied recursively</h2>
-<p>The five-layer picture in the Part III preface describes the vocabulary. It does not yet describe the most consequential property of the system, which is that composition is recursive. The same <code>{Skill, Persona, Context} triplet</code> repeats at every depth: a <code>Skill</code> dispatches one or more <code>Personas</code>; a <code>Persona</code>, in its own subagent thread, may dispatch further <code>Skills</code>; each of those <code>Skills</code> may dispatch further <code>Personas</code>. One composition rule, applied many times, produces a dependency graph that has the same shape an npm dependency graph has – the same well-typed primitive sits at every node.</p>
-<div class="cell" data-fig-width="5" data-layout-align="default">
+<h2 data-number="21.1" class="anchored" data-anchor-id="sec-recursion-mechanics"><span class="header-section-number">21.1</span> Composition is recursive</h2>
+<p>The five-layer picture from Chapter 4 (<a href="ch04-the-reference-architecture.html#fig-five-layers" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>) names the vocabulary. It does not yet name the property of the system that carries the most weight at scale, which is this: the same Skill–Persona–Context triplet repeats at every depth. A Skill dispatches Personas. A Persona, in its own thread, may dispatch further Skills. Each of those Skills may dispatch further Personas. One composition rule, applied many times, is the whole shape.</p>
+<p>The figure below is that rule applied once, with Maya’s PR substituted for the variables. The team’s Agentic SDLC sits at the top of the frame; the <code>Review</code> phase is the cell the team is currently in, and that phase triggers the top-level Skill, <code>payments-review v2.3.0</code>. From the Skill downward, the recursion takes over — Personas, then Context, then (via the subagent thread from <code>Security</code>) the same shape one frame deeper, with <code>CVE Triage v1.4.2</code> and its own Personas and Context — all of it still inside the same <code>Review</code> phase. The substrate row at the foot of the frame names the three layers of <a href="ch04-the-reference-architecture.html#fig-five-layers" class="quarto-xref">Figure&nbsp;<span>4.2</span></a> that carry this structure but are not the subject of this chapter. It is the bridge to the manifest below, because the manifest is what makes the recursion declarable on disk.</p>
+<div class="cell" data-fig-width="5.5" data-fig-height="8" data-layout-align="default">
 <div class="cell-output-display">
-<div id="fig-recursion-mechanics" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-recursion-maya" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-recursion-mechanics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div aria-describedby="fig-recursion-maya-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-recursion-mechanics">flowchart TD
-    SK1["Review Skill&lt;br/&gt;(parent)"]
-    P1["Tech Lead Persona"]
-    P2["Security Reviewer Persona"]
-    P3["Accessibility Reviewer Persona"]
-    SK2["CVE Triage Skill"]
-    P4["Threat Modeller Persona"]
-    SK3["Compliance Check Skill"]
+<pre class="mermaid mermaid-js" data-label="fig-recursion-maya">%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','fontFamily':'-apple-system, BlinkMacSystemFont, sans-serif'}}}%%
+block-beta
+  columns 3
 
-    SK1 -- "dispatches" --&gt; P1
-    SK1 -- "dispatches" --&gt; P2
-    SK1 -- "dispatches" --&gt; P3
-    P2 -- "subagent thread" --&gt; SK2
-    SK2 -- "dispatches" --&gt; P4
-    P4 -- "subagent thread" --&gt; SK3
+  L0H["AGENTIC SDLC — the team's lifecycle"]:3
+  SPEC["Spec"] PLAN["Plan"] BUILD["Build"]
+  TEST["Test"] REVIEW["Review"] REFINE["Refine"]
+  RELEASE["Release"] sA["&amp;nbsp;"] sB["&amp;nbsp;"]
+
+  GAP0["▼ Review triggers"]:3
+
+  D1H["DEPTH 1 — payments-review v2.3.0
+(SKILL.md · PR #4711)"]:3
+
+  L2HA["PERSONA POOL — 6 .agent.md files"]:3
+  P_TL["Tech Lead"] P_BE["Backend"] P_SR["Security"]
+  P_AX["A11y"] P_DE["Docs"] P_PR["Product"]
+
+  L3HA["CONTEXT POOL — 6 sources"]:3
+  C_DIFF["Diff (git)"] C_CODE["Code"] C_POL["Policy"]
+  C_JIRA["Jira (MCP)"] C_RFC["RFC (web)"] C_FIG["Figma"]
+
+  GAP1["&amp;nbsp;"]:3
+
+  D2H["DEPTH 2 — CVE Triage v1.4.2
+(SKILL.md · same shape, deeper · still inside Review)"]:3
+
+  L2HB["PERSONA POOL — 2 .agent.md files"]:3
+  P_TM["Threat Modeller"] P_CC["Compliance"] sC["&amp;nbsp;"]
+
+  L3HB["CONTEXT POOL — 2 sources"]:3
+  C_FEED["CVE feed (web)"] C_AL["Allow-list (files)"] sD["&amp;nbsp;"]
+
+  GAP2["&amp;nbsp;"]:3
+
+  SUB["SUBSTRATE (Ch. 4) — lower three layers
+Agent Harness · Governance · Platform"]:3
+
+  P_SR --"subagent thread"--&gt; D2H
+
+  classDef bandlabel fill:#ffffff,stroke:#cfcfcf,color:#444,font-weight:bold
+  classDef depthlabel fill:#eaeaea,stroke:#666,color:#000,font-weight:bold
+  classDef lifecycle fill:#eef6ff,stroke:#3a6ea5,color:#000
+  classDef persona   fill:#fff8e0,stroke:#a8862c,color:#000
+  classDef context   fill:#eef9ee,stroke:#3a8a3a,color:#000
+  classDef dim       fill:#f4f4f4,stroke:#bdbdbd,color:#6b6b6b,stroke-dasharray:3 3
+  classDef gap       fill:#ffffff,stroke:#ffffff,color:#ffffff
+  classDef arrowhint fill:#ffffff,stroke:#ffffff,color:#3a6ea5,font-style:italic
+  classDef substrate fill:#e4e4ea,stroke:#7d7d86,color:#3a3a3a
+
+  class D1H,D2H depthlabel
+  class L0H,L2HA,L3HA,L2HB,L3HB bandlabel
+  class REVIEW lifecycle
+  class SPEC,PLAN,BUILD,TEST,REFINE,RELEASE dim
+  class P_TL,P_BE,P_SR,P_AX,P_DE,P_PR,P_TM,P_CC persona
+  class C_DIFF,C_CODE,C_POL,C_JIRA,C_RFC,C_FIG,C_FEED,C_AL context
+  class sA,sB,sC,sD gap
+  class GAP1,GAP2 gap
+  class GAP0 arrowhint
+  class SUB substrate
 </pre>
 </div>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recursion-mechanics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;21.1: Recursive composition. The {Skill, Persona, Context} triplet repeats at every depth. A parent Skill dispatches Personas; each Persona, in its own thread, may dispatch deeper Skills which themselves dispatch Personas.
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-recursion-maya-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21.1: Maya’s PR #4711. The team’s Agentic SDLC sits at the top; the Review phase triggers the payments-review Skill, which dispatches Personas against Context. The same Skill→Persona→Context shape repeats at depth two when the Security Reviewer dispatches CVE Triage inside the same Review phase.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Two conventions make the recursion <em>governable</em> rather than runaway: every Skill carries an eval (so the parent has a stop condition), and every dispatch persists its plan (so the parent can read the artefact instead of re-dispatching). The actual depth bound is operational – context budget and panel-orchestration policy – and Chapter 16 (<a href="ch16-multi-agent-orchestration.html" class="quarto-xref"><span>Chapter 16</span></a>) carries it. A <code>Skill</code> that fails the eval-and-plan discipline is not a Skill; it is a prompt with ambitions.</p>
-<p>The triplet is also where MCP enters the architecture. MCP (the Model Context Protocol, an open standard stewarded by LF Projects under the Linux Foundation) is the wire format by which a <code>Persona</code> reads a live system – a Jira instance, a SharePoint corpus, an internal API, a database – without the <code>Persona</code> author having to know the system’s transport details. From the <code>Persona</code>’s point of view, the MCP server presents a tool surface; from the operating organisation’s point of view, the MCP server is a deployed component subject to the usual identity and authorisation policies. MCP sits in the <code>Context</code> half of the triplet: it is one of the access mechanisms by which a <code>Persona</code> reaches ground-truth, alongside files in the repository, output from a CLI tool, a fetched web page, and multi-modal artefacts. Chapter 14 (<a href="ch14-attention-and-context-economy.html" class="quarto-xref"><span>Chapter 14</span></a>) catalogues the five mechanisms in detail; for the purposes of this chapter the relevant claim is that MCP is <em>one access mechanism</em>, not a competing architecture, and it composes inside the recursion the same way a file or a CLI invocation does. Treating MCP as the architecture rather than as one mechanism is the most common shape of mistake an architect new to this substrate makes; it is worth naming on first contact.</p>
-<p>The recursion is what lets a small named-primitive vocabulary scale to enterprise-grade composition without a parallel toolchain. The dependency graph is recursive in exactly the sense an npm dependency graph is recursive; the same package manager, the same lockfile, and the same review surfaces handle one level of composition or seven. There is no separate orchestration product to procure, no separate runtime to operate, no separate review pipeline to staff. Chapter 16 (<a href="ch16-multi-agent-orchestration.html" class="quarto-xref"><span>Chapter 16</span></a>) carries the operational treatment of the recursion bound – the failure modes at each depth, the panel-orchestration patterns that govern fan-out, the dispatch-site declarations the harness enforces. This chapter’s contribution one altitude up is to name the bound as an <em>architectural</em> property, not just an operational discipline: a substrate without a recursion bound is not a recursion-friendly substrate with a tuning gap, it is a substrate that cannot be deployed at scale, because the cost and audit trail of an unbounded dispatch tree are not knowable in advance. The bound is what makes the recursion architecturally sound. The deep treatment of the design discipline that keeps a <code>Skill</code> from becoming a prompt with ambitions is the subject of Appendix B’s worked example of the Genesis design protocol.</p>
+<p>The figure opens one cell of Chapter 4’s five-layer picture. The Agentic SDLC band at the top is <code>SDLC Phases</code>, with <code>Review</code> highlighted as the cell Maya’s example occupies. Everything below the <code>▼ Review triggers</code> arrow — the Skill, its Personas, its Context, and the depth-two repetition — is what <code>Context &amp; Capabilities</code> looks like once a phase has fired. The substrate row at the foot is the rest of the stack at work: the version pins (<code>v2.3.0</code>, <code>v1.4.2</code>) are <code>Governance &amp; Distribution</code> doing its job; the <code>subagent thread</code> edge from Security Reviewer to CVE Triage is the <code>Agent Harness</code> doing its; every file behind every band lives on the <code>Platform</code>. The next snippet is how the cell is declared on disk. A Skill bundle’s manifest names the nested Skills it depends on the same way any other package names the packages it depends on:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># packages/payments-review/apm.yml</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">name</span><span class="kw">:</span><span class="at"> payments-review</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">version</span><span class="kw">:</span><span class="at"> </span><span class="fl">2.3.0</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">description</span><span class="kw">:</span><span class="at"> Multi-lens code review for the payments service.</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">author</span><span class="kw">:</span><span class="at"> payments-platform</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dependencies</span><span class="kw">:</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">apm</span><span class="kw">:</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> org/cve-triage</span><span class="co">#v1.4.2</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="at">    </span><span class="kw">-</span><span class="at"> org/perf-review</span><span class="co">#v0.9.1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>The Personas live as <code>.agent.md</code> files inside the bundle; the nested Skills are real package edges in <code>dependencies.apm</code>, resolved by <code>apm install</code> and pinned in <code>apm.lock.yaml</code> like any other dependency. The graph that results has the same shape a code dependency graph has — a directed graph of well-typed primitives, resolved against a manifest, pinned by a lockfile, owned via CODEOWNERS. The same package manager that handles one level of composition handles seven. There is no separate orchestration product to procure, no separate runtime to operate, no separate review pipeline to staff. The substrate that carries one Skill carries the tree.</p>
+<p>That is what lets a small primitive vocabulary scale to enterprise composition. The Review Skill in Maya’s example, the CVE Triage Skill it nested, and the Compliance Check Skill that CVE Triage might nest in turn are not three different kinds of object. They are the same object at three different depths. The harness loads them the same way; the registry resolves them the same way; the lockfile pins them the same way; the pull request that changes one of them looks like the pull request that changes any of them.</p>
+<p>The architect’s instinct to “treat it like the codebase” is right because the dependency graph <em>is</em> the codebase’s shape. The operational disciplines you already have — semver, lockfiles, content hashing, codeowners, deprecation windows — port across without modification. Recursion is the architecture’s only structural move; almost everything else this part has named is a consequence of it.</p>
 </section>
-<section id="sec-panel-worked-mechanics" class="level2" data-number="21.2">
-<h2 data-number="21.2" class="anchored" data-anchor-id="sec-panel-worked-mechanics"><span class="header-section-number">21.2</span> A Panel, end to end</h2>
-<p>Walk a single application of the architecture end-to-end and the abstractions become operational. Take the most common composite invocation in any engineering organisation: a pull-request review.</p>
-<p>The team has a <code>Review Skill</code> checked into the registry. Its manifest declares dependencies on six <code>Personas</code> (Tech Lead, Senior Backend Engineer, Security Reviewer, Accessibility Reviewer, Documentation Editor, Product Reviewer) and on the conventions for the languages and frameworks the codebase uses. The Skill’s <code>Context</code> block names the access mechanisms it relies on: the diff via the <code>git</code> CLI; the codebase as files; the architecture decision records and CI traces as files in known paths; the linked Jira ticket via <code>Jira via MCP</code>; the security policies as files in the policy repository; the originating RFC fetched from the team’s wiki; any Figma mockups linked from the PR description loaded as multi-modal artefacts. The Skill’s eval is a structured rubric: each of the six lenses returns a verdict and a reasoning trace; the synthesiser returns a single approve / request-changes decision with a written rationale.</p>
-<p>When the harness loads the Skill it does not run six review threads sequentially in one window, because that would let each lens contaminate the next. It runs them as a Panel: fan out to six <code>Personas</code> in their own subagent threads, each with its own context budget; collect the six verdicts and reasoning traces; hand them to a Tech Lead Persona acting as synthesiser; receive a single artefact. The Tech Lead Persona is the synthesiser by design – the rubric is structured so the dissenting lens (often the Security Reviewer or Accessibility Reviewer) is preserved in the synthesis, not averaged away. The output is one comment on the pull request, not six. The author of the PR reads a single decision; the audit trail underneath that decision retains the six lens reports and the synthesiser’s reasoning, in case a reviewer or a regulator needs to ask why.</p>
-<p>Inside the Panel, the recursion shows up where it matters most. The Security Reviewer, encountering a dependency change in the diff, dispatches its own <code>CVE Triage Skill</code> in a fresh subagent thread before returning a verdict. The CVE Triage Skill loads its own <code>Personas</code> (Threat Modeller, Compliance Check) against its own <code>Context</code> (the dependency’s advisory feed, the SBOM, the org’s allow-list). The graph is recursive; the primitives do not change; the registry, the lockfile, and the CODEOWNERS files that govern the Review Skill govern the CVE Triage Skill on the same terms. The Tech Lead synthesiser does not see the threat-modelling thread; it sees the Security Reviewer’s verdict with the CVE-triage trace attached as ground-truth. The recursion is invisible from the level above and inspectable from the level below. That property – composition is recursive, but each level reads the level below as if it were a single primitive – is what keeps the architecture from becoming an unbounded escalation tree at scale.</p>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><strong>Sidebar B – Who actually builds what.</strong> Chapter 4 named these three roles. This chapter’s contribution is the mapping to three concerns inside a single <code>Skill</code> bundle, and the reality check that on most org charts in 2026 the three concerns sit on one senior engineer until the work scales. The <em>procedure</em> – what the Skill is supposed to do, in domain language – is the <code>Domain Specialist</code>’s concern. The <em>composition</em> – how the Skill fans out, which <code>Personas</code> it loads, where the Panel synthesiser sits, how the recursion is bounded – is the <code>Agentic Workflow Engineer</code>’s. The <em>operational health</em> – the eval, the regression set, the rollout, the version-pin policy, the rollback – is the <code>Agent Operations Specialist</code>’s. We name the three concerns so they can be tracked even when the headcount is one. Chapter 6 is the definitional home for the roles; Chapter 20 carries the per-row authoring contract for a Skill bundle.</p>
-</div>
-</div>
-</div>
-<p>The architecture analogies are deliberate, and Chapter 18 carries the deep treatment. As a teaser:</p>
-<div id="tbl-rosetta-teaser-mechanics" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-rosetta-teaser-mechanics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;21.1: A teaser of the Rosetta mapping. Chapter 18 (<a href="ch18-architectural-patterns-rosetta-stone.html#sec-layered-model" class="quarto-xref"><span>Section 18.3</span></a>) carries the deep treatment, including the four-layer substrate lens that reconciles the new five-layer landscape with the patterns engineers already know.
-</figcaption>
-<div aria-describedby="tbl-rosetta-teaser-mechanics-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Agentic primitive</th>
-<th>Classical analogue</th>
-<th>Why the analogy holds</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>Skill</code></td>
-<td>Module + Facade</td>
-<td>A Skill exposes one entry point and one stable contract; its internals can change without breaking callers.</td>
-</tr>
-<tr class="even">
-<td><code>Persona</code></td>
-<td>Strategy</td>
-<td>A Persona is a swappable judgement: same input shape, different evaluation policy.</td>
-</tr>
-<tr class="odd">
-<td><code>Panel</code></td>
-<td>Mediator + Scatter-Gather</td>
-<td>The synthesiser mediates among lenses; the dispatch is scatter, the synthesis is gather.</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-<p>The lesson the analogies carry is the same lesson the supply-chain mapping to npm carries: engineers who can reason about modules, strategies, and mediators already have the vocabulary to design an agentic SDLC. The substrate is new; the patterns are not. The Panel above is not a new orchestration framework. It is a Mediator with a Scatter-Gather distribution, applied to a primitive type the field has converged on, distributed by a package manager, executed by a harness, and reviewed in a pull request like every other change to the codebase. An architect who has been told that the agentic era requires a new mental model has been mis-sold the architectural shift. The mental model is one the architect already has. What is new is the substrate the model now applies to.</p>
-<p>The same Panel is the worked-example shape behind the editorial Skill that produced this chapter – a fact the closing section will return to. The early signal from teams that have shipped two or three Panels of meaningfully different shapes is that the cost of designing the fourth drops sharply, because the design move is the same move: name the lenses, name the synthesiser, name the bound on the recursion, and let the package manager handle distribution.</p>
+<section id="what-makes-the-recursion-governable" class="level2" data-number="21.2">
+<h2 data-number="21.2" class="anchored" data-anchor-id="what-makes-the-recursion-governable"><span class="header-section-number">21.2</span> What makes the recursion governable</h2>
+<p>Recursion without a bound is a generator for unbounded compute and an unauditable trail. Two conventions, applied at every level, convert it from a hazard into an architectural property.</p>
+<p>First, <strong>every Skill carries an eval as discipline</strong>. A Skill that cannot say what its output looks like and how to tell whether it is correct is not a Skill; it is a prompt that has been mistaken for one. The eval is the parent’s stop condition. Without it, the parent has to either re-dispatch (paying again) or trust without checking (paying later). With it, the parent reads the artefact and moves on. The eval lives alongside the bundle today — as test inputs, expected outputs, and a runner the bundle author maintains — not yet as a manifest field; the discipline is what matters, and the schema will catch up.</p>
+<p>Second, <strong>every dispatch persists its plan</strong>. The subagent thread writes its working plan to a file the parent can read. When the Security Reviewer in Maya’s PR dispatched CVE Triage, the triage thread did not return only its verdict; it returned a verdict <em>and</em> a plan trace, persisted alongside the run. The parent reads the verdict; the auditor — six months later, with a regulator on the line — reads the plan.</p>
+<p>Together, the two conventions bound the recursion in space and in time. The eval bounds it in space: each level returns one well-typed artefact. Plan persistence bounds it in time: each level is reconstructible after the fact. What you get back from a dispatch is not “an agent did something”; it is a Skill, of a known version, against a known Context, returning an artefact that passed a known eval, with the trace on disk.</p>
+<p><em>A Skill that fails eval-and-plan is a prompt with ambitions.</em></p>
 </section>
-<section id="sec-starter-shape-mechanics" class="level2" data-number="21.3">
-<h2 data-number="21.3" class="anchored" data-anchor-id="sec-starter-shape-mechanics"><span class="header-section-number">21.3</span> What ‘start anywhere’ looks like in code</h2>
-<p>Chapter 4 sequenced the months. In engineering terms the Monday decision is narrower: pick the highest-pain <code>SDLC phase</code>, author one <code>Skill</code> for it (with two or three <code>Personas</code> in a Panel), wire the <code>Context</code> bundle from whatever access mechanism is closest to hand, run it inside one harness, and publish the bundle to the organisation’s registry once the eval is green. The next Skill composes mostly from <code>Personas</code> that already exist. The hypothesis – and the early signal from the teams that have shipped four or five Skills against a stable set of <code>Personas</code> – is that the marginal cost of the next workflow drops as that set stabilises and the Context bundles compound. The book treats that as a hypothesis worth designing for, not a guarantee to underwrite a roadmap on; Chapter 22 (<a href="ch22-what-comes-next.html" class="quarto-xref"><span>Chapter 26</span></a>) carries the full starter-shape treatment, the five-day Day 1 plan, and the gates for expansion.</p>
-<p>The architectural decision worth making on Monday is not which agent platform to standardise on. It is which registry the organisation is going to operate, who owns the CODEOWNERS files for the agentic primitives, and which <code>SDLC phase</code> the first <code>Skill</code> will target. Those three decisions, taken together, install the supply chain. Every subsequent decision – which harness to encourage, which framework to seed the <code>Persona</code> set from, where the inner-loop / outer-loop split lands – is reversible against an installed supply chain in a way that it is not against a vertically integrated commitment to a single agent vendor. The early signal from the teams furthest along this path is that reversibility is the property that compounds: a team that has installed the supply chain can change its mind about harnesses, frameworks, and even cloud providers without re-authoring its primitive set, and a team that has not cannot. Each of those words is hedged on purpose: this is a hypothesis the field is still testing, and the book is written so that hypothesis can be falsified without invalidating the architecture underneath it. Chapter 4’s decision matrix turns those three Monday decisions into a quarter; Chapter 5 carries the governance overlay that makes them auditable.</p>
-</section>
-<section id="sec-generalises-mechanics" class="level2" data-number="21.4">
-<h2 data-number="21.4" class="anchored" data-anchor-id="sec-generalises-mechanics"><span class="header-section-number">21.4</span> The pattern generalises (and the proof is this book)</h2>
-<p>The reference architecture in this chapter is presented in terms of the software development lifecycle because the SDLC is the discipline this book’s audience operates in – and because the SDLC is the structured procedure the field has pushed agents furthest into, so the pattern can be shown end-to-end with named tools and named artefacts. But the SDLC is one instance of a more general pattern; Chapter 4’s section 8 names the other structured procedures the same supply chain decomposes onto. The dissection itself is one valid decomposition; a single <code>Skill</code> that owns an entire delivery shape – <code>Code Modernization</code>, <code>Compliance Refresh</code> – is another, underwritten by the same supply chain. Part III walks the design of one such Skill end to end via the genesis pattern.</p>
+<section id="sec-panel-worked" class="level2" data-number="21.3">
+<h2 data-number="21.3" class="anchored" data-anchor-id="sec-panel-worked"><span class="header-section-number">21.3</span> A Panel, walked end to end</h2>
+<p>Walk Maya’s PR through the architecture step by step.</p>
+<ol type="1">
+<li><p><strong>Trigger.</strong> Maya labels PR #4711 <code>needs-review</code>. A label-watcher in CI picks up the label, checks out the diff at the head commit, and invokes the harness against the Review Skill bundle resolved as <code>org/payments-review#v2.3.0</code> in the project lockfile. Twelve files changed, including <code>payments/charge.py</code> (logic) and <code>requirements.txt</code> (<code>stripe-python</code> 7.2 → 7.4).</p></li>
+<li><p><strong>Load.</strong> The review Skill’s manifest declares six Persona dependencies and a Context block: the diff via <code>git</code>, the codebase as files, the linked Jira ticket via the Jira MCP server, the team’s security policies as files in the policy repo, the originating RFC fetched from the wiki, and any Figma frames linked from the PR description loaded as multi-modal artefacts.</p></li>
+<li><p><strong>Fan out.</strong> The harness — Copilot CLI, Claude Code, Cursor, or whichever runtime the team has set up — reads the compiled context, sees the Review Skill’s six Persona dependencies, and opens six subagent threads. There is no user invocation here: the harness infers the dispatch from the loaded Skill the way a build tool infers compile steps from a manifest. Each thread receives the diff, its own slice of context, and its own context budget. The lenses cannot contaminate each other because they cannot see each other.</p></li>
+<li><p><strong>Recursion fires.</strong> The Security Reviewer’s rubric covers code-level concerns in line, but treats third-party dependency changes as a class of change requiring its own Skill. On encountering the <code>stripe-python</code> bump, it dispatches <code>org/cve-triage#v1.4.2</code> in a fresh thread. CVE Triage loads two Personas (Threat Modeller, Compliance Check) against its own Context (the package’s advisory feed, the project SBOM, the org allow-list). It returns:</p>
 <blockquote class="blockquote">
-<p>An enterprise scales its agentic SDLC the same way it scales its codebase.</p>
-</blockquote>
-<p>That sentence is the topological claim. It is not an analogy that the agentic substrate <em>resembles</em> the codebase substrate; it is an identity claim about the dependency graph. The graph that describes how a <code>Skill</code> composes from <code>Personas</code> and <code>Contexts</code> has the same shape – and the same operational properties under change, review, and deprecation – as the graph that describes how an application composes from libraries and configuration. The architect’s existing instinct, “treat it like the codebase”, is the right architectural answer because the dependency graph is the same shape.</p>
-<p>The proof that the pattern generalises is the artefact in the reader’s hands. This handbook itself was authored using the editorial-pipeline <code>Skill</code> – a <code>Domain Specialist</code> (the author) paired with a Panel of editorial <code>Personas</code> (Chief Editor, Copywriter, Fact-Ref Checker, voice-specific reviewers) running on <code>Context</code> bundles drawn from the manuscript and the corpus, distributed via APM, executed inside the same harnesses Appendix A (<a href="appendix-a-cross-harness-reference.html" class="quarto-xref"><span>Appendix A</span></a>) catalogues. Part IV’s <code>case-study-handbook-writing.qmd</code> walks the eval gates, the panel topology, and where the pipeline failed and was rewritten – the failure modes are part of the evidence, not the bug-list.</p>
-<p>The handbook is the proof. The architecture is the one Chapter 4 named; this chapter is the architecture rendered in artefacts you can <code>git diff</code>. Part III closes here. What comes next – the eighteen-month trajectory of the field, what the practitioner should expect to be partially obsolete, and what to bet on as durable – is the subject of the closing chapter (<a href="ch22-what-comes-next.html" class="quarto-xref"><span>Chapter 26</span></a>).</p>
+<p><strong>CVE Triage trace — <code>stripe-python</code> 7.2 → 7.4</strong><br>
+Advisories in range: 1 (CVE-2024-XXXX, severity moderate, fixed in 7.4.1).<br>
+Allow-list status: package present at any version ≥ 7.0.<br>
+Verdict: ALLOW with pin to 7.4.1.<br>
+Plan persisted: <code>runs/2025-03-04/cve-triage-4711.md</code>.</p>
+</blockquote></li>
+<li><p><strong>Verdicts return.</strong> Each of the six Personas writes a one-line verdict and a longer reasoning trace:</p>
+<ul>
+<li><em>Tech Lead:</em> approve, modulo synthesis.</li>
+<li><em>Senior Backend Engineer:</em> approve; flag <code>charge.py:142</code> as a candidate for extraction in a follow-up.</li>
+<li><em>Security Reviewer:</em> approve <strong>with pin</strong> to <code>stripe-python==7.4.1</code>; CVE-2024-XXXX trace attached.</li>
+<li><em>Accessibility Reviewer:</em> not applicable; no UI surface touched.</li>
+<li><em>Documentation Editor:</em> request changes; <code>docs/api.md</code> still references the 7.2 retry behaviour.</li>
+<li><em>Product Reviewer:</em> approve; matches RFC-217 acceptance criteria.</li>
+</ul></li>
+<li><p><strong>Synthesise.</strong> A Tech Lead Persona acting as synthesiser receives the six verdicts and the CVE trace. It is structured to preserve dissent rather than average it: any “request changes” survives unless explicitly overridden by a higher-priority lens. The Documentation Editor’s request survives. The Security Reviewer’s pin survives. The synthesiser composes:</p>
+<blockquote class="blockquote">
+<strong>Verdict: REQUEST CHANGES.</strong> Two follow-ups before merge:
+<ol type="1">
+<li>Pin <code>stripe-python==7.4.1</code> (Security; CVE-2024-XXXX trace attached).<br>
+</li>
+<li>Update <code>docs/api.md</code> retry-behaviour note for the 7.4 surface (Docs).<br>
+Otherwise: approved against RFC-217. Recommend filing the <code>charge.py:142</code> extraction as a separate ticket.</li>
+</ol>
+</blockquote></li>
+<li><p><strong>Maya reads one comment, acts on it.</strong> She accepts the <code>stripe-python==7.4.1</code> pin into the diff, opens <code>DOCS-892</code> against <code>docs/api.md</code>, and re-labels the PR <code>needs-review</code> to fire a second pass. A typical persisted-trail layout looks like:</p>
+<pre><code>runs/2025-03-04/4711/
+├── plan.md
+├── personas/
+│   ├── tech-lead.md
+│   ├── senior-backend.md
+│   ├── security-reviewer.md
+│   ├── accessibility-reviewer.md
+│   ├── doc-editor.md
+│   └── product-reviewer.md
+├── nested/
+│   └── cve-triage-stripe-python-7.4.md
+├── synthesis.md
+└── lockfile-snapshot.apm.lock.yaml</code></pre>
+<p>Six months later, an auditor reading the lockfile and the persisted plans can reconstruct the entire decision tree without re-running anything.</p></li>
+</ol>
+<p>The Tech Lead synthesiser never saw the threat-modelling thread; it saw the Security Reviewer’s verdict with the CVE trace attached as ground truth. Maya never saw any of the eight Persona threads; she saw one verdict.</p>
+<p><em>The recursion is invisible from above and inspectable from below.</em></p>
+</section>
+<section id="what-this-changes-for-the-architect" class="level2" data-number="21.4">
+<h2 data-number="21.4" class="anchored" data-anchor-id="what-this-changes-for-the-architect"><span class="header-section-number">21.4</span> What this changes for the architect</h2>
+<p>Three implications worth surfacing.</p>
+<p><strong>MCP is one access mechanism, not the architecture.</strong> The Model Context Protocol — an open standard stewarded by LF Projects under the Linux Foundation — sits in the Context half of the triplet, alongside files, CLI invocations, fetched URLs, and multi-modal artefacts. It is genuinely useful: a Persona can read a Jira instance, an internal API, or a SharePoint corpus through an MCP server without knowing the transport details. But an MCP catalogue is not a substitute for a Skill registry, an eval discipline, or a lockfile. Treating MCP as the architecture rather than as one mechanism is the most common shape of mistake an architect new to this substrate makes; it is worth naming on first contact.</p>
+<p><strong>The patterns you already know apply.</strong> A Skill is a Module with a Facade — one entry point, one stable contract, swappable internals. A Persona is a Strategy — same input shape, different evaluation policy. A harness orchestrating a Panel is a Mediator with a Scatter-Gather distribution. The substrate is new; the patterns are not. Chapter 18 (<a href="ch18-architectural-patterns-rosetta-stone.html#sec-layered-model" class="quarto-xref"><span>Section 18.3</span></a>) carries the full Rosetta and the four-layer reconciliation.</p>
+<p><strong>The decisions worth making this week are about your registry and your CODEOWNERS, not your agent vendor.</strong> A team that has installed the supply chain can change its mind about harnesses, frameworks, and cloud providers without re-authoring its primitive set; a team that has not, cannot. Chapter 22 (<a href="ch22-what-comes-next.html" class="quarto-xref"><span>Chapter 26</span></a>) carries the five-day plan.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>TL;DR — One rule, applied recursively
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><strong>Composition is recursive.</strong> The same Skill–Persona–Context triplet repeats at every depth; the dependency graph has the same shape a code dependency graph has.</li>
+<li><strong>Eval and plan-persistence are what make it governable.</strong> The eval bounds the recursion in space; persisted plans bound it in time. A Skill missing either is a prompt with ambitions.</li>
+<li><strong>Each level reads the level below as one primitive.</strong> The synthesiser sees one verdict; the auditor reads the trail underneath. Invisible from above, inspectable from below.</li>
+<li><strong>MCP is one access mechanism, not the architecture.</strong> It lives in the Context half of the triplet alongside files, CLI invocations, and fetched URLs. Treating it as the substrate is the most common first-contact mistake.</li>
+<li><strong>Your existing instincts are the right instincts.</strong> Modules, strategies, mediators, lockfiles, CODEOWNERS — the substrate is new; the disciplines port across without modification.</li>
+</ol>
+</div>
+</div>
 
 
 </section>
