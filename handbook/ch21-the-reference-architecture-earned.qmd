@@ -16,13 +16,13 @@ The five-layer picture from Chapter 4 (@fig-five-layers) names the vocabulary. I
 
 The figure below is that rule applied once, with Maya's PR substituted for the variables. The team's Agentic SDLC sits at the top of the frame; the `Review` phase is the cell the team is currently in, and that phase triggers the top-level Skill, `payments-review v2.3.0`. From the Skill downward, the recursion takes over — Personas, then Context, then (via the subagent thread from `Security`) the same shape one frame deeper, with `CVE Triage v1.4.2` and its own Personas and Context — all of it still inside the same `Review` phase. The substrate row at the foot of the frame names the three layers of @fig-five-layers that carry this structure but are not the subject of this chapter. It is the bridge to the manifest below, because the manifest is what makes the recursion declarable on disk.
 
+::: {.content-visible unless-format="pdf"}
+
 ```{mermaid}
 %%| label: fig-recursion-maya
 %%| fig-cap: "Maya's PR #4711. The team's Agentic SDLC sits at the top; the Review phase triggers the payments-review Skill, which dispatches Personas against Context. The same Skill→Persona→Context shape repeats at depth two when the Security Reviewer dispatches CVE Triage inside the same Review phase."
 %%| fig-alt: "A top-to-bottom diagram. At the top is the team's Agentic SDLC band, showing seven sequential phases — Spec, Plan, Build, Test, Review, Refine, Release. Six are dimmed; only the Review phase is highlighted, signalling that Maya's entire example occupies one cell of the lifecycle. Below the Review cell, the diagram zooms in: depth one names the Skill that the Review phase triggers — payments-review v2.3.0 (SKILL.md · PR #4711) — followed by two horizontal bands. The Persona Pool band contains six named lenses the Skill dispatches in parallel subagent threads: Tech Lead, Senior Backend Engineer, Security Reviewer, Accessibility Reviewer, Documentation Editor, Product Reviewer. The Context Pool band contains six named sources grouped by access mechanism: the diff via git, the codebase as files, security policies as files in the policy repo, the linked Jira ticket via the Jira MCP server, the originating RFC fetched from the wiki, and any Figma frames loaded as multi-modal artefacts. A solid edge labelled 'subagent thread' descends from the Security Reviewer Persona into a depth-two frame — CVE Triage v1.4.2 (SKILL.md) — which has the same two bands at smaller scale: two Personas, Threat Modeller and Compliance, and two context sources, the public CVE advisory feed via web fetch and the organisation's allow-list policy as files. The depth-two bands use the identical colour palette as depth one, demonstrating that the same Skill→Persona→Context composition rule is being applied a second time at greater depth, all still within the Review phase. A substrate row at the foot names the lower three layers from Chapter 4 — Agent Harness, Governance and Distribution, and Platform — that carry the visible structure."
-%%| fig-width: 5.5
-%%| fig-height: 8.0
-%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','fontFamily':'-apple-system, BlinkMacSystemFont, sans-serif'}}}%%
+%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
 block-beta
   columns 3
 
@@ -83,6 +83,14 @@ Agent Harness · Governance · Platform"]:3
   class GAP0 arrowhint
   class SUB substrate
 ```
+
+:::
+
+::: {.content-visible when-format="pdf"}
+
+![Maya's PR #4711. The team's Agentic SDLC sits at the top; the Review phase triggers the payments-review Skill, which dispatches Personas against Context. The same Skill→Persona→Context shape repeats at depth two when the Security Reviewer dispatches CVE Triage inside the same Review phase.](../assets/ch21-fig-recursion-maya.png){#fig-recursion-maya fig-alt="A top-to-bottom diagram showing the Agentic SDLC band at top with seven phases (Spec, Plan, Build, Test, Review, Refine, Release; only Review highlighted), then a depth-one frame for payments-review v2.3.0 with Persona Pool (Tech Lead, Backend, Security, A11y, Docs, Product) and Context Pool (Diff, Code, Policy, Jira, RFC, Figma), a subagent-thread arrow from Security to a depth-two frame for CVE Triage v1.4.2 with two Personas and two context sources, and a Substrate row naming Agent Harness, Governance, and Platform." width=100%}
+
+:::
 
 The figure opens one cell of Chapter 4's five-layer picture. The Agentic SDLC band at the top is `SDLC Phases`, with `Review` highlighted as the cell Maya's example occupies. Everything below the `▼ Review triggers` arrow — the Skill, its Personas, its Context, and the depth-two repetition — is what `Context & Capabilities` looks like once a phase has fired. The substrate row at the foot is the rest of the stack at work: the version pins (`v2.3.0`, `v1.4.2`) are `Governance & Distribution` doing its job; the `subagent thread` edge from Security Reviewer to CVE Triage is the `Agent Harness` doing its; every file behind every band lives on the `Platform`. The next snippet is how the cell is declared on disk. A Skill bundle's manifest names the nested Skills it depends on the same way any other package names the packages it depends on:
 
