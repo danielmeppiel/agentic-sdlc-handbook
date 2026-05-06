@@ -761,13 +761,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="21.1" class="anchored" data-anchor-id="sec-recursion-mechanics"><span class="header-section-number">21.1</span> Composition is recursive</h2>
 <p>The five-layer picture from Chapter 4 (<a href="ch04-the-reference-architecture.html#fig-five-layers" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>) names the vocabulary. It does not yet name the property of the system that carries the most weight at scale, which is this: the same Skill–Persona–Context triplet repeats at every depth. A Skill dispatches Personas. A Persona, in its own thread, may dispatch further Skills. Each of those Skills may dispatch further Personas. One composition rule, applied many times, is the whole shape.</p>
 <p>The figure below is that rule applied once, with Maya’s PR substituted for the variables. The team’s Agentic SDLC sits at the top of the frame; the <code>Review</code> phase is the cell the team is currently in, and that phase triggers the top-level Skill, <code>payments-review v2.3.0</code>. From the Skill downward, the recursion takes over — Personas, then Context, then (via the subagent thread from <code>Security</code>) the same shape one frame deeper, with <code>CVE Triage v1.4.2</code> and its own Personas and Context — all of it still inside the same <code>Review</code> phase. The substrate row at the foot of the frame names the three layers of <a href="ch04-the-reference-architecture.html#fig-five-layers" class="quarto-xref">Figure&nbsp;<span>4.2</span></a> that carry this structure but are not the subject of this chapter. It is the bridge to the manifest below, because the manifest is what makes the recursion declarable on disk.</p>
-<div class="cell" data-fig-width="5.5" data-fig-height="8" data-layout-align="default">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div id="fig-recursion-maya" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-recursion-maya-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div>
-<pre class="mermaid mermaid-js" data-label="fig-recursion-maya">%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','fontFamily':'-apple-system, BlinkMacSystemFont, sans-serif'}}}%%
+<pre class="mermaid mermaid-js" data-label="fig-recursion-maya">%%{init: {'theme':'base','themeVariables':{'fontSize':'16px','fontFamily':'Helvetica, Arial, sans-serif'}}}%%
 block-beta
   columns 3
 
