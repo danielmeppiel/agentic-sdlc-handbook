@@ -205,11 +205,11 @@ A note on the template. The catalogue's other entries use a GoF-compressed templ
 
 ### Substrate portability
 
-The Reconciliation Loop renders on any substrate that ships three primitives: **sub-agent dispatch** (the orchestrator can fan work out into independent contexts), **persistent state** (a writable artifact survives between iterations), and a **completion signal** (the orchestrator can tell when a sub-agent has returned). Every modern harness ships all three: Copilot CLI, Claude Code, Codex, Cursor. The pattern is therefore substrate-portable. Vendor sugar (Codex `/goal` [^codexgoal], Claude Code `/loop` and `/goal` [^claudeloop], the proposed Copilot CLI primitives in issues #2129 [^copilotcli2129] and #3364 [^copilotcli3364]) is convergent recognition that the discipline is worth packaging; it is not a precondition for the discipline. An architect who waits for sugar to ship before asserting the style is mistaking the delivery vehicle for the pattern.
+The Reconciliation Loop renders on any substrate that ships three primitives: **sub-agent dispatch** (the orchestrator can fan work out into independent contexts), **persistent state** (a writable artifact survives between iterations), and a **completion signal** (the orchestrator can tell when a sub-agent has returned). Every modern harness ships all three: Copilot CLI, Claude Code, Codex, Cursor. We tested the portability claim by building the worked example below in Copilot CLI specifically because it ships neither `/goal` nor `/loop` -- the discipline rendered without the sugar. Vendor sugar (Codex `/goal` [^codexgoal], Claude Code `/loop` and `/goal` [^claudeloop], the proposed Copilot CLI primitives in issues #2129 [^copilotcli2129] and #3364 [^copilotcli3364]) is convergent recognition that the discipline is worth packaging; it is not a precondition for the discipline. An architect who waits for sugar to ship before asserting the style is mistaking the delivery vehicle for the pattern.
 
-### Existence proof
+### Worked example
 
-The **batch-bug-shepherd** skill at `microsoft/apm:.apm/skills/batch-bug-shepherd/SKILL.md` ran a full reconciliation saga in Q2 2026 inside GitHub Copilot CLI -- a harness that ships neither `/goal` nor `/loop` -- driving ten raw bug-flagged issues to seven merged PRs across two waves (a Panel-style advisory wave followed by a fold loop). The proof that matters here is not the conversion rate. The proof is that the discipline rendered, terminated, and produced merged artifacts on a substrate that exposes only the three baseline primitives named above. Sugar would have been ergonomic; it would not have been load-bearing.
+The **batch-bug-shepherd** skill at `microsoft/apm:.apm/skills/batch-bug-shepherd/SKILL.md` is the first concrete realization we built while developing this pattern -- not external industry validation, our own workbench. It ran a full reconciliation saga in Q2 2026 inside GitHub Copilot CLI -- a harness that ships neither `/goal` nor `/loop` -- driving ten raw bug-flagged issues to seven merged PRs across two waves (a Panel-style advisory wave followed by a fold loop). The signal here is not the conversion rate. The signal is that the discipline rendered, terminated, and produced merged artifacts on a substrate exposing only the three baseline primitives named above. A single worked example is not a population claim; it is the move from aspirational to demonstrated, sufficient to put the pattern in the catalogue and let practitioners stress it on their own queues.
 
 ### Topology
 
@@ -233,6 +233,44 @@ flowchart TB
 ```
 
 The loop is visibly closed, not linear. The single-writer interlock between fold and re-queue is the structural defence against the "parallel writers to one sink" smell the Scatter-Gather entry in section 4 warned about; the drift-correction back-edge is the structural defence against persona drift across iterations.
+
+### Composition with adjacent patterns
+
+The Reconciliation Loop is rarely deployed bare. It nests with three other catalogue entries along independent axes: an outer governance wrap, a per-item upgrade, and a queue-level policy primitive. The full nesting is what makes the pattern production-grade rather than a workbench curiosity.
+
+```{mermaid}
+%%| label: fig-reconciliation-loop-composition
+%%| fig-alt: "Three concentric concerns. An outer governed loop receives an event trigger and gates entry on capability and sandbox checks; inside, a reconciliation runner reads a state table and spawns per-item sub-agents; each sub-agent's work can itself escalate to an Alignment Loop when the item is a creative draft or to a Panel when a multi-lens decision is needed. A stop predicate evaluated against the system of record drives the per-item terminal verdict. A fold-or-defer policy at the queue level closes or re-enters items. Audit surface receives all terminal events."
+flowchart TB
+  EV[event trigger] --> GATE
+  GATE[A10 capability and sandbox gate] --> RUN
+  RUN[A11 runner reads state table B4] --> SPAWN
+  SPAWN[spawn per item sub-agent C2 plus C4] --> WORK
+  WORK[item work]
+  WORK --> A8[per item A8 ALIGNMENT LOOP if item is a draft]
+  WORK --> A1[per item A1 PANEL if multi lens decision]
+  A8 --> SP
+  A1 --> SP
+  WORK --> SP[S4 stop predicate from system of record]
+  SP -->|terminal| UPD[update state table]
+  SP -->|non terminal within budget| SPAWN
+  SP -->|budget exhausted| HC[B10 human checkpoint]
+  UPD --> POL{B11 fold or defer}
+  POL -->|fold| RUN
+  POL -->|defer| OUT[external queue]
+  POL -->|all terminal| DONE[queue closed]
+  DONE --> AUDIT[A10 audit surface]
+  HC --> AUDIT
+  OUT --> AUDIT
+```
+
+Three composition axes, each independent of the others:
+
+- **Outer wrap (A10 GOVERNED OUTER LOOP).** When the queue runner must be event-triggered with audit and capability-gated execution, A10 is the wrapping pattern. A11 lives inside the gated session as the in-loop discipline. This is the production-deployment shape: a webhook or cron fires the runner against the queue without a human in the seat, every action auditable, the agent's authority bounded by the surrounding sandbox.
+- **Per-item drop-in (A8 ALIGNMENT LOOP or A1 PANEL).** When each queue item is itself a creative draft -- a PR description, a code change, a generated artifact -- the per-item sub-agent runs A8 rather than ad-hoc iteration. When the per-item work hits a decision needing multi-lens judgement (architecture call, security trade-off), the per-item sub-agent calls A1. Per-item upgrades attach to a queue without changing its mechanics.
+- **Queue policy (B11 FOLD-BY-DEFAULT, Tier-2).** The fold-vs-defer call lives at the queue level, not per item. B11 is the policy primitive that inverts the recommendation-as-backlog failure mode -- follow-ups land in this loop, not in a parallel backlog, unless they violate the queue invariant.
+
+These three axes compose independently. A practitioner can start with A11 alone (interactive runner, manual re-entry, no per-item drafts), add A10 when moving to unattended deployment, add A8 or A1 per item when the per-item work warrants the upgrade. Each addition is a separate decision; none are bundled.
 
 ## 8. Per-layer decision matrix {#sec-decision-matrix}
 
