@@ -4,15 +4,21 @@ title: "Architectural Patterns: A Rosetta Stone"
 
 ## Thesis
 
-The agentic runtime is not pattern-free. The same structural problems recur — composition, dispatch, isolation, supervision, fan-out, recovery — and the field has converged on recognizable solutions. Many of these solutions have direct analogues in the classical Gang-of-Four (GoF) catalogue [^gof1994] and in distributed-systems literature [^hohpe2003][^kleppmann2017]. Naming them — and naming the analogue — gives architects a vocabulary to reason at the system level instead of at the file level.
+The agentic runtime is not pattern-free. The same structural problems recur -- composition, dispatch, isolation, supervision, fan-out, recovery -- and the field has converged on recognizable solutions. Many of these solutions have direct analogues in the classical Gang-of-Four (GoF) catalogue [^gof1994] and in distributed-systems literature [^hohpe2003][^kleppmann2017]. Naming them -- and naming the analogue -- gives architects a vocabulary to reason at the system level instead of at the file level. This chapter claims recognition, not novelty: the agentic substrate is new; the shapes that render on it are old.
 
-This chapter is a translation table. For each recurring agentic pattern, it gives a name, a classical analogue where the analogy holds, an intent, an applicability rule, the consequences you accept, and cross-references to the chapters that develop the pattern in depth. Where no clean classical analogue exists, the chapter says so and points to the closest distributed-systems shape.
+Every entry in this catalogue carries two coordinates, not one. The first is **layer** (Foundation / Assembly / Composition / Execution, plus the cross-cutting Boundary and Recovery layers introduced in sections 5 and 6). The second is **mode**, which records *how* the pattern asserts itself over the substrate:
+
+- **static** -- a one-shot structural arrangement applied at a moment. A Skill is a Module; a Panel is a Mediator-plus-Scatter-Gather invoked once per decision. Almost every entry in this revision is mode = static, and that default holds unless the entry says otherwise.
+- **style** -- a discipline asserted continuously over the substrate, in the Fielding-2000 sense [^fielding2000] where REST is a discipline applied over HTTP rather than a feature of HTTP. A style is not located at a single point in the dispatch graph; it shapes how the substrate is used over time. This revision adds the first style-mode entry to the catalogue: the **Reconciliation Loop** in section 7.
+- **sugar** -- a vendor-packaged primitive that bundles a style into a built-in command or contract (Codex `/goal` [^codexgoal], Claude Code `/loop` [^claudeloop], the Copilot CLI proposals in issues #2129 [^copilotcli2129] and #3364 [^copilotcli3364]). Sugar is convergent recognition of an existing discipline; it is a delivery vehicle, not a precondition.
+
+This chapter is a translation table. For each recurring agentic pattern, it gives a name, a classical analogue where the analogy holds, an intent, an applicability rule, the consequences you accept, and cross-references to the chapters that develop the pattern in depth. Where no clean classical analogue exists, the chapter says so and points to the closest distributed-systems shape. The mode axis matters most when a reader sees a style-mode entry and reaches for its static-mode neighbour: the two have the same shape but different lifetimes, and confusing them produces the failure modes catalogued in section 7.
 
 ## Audience and how to read this chapter
 
 This chapter is written for software architects, technical leads, and senior engineers responsible for agentic-system design at scale. It assumes you have worked through the agentic runtime machine (Ch10), the load lifecycle (Ch13), the deterministic / probabilistic seam (Ch15), and multi-agent orchestration (Ch16). It is not a tutorial. It is a catalogue.
 
-Read the layered model in §1 first. After that, the per-layer catalogues (§3–§6) are independently scannable. The decision matrix in §7 indexes the catalogue by problem; §8 names what this chapter deliberately leaves out.
+Read the layered model in §1 first. After that, the per-layer catalogues (§3-§6) are independently scannable. Section 7 catalogues control-loop patterns as a cross-cutting *mode* category rather than a fifth layer. The decision matrix in §8 indexes the catalogue by problem; §9 names what this chapter deliberately leaves out.
 
 ## 1. The layered model of an agentic runtime {#sec-layered-model}
 
@@ -69,14 +75,15 @@ When in doubt: if the question is *who owns this and where do we invest*, use Ch
 
 ## 2. Reading the Rosetta Stone
 
-Each catalogue entry has six fields:
+Each catalogue entry has seven fields:
 
-- **Agentic name** — the human-readable name used throughout this book.
-- **Classical analogue** — the closest GoF [^gof1994] or distributed-systems pattern, with a rigour rating: **precise** (the analogy is exact), **partial** (the analogy holds for most of the structure but a named part does not map), or **weak / none** (no clean classical analogue; the closest shape from distributed systems is given instead).
-- **Intent** — one sentence on what the pattern is for.
-- **When to apply** — the condition that makes this pattern the right call rather than its neighbours.
-- **Consequences** — the trade-off you accept by choosing this pattern.
-- **Cross-references** — chapters and adjacent patterns.
+- **Agentic name** -- the human-readable name used throughout this book.
+- **Classical analogue** -- the closest GoF [^gof1994] or distributed-systems pattern, with a rigour rating: **precise** (the analogy is exact), **partial** (the analogy holds for most of the structure but a named part does not map), or **weak / none** (no clean classical analogue; the closest shape from distributed systems is given instead).
+- **Intent** -- one sentence on what the pattern is for.
+- **When to apply** -- the condition that makes this pattern the right call rather than its neighbours.
+- **Consequences** -- the trade-off you accept by choosing this pattern.
+- **Mode** -- one of **static** (a one-shot structural arrangement applied at a moment), **style** (a discipline asserted continuously over the substrate, after Fielding 2000 [^fielding2000]), or **sugar** (a vendor-packaged primitive that bundles a style into a built-in command). Entries omit this field when the mode is **static**; static is the catalogue default and is only annotated where the contrast with a neighbouring style-mode entry matters.
+- **Cross-references** -- chapters and adjacent patterns.
 
 Pattern names are drawn from this book's prose and, where applicable, from Genesis's agent-side codification of the same ideas.[^genesis]
 
@@ -100,13 +107,15 @@ Dispatch and orchestration is where the most public pattern arguments happen, an
 
 | Agentic name | Classical analogue (rigour) | Intent | When to apply | Consequences | Cross-refs |
 |---|---|---|---|---|---|
-| **Panel** | Mediator — *partial* / Scatter-Gather [^hohpe2003] — *precise* | Run N specialized lenses in parallel against the same artifact, then synthesize their verdicts into a single decision. | When a decision benefits from ≥3 independent lenses and the lenses do not share state during evaluation. | The synthesis step *is* the decision; without it, the user reads N reports instead. *Does not map to Chain of Responsibility:* there is no chain; lenses run in parallel, not in sequence. | Ch16 (@sec-multi-agent); Scatter-Gather |
+| **Panel** | Mediator — *partial* / Scatter-Gather [^hohpe2003] — *precise* | Run N specialized lenses in parallel against the same artifact, then synthesize their verdicts into a single decision. | When a decision benefits from ≥3 independent lenses and the lenses do not share state during evaluation. | The synthesis step *is* the decision; without it, the user reads N reports instead. *Does not map to Chain of Responsibility:* there is no chain; lenses run in parallel, not in sequence. *Mode: static* -- Panel deliberates once per decision; see the Reconciliation Loop in section 7 for the same fan-out shape applied as a continuous style. | Ch16 (@sec-multi-agent); Scatter-Gather |
 | **Wave** | Pipes-and-Filters — *precise* / Pipeline (CI) | Execute a topologically-sorted DAG of tasks one wave at a time, gating between waves. | When the task DAG is non-trivial and drift between waves is expensive enough to want a localizable failure. | Each wave's output gates the next wave's assumptions. A failed gate replans from the failed wave, not from the start. | Ch16; Scatter-Gather, Plan-Write-Then-Reload |
 | **Scatter-Gather** | Scatter-Gather [^hohpe2003] — *precise* (origin term) | Decompose a task into independent parallel sub-tasks; each runs in its own thread; results merge at the gather step. | When sub-tasks are genuinely independent and merge cleanly. | Concurrency cost; one writer per sink (parallel + shared state is almost always a smell). | Ch16; Panel, Wave |
 | **Threading** | Command + Memento — *partial* | Dispatch a unit of work as a serializable invocation (Command) into a fresh context window whose state is captured by a durable plan artifact (Memento). | When a sub-task needs cold context — independent attention budget, no inheritance of the parent's reasoning trace. | Cold context costs a re-load; serialization forces the architect to make the hand-off packet explicit. *Does not map cleanly to either GoF pattern alone:* Command captures the invocation, Memento captures the cross-thread state, neither covers attention isolation. | Ch13; Plan-Write-Then-Reload |
 | **Subagent Spawn** | Active Object [^posa1996] — *precise* | Each invocation creates an independent thread of control with its own message queue and lifecycle. | When the parent must continue while sub-work runs, or when the sub-work must be isolated from the parent's context window. | Spawn cost; cross-thread state must travel via durable artifacts, not shared memory. | Ch16; Threading |
 
 A note on Panel. A common mis-reading names Panel as "Chain of Responsibility". That mapping is wrong. Chain of Responsibility passes a request along a sequence of handlers until one accepts it; Panel runs handlers in parallel and synthesizes. The right GoF reach is Mediator (the synthesizer mediates between lenses), and the right distributed-systems reach is Scatter-Gather. Architects should reject the Chain of Responsibility framing on sight: a Panel without a synthesizer is not a chain — it is the **Panel-without-synthesis** anti-pattern: parallel lenses with nothing to arbitrate dissent collapse to whichever lens speaks loudest.
+
+A note on Panel and the mode axis. Panel deliberates once and stops; the Reconciliation Loop entry in section 7 below reasserts continuously. The two are the same composition shape applied under different modes (static vs. style) and an architect who reaches for one when the problem wants the other is making a mode-axis error, not a layer-axis error.
 
 A note on Wave. Wave is Pipes-and-Filters [^parnas1972] applied to LLM stages, with the addition that each filter's output is *durable* (a plan artifact) and each gate is a *deterministic* check, not a model call. The "filter" metaphor undersells the durability requirement; in agentic contexts, Wave only works because each stage's output can be re-read in a fresh thread.
 
@@ -137,7 +146,95 @@ The recovery layer has the *fewest* GoF analogues of any layer. GoF described pa
 
 These three patterns travel together. A runtime that has an Audit Trail without an Agent Stack Trace can tell you *what* happened but not *why*. A Lockfile without an Audit Trail can reproduce the dependency closure but not the decisions that produced the artifact under it. Operators of long-lived agentic systems should plan to install all three on day one; retrofitting them after the first incident is an order of magnitude more expensive.
 
-## 7. Per-layer decision matrix {#sec-decision-matrix}
+## 7. Control loop patterns {#sec-control-loop-patterns}
+
+Control loop patterns are a cross-cutting *mode* category, not a fifth layer. A reconciliation discipline lands in many layers at once: it composes (Composition layer) by fanning sub-agents out the way Panel does; it dispatches (Execution layer) by spawning threads against a queue; it depends on the substrate's deterministic checks (Boundary layer) to compose its stop predicate; it persists a ground-truth artifact (Recovery layer) to survive across iterations. What unifies these patterns is not where they live but how they assert themselves: continuously, over time, over a substrate that ships only baseline primitives. They are a Fielding-2000 form-analogue [^fielding2000] -- a discipline asserted over the substrate, not a feature of it -- with ancestry in Wiener's cybernetic feedback loop [^wiener1948] and Shewhart's PDCA cycle [^shewhart1939], and the substrate-portable templates of the Kubernetes Operator pattern [^philips2016] and the SRE control loops codified at Google [^srebook2016].
+
+### The mode axis at a glance
+
+| Layer | Mode: static (one-shot) | Mode: style (continuous) | Mode: sugar (vendor-packaged) |
+|---|---|---|---|
+| Composition | Skill, Bundle, Override, Primitive, Dependency | -- | -- |
+| Execution | Panel, Wave, Scatter-Gather, Threading, Subagent Spawn | -- | -- |
+| Boundary | Schema-Checked Transformer, Plan-Write-Then-Reload, Bounded-Scope Grounding, Supervised Execution | -- | -- |
+| Recovery | Agent Stack Trace, Lockfile, Audit Trail | -- | -- |
+| Control loop | -- | **Reconciliation Loop** | Codex `/goal`, Claude Code `/loop`, Copilot CLI #2129 / #3364 (proposed) |
+
+```{mermaid}
+%%| label: fig-mode-axis
+%%| fig-alt: "Three subgraphs labelled static, style, and sugar. The static subgraph contains existing pattern names from the composition, execution, boundary, and recovery layers. The style subgraph contains the new Reconciliation Loop entry. The sugar subgraph contains vendor commands (Codex /goal, Claude Code /loop, Copilot CLI proposals). A dotted edge from style to sugar is labelled 'can be packaged as'."
+flowchart TB
+    subgraph STATIC["Mode: static (one-shot)"]
+        direction TB
+        SC["Composition: Skill, Bundle, Override"]
+        SE["Execution: Panel, Wave, Scatter-Gather"]
+        SB["Boundary: Schema-Checked Transformer,<br/>Plan-Write-Then-Reload"]
+        SR["Recovery: Audit Trail, Lockfile,<br/>Agent Stack Trace"]
+    end
+    subgraph STYLE["Mode: style (continuous discipline)"]
+        direction TB
+        YR["Control loop:<br/><b>Reconciliation Loop</b>"]
+    end
+    subgraph SUGAR["Mode: sugar (vendor-packaged)"]
+        direction TB
+        GC["Codex /goal"]
+        GL["Claude Code /loop"]
+        GI["Copilot CLI #2129 / #3364<br/>(proposed)"]
+    end
+    STYLE -. "can be packaged as" .-> SUGAR
+```
+
+Most cells in the static column are populated; that is the catalogue default. The style column has one entry today; this revision is the first to record it. The sugar column is annotated as convergent vendor recognition, not as load-bearing -- a style-mode pattern is substrate-portable whether or not a vendor has packaged it.
+
+### The Reconciliation Loop
+
+A note on the template. The catalogue's other entries use a GoF-compressed template (Intent / Applicability / Consequences) because the patterns they describe are structural: they live at a moment and what matters is the shape at that moment. Operational patterns whose discipline only renders over time under-serve in that template; the entry below adds three operational fields -- **Invariant**, **Convergence**, **Failure Mode** -- that the GoF template was never designed to host. This is the same template extension Kubernetes Operator literature [^philips2016] and the SRE book [^srebook2016] arrived at independently.
+
+| Field | Content |
+|---|---|
+| **Agentic name** | Reconciliation Loop |
+| **Classical analogue (rigour)** | Kubernetes Operator [^philips2016] -- *precise*; SRE control loops [^srebook2016] -- *precise*; cybernetic feedback loop [^wiener1948] -- *ancestral*; PDCA cycle [^shewhart1939] -- *deepest ancestor*; architectural-style framing [^fielding2000] -- *form-analogue* |
+| **Mode** | style |
+| **Intent** | Drive a set of items in undesired state toward terminal state through repeated bounded sub-agent dispatch under non-determinism, where one pass is structurally insufficient. |
+| **Applicability** | A queue of items with a closed terminal-state set, where each item's path to terminal state is uncertain enough that one-shot dispatch fails some non-trivial fraction of the time, and where the cost of leaving items in non-terminal state exceeds the cost of re-asserting the discipline. |
+| **Invariant** | Every item is either in a terminal state or scheduled for the next reconciliation. There is no "looked at and forgotten" state. The terminal-state set is closed and named up front; new states cannot be invented mid-run. |
+| **Convergence** | A deterministic stop predicate composed of (i) one or more substrate-checkable conditions (CI green, lint silent, schema valid, zero foldable items, and so on) and (ii) at most one bounded arbitration verdict (for example, a Panel-style synthesizer issuing a `ship_now` decision). The loop terminates per-item when the predicate holds; the saga terminates when every item is terminal or explicitly deferred. |
+| **Consequences** | A persisted ground-truth artifact (the plan, the log) is the single source of truth across iterations -- the agent's in-context recall is treated as untrusted. One writer per sink (single-writer interlock) is non-negotiable. Cost grows with iteration count; cost-bounding is a first-class concern, not an afterthought. |
+| **Failure mode** | **Recommendation-as-backlog** -- posting an advisory and stopping at the first review instead of folding-then-iterating. **Unbounded reconciliation** -- no per-item iteration cap, no cost ceiling (Ch19, *Cost Runaway*). **Primitive ossification** -- re-running the loop against a primitive whose schema is the actual bug (Ch19, *Not Fixing the Primitives*). **Persona drift across iterations** -- the orchestrator's role definition erodes as context fills with item-specific content (Ch19, *Persona Drift*). |
+| **Cross-references** | Ch17's ADAPT loop (@sec-meta-process) and Checkpoint discipline are instances of Reconciliation Loop discipline applied at the wave level. Section 4 above's **Panel** is the static-mode counterpart -- same fan-out shape, different mode. Section 5 above's **Plan-Write-Then-Reload** is a load-bearing substrate dependency: without a persisted plan the invariant cannot hold across iterations. |
+
+### Substrate portability
+
+The Reconciliation Loop renders on any substrate that ships three primitives: **sub-agent dispatch** (the orchestrator can fan work out into independent contexts), **persistent state** (a writable artifact survives between iterations), and a **completion signal** (the orchestrator can tell when a sub-agent has returned). Every modern harness ships all three: Copilot CLI, Claude Code, Codex, Cursor. The pattern is therefore substrate-portable. Vendor sugar (Codex `/goal` [^codexgoal], Claude Code `/loop` and `/goal` [^claudeloop], the proposed Copilot CLI primitives in issues #2129 [^copilotcli2129] and #3364 [^copilotcli3364]) is convergent recognition that the discipline is worth packaging; it is not a precondition for the discipline. An architect who waits for sugar to ship before asserting the style is mistaking the delivery vehicle for the pattern.
+
+### Existence proof
+
+The **batch-bug-shepherd** skill at `microsoft/apm:.apm/skills/batch-bug-shepherd/SKILL.md` ran a full reconciliation saga in Q2 2026 inside GitHub Copilot CLI -- a harness that ships neither `/goal` nor `/loop` -- driving ten raw bug-flagged issues to seven merged PRs across two waves (a Panel-style advisory wave followed by a fold loop). The proof that matters here is not the conversion rate. The proof is that the discipline rendered, terminated, and produced merged artifacts on a substrate that exposes only the three baseline primitives named above. Sugar would have been ergonomic; it would not have been load-bearing.
+
+### Topology
+
+```{mermaid}
+%%| label: fig-reconciliation-loop
+%%| fig-alt: "A closed cycle. A queue of non-terminal items feeds parallel per-item sub-agent dispatch. Each dispatch is followed by a stop-predicate evaluation combining substrate checks and an arbitration verdict. Items in terminal state are recorded in the plan; items not yet terminal are folded back into the queue through a single-writer interlock or explicitly deferred. A drift-correction branch loops back to dispatch when persona drift is detected. A saga-level termination check exits only when every item is terminal or deferred."
+flowchart TB
+    Q[("Queue of items<br/>(non-terminal)")] --> D{"Per-item sub-agent<br/>dispatch (parallel)"}
+    D --> P["Stop predicate<br/>= substrate checks<br/>+ arbitration verdict"]
+    P -->|"terminal"| T[("Item -> terminal,<br/>recorded in plan")]
+    P -->|"not terminal"| F{"Fold or defer?"}
+    F -->|"fold"| W["Single-writer interlock<br/>(orchestrator only)"]
+    W --> Q
+    F -->|"defer"| X[("Item explicitly<br/>deferred")]
+    P -.->|"drift detected"| DC["Drift correction:<br/>re-assert persona /<br/>escalate"]
+    DC --> D
+    T --> STOP{"All items terminal<br/>or deferred?"}
+    X --> STOP
+    STOP -->|"no"| Q
+    STOP -->|"yes"| END[("Saga complete")]
+```
+
+The loop is visibly closed, not linear. The single-writer interlock between fold and re-queue is the structural defence against the "parallel writers to one sink" smell the Scatter-Gather entry in section 4 warned about; the drift-correction back-edge is the structural defence against persona drift across iterations.
+
+## 8. Per-layer decision matrix {#sec-decision-matrix}
 
 The catalogue tells you what patterns exist. The decision matrix tells you which one to reach for given a problem and which trade-off you accept by reaching for it. This table is meant to be cross-referenced from design reviews; the trade-off column is the load-bearing field.
 
@@ -157,10 +254,11 @@ The catalogue tells you what patterns exist. The decision matrix tells you which
 | Recovery | Multi-skill multi-thread runs whose provenance matters | **Agent Stack Trace** | Tracing emission cost on every dispatch | Undebuggable after the fact |
 | Recovery | External dependencies whose drift changes behaviour | **Lockfile** | Lockfile becomes a public artifact | Non-reproducible runtime closure |
 | Recovery | Consequential effects an auditor must reconstruct | **Audit Trail** | Storage + query infrastructure; append-only discipline | Implicit-trust outer loop; clandestine bot |
+| Control loop | A queue of items with a closed terminal-state set, where one-shot dispatch fails some fraction | **Reconciliation Loop** (style) | Persisted ground-truth artifact; single-writer interlock; per-item iteration cap and cost ceiling | Recommendation-as-backlog; Unbounded reconciliation; Primitive ossification; Persona drift across iterations |
 
-Reviewer rule: a design that names a pattern from column three without naming the trade-off in column four is structurally incomplete. The trade-off is what makes the choice deliberate rather than accidental.
+Reviewer rule: a design that names a pattern from column three without naming the trade-off in column four is structurally incomplete. The trade-off is what makes the choice deliberate rather than accidental. For style-mode entries (currently only the Reconciliation Loop), the trade-off column also implicitly commits the design to a cost-bounding mechanism; a reconciliation discipline without a stated iteration cap is the Cost Runaway anti-pattern in waiting.
 
-## 8. What this chapter intentionally does not catalogue {#sec-out-of-scope}
+## 9. What this chapter intentionally does not catalogue {#sec-out-of-scope}
 
 The catalogue in this chapter is a translation table for patterns that have *converged* — patterns that are stable enough to name and useful enough to reach for. Three categories are deliberately out of scope.
 
@@ -198,3 +296,21 @@ The cost of leaving these out is that this chapter is shorter than a maximalist 
 [^fowler2005]: Martin Fowler. "Event Sourcing." martinfowler.com, 2005. The canonical write-up of the pattern that maps to Audit Trail.
 
 [^parnas1972]: David L. Parnas. "On the Criteria to Be Used in Decomposing Systems into Modules." *Communications of the ACM*, 15(12), 1972. The original Pipes-and-Filters decomposition argument; cited here as the durable ancestor of Wave.
+
+[^fielding2000]: Roy T. Fielding. *Architectural Styles and the Design of Network-based Software Architectures.* PhD dissertation, University of California, Irvine, 2000. Source for the discipline-applied-over-substrate framing this chapter uses for the Mode axis (REST as a style asserted over HTTP rather than a feature of HTTP).
+
+[^philips2016]: Brandon Philips. "Introducing Operators: Putting Operational Knowledge into Software." CoreOS blog, November 3, 2016. Source for the Kubernetes Operator pattern naming and for the operational-template extension (Invariant / Convergence / Failure Mode) the Reconciliation Loop entry inherits.
+
+[^srebook2016]: Betsy Beyer, Chris Jones, Jennifer Petoff, Niall Richard Murphy (editors). *Site Reliability Engineering: How Google Runs Production Systems.* O'Reilly, 2016. Source for control-loop discipline at production scale.
+
+[^wiener1948]: Norbert Wiener. *Cybernetics: Or Control and Communication in the Animal and the Machine.* MIT Press, 1948. The deepest ancestor of feedback-loop and control-loop reasoning in engineered systems.
+
+[^shewhart1939]: Walter A. Shewhart. *Statistical Method from the Viewpoint of Quality Control.* Graduate School of the Department of Agriculture, 1939. Origin of the PDCA (Plan-Do-Check-Act) cycle.
+
+[^codexgoal]: OpenAI Codex documentation, "Follow goals." <https://developers.openai.com/codex/use-cases/follow-goals>. Vendor packaging of a Reconciliation Loop style as a built-in command.
+
+[^claudeloop]: Claude Code documentation, scheduled tasks (covers `/loop` and `/goal`). <https://code.claude.com/docs/fr/scheduled-tasks>. Vendor packaging of a Reconciliation Loop style as a built-in command.
+
+[^copilotcli3364]: GitHub Copilot CLI issue #3364, per-repo and global `goals.md`. <https://github.com/github/copilot-cli/issues/3364>. Proposed vendor packaging of a Reconciliation Loop style; open at time of writing.
+
+[^copilotcli2129]: GitHub Copilot CLI issue #2129, loop and scheduled commands. <https://github.com/github/copilot-cli/issues/2129>. Proposed vendor packaging of a Reconciliation Loop style; open at time of writing.
