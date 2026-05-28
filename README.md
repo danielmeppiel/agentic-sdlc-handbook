@@ -27,7 +27,7 @@ This handbook practices what it preaches. It was produced using an **AI-native e
 
 The agents didn't work in a vacuum. They were grounded in the author's IP and field experience:
 
-- **The [PROSE framework](https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch10-the-prose-specification.html)** — a specification methodology for writing AI agent instructions, developed through building APM
+- **The [PROSE framework](https://danielmeppiel.github.io/agentic-sdlc-handbook/handbook/ch12-the-prose-specification.html)** — a specification methodology for writing AI agent instructions, developed through building APM
 - **[APM](https://github.com/microsoft/apm) architecture and design** — lessons from building and maintaining a developer tool under the `microsoft` org (700+ stars, real-world adoption)
 - **Enterprise adoption patterns** — drawn from strategic Agentic SDLC conversations with enterprise customers, GitHub Copilot adoption workshops, and AI-native development hackathons
 - **Reference architecture research** — cross-vendor analysis of how AI-native development actually works at scale
