@@ -251,7 +251,7 @@ flowchart LR
     E -.->|"If new issue"| D
 ```
 
-The ADAPT loop connects wave execution back to planning. It is not a fallback. It is a designed part of the process — the mechanism that handles the irreducible uncertainty of working with non-deterministic systems on complex codebases.
+The ADAPT loop connects wave execution back to planning. It is not a fallback. It is a designed part of the process — the mechanism that handles the irreducible uncertainty of working with non-deterministic systems on complex codebases. It is also one instance of the broader Reconciliation Loop style catalogued in Ch18 (@sec-control-loop-patterns); the operational fields named there (Invariant, Convergence, Failure Mode) apply here at the wave level.
 
 In the PR #394 case, the ADAPT loop fired once during wave execution: during Wave 2, when an agent stalled on install.py (58 call sites). The diagnosis was that the file was too large for a single agent session. The adjustment was to split the remaining work across two agents. The re-execution completed successfully. Total cost: 7 minutes. The [case study](../case-study-apm-overhaul.qmd) documents additional escalation events caught during checkpoint verification.
 
