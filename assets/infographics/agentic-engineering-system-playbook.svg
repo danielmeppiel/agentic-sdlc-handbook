@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
+<rect width="1080" height="1350" fill="#F9F7F5"/>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="6.5" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L7,3 L0,6 Z" fill="#5C6B1A"/></marker></defs>
+<text x="56" y="74" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="20" font-weight="700" letter-spacing="4" fill="#5C6B1A">THE AGENTIC WORKFLOW PLAYBOOK</text>
+<text x="56" y="146" font-family="Playfair Display" font-size="60" font-weight="900" fill="#5C6B1A">loop engineering</text>
+<text x="56" y="210" font-family="Playfair Display" font-size="60" font-weight="900" fill="#1A1A1A">is the biggest lever</text>
+<text x="56" y="274" font-family="Playfair Display" font-size="60" font-weight="900" fill="#1A1A1A">on your<tspan dx="16" fill="#C26B3F">AI coding bill.</tspan></text>
+<text x="56" y="318" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="25" font-weight="600" fill="#1A1A1A">Explore once, at frontier cost. Then reuse the workflow that pays back.</text>
+<line x1="56" y1="342" x2="1024" y2="342" stroke="#5C6B1A" stroke-width="3"/>
+<rect x="56" y="372" width="18" height="18" rx="3" fill="#C26B3F"/>
+<text x="82" y="387" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#1A1A1A">SPEND TO LEARN</text>
+<line x1="300" y1="371" x2="300" y2="391" stroke="#5C6B1A" stroke-width="1" opacity="0.4"/>
+<rect x="320" y="372" width="18" height="18" rx="3" fill="#DAF172" stroke="#5C6B1A" stroke-width="1.5"/>
+<text x="346" y="387" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#1A1A1A">SPEND THAT PAYS BACK</text>
+<text x="540" y="598" text-anchor="middle" font-family="Playfair Display" font-size="30" font-weight="900" fill="#5C6B1A">The Agentic Workflow</text>
+<text x="540" y="634" text-anchor="middle" font-family="Playfair Display" font-size="30" font-weight="900" fill="#5C6B1A">Lifecycle</text>
+<text x="540" y="666" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" font-style="italic" fill="#1A1A1A">one exploration becomes a</text>
+<text x="540" y="686" text-anchor="middle" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" font-style="italic" fill="#1A1A1A">reusable, governed workflow</text>
+<path d="M638,497 Q749,503 790,522" fill="none" stroke="#5C6B1A" stroke-width="3" marker-end="url(#arrow)" opacity="0.9"/>
+<path d="M907,604 Q925,632 907,660" fill="none" stroke="#5C6B1A" stroke-width="3" marker-end="url(#arrow)" opacity="0.9"/>
+<path d="M790,742 Q749,761 638,767" fill="none" stroke="#5C6B1A" stroke-width="3" marker-end="url(#arrow)" opacity="0.9"/>
+<path d="M442,767 Q331,761 290,742" fill="none" stroke="#5C6B1A" stroke-width="3" marker-end="url(#arrow)" opacity="0.9"/>
+<path d="M173,660 Q155,632 173,604" fill="none" stroke="#5C6B1A" stroke-width="3" marker-end="url(#arrow)" opacity="0.9"/>
+<path d="M290,522 Q331,503 442,497" fill="none" stroke="#5C6B1A" stroke-width="3" marker-end="url(#arrow)" opacity="0.9"/>
+<rect x="405" y="452" width="270" height="80" rx="12" fill="#26261F" stroke="#C26B3F" stroke-width="3"/>
+<text x="427" y="489" font-family="Playfair Display" font-size="22" font-weight="800" fill="#F9F7F5">EXPLORE</text>
+<text x="427" y="515" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16.5" fill="#F9F7F5">frontier · capped $</text>
+<rect x="744" y="522" width="270" height="80" rx="12" fill="#FFFFFF" stroke="#5C6B1A" stroke-width="2.5"/>
+<text x="766" y="559" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">CODIFY</text>
+<text x="766" y="585" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16.5" fill="#5C6B1A">persist as a reusable skill</text>
+<rect x="744" y="662" width="270" height="80" rx="12" fill="#FFFFFF" stroke="#5C6B1A" stroke-width="2.5"/>
+<text x="766" y="699" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">PUBLISH</text>
+<text x="766" y="725" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16.5" fill="#5C6B1A">portal skill, policy-gated</text>
+<rect x="405" y="732" width="270" height="80" rx="12" fill="#FFFFFF" stroke="#5C6B1A" stroke-width="2.5"/>
+<text x="427" y="769" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">CONSUME</text>
+<text x="427" y="795" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16.5" fill="#5C6B1A">pull by manifest</text>
+<rect x="66" y="662" width="270" height="80" rx="12" fill="#FFFFFF" stroke="#5C6B1A" stroke-width="2.5"/>
+<text x="88" y="699" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">RUN & MONITOR</text>
+<text x="88" y="725" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16.5" fill="#5C6B1A">cost-per-outcome</text>
+<rect x="66" y="522" width="270" height="80" rx="12" fill="#FFFFFF" stroke="#5C6B1A" stroke-width="2.5"/>
+<text x="88" y="559" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">DISCOVER</text>
+<text x="88" y="585" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16.5" fill="#5C6B1A">usage reveals next</text>
+<text x="540" y="852" text-anchor="middle" font-family="Playfair Display" font-size="23" font-weight="900" fill="#5C6B1A"><tspan font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="700" fill="#1A1A1A">Starter agentic workflows</tspan><tspan dx="10" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="600" font-style="italic" fill="#1A1A1A">→ build your</tspan><tspan dx="12">Agentic Engineering System</tspan></text>
+<text x="540" y="892" text-anchor="middle" font-family="Menlo, monospace" font-size="15.5" fill="#5C6B1A" letter-spacing="0.5"><tspan>code migration</tspan><tspan dx="7" fill="#5C6B1A" opacity="0.5">·</tspan><tspan dx="7">code review</tspan><tspan dx="7" fill="#5C6B1A" opacity="0.5">·</tspan><tspan dx="7">test generation</tspan><tspan dx="7" fill="#5C6B1A" opacity="0.5">·</tspan><tspan dx="7">security upgrades</tspan><tspan dx="7" fill="#5C6B1A" opacity="0.5">·</tspan><tspan dx="7">bug fixing</tspan></text>
+<text x="56" y="952" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="3" fill="#5C6B1A">MONEY — COST POOLS</text>
+<rect x="56" y="974" width="968" height="112" rx="12" fill="#26261F"/>
+<line x1="298" y1="990" x2="298" y2="1076" stroke="#F9F7F5" stroke-width="1" opacity="0.16"/>
+<line x1="540" y1="990" x2="540" y2="1076" stroke="#F9F7F5" stroke-width="1" opacity="0.16"/>
+<line x1="782" y1="990" x2="782" y2="1076" stroke="#F9F7F5" stroke-width="1" opacity="0.16"/>
+<rect x="74" y="988" width="206" height="4" rx="2" fill="#C26B3F"/>
+<text x="74" y="1020" font-family="Playfair Display" font-size="19" font-weight="800" fill="#F9F7F5">Frontier R&D</text>
+<text x="74" y="1046" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#F9F7F5">capped · best models</text>
+<text x="74" y="1070" font-family="Menlo, monospace" font-size="14" fill="#F9F7F5" opacity="0.62">for AI frontier team</text>
+<rect x="316" y="988" width="206" height="4" rx="2" fill="#DAF172"/>
+<text x="316" y="1020" font-family="Playfair Display" font-size="19" font-weight="800" fill="#F9F7F5">Per-workflow run</text>
+<text x="316" y="1046" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#F9F7F5">metered by outcome</text>
+<text x="316" y="1070" font-family="Menlo, monospace" font-size="14" fill="#F9F7F5" opacity="0.62">for approved use cases</text>
+<rect x="558" y="988" width="206" height="4" rx="2" fill="#DAF172"/>
+<text x="558" y="1020" font-family="Playfair Display" font-size="19" font-weight="800" fill="#F9F7F5">Everyday prompting</text>
+<text x="558" y="1046" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#F9F7F5">capped to cheaper models</text>
+<text x="558" y="1070" font-family="Menlo, monospace" font-size="14" fill="#F9F7F5" opacity="0.62">the floor</text>
+<rect x="800" y="988" width="206" height="4" rx="2" fill="#DAF172"/>
+<text x="800" y="1020" font-family="Playfair Display" font-size="19" font-weight="800" fill="#F9F7F5">Local models</text>
+<text x="800" y="1046" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#F9F7F5">unmetered · owned GPUs</text>
+<text x="800" y="1070" font-family="Menlo, monospace" font-size="14" fill="#F9F7F5" opacity="0.62">free at margin</text>
+<rect x="56" y="1110" width="968" height="160" rx="14" fill="#FFFFFF" stroke="#5C6B1A" stroke-width="2.5"/>
+<text x="82" y="1152" font-family="Playfair Display" font-size="24" font-weight="800" fill="#1A1A1A">TOOLING — The Technical Playbook</text>
+<line x1="82" y1="1166" x2="998" y2="1166" stroke="#5C6B1A" stroke-width="1" opacity="0.4"/>
+<text x="82" y="1198" font-family="Playfair Display" font-size="20" font-weight="800" fill="#5C6B1A">1  PACKAGE</text>
+<text x="82" y="1230" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">Agent Package Manager</text>
+<text x="82" y="1252" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">bundles the workflow</text>
+<text x="311" y="1198" font-family="Playfair Display" font-size="20" font-weight="800" fill="#5C6B1A">2  GOVERN</text>
+<text x="311" y="1230" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">apm-policy.yaml gates</text>
+<text x="311" y="1252" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">who runs it, which models.</text>
+<text x="540" y="1198" font-family="Playfair Display" font-size="20" font-weight="800" fill="#5C6B1A">3  DISTRIBUTE</text>
+<text x="540" y="1230" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">A signed registry</text>
+<text x="540" y="1252" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">hands it out, traceable.</text>
+<text x="769" y="1198" font-family="Playfair Display" font-size="20" font-weight="800" fill="#5C6B1A">4  CONSUME</text>
+<text x="769" y="1230" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">Pull by manifest+lockfile;</text>
+<text x="769" y="1252" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">policy re-checked on run.</text>
+<text x="56" y="1292" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#5C6B1A">A Center of Enablement funds the pools and maintains the lifecycle. Everyone else consumes proven workflows.</text>
+</svg>
