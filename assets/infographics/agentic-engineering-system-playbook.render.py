@@ -121,7 +121,9 @@ for i,(num,name,l1,l2) in enumerate(steps):
     add(f'<text x="{cx0:.0f}" y="{topy+56:.0f}" font-family="{BODY}" font-size="16" fill="{INK}">{l2}</text>')
 
 # ===== FOOTER =====
-add(f'<text x="{M}" y="1292" font-family="{BODY}" font-size="15" fill="{OLIVE}">A Center of Enablement funds the pools and maintains the lifecycle. Everyone else consumes proven workflows.</text>')
+add(f'<text x="{M}" y="1288" font-family="{BODY}" font-size="15" fill="{OLIVE}">A Center of Enablement funds the pools and maintains the lifecycle. Everyone else consumes proven workflows.</text>')
+add(f'<line x1="{M}" y1="1306" x2="{W-M}" y2="1306" stroke="{OLIVE}" stroke-width="1" opacity="0.28"/>')
+add(f'<text x="{M}" y="1330" font-family="{BODY}" font-size="16" fill="{OLIVE}"><tspan font-weight="700" fill="{INK}">Daniel Meppiel</tspan><tspan dx="14" opacity="0.5">/</tspan><tspan dx="14">Follow me on LinkedIn</tspan><tspan dx="14" opacity="0.5">/</tspan><tspan dx="14" font-weight="700">theainativemind.com</tspan></text>')
 add('</svg>')
 open("agentic-engineering-system-playbook.svg","w").write("\n".join(svg))
 print("ok",len(svg))

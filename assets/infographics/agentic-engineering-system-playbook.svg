@@ -35,7 +35,7 @@
 <text x="427" y="769" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">CONSUME</text>
 <text x="427" y="795" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16.5" fill="#5C6B1A">pull by manifest</text>
 <rect x="66" y="662" width="270" height="80" rx="12" fill="#FFFFFF" stroke="#5C6B1A" stroke-width="2.5"/>
-<text x="88" y="699" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">RUN & MONITOR</text>
+<text x="88" y="699" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">RUN &amp; MONITOR</text>
 <text x="88" y="725" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16.5" fill="#5C6B1A">cost-per-outcome</text>
 <rect x="66" y="522" width="270" height="80" rx="12" fill="#FFFFFF" stroke="#5C6B1A" stroke-width="2.5"/>
 <text x="88" y="559" font-family="Playfair Display" font-size="22" font-weight="800" fill="#1A1A1A">DISCOVER</text>
@@ -48,7 +48,7 @@
 <line x1="540" y1="990" x2="540" y2="1076" stroke="#F9F7F5" stroke-width="1" opacity="0.16"/>
 <line x1="782" y1="990" x2="782" y2="1076" stroke="#F9F7F5" stroke-width="1" opacity="0.16"/>
 <rect x="74" y="988" width="206" height="4" rx="2" fill="#C26B3F"/>
-<text x="74" y="1020" font-family="Playfair Display" font-size="19" font-weight="800" fill="#F9F7F5">Frontier R&D</text>
+<text x="74" y="1020" font-family="Playfair Display" font-size="19" font-weight="800" fill="#F9F7F5">Frontier R&amp;D</text>
 <text x="74" y="1046" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#F9F7F5">capped · best models</text>
 <text x="74" y="1070" font-family="Menlo, monospace" font-size="14" fill="#F9F7F5" opacity="0.62">for AI frontier team</text>
 <rect x="316" y="988" width="206" height="4" rx="2" fill="#DAF172"/>
@@ -78,5 +78,7 @@
 <text x="769" y="1198" font-family="Playfair Display" font-size="20" font-weight="800" fill="#5C6B1A">4  CONSUME</text>
 <text x="769" y="1230" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">Pull by manifest+lockfile;</text>
 <text x="769" y="1252" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#1A1A1A">policy re-checked on run.</text>
-<text x="56" y="1292" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#5C6B1A">A Center of Enablement funds the pools and maintains the lifecycle. Everyone else consumes proven workflows.</text>
+<text x="56" y="1288" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="15" fill="#5C6B1A">A Center of Enablement funds the pools and maintains the lifecycle. Everyone else consumes proven workflows.</text>
+<line x1="56" y1="1306" x2="1024" y2="1306" stroke="#5C6B1A" stroke-width="1" opacity="0.28"/>
+<text x="56" y="1330" font-family="Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" fill="#5C6B1A"><tspan font-weight="700" fill="#1A1A1A">Daniel Meppiel</tspan><tspan dx="14" opacity="0.5">/</tspan><tspan dx="14">Follow me on LinkedIn</tspan><tspan dx="14" opacity="0.5">/</tspan><tspan dx="14" font-weight="700">theainativemind.com</tspan></text>
 </svg>
