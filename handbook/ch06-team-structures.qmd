@@ -175,11 +175,11 @@ The Agentic Workflow Engineer's day-to-day artefacts are the `.skill.md` body, t
 
 ### Agent Operations Specialist {#sec-agent-operations-specialist}
 
-The **Agent Operations Specialist** is the role that owns *operations once Skills run in production* — cost, traces, eval drift, rate limits, and the cross-Skill composition that emerges when more than one Skill begins dispatching another. Sidebar B of the Part III capstone (Chapter 21) references this role; the definitional home for it is here.
+The **Agent Operations Specialist** is the role that owns *operations once Skills run in production* — cost, traces, eval drift, rate limits, and the cross-Skill composition that emerges when more than one Skill begins dispatching another. Sidebar B of the Part III capstone (Chapter 22) references this role; the definitional home for it is here.
 
 Per the maturity guidance in the staffing principles below: **the Agent Operations Specialist emerges only at scale.** In small teams the senior Agentic Workflow Engineer wears the hat. Do not staff the role before the work exists. The work exists when (a) more than one Skill is in production, (b) cost or eval drift has begun to require dedicated attention, and (c) the composition across Skills is no longer something a stream-aligned team can manage out of its own backlog. Most organizations will not need the role until they reach Phase 4 maturity as described in Chapter 2.
 
-The day-to-day work centers on a small set of multi-agent composition patterns the field has converged on — *Panel*, *Wave*, *Scatter-Gather*, *Subagent* — operated, not invented. Part III treats these patterns in depth; Chapter 18 (@sec-composition-patterns) is the catalogue. The staffing point is that the role exists to *run* the patterns, not to design them.
+The day-to-day work centers on a small set of multi-agent composition patterns the field has converged on — *Panel*, *Wave*, *Scatter-Gather*, *Subagent* — operated, not invented. Part III treats these patterns in depth; Chapter 19 (@sec-composition-patterns) is the catalogue. The staffing point is that the role exists to *run* the patterns, not to design them.
 
 ::: {.callout-tip title="The 3-concern authorship triplet"}
 At the surface introduced in Chapter 4, the three roles separate cleanly along three concerns:
@@ -188,7 +188,11 @@ At the surface introduced in Chapter 4, the three roles separate cleanly along t
 - **Agentic Workflow Engineer** owns HOW the Skill composes (the body, the PROSE-level composition, the eval scaffolding)
 - **Agent Operations Specialist** owns the OPERATIONS once the Skill runs (cost, traces, eval drift, rate limits)
 
-The same triplet recurs at the *Skill-authoring* level in Chapter 20 (@sec-primitives-as-code) — Ch20 carries the deep treatment of who does what when AUTHORING a single Skill bundle, complementary to the per-layer ownership table above.
+The same triplet recurs at the *Skill-authoring* level in Chapter 21 (@sec-primitives-as-code) — Ch20 carries the deep treatment of who does what when AUTHORING a single Skill bundle, complementary to the per-layer ownership table above.
+:::
+
+::: {.callout-note title="From three roles to a central function"}
+As usage-based billing makes run-cost a first-class concern, these three roles increasingly cluster into a small **central AI team** with a sharp charter: research and encode cost-effective agentic workflows that the rest of the organization reuses. The Agentic Workflow Engineer codes the cheaper loop; the Agent Operations Specialist owns its cost, traces, and eval drift at scale; the Domain Specialist keeps it correct. The team's first deliverable is not a clever agent — it is a cheaper, governed loop for a recurring, ROI-positive task. The chapter on the agentic SDLC bill describes the operating model this team runs (gated frontier-model access, model tiering, budget pockets, and a governed catalogue) and why a handful of engineers building reusable loops is among the highest-leverage staffing decisions in the programme.
 :::
 
 ---
@@ -199,7 +203,7 @@ The three roles above are concerns; the developer is the constant. The agentic S
 
 The day-to-day shape splits across two loops. In the inner-loop the developer runs Skills locally against their own working tree -- Codex, Claude Code, Copilot, or Cursor -- and the harness choice is theirs. The lockfile is what keeps the team consistent: whichever harness loads the bundle, the bundle is the same one CI will load tonight. In the outer-loop the same Skills run on every PR as a Panel review, and the eval gates that the Domain Specialist wrote against each Skill block merge when they fail. Failure of a Skill is a build failure, not a vibe; the merge button is gated on the same green/red signal a unit-test suite produces.
 
-The dev / non-dev split inside the `Domain Specialist` role survives unchanged at this layer. The developer does not become a Domain Specialist for legal review or compliance -- those belong to the SME who owns the procedure. The developer is the Domain Specialist *for developer-domain procedures*: code-review patterns, refactor patterns, migration scripts, on-call runbooks. Authored once, version-pinned, exercised on every PR. Part III walks one developer-authored Skill (`Code Modernization`) end to end through genesis -- the same supply chain underwrites it that underwrites the dissected SDLC in the Part III capstone (Chapter 21).
+The dev / non-dev split inside the `Domain Specialist` role survives unchanged at this layer. The developer does not become a Domain Specialist for legal review or compliance -- those belong to the SME who owns the procedure. The developer is the Domain Specialist *for developer-domain procedures*: code-review patterns, refactor patterns, migration scripts, on-call runbooks. Authored once, version-pinned, exercised on every PR. Part III walks one developer-authored Skill (`Code Modernization`) end to end through genesis -- the same supply chain underwrites it that underwrites the dissected SDLC in the Part III capstone (Chapter 22).
 
 ---
 
@@ -225,7 +229,7 @@ Team Topologies, the framework by Matthew Skelton and Manuel Pais, provides a us
 
 **A platform team that provides shared context infrastructure.** Organization-wide conventions, common patterns, and cross-cutting context assets (authentication patterns, logging standards, API design guidelines) are better maintained centrally than duplicated across teams. A platform team (or a developer experience team, depending on your vocabulary) owns these shared assets. Stream-aligned teams consume them and add domain-specific context on top. This mirrors the Explicit Hierarchy constraint from Chapter 1: global rules flow down, domain specifics are local. The platform team's deliverable is increasingly *primitives-as-code* — versioned, testable, distributable context artefacts (instructions, agent configurations, prompt templates) that the rest of the organization consumes the way they consume any other internal library. The shift to versioned primitives is what lets multiple stream-aligned teams compose work without each one re-inventing the same conventions.
 
-**Enabling teams for adoption support.** During the transition period (which is what Chapter 7 plans in detail), a small enabling team that coaches other teams through adoption, maintains best practices documentation, and provides hands-on support is the most effective accelerant. This team has a finite lifespan. Once adoption is mature, its responsibilities fold into the platform team or dissolve.
+**Enabling teams for adoption support.** During the transition period (which is what Chapter 8 plans in detail), a small enabling team that coaches other teams through adoption, maintains best practices documentation, and provides hands-on support is the most effective accelerant. This team has a finite lifespan. Once adoption is mature, its responsibilities fold into the platform team or dissolve.
 
 ### What Doesn't Work
 
@@ -353,7 +357,7 @@ Use this worksheet to evaluate your current team structure against the patterns 
 
 **Scores of 1–2 on any dimension** indicate a gap that will actively undermine agentic adoption. Address these before expanding agent usage. Knowledge explicitness and senior presence are the two dimensions that unblock everything else — if these score low, start there.
 
-**Scores of 3** indicate basic capability that will work for pilot-level adoption but will not scale. Plan to invest during the expansion phase described in Chapter 7.
+**Scores of 3** indicate basic capability that will work for pilot-level adoption but will not scale. Plan to invest during the expansion phase described in Chapter 8.
 
 **Scores of 4–5** indicate readiness. These are the dimensions where your team can be a model for others.
 
@@ -365,7 +369,7 @@ The worksheet is not a one-time exercise. Reassess quarterly during your first y
 
 The organizational changes described in this chapter take time. They are not a reorganization to announce on Monday. They are a set of shifts to design for, measure against, and adjust as your team learns what works in your context.
 
-Chapter 7 takes these organizational insights and builds the operational plan — the phased transition from pilot to full adoption, with concrete criteria for each stage and honest metrics for tracking progress.
+Chapter 8 takes these organizational insights and builds the operational plan — the phased transition from pilot to full adoption, with concrete criteria for each stage and honest metrics for tracking progress.
 
 [^ch6-time]: Pre-agentic ranges are composites drawn from multiple industry surveys (2019–2023); no single source produces this exact breakdown. The closest empirical data: Tidelift/New Stack (2019, n≈400) found 32% of time on writing/improving code, 19% on maintenance, 12% on testing. Meyer et al. at Microsoft Research (2019, n=5,971) confirmed developers "spend little time on development." Agentic-era projections are based on early adopter reports and the author's observations. See [thenewstack.io](https://thenewstack.io/how-much-time-do-developers-spend-actually-writing-code/) and [Microsoft Research](https://www.microsoft.com/en-us/research/publication/today-was-a-good-day-the-daily-life-of-software-developers/).
 

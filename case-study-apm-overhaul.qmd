@@ -18,7 +18,7 @@ These four case studies test the methodology under progressively different condi
 This case study documents a real Copilot CLI session against
 [microsoft/apm](https://github.com/microsoft/apm) (PR #394).
 Every metric comes from session checkpoint logs.
-Chapters 12–13 introduced this session's structure. Here we focus on
+Chapters 13–14 introduced this session's structure. Here we focus on
 **what went wrong, what the recovery looked like, and what it demonstrates about the methodology under production conditions.**
 :::
 
