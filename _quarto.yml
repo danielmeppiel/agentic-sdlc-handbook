@@ -29,23 +29,24 @@ book:
         - handbook/ch04-the-reference-architecture.qmd
         - handbook/ch05-governance-for-ai-assisted-delivery.qmd
         - handbook/ch06-team-structures.qmd
-        - handbook/ch07-planning-the-transition.qmd
+        - handbook/ch07-the-agentic-sdlc-bill.qmd
+        - handbook/ch08-planning-the-transition.qmd
     - part: "Part III: For Practitioners"
       chapters:
-        - handbook/ch08-part-iii-preface.qmd
-        - handbook/ch09-the-practitioners-mindset.qmd
-        - handbook/ch10-the-runtime-machine.qmd
-        - handbook/ch11-the-instrumented-codebase.qmd
-        - handbook/ch12-the-prose-specification.qmd
-        - handbook/ch13-the-load-lifecycle.qmd
-        - handbook/ch14-attention-and-context-economy.qmd
-        - handbook/ch15-deterministic-probabilistic-boundary.qmd
-        - handbook/ch16-multi-agent-orchestration.qmd
-        - handbook/ch17-the-execution-meta-process.qmd
-        - handbook/ch18-architectural-patterns-rosetta-stone.qmd
-        - handbook/ch19-anti-patterns-and-failure-modes.qmd
-        - handbook/ch20-primitives-as-code.qmd
-        - handbook/ch21-the-reference-architecture-earned.qmd
+        - handbook/ch09-part-iii-preface.qmd
+        - handbook/ch10-the-practitioners-mindset.qmd
+        - handbook/ch11-the-runtime-machine.qmd
+        - handbook/ch12-the-instrumented-codebase.qmd
+        - handbook/ch13-the-prose-specification.qmd
+        - handbook/ch14-the-load-lifecycle.qmd
+        - handbook/ch15-attention-and-context-economy.qmd
+        - handbook/ch16-deterministic-probabilistic-boundary.qmd
+        - handbook/ch17-multi-agent-orchestration.qmd
+        - handbook/ch18-the-execution-meta-process.qmd
+        - handbook/ch19-architectural-patterns-rosetta-stone.qmd
+        - handbook/ch20-anti-patterns-and-failure-modes.qmd
+        - handbook/ch21-primitives-as-code.qmd
+        - handbook/ch22-the-reference-architecture-earned.qmd
     - part: "Part IV: Case Studies"
       chapters:
         - case-study-apm-overhaul.qmd
@@ -54,7 +55,7 @@ book:
         - case-study-growth-engine.qmd
     - part: "Closing"
       chapters:
-        - handbook/ch22-what-comes-next.qmd
+        - handbook/ch27-what-comes-next.qmd
   appendices:
     - handbook/appendix-a-cross-harness-reference.qmd
     - handbook/appendix-b-genesis-worked-example.qmd

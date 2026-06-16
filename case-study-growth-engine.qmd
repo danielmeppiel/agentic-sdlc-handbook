@@ -21,7 +21,7 @@ A growth engine for a free technical book -- email capture, landing page, DNS an
 
 ## Panel Strategy
 
-Expert panels drove the strategic decisions. Across six phases, the orchestrator convened panels with fifteen domain-specific personas (publishing strategy, growth, branding, LinkedIn, security) that produced synthesized recommendations through moderator agents. Early panels over-indexed on career coaching, prompting a user override: *"Focus on the growth engine -- brand, followers, industry gravitas, tactical distribution."* The orchestrator reframed the brief and produced an 18-task implementation plan. This is the Architect role from Chapter 13 -- scope correction when agent output drifts from the actual objective.
+Expert panels drove the strategic decisions. Across six phases, the orchestrator convened panels with fifteen domain-specific personas (publishing strategy, growth, branding, LinkedIn, security) that produced synthesized recommendations through moderator agents. Early panels over-indexed on career coaching, prompting a user override: *"Focus on the growth engine -- brand, followers, industry gravitas, tactical distribution."* The orchestrator reframed the brief and produced an 18-task implementation plan. This is the Architect role from Chapter 14 -- scope correction when agent output drifts from the actual objective.
 
 ## Timeline
 

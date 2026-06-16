@@ -187,9 +187,9 @@ Three implications worth surfacing.
 
 **MCP is one access mechanism, not the architecture.** The Model Context Protocol — an open standard stewarded by LF Projects under the Linux Foundation — sits in the Context half of the triplet, alongside files, CLI invocations, fetched URLs, and multi-modal artefacts. It is genuinely useful: a Persona can read a Jira instance, an internal API, or a SharePoint corpus through an MCP server without knowing the transport details. But an MCP catalogue is not a substitute for a Skill registry, an eval discipline, or a lockfile. Treating MCP as the architecture rather than as one mechanism is the most common shape of mistake an architect new to this substrate makes; it is worth naming on first contact.
 
-**The patterns you already know apply.** A Skill is a Module with a Facade — one entry point, one stable contract, swappable internals. A Persona is a Strategy — same input shape, different evaluation policy. A harness orchestrating a Panel is a Mediator with a Scatter-Gather distribution. The substrate is new; the patterns are not. Chapter 18 (@sec-layered-model) carries the full Rosetta and the four-layer reconciliation.
+**The patterns you already know apply.** A Skill is a Module with a Facade — one entry point, one stable contract, swappable internals. A Persona is a Strategy — same input shape, different evaluation policy. A harness orchestrating a Panel is a Mediator with a Scatter-Gather distribution. The substrate is new; the patterns are not. Chapter 19 (@sec-layered-model) carries the full Rosetta and the four-layer reconciliation.
 
-**The decisions worth making this week are about your registry and your CODEOWNERS, not your agent vendor.** A team that has installed the supply chain can change its mind about harnesses, frameworks, and cloud providers without re-authoring its primitive set; a team that has not, cannot. Chapter 22 (@sec-what-comes-next) carries the five-day plan.
+**The decisions worth making this week are about your registry and your CODEOWNERS, not your agent vendor.** A team that has installed the supply chain can change its mind about harnesses, frameworks, and cloud providers without re-authoring its primitive set; a team that has not, cannot. @sec-what-comes-next carries the five-day plan.
 
 ::: {.callout-tip}
 ## TL;DR — One rule, applied recursively

@@ -11,9 +11,9 @@ This chapter applies the three-tier honesty framework (available now, emerging, 
 
 **Agent tool use becomes standard, not experimental.** The shift from text generation to agents that execute — file operations, terminal commands, API calls, test runs — is underway but uneven.[^ch15-tooluse] Within a year, tool-using agents will be the default interaction mode. This makes Safety Boundaries more critical, not less. A model that generates bad code wastes review time. A model that executes bad commands corrupts state. Guardrails that felt conservative in a text-generation world become essential in a tool-execution world.
 
-**Multi-agent orchestration moves from research to practice.** Teams today primarily use single-agent interactions. Multi-agent patterns — planning agents dispatching specialists, review agents evaluating output, agents collaborating through shared artifacts — exist in research and early tooling.[^ch15-multiagent] Within a year, they will ship in mainstream platforms. The orchestration disciplines in Chapters 10–12 — task decomposition, wave-based execution, escalation protocols — become operational necessities rather than advanced practices.
+**Multi-agent orchestration moves from research to practice.** Teams today primarily use single-agent interactions. Multi-agent patterns — planning agents dispatching specialists, review agents evaluating output, agents collaborating through shared artifacts — exist in research and early tooling.[^ch15-multiagent] Within a year, they will ship in mainstream platforms. The orchestration disciplines in Chapters 11–13 — task decomposition, wave-based execution, escalation protocols — become operational necessities rather than advanced practices.
 
-**The agentic computing stack crystallizes through independent convergence.** By mid-2025, at least three independent efforts arrived at the same layered architecture: manifest-based primitive distribution, framework-layer composition, and CI/CD-native execution. Anthropic's `plugin.json`[^ch15-plugin], GitHub's Agentic Workflows, and open-source frameworks like Squad[^ch15-squad] and Spec-Kit[^ch15-speckit] didn't coordinate — they converged because the layers reflect real boundaries in the problem. Open-source tools already provide manifest-based dependency resolution and security scanning at the primitive layer, the same architecture as npm or pip applied to agent configuration rather than runtime code. This is the pattern that produced HTTP → REST → Rails/Express → npm/pip → applications: each layer emerged when practitioners needed it, not when a standards body decreed it. Spec-Kit and Squad are to agentic development what Spring and React are to traditional computing — they make orchestration easier in one direction, constrain freedom in another, and consume primitives via package managers above the harness layer. The strategic signal: when independent implementations from different vendors converge on the same architecture, the architecture is real. Organizations investing in the primitive layer (Chapter 20) are building on the layer most likely to remain stable as the framework layer evolves.
+**The agentic computing stack crystallizes through independent convergence.** By mid-2025, at least three independent efforts arrived at the same layered architecture: manifest-based primitive distribution, framework-layer composition, and CI/CD-native execution. Anthropic's `plugin.json`[^ch15-plugin], GitHub's Agentic Workflows, and open-source frameworks like Squad[^ch15-squad] and Spec-Kit[^ch15-speckit] didn't coordinate — they converged because the layers reflect real boundaries in the problem. Open-source tools already provide manifest-based dependency resolution and security scanning at the primitive layer, the same architecture as npm or pip applied to agent configuration rather than runtime code. This is the pattern that produced HTTP → REST → Rails/Express → npm/pip → applications: each layer emerged when practitioners needed it, not when a standards body decreed it. Spec-Kit and Squad are to agentic development what Spring and React are to traditional computing — they make orchestration easier in one direction, constrain freedom in another, and consume primitives via package managers above the harness layer. The strategic signal: when independent implementations from different vendors converge on the same architecture, the architecture is real. Organizations investing in the primitive layer (Chapter 21) are building on the layer most likely to remain stable as the framework layer evolves.
 
 ---
 
@@ -56,6 +56,37 @@ gantt
     Context infra foundational as CI/CD     :l2, 2028, 2030
 ```
 
+**Cost-engineered loops compound into autopilots — and, at the limit, a dark software factory.** Once an organization runs a governed catalogue of cost-effective workflows — the operating model the chapter on the agentic SDLC bill lays out — a new class of capability becomes affordable. *Autopilots* are composable, self-service loops that take a low-risk, high-value task end to end, with a human on the approval rather than in the keystrokes. The *Dark Software Factory* is the limit case: agents do the building between human intent and the final call, and trust comes from encoded judgement plus deterministic verification rather than from watching every step. Both are worth exploring first where risk is low and value is high — self-service developer tasks, and the low-code/no-code work non-developers own today. A Microsoft-maintained reference implementation of the composable-autopilot pattern is being built in the open in the [microsoft/apm](https://github.com/microsoft/apm) project, to which the author contributes. Treat both as directional bets, not shipping products — but bets the rest of this book has been quietly making affordable.
+
+```{mermaid}
+%%| label: fig-dark-software-factory
+%%| fig-cap: "The Dark Software Factory, conceptually (a directional pattern, not a shipping product). Human intent enters a conveyor that agents run end to end, held by two human gates. TRIAGE is the kill stage — most intake is declined or escalated here, before any pull request opens; rejection rate, not throughput, is its metric. MERGE is the landing gate. The two gates are trustworthy only because two pillars hold them: judgement you encode (applied at triage) and deterministic, auditable verification (cleared at merge). Humans own the intent and the final call; agents build everything in between."
+%%| fig-alt: "A left-to-right conveyor with two human gates shown as diamonds. Human intent flows into the first diamond, TRIAGE, the human kill stage; most intake exits here to a Declined or escalated node, and only admitted work proceeds to an Agent build loop (ideate, plan, implement, review). The build loop feeds the second diamond, MERGE, the human approval gate; approved work becomes a Shipped pull request. Below the conveyor sit two pillars: Pillar one, Encoded judgement — your standards, architecture, and review bar — connects with a dashed applied-at edge up to TRIAGE. Pillar two, Deterministic verification — auditable non-LLM checks — connects with a dashed must-clear edge up to MERGE."
+%%| fig-width: 6.5
+%%| fig-height: 4.0
+flowchart LR
+    IN["Human intent"]
+    TRI{"TRIAGE<br/><b>human gate · kill stage</b>"}
+    STOP["Declined /<br/>escalated"]
+    BUILD["Agent build loop<br/>ideate · plan<br/>implement · review"]
+    MRG{"MERGE<br/><b>human gate</b>"}
+    SHIP["Shipped<br/>pull request"]
+    IN --> TRI
+    TRI -- "most intake declined" --> STOP
+    TRI -- "admitted" --> BUILD --> MRG
+    MRG -- "approved" --> SHIP
+    J["<b>PILLAR 1 · Encode the judgement</b><br/>your standards · architecture · review bar"]
+    V["<b>PILLAR 2 · Verify the work</b><br/>deterministic · auditable checks"]
+    J -. "applied at" .-> TRI
+    V -. "must clear at" .-> MRG
+    classDef gate fill:#fff4d6,stroke:#a8862c,color:#5c4708,stroke-width:2px
+    classDef pillar fill:#eef2f7,stroke:#3a6ea5,color:#1f3a5f
+    classDef stop fill:#f7eaea,stroke:#a33,color:#722,stroke-dasharray:3 3
+    class TRI,MRG gate
+    class J,V pillar
+    class STOP stop
+```
+
 ---
 
 ## What Will Not Change
@@ -72,7 +103,7 @@ These are the things the author is most confident about, precisely because they 
 
 **Composition will remain necessary.** No single agent will hold an entire large system in focus. The tools for composition will improve; the need for it will not diminish.
 
-These five properties map directly to the PROSE constraints from Chapter 12. The constraints were not designed for today's models; they were designed for the fundamental properties of human-AI collaboration.
+These five properties map directly to the PROSE constraints from Chapter 13. The constraints were not designed for today's models; they were designed for the fundamental properties of human-AI collaboration.
 
 ---
 
@@ -99,7 +130,7 @@ Not every task benefits from agent orchestration. Applying the methodology where
 
 **The task requires fewer than 50 lines of change.** If you can hold the full scope in your head, the overhead of persona design, wave planning, and checkpoint discipline is not worth it. Just write the code.
 
-**The domain knowledge is entirely implicit.** If the conventions, constraints, and trade-offs cannot be externalized into instruction files -- because they depend on political context, unwritten relationships, or organizational history that resists documentation -- agents will produce plausible but wrong output. Instrument the codebase first (Chapter 11), then apply agents.
+**The domain knowledge is entirely implicit.** If the conventions, constraints, and trade-offs cannot be externalized into instruction files -- because they depend on political context, unwritten relationships, or organizational history that resists documentation -- agents will produce plausible but wrong output. Instrument the codebase first (Chapter 12), then apply agents.
 
 **The cost of failure is low and iteration is cheap.** For throwaway scripts, prototyping, and exploratory work, a single agent prompt with no orchestration is faster and sufficient. The methodology exists for production-grade work where reliability matters.
 
@@ -117,13 +148,13 @@ For leaders who read Parts I–II and practitioners who read Part III, here is t
 
 ### Day 1: Audit One Module
 
-Pick the module your team changes most frequently. Not the biggest module, the most-changed one. Run the methodology from Chapter 11: identify implicit knowledge, undocumented conventions, architectural decisions that exist only in your team's memory. Write down what you find. You are not fixing anything today. You are measuring the gap between what an agent can see and what your team knows.
+Pick the module your team changes most frequently. Not the biggest module, the most-changed one. Run the methodology from Chapter 12: identify implicit knowledge, undocumented conventions, architectural decisions that exist only in your team's memory. Write down what you find. You are not fixing anything today. You are measuring the gap between what an agent can see and what your team knows.
 
 **Deliverable:** A list of 5–10 implicit conventions that an agent would violate on its first task in this module.
 
 ### Day 2: Write Your First Three Primitives
 
-Take the top three conventions from yesterday's audit. Write each as an instruction file — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 11, under the constraints from Chapter 12: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
+Take the top three conventions from yesterday's audit. Write each as an instruction file — one organizational standard, one architectural constraint, one domain-specific rule. Follow the format from Chapter 12, under the constraints from Chapter 13: scoped, testable, specific. Do not try to document everything. Three primitives that cover the most common mistakes are worth more than thirty that cover edge cases.
 
 **Deliverable:** Three instruction files, committed to your repository.
 
@@ -135,7 +166,7 @@ Pick a task from your current sprint — something an agent would plausibly hand
 
 ### Day 4: Measure and Adjust
 
-Review yesterday's comparison honestly. Which files made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn't land. This is the calibration loop from Chapter 14: context files are not documentation, they are engineering artifacts that need testing and iteration like any other code.
+Review yesterday's comparison honestly. Which files made a difference? Which were ignored or misinterpreted by the agent? Revise the ones that didn't land. This is the calibration loop from Chapter 15: context files are not documentation, they are engineering artifacts that need testing and iteration like any other code.
 
 **Deliverable:** Revised instruction files based on observed agent behavior.
 
@@ -159,7 +190,7 @@ This is not a dependency on the book's part — every chapter stands without it 
 
 ### For Leaders, Additionally
 
-If you lead the organization rather than the team, Day 1 is different. Start with the readiness assessment from Chapter 7. Identify one team with the right combination of codebase maturity, process discipline, and cultural openness. Fund a structured pilot — not "give everyone licenses and see what happens," but the phased adoption from the transition plan. Protect the investment in context infrastructure. It has the highest long-term return and the lowest short-term visibility, which means it is the one most likely to be cut.
+If you lead the organization rather than the team, Day 1 is different. Start with the readiness assessment from Chapter 8. Identify one team with the right combination of codebase maturity, process discipline, and cultural openness. Fund a structured pilot — not "give everyone licenses and see what happens," but the phased adoption from the transition plan. Protect the investment in context infrastructure. It has the highest long-term return and the lowest short-term visibility, which means it is the one most likely to be cut.
 
 ---
 
@@ -188,14 +219,14 @@ The shape is **a small bundle**, not a comprehensive one. The early signal — a
 - **A handful of skill bundles** (typically three to seven) covering the highest-leverage recurring tasks — code review, refactoring, test authoring, documentation generation, incident triage. Not thirty skills covering every conceivable workflow.
 - **A small set of scope-attached rule files** (`.instructions.md` with `applyTo` globs) carrying the team's load-bearing conventions — error handling, logging, security boundaries, cross-platform encoding rules. The set is small because each rule is reviewed every time it loads; the budget is attention, not disk.
 - **One agent file per repository** (`AGENTS.md` or its harness-specific equivalent) that names what the agent should know about *this* repository before it does anything — the build commands, the test commands, the directories it should not touch, the conventions that apply globally.
-- **A lockfile and a manifest** (Chapter 20's package layer) that pins the bundle's transitive closure so that the agent that runs in CI today is reading the same primitives as the agent that runs in CI six months from now.
-- **A panel-ready review configuration** that lets the team escalate any non-trivial PR to a multi-specialist Panel (Chapter 16) when the change crosses the trivial threshold.
+- **A lockfile and a manifest** (Chapter 21's package layer) that pins the bundle's transitive closure so that the agent that runs in CI today is reading the same primitives as the agent that runs in CI six months from now.
+- **A panel-ready review configuration** that lets the team escalate any non-trivial PR to a multi-specialist Panel (Chapter 17) when the change crosses the trivial threshold.
 
 Three properties distinguish the starter shape from the ad-hoc shape teams typically begin with.
 
 **It is small enough to read.** A new team member should be able to read the entire bundle in an afternoon and know what the agent will do on their first PR. If the bundle is too large to read, no one will read it, and the convention that nobody can recite is a convention the agent will violate undetected.
 
-**It is composed, not stacked.** Each primitive has a single concern (the 3-concern triplet from Chapter 20) and depends explicitly on the primitives it builds on. The bundle has a dependency graph, not a flat list. When the team adds a new convention, it lands in the right primitive, not in a new one.
+**It is composed, not stacked.** Each primitive has a single concern (the 3-concern triplet from Chapter 21) and depends explicitly on the primitives it builds on. The bundle has a dependency graph, not a flat list. When the team adds a new convention, it lands in the right primitive, not in a new one.
 
 **It is governed by the lockfile.** Every release of every primitive is pinned. When a primitive ships an update, the lockfile diff appears in the next CI run, and the change goes through the same review the source diff goes through. Drift becomes visible; provenance becomes auditable.
 
@@ -207,7 +238,7 @@ Three properties distinguish the starter shape from the ad-hoc shape teams typic
 - **Marketing campaigns.** Skills for brief expansion, channel-specific copy generation, brand-voice review. The Domain Specialist is the brand owner; the Agentic Workflow Engineer is increasingly a marketing operations role rather than a software engineer.
 - **Book authoring.** The [case study on writing this handbook](../case-study-handbook-writing.qmd) — Part IV — runs the same starter shape end-to-end on this very handbook: skills for outline design, draft generation, review panel, fact-reference checking. The forward-pointer is not rhetorical; the case is the existence proof.
 
-The starter shape is a starting point, not a ceiling. Teams will adapt and extend it; some will abandon parts that do not fit their domain. What matters for the practitioner reading this chapter is that the shape exists, is recognisable, and is reachable in months, not years — provided the team treats primitives as code (Chapter 20), runs the load discipline (Chapter 13), and bounds the attention budget (Chapter 14).
+The starter shape is a starting point, not a ceiling. Teams will adapt and extend it; some will abandon parts that do not fit their domain. What matters for the practitioner reading this chapter is that the shape exists, is recognisable, and is reachable in months, not years — provided the team treats primitives as code (Chapter 21), runs the load discipline (Chapter 14), and bounds the attention budget (Chapter 15).
 
 ---
 
@@ -215,7 +246,7 @@ The starter shape is a starting point, not a ceiling. Teams will adapt and exten
 
 Three beats close this part, the handbook, and the case the handbook makes.
 
-**One: the SDLC is one instance of a much wider pattern.** This handbook spent twenty chapters inside the software development lifecycle because the SDLC is where the pattern is most legible — a community of practitioners with shared vocabulary, observable artefacts, reviewable diffs, and a culture of measuring its own outcomes. But the architecture in Chapter 4, the primitives in Chapter 20, the composition patterns in Chapter 18, and the staffing in Chapter 6 are not specific to software. They are specific to *any* domain whose work is procedure-shaped, reviewable, and operable under a recursion bound. The SDLC was the first to package this practice; it will not be the last. Legal, finance, M&A, marketing, clinical decision support, scientific writing — any domain where a Domain Specialist can name a procedure and an Agentic Workflow Engineer can encode it has the same architecture available. The handbook is software-shaped because the proof had to land somewhere; the pattern is general.
+**One: the SDLC is one instance of a much wider pattern.** This handbook spent twenty chapters inside the software development lifecycle because the SDLC is where the pattern is most legible — a community of practitioners with shared vocabulary, observable artefacts, reviewable diffs, and a culture of measuring its own outcomes. But the architecture in Chapter 4, the primitives in Chapter 21, the composition patterns in Chapter 19, and the staffing in Chapter 6 are not specific to software. They are specific to *any* domain whose work is procedure-shaped, reviewable, and operable under a recursion bound. The SDLC was the first to package this practice; it will not be the last. Legal, finance, M&A, marketing, clinical decision support, scientific writing — any domain where a Domain Specialist can name a procedure and an Agentic Workflow Engineer can encode it has the same architecture available. The handbook is software-shaped because the proof had to land somewhere; the pattern is general.
 
 **Two: this handbook is itself an existence proof.** The [case study in Part IV](../case-study-handbook-writing.qmd) is not a meta-curiosity. It is the operational answer to "does this work?" Every chapter you have read was authored under the editorial-pipeline Skill described in that case study — Domain Specialist (the author) defining the WHAT, Agentic Workflow Engineer (the same author, in a different role) encoding the HOW into a Skill that dispatches a Panel of specialist reviewers, Agent Operations Specialist (again the same author, at scale-of-one) running the OPERATIONS. The handbook you are holding is the artefact that the methodology in the handbook produces. If the case had to be made by a tool the field had not yet built, this section would be aspirational. The case is made by a tool that exists, that produced this artefact, and that you can install on Monday morning.
 

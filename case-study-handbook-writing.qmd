@@ -24,7 +24,7 @@ This is a case study about a book that was written using the process it describe
 
 The agent team was packaged and distributed using APM itself: 8 persona definitions as `.agent.md` files, an orchestration workflow as `SKILL.md`, declared as a dependency in `apm.yml`, and deployed via `apm install`. APM was used to build the book that teaches about APM.
 
-This case study maps the execution to the handbook's own vocabulary (Chapter 14) and tests its structural properties (Chapter 15) under real conditions.
+This case study maps the execution to the handbook's own vocabulary (Chapter 15) and tests its structural properties (Chapter 16) under real conditions.
 
 ---
 
@@ -127,7 +127,7 @@ gantt
 
 ## The Draft→Review→Revise Cycle
 
-Every chapter passed through an identical three-stage pipeline. This is the core quality loop the book describes in Chapter 13.
+Every chapter passed through an identical three-stage pipeline. This is the core quality loop the book describes in Chapter 14.
 
 ```{mermaid}
 %%| fig-width: 5.0
@@ -215,7 +215,7 @@ The key: define the persona's scope and output format explicitly. Generic "revie
 
 ## Escalation Events and Anti-Pattern Mapping
 
-Four escalation events interrupted normal flow. Each maps to a specific anti-pattern from Chapter 14.
+Four escalation events interrupted normal flow. Each maps to a specific anti-pattern from Chapter 15.
 
 ### 1. Architecture Agent Timeout
 
@@ -223,7 +223,7 @@ Four escalation events interrupted normal flow. Each maps to a specific anti-pat
 
 **Anti-pattern:** #11 (*Context Window Exhaustion*) compounded by #6 (*The Solo Hero*). The orchestrator assigned monolithic scope to one agent, violating the *one file, one agent per wave* isolation principle.
 
-**Resolution:** Split into two parallel agents — Part 1 (Chapters 1–8), Part 2 (Chapters 9–15 plus cross-cutting concerns). Both completed successfully, producing 1,020 lines of chapter specifications.
+**Resolution:** Split into two parallel agents — Part 1 (Chapters 1–9), Part 2 (Chapters 10–16 plus cross-cutting concerns). Both completed successfully, producing 1,020 lines of chapter specifications.
 
 **What held true:** *Context will remain finite and fragile.* Regardless of model capability, there is always a limit to how much an agent can consider effectively.
 

@@ -1,0 +1,199 @@
+---
+title: "The Agentic SDLC Bill"
+---
+
+Engineering cost as a lever, not a line item.
+
+The business-case chapter answered *should we invest?* This chapter answers the question that arrives the quarter after you do: *what does this cost to run — and who decides?* With usage-based billing, the answer is no longer a line item your procurement team negotiates once a year. It is a variable your engineering organization produces every day, one agent run at a time. The good news is the part most leaders miss: that variable is something you engineer.
+
+---
+
+## The Same Task, an 8.5× Bill
+
+Take a single, ordinary task: refactor nineteen files to adopt a new error-handling convention. Hand it to an agent two ways. In the first, the agent loops file-by-file on a frontier model, re-reading context, re-planning, retrying on each failure. In the second, a *designed* workflow plans once, batches the edits, routes the mechanical work to a cheaper model, and verifies deterministically at the end. Same nineteen files. Same passing tests. In one illustrative run, the first path cost **\$41.01** and the second **\$4.81** — an **8.5× spread** on identical output.[^bill-variance]
+
+```{mermaid}
+%%| label: fig-bill-variance
+%%| fig-cap: "The same task, two ways. Identical input and identical output; the cost diverges by 8.5× depending only on how the work is organized. The bill is a property of the design, not the task."
+%%| fig-alt: "A left-to-right flowchart. A single start node, Refactor nineteen files, splits into two paths. The upper path, labelled Undesigned, reads: file-by-file on a frontier model, re-read, re-plan, retry, and arrives at a cost node of forty-one dollars and one cent. The lower path, labelled Designed, reads: plan once, batch the edits, route mechanical work to a cheaper model, verify deterministically, and arrives at a cost node of four dollars and eighty-one cents. Both cost nodes converge on a single end node, Identical output: same files, same passing tests."
+%%| fig-width: 6.5
+%%| fig-height: 3.4
+flowchart LR
+    T["<b>Refactor 19 files</b>"]:::task
+    T --> A["<b>UNDESIGNED</b><br/>file-by-file · frontier model<br/>re-read · re-plan · retry"]:::waste
+    T --> B["<b>DESIGNED</b><br/>plan once · batch edits<br/>route to cheaper model · verify"]:::lean
+    A --> AC["<b>$41.01</b>"]:::wastecost
+    B --> BC["<b>$4.81</b>"]:::leancost
+    AC --> O["<b>Identical output</b><br/>same files · same passing tests"]:::out
+    BC --> O
+    classDef task fill:#26261f,stroke:#26261f,color:#f9f7f5,font-weight:bold
+    classDef waste fill:#f6e0d3,stroke:#c26b3f,color:#7c2d12,stroke-width:2px
+    classDef lean fill:#eef0e0,stroke:#6c7931,color:#33401a,stroke-width:2px
+    classDef wastecost fill:#c26b3f,stroke:#9a4f2a,color:#ffffff,font-weight:bold
+    classDef leancost fill:#6c7931,stroke:#55611f,color:#ffffff,font-weight:bold
+    classDef out fill:#f9f7f5,stroke:#26261f,color:#26261f,stroke-width:1.5px
+```
+
+Hold onto that number, because it reframes the whole problem. Your agentic bill is not primarily a *price* problem — the per-token rate you negotiate. It is a *variance* problem — how widely the cost of the same outcome swings depending on how the work is organized. And variance is the thing finance teams already know how to think about: you do not manage a portfolio by its average return, you manage it by its tail risk. A *designed* workflow bounds your worst case to the worst *planned* step. An undesigned one bounds it to nothing.
+
+This is why cost has become the strongest case yet for the argument this book has made since its first page: **engineer your agentic workflows centrally, deliberately, as artifacts you own.** Every prior chapter argued it on the grounds of reliability and governance. Cost makes the same argument in the language a CFO signs off on.
+
+---
+
+## Three Variables You Already Control
+
+The bill decomposes into three variables, and you control all three:
+
+- **Model choice** — the cost function. The spread between the cheapest capable model and the most expensive frontier model for the same step is, as of June 2026, large enough to dominate the other two cost inputs. Routing a mechanical edit to a frontier model is the single most common way teams overpay.[^bill-spread]
+- **Token use** — how much context flows through that function on every call. Prompt bloat, redundant re-reads, oversized tool surfaces, and uncached prefixes all tax every invocation. The attention-economy chapter (@sec-attention-economy) shows why more context is not free and often not better; here the point is narrower — every wasted token is metered.
+- **Harness choice** — the system prompts and orchestration that decide how many calls happen, on which model, with which context. This is the lever with the most reach, because it governs the other two: the harness is where you encode *which* model runs each step and *how much* context flows through it. Model choice sets the magnitude; the harness decides when you pay it.
+
+None of these is a market condition you absorb. Each is a decision you can make once, encode, and reuse. That is the definition of an engineering problem.
+
+---
+
+## Why This Can't Be a Developer's Job
+
+The naïve response is to ask every developer to optimize. Pick the cheap model when the task is mechanical. Trim the context. Cache the prefix. This fails for three reasons, and the failure is structural, not a matter of discipline:
+
+- **A developer shouldn't have to be a cost-optimization expert.** Knowing which model is sufficient for which step, how to structure a cacheable prompt, and where the token cliffs are is a specialization. Spread across a thousand developers, it will be applied inconsistently — which is the same as not at all.
+- **No one should re-derive the cheap path on every prompt.** Even an expert will not re-optimize a routine task each time they run it. The optimization has to be *resident in the tool*, not in the operator's working memory. That is what Agent Skills are for.
+- **You can't switch harness per task.** Adoption, rollout, and training costs make the harness a slow-moving choice. Optimization that assumes you can swap runtimes per task is optimization you will not ship.
+
+So the optimization must be engineered **once**, **centrally**, and **baked statically** into reusable workflows. The model choice and the token discipline live in the artifact; the artifact is evaluated centrally, packaged, and distributed for everyone to reuse, portable across whichever harnesses your organization runs. The developer does not optimize. The developer *reuses an optimized loop.*
+
+---
+
+## The Operating Model: A Cost-Effective-Loop Factory
+
+What emerges is an operating model: a small central team does the expensive exploration; everyone else runs the cheap, governed result.
+
+```{mermaid}
+%%| label: fig-loop-factory
+%%| fig-cap: "The cost-effective-loop factory. A small central team turns gated frontier-model exploration into governed, reusable workflows that the whole organization runs on the baseline tier; monitoring closes the loop back to exploration."
+%%| fig-alt: "A left-to-right flowchart with four stages. Stage one, Central AI Team on the gated frontier tier, contains: Agentic Workflow Engineers research cost-effective loops; hardcode model tier and token optimizations statically; evaluate centrally. Stage two, the Catalog at the Governance and Distribution layer, contains: Agent Plugins and Skills released via APM; IDP discoverability plus harness-managed rollout; a cost-versus-value gate at install and run. Stage three, Everyone Else on the baseline tier, contains: segmented users with budget pockets; run loops via slash command or intent match. Stage four is Monitoring of cost, traces, and ROI. Arrows flow left to right from Central AI Team to Catalog to Everyone Else to Monitoring, and a feedback arrow runs from Monitoring back to the Central AI Team carrying the ROI signal and power-user demand."
+%%| fig-width: 5.6
+%%| fig-height: 5.4
+flowchart TB
+    E["<b>CENTRAL AI TEAM</b> · frontier tier <i>(gated)</i><br/>Agentic Workflow Engineers research cost-effective loops<br/>hardcode model tier + token optimizations · evaluate centrally"]:::frontier
+    C["<b>CATALOG</b> · Governance &amp; Distribution<br/>Agent Plugins / Skills released via APM<br/>IDP discoverability + harness-managed rollout<br/>cost-vs-value gate at install + run"]:::catalog
+    R["<b>EVERYONE ELSE</b> · baseline tier<br/>segmented users + budget pockets<br/>run loops via / slash command or intent match"]:::baseline
+    M["<b>MONITORING</b> &nbsp;·&nbsp; cost · traces · ROI"]:::monitor
+    E --> C --> R --> M
+    M -- "ROI signal +<br/>power-user demand" --> E
+    classDef frontier fill:#26261f,stroke:#c26b3f,color:#f9f7f5,stroke-width:2.5px
+    classDef catalog fill:#eef0e0,stroke:#6c7931,color:#33401a,stroke-width:2px
+    classDef baseline fill:#e7f0d6,stroke:#6c7931,color:#33401a,stroke-width:2px
+    classDef monitor fill:#f9f7f5,stroke:#26261f,color:#26261f,stroke-width:1.5px
+```
+
+Four moves make the factory work.
+
+### Tier the model access
+
+Give everyone open, baseline access to the most cost-effective, versatile models on the market — the tier that delivers most of the value at a fraction of the frontier price.[^bill-skus] Gate the frontier tier to a small central AI team whose single mandate is to *code cost-effective loops for everyone else to reuse.* This sounds austere; it is the opposite. It is how you give a thousand developers the benefit of frontier-model engineering without handing a thousand developers a frontier-model invoice. The frontier model becomes a tool of production, used by the people who build the loops — not a default, billed to everyone who runs them. The one deliberate exception is a metered escape hatch: when the catalog has no loop for a task that genuinely needs frontier reasoning, a developer requests time-boxed, budget-capped frontier access rather than being blocked — and that gap becomes the next item on the central team's backlog. The gate is a queue, not a wall.
+
+### Pool the spend, gate the bets
+
+Split your token budget into intentional pockets and map them to user segments: a generous pocket for the central team's exploration, bounded pockets for stream-aligned teams, a metered pocket for self-service. Then gate the spend the way you already gate any other risk. The governance chapter's Decision Matrix is the right home for this: a **cost-vs-value approval gate** that asks, at install time and at run time, *does the expected outcome justify the inferencing bill?* Workflows that run locally on local models, or whose cost gradient is low and well-evaluated, get a free pass. Workflows that spend frontier tokens at scale earn an owner, an expected cost, a stop condition, and an off-switch before they ship. **Any spend beyond the baseline playbook is an intentional bet — and a bet is only sound once your monitoring can tell you whether it paid off.**
+
+| Spend pool | Funding rule | Who draws on it | Metering |
+|---|---|---|---|
+| **Frontier R&D** | Capped envelope · best models | Central AI / frontier team | By budget — the deliberate bet |
+| **Per-workflow run** | Metered by outcome | Approved, governed use cases | Cost per outcome |
+| **Everyday prompting** | Capped to cheaper models | Everyone — the floor | Open baseline access |
+| **Local models** | Unmetered · owned GPUs | High-volume, low-risk loops | Free at the margin |
+
+: The four spend pools, each funded and metered by a different rule. The cheaper pools run open; only the deliberate bets — frontier exploration and metered at-scale runs — carry a gate. {#tbl-spend-pools tbl-colwidths="[20,30,28,22]"}
+
+### Distribute through the catalog
+
+A loop nobody can find is a loop nobody reuses. The reference-architecture chapter's Governance and Distribution layer is where cost-effective workflows become discoverable, installable artifacts: released as Agent Plugins and Skills through the Agent Package Manager (APM)[^bill-apm] — the same pipeline, lockfile, integrity checks, version pinning, and drift protection you already apply to software dependencies (the primitives-as-code chapter, @sec-primitives-as-code, carries the mechanics). A catalog backed by an internal developer platform (IDP) adds discoverability; vendor harness-managed settings add mass rollout, so the right loop reaches the right segment without a migration project.[^bill-zava]
+
+### Staff the factory
+
+The roles already exist in this book. The **Agentic Workflow Engineer** (@sec-agentic-workflow-engineer) researches and encodes the cost-effective loops; the **Agent Operations Specialist** (@sec-agent-operations-specialist) owns cost, traces, and eval drift once they run at scale. What the bill adds is a *mandate*: the central AI team's first deliverable is not a clever agent, it is a cheaper loop for a recurring, ROI-positive task. Your power users — the developers already pushing the frontier on their own — are the natural feeder into this function as it matures; this is a cost charter attached to a role this book already defined, not a new priesthood. Watch the one metric that keeps the team from becoming a bottleneck: its success is measured in **loops reused across the organization, not requests approved.** A central team that optimizes for gatekeeping has missed the point; a central team that optimizes for reuse compounds.
+
+::: {.callout-note title="Three-Tier Honesty: what these numbers are, and are not"}
+The figures in this chapter — the 8.5× spread, the \$4.81 versus \$41.01 run, the model-price ranges — are **illustrative single runs and point-in-time prices**, not benchmarks. They are real, and they are not universal: the magnitude depends on the task, the models available the week you read this, and the harness. Treat them as existence proofs of *variance you can engineer*, not as a guaranteed return. The durable claim is the mechanism — model choice, token use, and harness govern the bill, and all three are in your control. The specific multiples will move. The lever will not.
+:::
+
+---
+
+## The Mechanics Live in Part III
+
+This chapter is the economics; it is deliberately not the how-to. A leader funds and governs the factory; a practitioner builds the loops. When you authorize a cost-effective workflow, what the central team actually ships is a handful of named patterns the practitioner block catalogues as a Rosetta Stone of agentic design:
+
+- a **Model Router** that classifies each task and dispatches it to the cheapest sufficient model, and a **Gradient Workflow** that assigns each *stage* the smallest model class it needs — heavy planner, mid-tier executor, lightweight triage — both at @sec-dispatch-patterns;
+- a **Cache-Aware Prefix** (@sec-assembly-patterns) that structures the prompt so its stable part bills at a fraction of full input on every repeat turn;
+- a **Tool Subset** (@sec-boundary-patterns) that exposes only the tools a step needs, cutting the token tax and the error surface at once.
+
+Around those four load-bearing patterns sit the everyday disciplines that operate them: trimming verbose model output, bounding reasoning effort and retries, and pruning spend the way a refactor removes dead code. Those are coding habits encoded in the workflow's own instructions, not architectural patterns — which is why the catalogue names the four and leaves the habits to the agent's instruction files and the `genesis` substrate it draws on.[^bill-genesis]
+
+You do not need to read any of it to run this operating model. You need to know it exists, that it ships as version-pinned artifacts, and that the gap between an expensive loop and a cheap one is exactly the engineering it encodes.
+
+---
+
+## Local Inference: A CAPEX Lever Worth Watching
+
+There is a second lever on the horizon, and it changes the shape of the bill rather than its size. Models in the ~120-billion-parameter class now run on-device, which trades a metered OPEX stream for a fixed CAPEX investment and far more predictable spend.[^bill-local] For a workflow you run ten thousand times a day on a model you own, local inference can take a line item to near zero at the margin.
+
+The honest assessment is *watch and experiment, do not yet mass-rollout.* The maturity and the hardware are not there for enterprise-scale deployment, the upfront CAPEX is high, and hardware advances are compounding fast enough that today's purchase ages quickly. But the direction is real, and the architecture already accommodates it: a workflow pinned to a local model is just another entry in the catalog, with the lowest cost gradient of all — which is why the cost-vs-value gate waves local execution straight through. Give it a pocket, run your highest-volume low-risk loops against it, and keep watching the space.
+
+---
+
+## What This Compounds Into
+
+The payoff is not a one-time saving. Every cost-effective loop you build and govern accretes into a catalog, and that catalog *is* your agentic SDLC capability — the durable asset the closing chapter (@sec-what-comes-next) calls the next wave. The wins compound on every axis at once: **cost** falls and stabilizes, **reliability** rises because the loop is evaluated and pinned, **outcomes** improve because the loop encodes your best practice, and **learnings** accumulate because every run is monitored.
+
+```{mermaid}
+%%| label: fig-workflow-lifecycle
+%%| fig-cap: "The agentic workflow lifecycle. One exploration is paid once, at frontier cost — the orange stage, spend to learn. The five stages that follow turn that exploration into a governed, reusable workflow whose every rerun pays the learning back (green). DISCOVER closes the loop: real usage reveals the next gap worth exploring. The bill is front-loaded once; the value compounds on every turn after."
+%%| fig-alt: "A six-node clockwise cycle. One node is highlighted orange and labelled spend to learn: EXPLORE, on a frontier model at capped cost. The other five nodes are green and labelled spend that pays back: CODIFY (persist as a reusable skill), PUBLISH (portal skill, policy-gated), CONSUME (pull by manifest), RUN AND MONITOR (cost per outcome), and DISCOVER (usage reveals the next gap). A return edge labelled next exploration runs from DISCOVER back to EXPLORE, closing the loop and showing that reuse feeds the next round of learning."
+%%| fig-width: 5.4
+%%| fig-height: 5.2
+flowchart TB
+    E["<b>1 · EXPLORE</b> &nbsp; <i>spend to learn</i><br/>frontier model · capped $"]:::learn
+    C["<b>2 · CODIFY</b> &nbsp; persist as a reusable skill"]:::pays
+    P["<b>3 · PUBLISH</b> &nbsp; portal skill · policy-gated"]:::pays
+    U["<b>4 · CONSUME</b> &nbsp; pull by manifest"]:::pays
+    R["<b>5 · RUN &amp; MONITOR</b> &nbsp; cost per outcome"]:::pays
+    D["<b>6 · DISCOVER</b> &nbsp; usage reveals the next gap"]:::pays
+    E --> C --> P --> U --> R --> D
+    D -- "next exploration" --> E
+    classDef learn fill:#26261f,stroke:#c26b3f,color:#f9f7f5,stroke-width:2.5px,font-weight:bold
+    classDef pays fill:#eef0e0,stroke:#6c7931,color:#33401a,stroke-width:1.5px
+    linkStyle 5 stroke:#c26b3f,stroke-width:2.5px,color:#7c2d12
+```
+
+Past a threshold, the catalog enables a class of workflow that is not economical to run any other way: **Autopilots** — composable, self-service loops that take a low-risk, high-value task end to end — and, at the limit, the **Dark Software Factory**, where agents do the building between human judgment and the final call, and trust comes from encoded judgment plus deterministic verification rather than from watching. These are the subject of the closing chapter; the reason they belong *here* is economic. They are only affordable, and only safe, on top of a factory of cost-engineered, governed loops. The bill is what makes the next wave a budget line instead of a moonshot.
+
+---
+
+## The Leader's Playbook
+
+::: {.callout-tip title="The cost-effective operating model, in five moves"}
+1. **Build a team of Agentic Workflow Engineers** who research and implement cost-effective agentic workflows for recurring, ROI-positive use cases.
+2. **Mandate that each shipped workflow pins its model tier** — and the tier of every subagent it spawns — to the cheapest sufficient class, with prompt compression and token discipline applied while output quality holds. Doing the pinning is the engineer's job; requiring it is yours.
+3. **Release, distribute, and monitor the loops as software artifacts** — Agent Plugins and Agent Skills, through the package manager and the catalog.
+4. **Gate usage with explicit cost-vs-value approvals** so the expected outcome justifies the inferencing bill; wave through local and low-gradient workflows.
+5. **Give everyone open, baseline access** to the most cost-effective, versatile models — and treat any spend beyond this baseline as an intentional bet, made once monitoring proves net-positive ROI.
+
+This runs across any harness and any model. The vendors change; the operating model does not.
+:::
+
+You now have the economic operating model. The next chapter turns it into a sequence — how to plan the transition from where your organization is today to the factory described here, without stalling in the valley.
+
+[^bill-variance]: Illustrative single run on a nineteen-file refactor, comparing an undesigned file-by-file agent loop against a designed plan-batch-verify workflow. The absolute dollars and the 8.5× multiple vary by task, model, and harness; the figure demonstrates cost *variance* under fixed output, not a benchmarked saving.
+
+[^bill-spread]: The price spread across capable models for the same step is large and moves frequently; verify current rates before budgeting. The point is directional: model choice routinely dominates the other two variables, so misrouting a mechanical step to a frontier model is the most common overspend.
+
+[^bill-skus]: Specific model names date quickly. As of June 2026, broadly available cost-effective tiers (for example GPT-5.4 mini and MAI-Code-1-Flash) deliver strong value-per-dollar for routine work, while frontier tiers (for example Claude Opus, GPT-5.5) are reserved for the central team's loop engineering. Read these as *tiers*, not endorsements; the policy is tier-the-access, whatever the SKUs are the week you deploy.
+
+[^bill-apm]: Disclosure: the author is the creator of APM (the Agent Package Manager) and a contributor to the reference implementations cited in this chapter. They are named as worked examples of the supply-chain mechanics this book argues for, not as product endorsements. The operating model is package-manager-, harness-, and model-agnostic: any tooling that gives you a lockfile, integrity checks, version pinning, and a discoverable catalog will serve.
+
+[^bill-zava]: A working reference implementation of a central catalog, an IDP front end, and an APM-based release pipeline is the `zava-agent-config` project, [https://github.com/DevExpGbb/zava-agent-config](https://github.com/DevExpGbb/zava-agent-config) (IDP site: [https://devexpgbb.github.io/zava-agent-config/](https://devexpgbb.github.io/zava-agent-config/); release pipeline: [release.yml](https://github.com/DevExpGbb/zava-agent-config/blob/main/.github/workflows/release.yml)). It is a Microsoft-maintained reference implementation, offered as a reference point — not a turnkey product or a requirement.
+
+[^bill-local]: On-device inference for ~120B-parameter models is an emerging capability as of June 2026; treat the parameter scale and the CAPEX/OPEX tradeoff as directional and verify against current hardware. The claim is that local inference is worth experimenting with to tame OPEX unpredictability, not that it is ready for enterprise-scale mass rollout.
+
+[^bill-genesis]: `genesis` is the author's own agent-side pattern catalogue, cited as one source of the practitioner-block naming; the cost patterns named above are codified there as agent-loadable assets. Like the other implementations in this chapter, it is a reference, not a requirement — the operating model holds whatever substrate your central team writes its loops in.
