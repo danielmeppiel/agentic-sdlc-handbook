@@ -58,6 +58,35 @@ gantt
 
 **Cost-engineered loops compound into autopilots — and, at the limit, a dark software factory.** Once an organization runs a governed catalogue of cost-effective workflows — the operating model the chapter on the agentic SDLC bill lays out — a new class of capability becomes affordable. *Autopilots* are composable, self-service loops that take a low-risk, high-value task end to end, with a human on the approval rather than in the keystrokes. The *Dark Software Factory* is the limit case: agents do the building between human intent and the final call, and trust comes from encoded judgement plus deterministic verification rather than from watching every step. Both are worth exploring first where risk is low and value is high — self-service developer tasks, and the low-code/no-code work non-developers own today. A Microsoft-maintained reference implementation of the composable-autopilot pattern is being built in the open in the [microsoft/apm](https://github.com/microsoft/apm) project, to which the author contributes. Treat both as directional bets, not shipping products — but bets the rest of this book has been quietly making affordable.
 
+```{mermaid}
+%%| label: fig-dark-software-factory
+%%| fig-cap: "The Dark Software Factory, conceptually (a directional pattern, not a shipping product). Human intent enters a conveyor that agents run end to end, held by two human gates. TRIAGE is the kill stage — most intake is declined or escalated here, before any pull request opens; rejection rate, not throughput, is its metric. MERGE is the landing gate. The two gates are trustworthy only because two pillars hold them: judgement you encode (applied at triage) and deterministic, auditable verification (cleared at merge). Humans own the intent and the final call; agents build everything in between."
+%%| fig-alt: "A left-to-right conveyor with two human gates shown as diamonds. Human intent flows into the first diamond, TRIAGE, the human kill stage; most intake exits here to a Declined or escalated node, and only admitted work proceeds to an Agent build loop (ideate, plan, implement, review). The build loop feeds the second diamond, MERGE, the human approval gate; approved work becomes a Shipped pull request. Below the conveyor sit two pillars: Pillar one, Encoded judgement — your standards, architecture, and review bar — connects with a dashed applied-at edge up to TRIAGE. Pillar two, Deterministic verification — auditable non-LLM checks — connects with a dashed must-clear edge up to MERGE."
+%%| fig-width: 6.5
+%%| fig-height: 4.0
+flowchart LR
+    IN["Human intent"]
+    TRI{"TRIAGE<br/><b>human gate · kill stage</b>"}
+    STOP["Declined /<br/>escalated"]
+    BUILD["Agent build loop<br/>ideate · plan<br/>implement · review"]
+    MRG{"MERGE<br/><b>human gate</b>"}
+    SHIP["Shipped<br/>pull request"]
+    IN --> TRI
+    TRI -- "most intake declined" --> STOP
+    TRI -- "admitted" --> BUILD --> MRG
+    MRG -- "approved" --> SHIP
+    J["<b>PILLAR 1 · Encode the judgement</b><br/>your standards · architecture · review bar"]
+    V["<b>PILLAR 2 · Verify the work</b><br/>deterministic · auditable checks"]
+    J -. "applied at" .-> TRI
+    V -. "must clear at" .-> MRG
+    classDef gate fill:#fff4d6,stroke:#a8862c,color:#5c4708,stroke-width:2px
+    classDef pillar fill:#eef2f7,stroke:#3a6ea5,color:#1f3a5f
+    classDef stop fill:#f7eaea,stroke:#a33,color:#722,stroke-dasharray:3 3
+    class TRI,MRG gate
+    class J,V pillar
+    class STOP stop
+```
+
 ---
 
 ## What Will Not Change

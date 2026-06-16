@@ -16,16 +16,22 @@ Take a single, ordinary task: refactor nineteen files to adopt a new error-handl
 %%| label: fig-bill-variance
 %%| fig-cap: "The same task, two ways. Identical input and identical output; the cost diverges by 8.5× depending only on how the work is organized. The bill is a property of the design, not the task."
 %%| fig-alt: "A left-to-right flowchart. A single start node, Refactor nineteen files, splits into two paths. The upper path, labelled Undesigned, reads: file-by-file on a frontier model, re-read, re-plan, retry, and arrives at a cost node of forty-one dollars and one cent. The lower path, labelled Designed, reads: plan once, batch the edits, route mechanical work to a cheaper model, verify deterministically, and arrives at a cost node of four dollars and eighty-one cents. Both cost nodes converge on a single end node, Identical output: same files, same passing tests."
-%%| fig-width: 6.0
-%%| fig-height: 3.0
+%%| fig-width: 6.5
+%%| fig-height: 3.4
 flowchart LR
-    T["Refactor 19 files"]
-    T --> A["<b>Undesigned</b><br/>file-by-file · frontier model<br/>re-read · re-plan · retry"]
-    T --> B["<b>Designed</b><br/>plan once · batch edits<br/>route to cheaper model · verify"]
-    A --> AC["\$41.01"]
-    B --> BC["\$4.81"]
-    AC --> O["Identical output<br/>same files · same passing tests"]
+    T["<b>Refactor 19 files</b>"]:::task
+    T --> A["<b>UNDESIGNED</b><br/>file-by-file · frontier model<br/>re-read · re-plan · retry"]:::waste
+    T --> B["<b>DESIGNED</b><br/>plan once · batch edits<br/>route to cheaper model · verify"]:::lean
+    A --> AC["<b>$41.01</b>"]:::wastecost
+    B --> BC["<b>$4.81</b>"]:::leancost
+    AC --> O["<b>Identical output</b><br/>same files · same passing tests"]:::out
     BC --> O
+    classDef task fill:#26261f,stroke:#26261f,color:#f9f7f5,font-weight:bold
+    classDef waste fill:#f6e0d3,stroke:#c26b3f,color:#7c2d12,stroke-width:2px
+    classDef lean fill:#eef0e0,stroke:#6c7931,color:#33401a,stroke-width:2px
+    classDef wastecost fill:#c26b3f,stroke:#9a4f2a,color:#ffffff,font-weight:bold
+    classDef leancost fill:#6c7931,stroke:#55611f,color:#ffffff,font-weight:bold
+    classDef out fill:#f9f7f5,stroke:#26261f,color:#26261f,stroke-width:1.5px
 ```
 
 Hold onto that number, because it reframes the whole problem. Your agentic bill is not primarily a *price* problem — the per-token rate you negotiate. It is a *variance* problem — how widely the cost of the same outcome swings depending on how the work is organized. And variance is the thing finance teams already know how to think about: you do not manage a portfolio by its average return, you manage it by its tail risk. A *designed* workflow bounds your worst case to the worst *planned* step. An undesigned one bounds it to nothing.
@@ -66,33 +72,19 @@ What emerges is an operating model: a small central team does the expensive expl
 %%| label: fig-loop-factory
 %%| fig-cap: "The cost-effective-loop factory. A small central team turns gated frontier-model exploration into governed, reusable workflows that the whole organization runs on the baseline tier; monitoring closes the loop back to exploration."
 %%| fig-alt: "A left-to-right flowchart with four stages. Stage one, Central AI Team on the gated frontier tier, contains: Agentic Workflow Engineers research cost-effective loops; hardcode model tier and token optimizations statically; evaluate centrally. Stage two, the Catalog at the Governance and Distribution layer, contains: Agent Plugins and Skills released via APM; IDP discoverability plus harness-managed rollout; a cost-versus-value gate at install and run. Stage three, Everyone Else on the baseline tier, contains: segmented users with budget pockets; run loops via slash command or intent match. Stage four is Monitoring of cost, traces, and ROI. Arrows flow left to right from Central AI Team to Catalog to Everyone Else to Monitoring, and a feedback arrow runs from Monitoring back to the Central AI Team carrying the ROI signal and power-user demand."
-%%| fig-width: 6.5
-%%| fig-height: 4.0
-flowchart LR
-    subgraph EXPLORE ["CENTRAL AI TEAM · frontier tier (gated)"]
-        direction TB
-        E1["Agentic Workflow Engineers<br/>research cost-effective loops"]
-        E2["Hardcode model tier + token<br/>optimizations, statically"]
-        E3["Evaluate centrally"]
-    end
-
-    subgraph DIST ["CATALOG · Governance &amp; Distribution"]
-        direction TB
-        D1["Agent Plugins / Skills<br/>released via APM"]
-        D2["IDP discoverability +<br/>harness-managed rollout"]
-        D3["Cost-vs-value gate<br/>(install + run)"]
-    end
-
-    subgraph RUN ["EVERYONE ELSE · baseline tier"]
-        direction TB
-        R1["Segmented users +<br/>budget pockets"]
-        R2["Run loops via / slash<br/>command or intent match"]
-    end
-
-    MON["Monitoring<br/>cost · traces · ROI"]
-
-    EXPLORE --> DIST --> RUN --> MON
-    MON -- "ROI signal,<br/>power-user demand" --> EXPLORE
+%%| fig-width: 5.6
+%%| fig-height: 5.4
+flowchart TB
+    E["<b>CENTRAL AI TEAM</b> · frontier tier <i>(gated)</i><br/>Agentic Workflow Engineers research cost-effective loops<br/>hardcode model tier + token optimizations · evaluate centrally"]:::frontier
+    C["<b>CATALOG</b> · Governance &amp; Distribution<br/>Agent Plugins / Skills released via APM<br/>IDP discoverability + harness-managed rollout<br/>cost-vs-value gate at install + run"]:::catalog
+    R["<b>EVERYONE ELSE</b> · baseline tier<br/>segmented users + budget pockets<br/>run loops via / slash command or intent match"]:::baseline
+    M["<b>MONITORING</b> &nbsp;·&nbsp; cost · traces · ROI"]:::monitor
+    E --> C --> R --> M
+    M -- "ROI signal +<br/>power-user demand" --> E
+    classDef frontier fill:#26261f,stroke:#c26b3f,color:#f9f7f5,stroke-width:2.5px
+    classDef catalog fill:#eef0e0,stroke:#6c7931,color:#33401a,stroke-width:2px
+    classDef baseline fill:#e7f0d6,stroke:#6c7931,color:#33401a,stroke-width:2px
+    classDef monitor fill:#f9f7f5,stroke:#26261f,color:#26261f,stroke-width:1.5px
 ```
 
 Four moves make the factory work.
@@ -104,6 +96,15 @@ Give everyone open, baseline access to the most cost-effective, versatile models
 ### Pool the spend, gate the bets
 
 Split your token budget into intentional pockets and map them to user segments: a generous pocket for the central team's exploration, bounded pockets for stream-aligned teams, a metered pocket for self-service. Then gate the spend the way you already gate any other risk. The governance chapter's Decision Matrix is the right home for this: a **cost-vs-value approval gate** that asks, at install time and at run time, *does the expected outcome justify the inferencing bill?* Workflows that run locally on local models, or whose cost gradient is low and well-evaluated, get a free pass. Workflows that spend frontier tokens at scale earn an owner, an expected cost, a stop condition, and an off-switch before they ship. **Any spend beyond the baseline playbook is an intentional bet — and a bet is only sound once your monitoring can tell you whether it paid off.**
+
+| Spend pool | Funding rule | Who draws on it | Metering |
+|---|---|---|---|
+| **Frontier R&D** | Capped envelope · best models | Central AI / frontier team | By budget — the deliberate bet |
+| **Per-workflow run** | Metered by outcome | Approved, governed use cases | Cost per outcome |
+| **Everyday prompting** | Capped to cheaper models | Everyone — the floor | Open baseline access |
+| **Local models** | Unmetered · owned GPUs | High-volume, low-risk loops | Free at the margin |
+
+: The four spend pools, each funded and metered by a different rule. The cheaper pools run open; only the deliberate bets — frontier exploration and metered at-scale runs — carry a gate. {#tbl-spend-pools tbl-colwidths="[20,30,28,22]"}
 
 ### Distribute through the catalog
 
@@ -144,6 +145,26 @@ The honest assessment is *watch and experiment, do not yet mass-rollout.* The ma
 ## What This Compounds Into
 
 The payoff is not a one-time saving. Every cost-effective loop you build and govern accretes into a catalog, and that catalog *is* your agentic SDLC capability — the durable asset the closing chapter (@sec-what-comes-next) calls the next wave. The wins compound on every axis at once: **cost** falls and stabilizes, **reliability** rises because the loop is evaluated and pinned, **outcomes** improve because the loop encodes your best practice, and **learnings** accumulate because every run is monitored.
+
+```{mermaid}
+%%| label: fig-workflow-lifecycle
+%%| fig-cap: "The agentic workflow lifecycle. One exploration is paid once, at frontier cost — the orange stage, spend to learn. The five stages that follow turn that exploration into a governed, reusable workflow whose every rerun pays the learning back (green). DISCOVER closes the loop: real usage reveals the next gap worth exploring. The bill is front-loaded once; the value compounds on every turn after."
+%%| fig-alt: "A six-node clockwise cycle. One node is highlighted orange and labelled spend to learn: EXPLORE, on a frontier model at capped cost. The other five nodes are green and labelled spend that pays back: CODIFY (persist as a reusable skill), PUBLISH (portal skill, policy-gated), CONSUME (pull by manifest), RUN AND MONITOR (cost per outcome), and DISCOVER (usage reveals the next gap). A return edge labelled next exploration runs from DISCOVER back to EXPLORE, closing the loop and showing that reuse feeds the next round of learning."
+%%| fig-width: 5.4
+%%| fig-height: 5.2
+flowchart TB
+    E["<b>1 · EXPLORE</b> &nbsp; <i>spend to learn</i><br/>frontier model · capped $"]:::learn
+    C["<b>2 · CODIFY</b> &nbsp; persist as a reusable skill"]:::pays
+    P["<b>3 · PUBLISH</b> &nbsp; portal skill · policy-gated"]:::pays
+    U["<b>4 · CONSUME</b> &nbsp; pull by manifest"]:::pays
+    R["<b>5 · RUN &amp; MONITOR</b> &nbsp; cost per outcome"]:::pays
+    D["<b>6 · DISCOVER</b> &nbsp; usage reveals the next gap"]:::pays
+    E --> C --> P --> U --> R --> D
+    D -- "next exploration" --> E
+    classDef learn fill:#26261f,stroke:#c26b3f,color:#f9f7f5,stroke-width:2.5px,font-weight:bold
+    classDef pays fill:#eef0e0,stroke:#6c7931,color:#33401a,stroke-width:1.5px
+    linkStyle 5 stroke:#c26b3f,stroke-width:2.5px,color:#7c2d12
+```
 
 Past a threshold, the catalog enables a class of workflow that is not economical to run any other way: **Autopilots** — composable, self-service loops that take a low-risk, high-value task end to end — and, at the limit, the **Dark Software Factory**, where agents do the building between human judgment and the final call, and trust comes from encoded judgment plus deterministic verification rather than from watching. These are the subject of the closing chapter; the reason they belong *here* is economic. They are only affordable, and only safe, on top of a factory of cost-engineered, governed loops. The bill is what makes the next wave a budget line instead of a moonshot.
 
